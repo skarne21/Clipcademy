@@ -2,6 +2,7 @@
 
 ## What YC verifies
 
+
 [Y Combinator describes Doomersion](https://www.ycombinator.com/companies/doomersion) as a language learning app built around short videos matched to a learner’s level, with difficulty increasing as they scroll. The broader learning platform below is a **proposed expansion**, not a feature attributed to Doomersion.
 
 ## Proposed idea: A multi-topic feed that verifies learning
@@ -39,3 +40,4 @@ The validator returns specific errors to the model, which revises the artifact a
 ### 8. Can be fully deployed
 
 A deployable version would include accounts, a permitted multi-topic lesson catalog, generation and validation services, learner progress, monitoring, and content removal controls. Topics could be added as their lessons and validators become ready. This is a deployment plan for the proposed expansion, not a claim that the product or its customer demand has already been established.
+able version would include accounts, a permitted multi-topic lesson catalog, generation and validation services, learner progress, monitoring, and content removal controls. Topics could be added as their lessons and validators become ready. This is a deployment plan for the proposed expansion, not a claim that the product or its customer demand has already been established.
