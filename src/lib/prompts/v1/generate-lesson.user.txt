@@ -1,0 +1,24 @@
+Generate lesson output for this request.
+
+=== Source lesson ===
+Lesson ID: {{lesson_id}}
+Title: {{lesson_title}}
+Topic tags: {{topic_tags}}
+Difficulty: {{lesson_difficulty}}
+Learning goal: {{learning_goal}}
+Lesson notes:
+{{lesson_notes}}
+
+=== Learner ===
+Level for this topic: {{learner_level}}
+Recent attempts (newest last):
+{{recent_attempts}}
+
+=== Subject rules ===
+Subject: {{subject_id}}
+Output format: {{output_format}}
+
+=== Allowed follow-up lesson IDs ===
+{{catalog_lesson_ids}}
+
+Return JSON for lesson_id "{{lesson_id}}" with learner_level "{{learner_level}}".

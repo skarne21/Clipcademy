@@ -1,0 +1,3 @@
+Write a correct Python reference solution for the task. Return JSON with a single field solution_code containing only Python code (no markdown).
+
+The solution must define the required function and pass the assert tests by returning values. Do not use print() for task output.

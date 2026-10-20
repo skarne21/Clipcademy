@@ -1,0 +1,10 @@
+Validation errors to fix (including malformed tests — rewrite each test as a single-line assert with no prose or fences; exception tests must use assert raises(ExcType, fn, *args)):
+{{errors}}
+
+Previous JSON:
+{{previous_json}}
+
+Catalog lesson IDs allowed for follow_up:
+{{catalog_lesson_ids}}
+
+Return corrected JSON for lesson_id "{{lesson_id}}" with learner_level "{{learner_level}}".

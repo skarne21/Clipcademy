@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0a0a0b;
+  --foreground: #f4f4f5;
+  --muted: #a1a1aa;
+  --accent: #3b82f6;
+  --card: #18181b;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family:
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+}
+
+.feed-scroll {
+  scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.feed-card {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.task-editor {
+  touch-action: pan-y;
+}
+
+.task-editor-surface {
+  overscroll-behavior: contain;
+}
+
+.task-editor-cm .cm-editor {
+  height: auto;
+  max-height: min(50vh, 20rem);
+}
+
+.task-editor-cm .cm-scroller {
+  max-height: min(50vh, 20rem);
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Keep code editor scroll inside the editor; don't steal vertical feed snap. */
+.task-editor {
+  touch-action: pan-y;
+  overscroll-behavior: contain;
+}
+
+.task-editor-cm-host {
+  touch-action: pan-y;
+  overscroll-behavior: contain;
+}
+
+.task-editor-cm-host .cm-editor {
+  height: 100%;
+  max-height: min(50vh, 320px);
+}
+
+.task-editor-cm-host .cm-scroller {
+  overflow: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.task-editor-cm-content {
+  font-size: 16px;
+  min-height: 8rem;
+}

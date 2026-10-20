@@ -1,0 +1,13 @@
+Lesson notes:
+{{lesson_notes}}
+
+Learning goal:
+{{learning_goal}}
+
+Generated explanation:
+{{explanation}}
+
+Generated task prompt:
+{{task_prompt}}
+
+Does the generated content contradict the lesson notes?

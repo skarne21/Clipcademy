@@ -1,0 +1,116 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Difficulty {
+  beginner
+  intermediate
+}
+
+enum LearnerLevel {
+  beginner
+  intermediate
+}
+
+enum MistakeType {
+  off_by_one
+  missing_return
+  wrong_type
+  infinite_loop
+  syntax_error
+  other
+}
+
+enum GenerationOutcome {
+  validated
+  unvalidated
+  fallback
+  failed
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  topicLevels    LearnerTopicLevel[]
+  attempts       Attempt[]
+  generationLogs GenerationLog[]
+}
+
+model Lesson {
+  id                  String     @id
+  title               String
+  videoUrl            String
+  youtubeId           String
+  videoTitle          String?
+  videoChannel        String?
+  videoDuration       String?
+  videoDurationSeconds Int?
+  lessonNotes         String     @db.Text
+  lessonNotesNeedsReview Boolean  @default(true)
+  topicTags           String[]
+  difficulty          Difficulty
+  learningGoal        String     @db.Text
+  fallbackExplanation String     @db.Text
+  /// Full task payload including hidden_tests (never exposed via public API).
+  fallbackTask        Json
+  sortOrder           Int        @default(0)
+
+  attempts       Attempt[]
+  generationLogs GenerationLog[]
+}
+
+model LearnerTopicLevel {
+  id        String       @id @default(cuid())
+  userId    String
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  topic     String
+  level     LearnerLevel @default(beginner)
+  updatedAt DateTime     @updatedAt
+
+  @@unique([userId, topic])
+}
+
+model Attempt {
+  id           String        @id @default(cuid())
+  userId       String
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lessonId     String
+  lesson       Lesson        @relation(fields: [lessonId], references: [id])
+  taskSnapshot Json
+  code         String        @db.Text
+  passed       Boolean
+  mistakeType  MistakeType?
+  testResults  Json
+  createdAt    DateTime      @default(now())
+
+  @@index([userId, createdAt])
+}
+
+model GenerationLog {
+  id            String            @id @default(cuid())
+  userId        String?
+  user          User?             @relation(fields: [userId], references: [id], onDelete: SetNull)
+  lessonId      String
+  lesson        Lesson            @relation(fields: [lessonId], references: [id])
+  attemptNumber Int
+  promptVersion String?
+  modelName     String?
+  latencyMs     Int?
+  inputTokens   Int?
+  outputTokens  Int?
+  rawOutput     Json?
+  errors        String[]
+  outcome       GenerationOutcome
+  createdAt     DateTime          @default(now())
+
+  @@index([lessonId, createdAt])
+}

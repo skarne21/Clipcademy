@@ -1,0 +1,405 @@
+{
+  "lessons": [
+    {
+      "id": "py-conditionals-01",
+      "title": "If statements in Python",
+      "videoUrl": "https://www.youtube.com/watch?v=wVu7Oncvx74",
+      "youtubeId": "wVu7Oncvx74",
+      "topicTags": [
+        "conditionals",
+        "python"
+      ],
+      "difficulty": "beginner",
+      "learningGoal": "Write simple if/else branches that compare values and run different code paths.",
+      "fallbackExplanation": "Use if when you want Python to choose between paths. The condition must be a boolean expression. Indent the code that belongs to each branch.",
+      "fallbackTask": {
+        "prompt": "Write a function `grade_label(score)` that returns \"pass\" if score is 60 or higher, otherwise \"fail\".",
+        "type": "code",
+        "function_name": "grade_label",
+        "starter_code": "def grade_label(score):\n    pass\n",
+        "visible_tests": [
+          "assert grade_label(60) == \"pass\"",
+          "assert grade_label(59) == \"fail\""
+        ],
+        "hidden_tests": [
+          "assert grade_label(100) == \"pass\"",
+          "assert grade_label(0) == \"fail\""
+        ]
+      },
+      "sortOrder": 1,
+      "lessonNotes": "An if statement checks a condition. If the condition is True, the indented block runs. You can add elif for additional checks and else for a default path. Comparison operators like ==, !=, <, and > return True or False.",
+      "lessonNotesNeedsReview": true,
+      "videoTitle": "Python Tutorial - CONDITIONALS: if, else, elif",
+      "videoChannel": "LinkedIn Learning",
+      "videoDuration": "PT3M48S",
+      "videoDurationSeconds": 228,
+      "videoAlternates": [
+        {
+          "youtubeId": "qcvmAVdTwWg",
+          "title": "Learn Python If, Elif & Else in 3 Minutes | Conditional Statements",
+          "channelTitle": "doubtFree",
+          "duration": "PT3M28S",
+          "durationSeconds": 208
+        },
+        {
+          "youtubeId": "jDastwH373Q",
+          "title": "Python Basics: CONDITIONAL STATEMENTS (if/else) in Under a Minute! 🎲",
+          "channelTitle": "The Programmers Realm",
+          "duration": "PT28S",
+          "durationSeconds": 28
+        }
+      ]
+    },
+    {
+      "id": "py-loops-for-01",
+      "title": "For loops over sequences",
+      "videoUrl": "https://www.youtube.com/watch?v=9ueMumuFv6g",
+      "youtubeId": "9ueMumuFv6g",
+      "topicTags": [
+        "loops",
+        "for",
+        "python"
+      ],
+      "difficulty": "beginner",
+      "learningGoal": "Use a for loop to visit each item in a list and accumulate a result.",
+      "fallbackExplanation": "for item in items runs the loop body once per element. Keep a variable outside the loop when you need to build up an answer.",
+      "fallbackTask": {
+        "prompt": "Write `count_positive(numbers)` that returns how many numbers in the list are greater than zero.",
+        "type": "code",
+        "function_name": "count_positive",
+        "starter_code": "def count_positive(numbers):\n    pass\n",
+        "visible_tests": [
+          "assert count_positive([1, -2, 3]) == 2",
+          "assert count_positive([]) == 0"
+        ],
+        "hidden_tests": [
+          "assert count_positive([-1, -2]) == 0",
+          "assert count_positive([0, 1]) == 1"
+        ]
+      },
+      "sortOrder": 2,
+      "lessonNotes": "A for loop repeats once per item in a sequence. The loop variable takes each value in turn. You often initialize a result before the loop and update it inside the loop body.",
+      "lessonNotesNeedsReview": true,
+      "videoTitle": "How to Loop over Lists in Python",
+      "videoChannel": "Programming with Mosh",
+      "videoDuration": "PT3M21S",
+      "videoDurationSeconds": 201,
+      "videoAlternates": [
+        {
+          "youtubeId": "i670RQHwvog",
+          "title": "Python For Loops: The Complete Beginner’s Guide",
+          "channelTitle": "TechnicallyRipped",
+          "duration": "PT3M10S",
+          "durationSeconds": 190
+        },
+        {
+          "youtubeId": "sK0o3um7ruY",
+          "title": "For Loop in Python",
+          "channelTitle": "Time to Program",
+          "duration": "PT10S",
+          "durationSeconds": 10
+        }
+      ]
+    },
+    {
+      "id": "py-loops-range-01",
+      "title": "Looping with range()",
+      "videoUrl": "https://www.youtube.com/watch?v=9ueMumuFv6g",
+      "youtubeId": "9ueMumuFv6g",
+      "topicTags": [
+        "loops",
+        "range",
+        "python"
+      ],
+      "difficulty": "beginner",
+      "learningGoal": "Use range() to repeat an action a fixed number of times without off-by-one errors.",
+      "fallbackExplanation": "range(stop) ends before stop, not at stop. That is why range(3) gives 0, 1, 2.",
+      "fallbackTask": {
+        "prompt": "Write `sum_first_n(n)` that returns 1 + 2 + ... + n. Return 0 when n is 0.",
+        "type": "code",
+        "function_name": "sum_first_n",
+        "starter_code": "def sum_first_n(n):\n    pass\n",
+        "visible_tests": [
+          "assert sum_first_n(3) == 6",
+          "assert sum_first_n(0) == 0"
+        ],
+        "hidden_tests": [
+          "assert sum_first_n(1) == 1",
+          "assert sum_first_n(5) == 15"
+        ]
+      },
+      "sortOrder": 3,
+      "lessonNotes": "range(n) produces 0 through n-1. range(start, stop) excludes stop. A for loop over range is useful when you need an index or a counted repetition.",
+      "lessonNotesNeedsReview": true,
+      "videoTitle": "How to Loop over Lists in Python",
+      "videoChannel": "Programming with Mosh",
+      "videoDuration": "PT3M21S",
+      "videoDurationSeconds": 201,
+      "videoAlternates": [
+        {
+          "youtubeId": "y_yXGmcCXpU",
+          "title": "for loop in range",
+          "channelTitle": "TheEduGeek",
+          "duration": "PT3M18S",
+          "durationSeconds": 198
+        },
+        {
+          "youtubeId": "ezua0BZ7KHA",
+          "title": "Python Tutorial: Ranged Loops (for i in range)",
+          "channelTitle": "Brian Fediuk",
+          "duration": "PT3M31S",
+          "durationSeconds": 211
+        }
+      ]
+    },
+    {
+      "id": "py-loops-while-01",
+      "title": "While loops",
+      "videoUrl": "https://www.youtube.com/watch?v=9YFT5HqL5m8",
+      "youtubeId": "9YFT5HqL5m8",
+      "topicTags": [
+        "loops",
+        "while",
+        "python"
+      ],
+      "difficulty": "beginner",
+      "learningGoal": "Write a while loop that stops when a condition becomes false and avoid infinite loops.",
+      "fallbackExplanation": "Check that the loop condition can become False. Update the variables the condition depends on inside the loop.",
+      "fallbackTask": {
+        "prompt": "Write `halve_until_one(n)` that repeatedly integer-divides n by 2 until n is 1 or less, and returns the number of divisions performed. If n is already 1 or less, return 0.",
+        "type": "code",
+        "function_name": "halve_until_one",
+        "starter_code": "def halve_until_one(n):\n    pass\n",
+        "visible_tests": [
+          "assert halve_until_one(8) == 3",
+          "assert halve_until_one(1) == 0"
+        ],
+        "hidden_tests": [
+          "assert halve_until_one(0) == 0",
+          "assert halve_until_one(10) == 3"
+        ]
+      },
+      "sortOrder": 4,
+      "lessonNotes": "A while loop runs while its condition is True. Something inside the loop must eventually make the condition False, or the loop never ends.",
+      "lessonNotesNeedsReview": true,
+      "videoTitle": "While Loop in Python",
+      "videoChannel": "Time to Program",
+      "videoDuration": "PT11S",
+      "videoDurationSeconds": 11,
+      "videoAlternates": [
+        {
+          "youtubeId": "-haAcYCI3Xc",
+          "title": "How To End An Infinite Loop | Python Tutorial",
+          "channelTitle": "TechnicallyRipped",
+          "duration": "PT21S",
+          "durationSeconds": 21
+        },
+        {
+          "youtubeId": "OZP6ErZ7L0E",
+          "title": "For Loop and While Loop in Python Explained",
+          "channelTitle": "The Python Dude",
+          "duration": "PT1M15S",
+          "durationSeconds": 75
+        }
+      ]
+    },
+    {
+      "id": "py-functions-01",
+      "title": "Defining functions",
+      "videoUrl": "https://www.youtube.com/watch?v=3sim8jgkpTU",
+      "youtubeId": "3sim8jgkpTU",
+      "topicTags": [
+        "functions",
+        "python"
+      ],
+      "difficulty": "beginner",
+      "learningGoal": "Define a function with parameters and return a value using return.",
+      "fallbackExplanation": "Use return when the caller needs a result. The function body can use its parameters like local variables.",
+      "fallbackTask": {
+        "prompt": "Write `rectangle_area(width, height)` that returns the area of a rectangle.",
+        "type": "code",
+        "function_name": "rectangle_area",
+        "starter_code": "def rectangle_area(width, height):\n    pass\n",
+        "visible_tests": [
+          "assert rectangle_area(3, 4) == 12",
+          "assert rectangle_area(0, 5) == 0"
+        ],
+        "hidden_tests": [
+          "assert rectangle_area(1, 1) == 1"
+        ]
+      },
+      "sortOrder": 5,
+      "lessonNotes": "def names a function. Parameters are inputs. return sends a value back to the caller. Without return, a function gives back None.",
+      "lessonNotesNeedsReview": true,
+      "videoTitle": "Functions in Python Explained!",
+      "videoChannel": "The Python Dude",
+      "videoDuration": "PT1M12S",
+      "videoDurationSeconds": 72,
+      "videoAlternates": [
+        {
+          "youtubeId": "n9aDBOycsCY",
+          "title": "Defining a Function in Python | Python Tutorial for Beginners",
+          "channelTitle": "365 Data Science",
+          "duration": "PT1M52S",
+          "durationSeconds": 112
+        },
+        {
+          "youtubeId": "T6LoMB_RtQU",
+          "title": "Defining Functions In Python",
+          "channelTitle": "StudySession",
+          "duration": "PT2M39S",
+          "durationSeconds": 159
+        }
+      ]
+    },
+    {
+      "id": "py-lists-01",
+      "title": "Lists and indexing",
+      "videoUrl": "https://www.youtube.com/watch?v=wr0laeOovCU",
+      "youtubeId": "wr0laeOovCU",
+      "topicTags": [
+        "lists",
+        "python"
+      ],
+      "difficulty": "beginner",
+      "learningGoal": "Access list elements by index, including negative indices, and return the correct item.",
+      "fallbackExplanation": "Valid indices run from 0 to len(items)-1. Index -1 is the last element.",
+      "fallbackTask": {
+        "prompt": "Write `first_and_last(items)` that returns a tuple (first, last). Assume items is non-empty.",
+        "type": "code",
+        "function_name": "first_and_last",
+        "starter_code": "def first_and_last(items):\n    pass\n",
+        "visible_tests": [
+          "assert first_and_last([1, 2, 3]) == (1, 3)",
+          "assert first_and_last(['a']) == ('a', 'a')"
+        ],
+        "hidden_tests": [
+          "assert first_and_last([10, 20]) == (10, 20)"
+        ]
+      },
+      "sortOrder": 6,
+      "lessonNotes": "Lists are ordered collections. Index 0 is the first item. Negative indices count from the end. len(list) gives the length.",
+      "lessonNotesNeedsReview": true,
+      "videoTitle": "List index in Python #python #programming",
+      "videoChannel": "Weber Engineer ",
+      "videoDuration": "PT15S",
+      "videoDurationSeconds": 15,
+      "videoAlternates": [
+        {
+          "youtubeId": "vq0oSrmMInY",
+          "title": "Lists in Python - Part 1 - Creating a List",
+          "channelTitle": "Time to Program",
+          "duration": "PT15S",
+          "durationSeconds": 15
+        },
+        {
+          "youtubeId": "TFhGTw4RXI4",
+          "title": "How to insert list items at a specific index in Python",
+          "channelTitle": "freeCodeCamp.org",
+          "duration": "PT43S",
+          "durationSeconds": 43
+        }
+      ]
+    },
+    {
+      "id": "py-lists-02",
+      "title": "Building lists",
+      "videoUrl": "https://www.youtube.com/watch?v=rO5TMSMTs3o",
+      "youtubeId": "rO5TMSMTs3o",
+      "topicTags": [
+        "lists",
+        "python"
+      ],
+      "difficulty": "beginner",
+      "learningGoal": "Build a new list from an existing list using a loop and append.",
+      "fallbackExplanation": "result = [] then result.append(x) inside a loop is a common pattern for collecting values.",
+      "fallbackTask": {
+        "prompt": "Write `double_evens(numbers)` that returns a new list containing double each even number from numbers (odds are skipped).",
+        "type": "code",
+        "function_name": "double_evens",
+        "starter_code": "def double_evens(numbers):\n    pass\n",
+        "visible_tests": [
+          "assert double_evens([1, 2, 3, 4]) == [4, 8]",
+          "assert double_evens([]) == []"
+        ],
+        "hidden_tests": [
+          "assert double_evens([0, 3]) == [0]",
+          "assert double_evens([5]) == []"
+        ]
+      },
+      "sortOrder": 7,
+      "lessonNotes": "Start with an empty list. Loop over a source list, transform or filter each item, and append to the result when appropriate.",
+      "lessonNotesNeedsReview": true,
+      "videoTitle": "Beginner Python Tutorial 35 - Intro to Nested Lists (2D Lists)",
+      "videoChannel": "Caleb Curry",
+      "videoDuration": "PT3M43S",
+      "videoDurationSeconds": 223,
+      "videoAlternates": [
+        {
+          "youtubeId": "9ueMumuFv6g",
+          "title": "How to Loop over Lists in Python",
+          "channelTitle": "Programming with Mosh",
+          "duration": "PT3M21S",
+          "durationSeconds": 201
+        },
+        {
+          "youtubeId": "R4yYJHBbPsw",
+          "title": "How to Create a List in Python",
+          "channelTitle": "Amit Thinks",
+          "duration": "PT2M16S",
+          "durationSeconds": 136
+        }
+      ]
+    },
+    {
+      "id": "py-functions-lists-01",
+      "title": "Functions that use lists",
+      "videoUrl": "https://www.youtube.com/watch?v=vq0oSrmMInY",
+      "youtubeId": "vq0oSrmMInY",
+      "topicTags": [
+        "functions",
+        "lists",
+        "python"
+      ],
+      "difficulty": "intermediate",
+      "learningGoal": "Combine functions and list iteration to compute an aggregate without mutating the input list.",
+      "fallbackExplanation": "Treat the input list as read-only unless asked to modify it. Use a local variable for your running total or result.",
+      "fallbackTask": {
+        "prompt": "Write `max_of_three(a, b, c)` that returns the largest of the three numbers.",
+        "type": "code",
+        "function_name": "max_of_three",
+        "starter_code": "def max_of_three(a, b, c):\n    pass\n",
+        "visible_tests": [
+          "assert max_of_three(1, 3, 2) == 3",
+          "assert max_of_three(-1, -5, -2) == -1"
+        ],
+        "hidden_tests": [
+          "assert max_of_three(5, 5, 1) == 5"
+        ]
+      },
+      "sortOrder": 8,
+      "lessonNotes": "Pass a list into a function as a parameter. Loop over it to compute a summary value. Return the result without changing the original list unless the task requires it.",
+      "lessonNotesNeedsReview": true,
+      "videoTitle": "Lists in Python - Part 1 - Creating a List",
+      "videoChannel": "Time to Program",
+      "videoDuration": "PT15S",
+      "videoDurationSeconds": 15,
+      "videoAlternates": [
+        {
+          "youtubeId": "gbYLsUngzLc",
+          "title": "Top 10 Most Important Python Functions You Must Know! 🚀 | Python Tutorial for Beginners",
+          "channelTitle": "Computer Skills",
+          "duration": "PT6S",
+          "durationSeconds": 6
+        },
+        {
+          "youtubeId": "FtPUv6SRsoc",
+          "title": "Passing Lists To Functions In Python",
+          "channelTitle": "StudySession",
+          "duration": "PT3M5S",
+          "durationSeconds": 185
+        }
+      ]
+    }
+  ]
+}

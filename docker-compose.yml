@@ -1,0 +1,35 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: clipcademy
+      POSTGRES_PASSWORD: clipcademy
+      POSTGRES_DB: clipcademy
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U clipcademy -d clipcademy"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  python-sandbox:
+    image: clipcademy-python-sandbox
+    build: ./docker/python-sandbox
+    profiles:
+      - sandbox
+    read_only: true
+    tmpfs:
+      - /tmp:size=64M,mode=1777
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+    network_mode: none
+
+volumes:
+  postgres_data:

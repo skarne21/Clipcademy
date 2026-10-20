@@ -1,0 +1,7 @@
+Function name: {{function_name}}
+Task prompt: {{task_prompt}}
+Starter code (incomplete):
+{{starter_code}}
+
+Tests (assert statements):
+{{tests}}

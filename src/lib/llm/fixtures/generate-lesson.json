@@ -1,0 +1,21 @@
+{
+  "lesson_id": "py-conditionals-01",
+  "learner_level": "beginner",
+  "explanation": "Conditionals let Python choose a path. An if statement runs one block when a condition is True and another when it is False. Compare values with == or != before you branch.",
+  "task": {
+    "prompt": "Write grade_label(score) to return \"pass\" when score is at least 60, otherwise \"fail\".",
+    "type": "code",
+    "function_name": "grade_label",
+    "starter_code": "def grade_label(score):\n    pass\n",
+    "visible_tests": [
+      "assert grade_label(60) == \"pass\"",
+      "assert grade_label(59) == \"fail\""
+    ],
+    "hidden_tests": ["assert grade_label(100) == \"pass\""]
+  },
+  "hint_targets": ["missing_return", "wrong_type"],
+  "follow_up": {
+    "lesson_id": "py-loops-for-01",
+    "reason": "Learner is ready to practice iteration with for loops."
+  }
+}

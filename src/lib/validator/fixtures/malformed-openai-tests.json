@@ -1,0 +1,31 @@
+{
+  "py-loops-range-01": {
+    "logId": "cmvh9iqmw0001smdx72kww8eg",
+    "referenceSolution": "def repeat_action(n):\n    if n <= 0:\n        return\n    return '\\n'.join(['Action performed' for _ in range(n)]) + '\\n'",
+    "visible_tests": [
+      "repeat_action(3) should print the action 3 times.",
+      "repeat_action(0) should not print anything."
+    ],
+    "hidden_tests": [
+      "assert repeat_action(1) == \"Action performed\\n\",\"Should print action once\"",
+      "assert repeat_action(5) == \"Action performed\\nAction performed\\nAction performed\\nAction performed\\nAction performed\\n\",\"Should print action 5 times\""
+    ],
+    "function_name": "repeat_action",
+    "starter_code": "def repeat_action(n):\n    # Your code here\n"
+  },
+  "py-loops-while-01": {
+    "logId": "cmvh95wal000bsmmf0m7ojvhf",
+    "referenceSolution": "def countdown(num):\n    while num >= 0:\n        if num > 0:\n            print(num, end=', ')\n        num -= 1\n    print('Liftoff!')",
+    "visible_tests": [
+      "countdown(3) should print: 3, 2, 1, Liftoff!",
+      "countdown(1) should print: 1, Liftoff!",
+      "countdown(0) should print: Liftoff!"
+    ],
+    "hidden_tests": [
+      "countdown(5) should print: 5, 4, 3, 2, 1, Liftoff!",
+      "countdown(-1) should print: Liftoff!"
+    ],
+    "function_name": "countdown",
+    "starter_code": "def countdown(num):\n    # your code here\n"
+  }
+}
