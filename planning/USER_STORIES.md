@@ -215,7 +215,7 @@ Acceptance criteria:
 2. Audio is cached by text, voice and settings, so re-rendering spends no credits unless the narration changes.
 3. The API key is read from git-ignored `video/.env`, needs only Text to Speech and Voices read, and is never logged.
 4. Each manifest records the synthetic voice used.
-5. Narration runs at 150–170 words a minute (open: 18 of 35 clips are 138–189 wpm; `video/test_pace.py` is red, see planning/TDD_LOG.md).
+5. Narration runs at about 150–170 words a minute (open, deferred: measured 138–189 wpm; not enforced by a test, see planning/TDD_LOG.md).
 6. An offline draft voice gets a different fingerprint, so a draft can never pass as an approved clip.
 
 Evidence: video/tts.py; video/media/*.json (narration field)

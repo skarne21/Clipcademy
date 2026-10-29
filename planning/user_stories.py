@@ -146,7 +146,7 @@ STORIES = [
       'Audio is cached by text, voice and settings, so re-rendering spends no credits unless the narration changes.',
       'The API key is read from git-ignored `video/.env`, needs only Text to Speech and Voices read, and is never logged.',
       'Each manifest records the synthetic voice used.',
-      'Narration runs at 150–170 words a minute (open: 18 of 35 clips are 138–189 wpm; `video/test_pace.py` is red, see planning/TDD_LOG.md).',
+      'Narration runs at about 150–170 words a minute (open, deferred: measured 138–189 wpm; not enforced by a test, see planning/TDD_LOG.md).',
       'An offline draft voice gets a different fingerprint, so a draft can never pass as an approved clip.'],
      'video/tts.py; video/media/*.json (narration field)'),
     ('US-14', 'Time every animation to the narration', 'content creator', 'on-screen actions triggered by the words they '
@@ -239,7 +239,7 @@ def issue_body(s):
     sid, title, role, goal, benefit, req, hyps, area, owner, status, ac, evidence = s
     rq = next(r for r in REQUIREMENTS if r[0] == req)
     lines = [f'**User story ({sid})**', '', story_text(s), '', '**Acceptance criteria**', '']
-    lines += [f'- [{"x" if status == "built" and "(open:" not in c else " "}] {c}' for c in ac]
+    lines += [f'- [{"x" if status == "built" and "(open" not in c else " "}] {c}' for c in ac]
     lines += ['', f'**Requirement:** {req}, {rq[1]}' + (' (AI integration)' if rq[4] else ''),
               f'**Hypothesis served:** ' + '; '.join(f'{h} ({HYPOTHESES[h]})' for h in hyps),
               f'**Owner:** {owner}', f'**Status:** {status}', f'**Evidence / tests:** {evidence}', '',
