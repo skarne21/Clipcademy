@@ -1,0 +1,18 @@
+{
+  "video_file": "translation.pairing_followup_2.eadf1220c1ae8b4e.mp4",
+  "captions_file": "translation.pairing_followup_2.eadf1220c1ae8b4e.vtt",
+  "transcript": "This codon needs a partner. Three tRNAs try out. The first one's anticodon doesn't match. It leaves. The second doesn't match either. Gone. The third has the complementary anticodon. It pairs and stays. Each tRNA has its own anticodon. Like a lock that only opens for one key. Now try the question again.",
+  "source_refs": [
+    "L22-p1"
+  ],
+  "duration_seconds": 22.625,
+  "width": 720,
+  "height": 1280,
+  "fps": 24,
+  "fingerprint": "eadf1220c1ae8b4e",
+  "review_status": "pending",
+  "narration": "synthetic: ElevenLabs eleven_multilingual_v2, voice Liam (ElevenLabs premade)",
+  "visuals": "Remotion 4.0.537, Clipcademy stick-figure template",
+  "longest_still_seconds": 2.46,
+  "sha256": "2ece0e4d7e11d72ad988a1faf27b0b8827812a8445b8e802e39ad5b00ade25db"
+}

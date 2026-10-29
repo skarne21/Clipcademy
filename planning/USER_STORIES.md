@@ -214,8 +214,9 @@ Acceptance criteria:
 1. `video/tts.py` calls the ElevenLabs with-timestamps endpoint for the exact narration text and maps the character timings onto words.
 2. Audio is cached by text, voice and settings, so re-rendering spends no credits unless the narration changes.
 3. The API key is read from git-ignored `video/.env`, needs only Text to Speech and Voices read, and is never logged.
-4. Narration runs at 150–170 words a minute; each manifest records the synthetic voice used.
-5. An offline draft voice gets a different fingerprint, so a draft can never pass as an approved clip.
+4. Each manifest records the synthetic voice used.
+5. Narration runs at 150–170 words a minute (open: 18 of 35 clips are 138–189 wpm; `video/test_pace.py` is red, see planning/TDD_LOG.md).
+6. An offline draft voice gets a different fingerprint, so a draft can never pass as an approved clip.
 
 Evidence: video/tts.py; video/media/*.json (narration field)
 
@@ -387,4 +388,4 @@ Evidence: Team_Spec.md (Member 1 section) and Scope
 | Reset demo | US-22 |
 | LLM-assisted authoring (proposed) | US-23 |
 
-Totals: 7 requirements, 23 user stories (21 built, 1 in progress, 1 proposed), 83 acceptance criteria. One GitHub issue per story, labelled `user-story`, its area, its status, and its requirement.
+Totals: 7 requirements, 23 user stories (21 built, 1 in progress, 1 proposed), 84 acceptance criteria. One GitHub issue per story, labelled `user-story`, its area, its status, and its requirement.

@@ -1,0 +1,18 @@
+{
+  "video_file": "translation.intro_4.fbad1f0f62352dcc.mp4",
+  "captions_file": "translation.intro_4.fbad1f0f62352dcc.vtt",
+  "transcript": "What happens to a tRNA after it gives away its amino acid? It moves over to the E site. Now it's empty. E is for exit. From the E site, the empty tRNA leaves the ribosome. Like a seat opening up on a busy bus. The empty tRNA leaves the ribosome from the E site. Swipe for the recap.",
+  "source_refs": [
+    "L22-p2"
+  ],
+  "duration_seconds": 20.75,
+  "width": 720,
+  "height": 1280,
+  "fps": 24,
+  "fingerprint": "fbad1f0f62352dcc",
+  "review_status": "pending",
+  "narration": "synthetic: ElevenLabs eleven_multilingual_v2, voice Liam (ElevenLabs premade)",
+  "visuals": "Remotion 4.0.537, Clipcademy stick-figure template",
+  "longest_still_seconds": 2.55,
+  "sha256": "11f9ba5838c24d84880a000416c3552a3bb2e7359566a452d1e5bcfd5739b756"
+}

@@ -1,0 +1,18 @@
+{
+  "video_file": "dna_repair.intro_5.8cf461db059ec3c1.mp4",
+  "captions_file": "dna_repair.intro_5.8cf461db059ec3c1.vtt",
+  "transcript": "Quick recap: three repair jobs. During copying, DNA polymerase proofreads. It fixes its own mistake right away. After copying, mismatch repair proteins find wrong bases in the finished DNA. And UV damage gets cut out and replaced. Think of fixing typos as you go, then checking at the end. Proofreading fixes errors during copying, mismatch repair fixes them after, and UV damage is cut out and replaced. Let's see what you remember.",
+  "source_refs": [
+    "L20-p1"
+  ],
+  "duration_seconds": 29.0,
+  "width": 720,
+  "height": 1280,
+  "fps": 24,
+  "fingerprint": "8cf461db059ec3c1",
+  "review_status": "pending",
+  "narration": "synthetic: ElevenLabs eleven_multilingual_v2, voice Liam (ElevenLabs premade)",
+  "visuals": "Remotion 4.0.537, Clipcademy stick-figure template",
+  "longest_still_seconds": 2.52,
+  "sha256": "05f6d2df57c8a362d5829a8db10a8aa7b3b270f125c2f24182a050a639295ace"
+}

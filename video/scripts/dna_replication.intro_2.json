@@ -17,7 +17,7 @@
     {
       "diagram": "strand",
       "title": "DNA only gets built ONE way. Why?",
-      "narration": "DNA only gets built one way. Here's why. Every strand has two different ends. The 5-prime end. And the 3-prime end. New pieces can only snap onto the 3-prime end. So new DNA always grows 5-prime to 3-prime. One way. Every time. But it can't start from nothing. Swipe.",
+      "narration": "DNA only gets built one way. Here's why. Every strand has two different ends. The 5-prime end. And the 3-prime end. New pieces can only snap onto the 3-prime end. One way. Every time. New DNA only grows from 5-prime to 3-prime. But it can't start from nothing. Swipe.",
       "stage": {
         "strand": 3,
         "slots": 10
@@ -87,26 +87,6 @@
           ]
         },
         {
-          "on": "so",
-          "do": [
-            "zoom_out",
-            "arrow"
-          ]
-        },
-        {
-          "on": "always",
-          "do": [
-            "card:New DNA grows 5′ → 3′",
-            "pulse:arrow"
-          ]
-        },
-        {
-          "on": "grows",
-          "do": [
-            "pulse:new_3"
-          ]
-        },
-        {
           "on": "one way",
           "do": [
             "pose:thumbs"
@@ -115,7 +95,15 @@
         {
           "on": "every time",
           "do": [
+            "zoom_out",
             "pulse:strand"
+          ]
+        },
+        {
+          "on": "grows",
+          "do": [
+            "arrow",
+            "card:New DNA grows 5′ → 3′"
           ]
         },
         {

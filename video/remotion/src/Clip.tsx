@@ -136,8 +136,11 @@ export const Clip: React.FC<ClipProps> = (props) => {
         lineHeight: 1.08, fontWeight: 700, color: C.ink, ...outline(10, '#FFFFFF')}}>
         {props.title}
       </div>
-      <div style={{position: 'absolute', left: 16, width: 720 - SAFE.right - 32, top: 846, textAlign: 'center', fontSize: 78,
-        fontWeight: 700, lineHeight: 1.05, color: C.caption, ...outline(12, C.ink)}}>
+      {/* Caption box: centred in the caption band so one or two lines, outline included, stay within y 760-1000. */}
+      <div style={{position: 'absolute', left: 16, width: 720 - SAFE.right - 32, top: SAFE.captionTop + 12,
+        height: SAFE.captionBottom - SAFE.captionTop - 24, display: 'flex', flexWrap: 'wrap', justifyContent: 'center',
+        alignContent: 'center', alignItems: 'center', fontSize: 78, fontWeight: 700, lineHeight: 1.0, color: C.caption,
+        ...outline(12, C.ink)}}>
         {chunk.map((w, i) => {
           const next = chunk[i + 1]?.start ?? w.end;
           const hot = t >= w.start && t < Math.max(next, w.end);

@@ -26,9 +26,20 @@ def api_key():
     env = HERE / '.env'
     if not key and env.exists():
         for line in env.read_text(encoding='utf-8').splitlines():
+            line = line.strip()
+            if line.startswith('#'):
+                continue
             name, _, value = line.partition('=')
-            if name.strip() == 'ELEVENLABS_API_KEY':
-                key = value.strip().strip('"\'')
+            name = name.strip()
+            if name.startswith('export '):  # shell-style: export KEY=value
+                name = name[len('export '):].strip()
+            if name == 'ELEVENLABS_API_KEY':
+                value = value.strip()
+                if value[:1] in ('"', "'"):  # quoted: take what's inside the quotes
+                    value = value[1:].split(value[0], 1)[0]
+                else:  # unquoted: an inline comment starts at " #"
+                    value = value.split(' #', 1)[0].strip()
+                key = value
     return key
 
 

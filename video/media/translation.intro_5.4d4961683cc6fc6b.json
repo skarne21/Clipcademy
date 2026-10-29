@@ -1,0 +1,19 @@
+{
+  "video_file": "translation.intro_5.4d4961683cc6fc6b.mp4",
+  "captions_file": "translation.intro_5.4d4961683cc6fc6b.vtt",
+  "transcript": "Quick recap of the three sites. A is where new tRNAs come in. They stay if the anticodon matches. P is where the peptide bond forms. E is where empty tRNAs leave. Watch one full round. In at A. Bond at P. Out from E. Like a factory line: in, join, out. tRNAs enter at A, the peptide bond forms at P, and empty tRNAs leave from E. Let's see what you remember.",
+  "source_refs": [
+    "L22-p1",
+    "L22-p2"
+  ],
+  "duration_seconds": 29.917,
+  "width": 720,
+  "height": 1280,
+  "fps": 24,
+  "fingerprint": "4d4961683cc6fc6b",
+  "review_status": "pending",
+  "narration": "synthetic: ElevenLabs eleven_multilingual_v2, voice Liam (ElevenLabs premade)",
+  "visuals": "Remotion 4.0.537, Clipcademy stick-figure template",
+  "longest_still_seconds": 2.51,
+  "sha256": "3aa8ce4b701d6b2554f118ab0e9e6a69decdec681d4a9ec6088d0f03a32ac7a9"
+}

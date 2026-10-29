@@ -1,0 +1,18 @@
+{
+  "video_file": "dna_repair.intro_4.4a9145d48174e04b.mp4",
+  "captions_file": "dna_repair.intro_4.4a9145d48174e04b.vtt",
+  "transcript": "Here's the UV bulge. Step one, repair proteins find the damage. Step two, they cut the backbone on both sides. Then they remove the damaged bases. Step three, new bases fill the gap. Step four, the backbone gets sealed shut. Like cutting out a bad patch and sewing in a new one. Repair enzymes cut out the damaged piece, fill in new bases, and reseal the backbone. Swipe for the recap.",
+  "source_refs": [
+    "L20-p1"
+  ],
+  "duration_seconds": 26.958,
+  "width": 720,
+  "height": 1280,
+  "fps": 24,
+  "fingerprint": "4a9145d48174e04b",
+  "review_status": "pending",
+  "narration": "synthetic: ElevenLabs eleven_multilingual_v2, voice Liam (ElevenLabs premade)",
+  "visuals": "Remotion 4.0.537, Clipcademy stick-figure template",
+  "longest_still_seconds": 2.47,
+  "sha256": "976c0f7e05ab6122f0bd6722fc321060a68a32e245461a0c558527158581eb06"
+}

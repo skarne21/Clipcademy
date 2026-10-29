@@ -14,7 +14,7 @@
   },
   "status": 200,
   "response": {
-    "job_id": "video-aa04ccbd21e246f382222ea5d3d02ca3",
+    "job_id": "video-cff65cb18db44af48eae0633fbc1dbe3",
     "status": "ready",
     "topic_id": "dna_replication",
     "objective_id": "synthesis_direction_and_primer",
@@ -23,8 +23,8 @@
       "L19-p1"
     ],
     "source": "prerendered",
-    "video_url": "/media/dna_replication.intro_1.bf54341f210f4f0e.mp4",
-    "captions_url": "/media/dna_replication.intro_1.bf54341f210f4f0e.vtt",
+    "video_url": "/media/dna_replication.intro_1.d11ca1d4537082b5.mp4",
+    "captions_url": "/media/dna_replication.intro_1.d11ca1d4537082b5.vtt",
     "transcript": "Where do new pieces of DNA get added? Meet DNA polymerase. It builds the new strand. A strand has two ends, 5-prime and 3-prime. Polymerase only works at one of them. Think of a train that only boards at the back. New pieces join the 3-prime end. Click. Click. Click. DNA polymerase adds new pieces only to the 3-prime end. So which way does it grow? Swipe.",
     "duration_seconds": 26.625,
     "width": 720,

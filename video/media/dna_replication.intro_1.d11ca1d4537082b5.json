@@ -1,0 +1,18 @@
+{
+  "video_file": "dna_replication.intro_1.d11ca1d4537082b5.mp4",
+  "captions_file": "dna_replication.intro_1.d11ca1d4537082b5.vtt",
+  "transcript": "Where do new pieces of DNA get added? Meet DNA polymerase. It builds the new strand. A strand has two ends, 5-prime and 3-prime. Polymerase only works at one of them. Think of a train that only boards at the back. New pieces join the 3-prime end. Click. Click. Click. DNA polymerase adds new pieces only to the 3-prime end. So which way does it grow? Swipe.",
+  "source_refs": [
+    "L19-p1"
+  ],
+  "duration_seconds": 26.625,
+  "width": 720,
+  "height": 1280,
+  "fps": 24,
+  "fingerprint": "d11ca1d4537082b5",
+  "review_status": "pending",
+  "narration": "synthetic: ElevenLabs eleven_multilingual_v2, voice Liam (ElevenLabs premade)",
+  "visuals": "Remotion 4.0.537, Clipcademy stick-figure template",
+  "longest_still_seconds": 2.38,
+  "sha256": "6b3c1bc0f0e87c24e10f9953e78a76ae0c964333cec506a637df29f685d90df2"
+}

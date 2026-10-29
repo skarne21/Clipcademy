@@ -9,7 +9,7 @@ script and re-renders. Clip fingerprints for `approved_version` are in each clip
 
 ### dna_replication intro_2: DNA only gets built ONE way. Why?
 
-> DNA only gets built one way. Here's why. Every strand has two different ends. The 5-prime end. And the 3-prime end. New pieces can only snap onto the 3-prime end. So new DNA always grows 5-prime to 3-prime. One way. Every time. But it can't start from nothing. Swipe.
+> DNA only gets built one way. Here's why. Every strand has two different ends. The 5-prime end. And the 3-prime end. New pieces can only snap onto the 3-prime end. One way. Every time. New DNA only grows from 5-prime to 3-prime. But it can't start from nothing. Swipe.
 
 - Hook claim: "DNA only gets built one way": L19-p1, DNA synthesis occurs only in the 5′ to 3′ direction.
 - Analogy: New pieces "snap onto" the 3′ end like blocks clicking together. Check it does not imply pieces can join anywhere else.

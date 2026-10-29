@@ -1,0 +1,18 @@
+{
+  "video_file": "dna_repair.intro_2.a09991a4fb15da3e.mp4",
+  "captions_file": "dna_repair.intro_2.a09991a4fb15da3e.vtt",
+  "transcript": "Copying is done. But one base doesn't match. Special repair proteins scan the new DNA. Like a spell-checker reading a finished essay. Found it. A mismatch. Enzymes cut around the mistake. They remove that piece. Then they fill in the correct bases. Mismatch repair fixes wrong bases after copying is finished. Next up: damage from UV light. Swipe.",
+  "source_refs": [
+    "L20-p1"
+  ],
+  "duration_seconds": 25.25,
+  "width": 720,
+  "height": 1280,
+  "fps": 24,
+  "fingerprint": "a09991a4fb15da3e",
+  "review_status": "pending",
+  "narration": "synthetic: ElevenLabs eleven_multilingual_v2, voice Liam (ElevenLabs premade)",
+  "visuals": "Remotion 4.0.537, Clipcademy stick-figure template",
+  "longest_still_seconds": 2.36,
+  "sha256": "963adfc07b47a6f2b3115369ce7a85c30593129d20eb18f30c257a92cfba2521"
+}

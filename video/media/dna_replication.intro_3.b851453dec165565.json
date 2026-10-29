@@ -1,0 +1,18 @@
+{
+  "video_file": "dna_replication.intro_3.b851453dec165565.mp4",
+  "captions_file": "dna_replication.intro_3.b851453dec165565.vtt",
+  "transcript": "Can DNA polymerase start a new strand from scratch? Let's test it. Here's a bare template. No new strand yet. DNA polymerase shows up, ready to build. But there's no 3-prime end to add to. It's stuck. Like a zipper with nothing to start it. DNA polymerase can't start a new strand from nothing. So who starts it? Swipe.",
+  "source_refs": [
+    "L19-p1"
+  ],
+  "duration_seconds": 24.208,
+  "width": 720,
+  "height": 1280,
+  "fps": 24,
+  "fingerprint": "b851453dec165565",
+  "review_status": "pending",
+  "narration": "synthetic: ElevenLabs eleven_multilingual_v2, voice Liam (ElevenLabs premade)",
+  "visuals": "Remotion 4.0.537, Clipcademy stick-figure template",
+  "longest_still_seconds": 2.43,
+  "sha256": "b287d2f15d824307cc5fac02028dea342ed7715f61f6ee792533e780b6c1ff40"
+}

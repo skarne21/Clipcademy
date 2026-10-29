@@ -1,0 +1,18 @@
+{
+  "video_file": "translation.intro_1.e1ec6426823d7992.mp4",
+  "captions_file": "translation.intro_1.e1ec6426823d7992.vtt",
+  "transcript": "How does a tRNA know where to go? It reads three letters at a time. Three mRNA bases make a codon. The tRNA has three matching bases, called the anticodon. Here's the start codon, A-U-G. The tRNA with U-A-C pairs with it. A matches U. U matches A. G matches C. Like puzzle pieces that only fit their match. An anticodon is three tRNA bases that pair with a matching mRNA codon. Swipe.",
+  "source_refs": [
+    "L22-p1"
+  ],
+  "duration_seconds": 29.167,
+  "width": 720,
+  "height": 1280,
+  "fps": 24,
+  "fingerprint": "e1ec6426823d7992",
+  "review_status": "pending",
+  "narration": "synthetic: ElevenLabs eleven_multilingual_v2, voice Liam (ElevenLabs premade)",
+  "visuals": "Remotion 4.0.537, Clipcademy stick-figure template",
+  "longest_still_seconds": 2.43,
+  "sha256": "0f48a98c07f9412f18b93d776dec3a1386f826f34a094be4afacfd75009fa45f"
+}
