@@ -111,7 +111,7 @@ Own the reviewed lesson text, question bank, correct answers, feedback, and deci
 3. Write two initial questions, two retry questions, and feedback for each choice.
 4. Map wrong choices to misconception IDs and approved video variants.
 5. Build answer checking and the transition rules for `continue_questions`, `review_again`, `complete`, and `needs_review`.
-6. Track consecutive remediation cycles and stop at the configured limit of two.
+6. Track remediation cycles per objective (total count; a correct answer does not reset it) and stop at the configured limit of two.
 7. Provide sample question responses and answer-result responses before connecting the real video service.
 
 ### Starter question bank
@@ -119,7 +119,7 @@ Own the reviewed lesson text, question bank, correct answers, feedback, and deci
 | ID | Question and choices | Correct answer | Wrong-answer follow-up | Source |
 | --- | --- | --- | --- | --- |
 | `rep-q1` | Which end receives new nucleotides during DNA synthesis? A. 5â€² end B. 3â€² end | B | `direction_followup` explains growth direction and the growing end | L19 p. 1 |
-| `rep-q2` | Why is a primer needed? A. DNA polymerase needs an existing complementary strand to extend B. Ligase adds all new bases C. DNA is synthesized only 3â€² to 5â€² | A | `primer_followup` focuses on the existing start and polymerase's role | L19 pp. 1â€“2 |
+| `rep-q2` | Why is a primer needed? A. DNA polymerase needs an existing complementary strand to extend B. Ligase adds all new bases C. DNA is synthesized only 3â€² to 5â€² | A | B â†’ `primer_followup` focuses on the existing start and polymerase's role; C â†’ `direction_followup` (C states the wrong direction) | L19 pp. 1â€“2 |
 | `rep-r1` | A complementary primer is already present. Where does DNA polymerase add the next DNA nucleotide? A. Its 3â€² end B. Its 5â€² end | A | Return to the direction explanation within the retry limit | L19 p. 1 |
 | `rep-r2` | Which enzyme makes the RNA primer? A. Ligase B. Primase C. DNA polymerase | B | Return to the primer explanation within the retry limit | L19 p. 2 |
 
