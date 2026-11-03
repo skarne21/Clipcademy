@@ -5,7 +5,7 @@ Period covered: 2026-11-03 · Branch: `MVP02` · Build: `study-2` · Live: https
 
 ## Where things stand
 
-The whole student app is built, tested against the real learning service, and live. What's left depends on Member 1's clips being merged and on the content review.
+The whole student app is built, tested against the real learning service, and live. Member 1's video service and clips are now merged into `MVP02` (`ab39f6c`). What's left is running the app with the real clips, and the content review.
 
 | Team_Spec task | State |
 | --- | --- |
@@ -95,7 +95,7 @@ The React + TS app (`origin/member3`) has 189 unit tests passing, but it isn't u
 
 ## Next steps for Member 3
 
-1. **Merge Member 1's work:** `origin/member1` has `video/jobs.py` and six clips, and it also edits `web/src/main.js` and `web/vite.config.js`. Merge it into `MVP02`, then run the e2e with the real `/video-jobs`.
+1. **Run with the real video service:** Member 1's `video/jobs.py` and clips are merged. It also changed `web/src/main.js` and `web/vite.config.js`, and added `web/e2e/video-real.mjs`. Run the e2e with the real `/video-jobs`.
 2. **Check the clips in the app:** the initial clip, both follow-ups, the transcripts, and the pre-rendered disclosure, for both lessons.
 3. **Phone test** of the full walkthrough on the hosted site.
 4. **Final freeze:** after the content review passes, set a new `BUILD_ID` if anything changed. Then `npm run build` and the e2e against `npm run preview`, then send `dist/` to Member 2 to upload.
