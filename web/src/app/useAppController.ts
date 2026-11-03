@@ -24,6 +24,7 @@ import {
   recordAttemptResult,
   resetDemo,
   saveParticipantCode,
+  saveRemediationState,
   setCurrentStep,
   setSelectedTopics,
   type ProgressState,
@@ -129,6 +130,7 @@ export function useAppController(deps: AppDeps) {
   const questionAbortRef = useRef<AbortController | null>(null);
   const attemptAbortRef = useRef<AbortController | null>(null);
   const sessionStartedRef = useRef(false);
+  const prevScreenRef = useRef<NavState["screen"]>(nav.screen);
 
   const refreshProgressSnapshot = useCallback(() => {
     setProgressSnapshot(loadProgress(deps.storage));
@@ -175,6 +177,19 @@ export function useAppController(deps: AppDeps) {
     setCurrentStep(toStoredStep(nav), deps.storage);
     refreshProgressSnapshot();
   }, [nav, deps.storage, refreshProgressSnapshot]);
+
+  useEffect(() => {
+    if (
+      nav.screen === "followup_preparing" &&
+      prevScreenRef.current === "feedback" &&
+      nav.video_request
+    ) {
+      deps.tracker.track("followup_requested", {
+        variant_id: nav.video_request.variant_id,
+      });
+    }
+    prevScreenRef.current = nav.screen;
+  }, [nav.screen, nav.video_request, deps.tracker]);
 
   useEffect(() => {
     const { screen, video_status, video_request, video_job_id, token } = nav;
@@ -512,6 +527,15 @@ export function useAppController(deps: AppDeps) {
             question_id: result.question_id,
             correct: result.correct,
           });
+          if (result.remediation_state.objective_status === "complete") {
+            deps.tracker.track("objective_completed", {
+              objective_id: request.objective_id,
+            });
+          } else if (result.remediation_state.objective_status === "needs_review") {
+            deps.tracker.track("objective_needs_review", {
+              objective_id: request.objective_id,
+            });
+          }
         } catch (error) {
           if (controller.signal.aborted) {
             return;
@@ -537,6 +561,23 @@ export function useAppController(deps: AppDeps) {
   const onFeedbackContinue = useCallback(() => {
     dispatchNav({ type: "CONTINUE" });
   }, [dispatchNav]);
+
+  const onRestartObjective = useCallback(() => {
+    const objectiveId = navRef.current.objective_id;
+    if (!objectiveId) {
+      return;
+    }
+    saveRemediationState(objectiveId, DEFAULT_REMEDIATION_STATE, deps.storage);
+    refreshProgressSnapshot();
+    dispatchNav({ type: "RESTART_OBJECTIVE" });
+  }, [deps.storage, dispatchNav, refreshProgressSnapshot]);
+
+  const followupVideoStatus: "preparing" | "failed" | undefined =
+    nav.screen === "followup_preparing"
+      ? nav.video_status === "failed"
+        ? "failed"
+        : "preparing"
+      : undefined;
 
   const lessonVideoMeta =
     nav.video_job_id !== undefined
@@ -570,6 +611,8 @@ export function useAppController(deps: AppDeps) {
     onRetryQuestionLoad,
     onQuestionSubmit,
     onFeedbackContinue,
+    onRestartObjective,
+    followupVideoStatus,
     lessonTitle,
     lessonVideoMeta,
     question,

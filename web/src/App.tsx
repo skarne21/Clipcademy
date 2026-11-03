@@ -1,10 +1,12 @@
 import { createDefaultAppDeps, type AppDeps } from "./app/deps";
 import { useAppController } from "./app/useAppController";
+import { FollowupPreparingScreen } from "./screens/FollowupPreparingScreen";
 import { FeedbackScreen } from "./screens/FeedbackScreen";
 import { LessonScreen } from "./screens/LessonScreen";
 import { ParticipantCodeScreen } from "./screens/ParticipantCodeScreen";
 import { QuestionScreen } from "./screens/QuestionScreen";
 import { ReviewHomeScreen } from "./screens/ReviewHomeScreen";
+import { SummaryScreen } from "./screens/SummaryScreen";
 import { TopicPickerScreen } from "./screens/TopicPickerScreen";
 
 type AppProps = {
@@ -93,6 +95,38 @@ function App({ deps }: AppProps) {
         );
       }
       break;
+    case "followup_preparing":
+      if (controller.followupVideoStatus) {
+        screen = (
+          <FollowupPreparingScreen
+            videoStatus={controller.followupVideoStatus}
+            onRetryVideo={controller.onRetryVideo}
+            onGoHome={controller.onGoHome}
+          />
+        );
+      }
+      break;
+    case "summary": {
+      const summaryResult = controller.nav.last_result;
+      const summaryStatus = summaryResult?.remediation_state.objective_status;
+      if (
+        summaryResult &&
+        (summaryStatus === "complete" || summaryStatus === "needs_review")
+      ) {
+        screen = (
+          <SummaryScreen
+            objectiveLabel={controller.lessonTitle}
+            status={summaryStatus}
+            feedback={summaryResult.feedback}
+            keyPoints={summaryResult.key_points}
+            sourceRefs={summaryResult.source_refs}
+            onGoHome={controller.onGoHome}
+            onRestart={controller.onRestartObjective}
+          />
+        );
+      }
+      break;
+    }
     default:
       screen = <p>Screen not implemented yet: {controller.nav.screen}</p>;
       break;
