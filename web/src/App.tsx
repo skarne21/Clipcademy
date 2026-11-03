@@ -1,6 +1,9 @@
 import { createDefaultAppDeps, type AppDeps } from "./app/deps";
 import { useAppController } from "./app/useAppController";
+import { FeedbackScreen } from "./screens/FeedbackScreen";
+import { LessonScreen } from "./screens/LessonScreen";
 import { ParticipantCodeScreen } from "./screens/ParticipantCodeScreen";
+import { QuestionScreen } from "./screens/QuestionScreen";
 import { ReviewHomeScreen } from "./screens/ReviewHomeScreen";
 import { TopicPickerScreen } from "./screens/TopicPickerScreen";
 
@@ -46,6 +49,49 @@ function App({ deps }: AppProps) {
           onChangeTopics={controller.onChangeTopics}
         />
       );
+      break;
+    case "lesson":
+      screen = (
+        <LessonScreen
+          key={controller.nav.video_job_id ?? "pending"}
+          title={controller.lessonTitle}
+          videoKind={controller.nav.video_kind ?? "initial"}
+          videoStatus={controller.nav.video_status ?? "preparing"}
+          videoUrl={controller.lessonVideoMeta?.video_url}
+          transcript={controller.lessonVideoMeta?.transcript}
+          sourceRefs={controller.lessonVideoMeta?.source_refs}
+          onVideoStarted={controller.onVideoStarted}
+          onVideoCompleted={controller.onVideoCompleted}
+          onOpenQuestion={controller.onOpenQuestion}
+          onBack={controller.onGoHome}
+          onRetryVideo={controller.onRetryVideo}
+        />
+      );
+      break;
+    case "question":
+      screen = (
+        <QuestionScreen
+          question={controller.question}
+          loadError={controller.questionLoadError}
+          submitting={controller.nav.submitting ?? false}
+          submitError={controller.submitError}
+          onSubmit={controller.onQuestionSubmit}
+          onRetryLoad={controller.onRetryQuestionLoad}
+          onBack={controller.onGoHome}
+        />
+      );
+      break;
+    case "feedback":
+      if (controller.nav.last_result) {
+        screen = (
+          <FeedbackScreen
+            result={controller.nav.last_result}
+            error={controller.nav.error}
+            onContinue={controller.onFeedbackContinue}
+            onGoHome={controller.onGoHome}
+          />
+        );
+      }
       break;
     default:
       screen = <p>Screen not implemented yet: {controller.nav.screen}</p>;

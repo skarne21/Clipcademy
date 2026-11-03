@@ -20,7 +20,13 @@ export const handlers = [
     return HttpResponse.json(question);
   }),
 
-  http.post(apiUrl("/attempts"), () => HttpResponse.json(attemptContinue)),
+  http.post(apiUrl("/attempts"), async ({ request }) => {
+    const body = (await request.json()) as { attempt_id: string };
+    return HttpResponse.json({
+      ...attemptContinue,
+      attempt_id: body.attempt_id,
+    });
+  }),
 
   http.post(apiUrl("/video-jobs"), () => HttpResponse.json(videoJobQueued)),
 
