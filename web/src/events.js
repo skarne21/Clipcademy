@@ -47,3 +47,27 @@ export async function flush() {
 
 setInterval(flush, 30_000)
 addEventListener('online', flush)
+
+// Time on app (validation-plan.md): one heartbeat per 30 s that the app is actually on screen.
+// Visible time is added up second by second, so a hidden tab or a locked phone pauses the count,
+// and switching tabs quickly can't inflate it.
+const BEAT_MS = 30_000
+const MAX_STEP_MS = 5_000 // a sleeping laptop that never fired visibilitychange doesn't count as time on app
+const LESSON_SCREENS = /^#\/(lesson|question|feedback|followup|summary)(\/|$)/
+let visibleMs = 0
+let lastTick = null
+
+function heartbeatTick() {
+  const now = Date.now()
+  if (lastTick !== null) visibleMs += Math.min(now - lastTick, MAX_STEP_MS)
+  lastTick = document.visibilityState === 'visible' ? now : null
+  for (; visibleMs >= BEAT_MS; visibleMs -= BEAT_MS) {
+    if (!state.participant_id) continue // time on the code screen isn't study time
+    const id = LESSON_SCREENS.test(location.hash) ? state.current_objective_id : null
+    track('heartbeat', { topic_id: id && state.objectives[id]?.topic_id, objective_id: id })
+  }
+}
+
+setInterval(heartbeatTick, 1_000)
+document.addEventListener('visibilitychange', heartbeatTick)
+heartbeatTick()

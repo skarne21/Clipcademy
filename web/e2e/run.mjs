@@ -294,6 +294,51 @@ const uniqueAttempts = new Set(log.attempts.map((a) => a.attempt_id)).size
 assert.equal(names.filter((x) => x === 'question_answered').length, uniqueAttempts)
 ok(`13 events.csv: ${lines.length} rows, one question_answered per attempt, P01, build ok`)
 
+// 16. heartbeats measure time on app: one per 30 s on screen, none while hidden.
+// A separate browser context (own localStorage) with the page clock running 4x, so 30 s takes 7.5 s.
+{
+  const ctx = await browser.createBrowserContext()
+  const hb = await ctx.newPage()
+  await hb.evaluateOnNewDocument(() => {
+    const realNow = Date.now.bind(Date)
+    const start = realNow()
+    Date.now = () => start + (realNow() - start) * 4
+    let hidden = false
+    Object.defineProperty(document, 'visibilityState', { get: () => (hidden ? 'hidden' : 'visible') })
+    window.__setHidden = (h) => {
+      hidden = h
+      document.dispatchEvent(new Event('visibilitychange'))
+    }
+  })
+  const beats = () => hb.evaluate(() => JSON.parse(localStorage.getItem('clipcademy') ?? '{}').event_queue ?? [])
+  const sent = []
+  await hb.setRequestInterception(true)
+  hb.on('request', (req) => {
+    if (new URL(req.url()).pathname === '/events' && req.method() === 'POST') sent.push(JSON.parse(req.postData()))
+    req.continue()
+  })
+  await hb.goto(APP, { waitUntil: 'networkidle0' })
+  await hb.waitForSelector('#code')
+  await hb.type('#code', 'P01')
+  await hb.evaluate(() => [...document.querySelectorAll('button')].find((b) => b.innerText.trim() === 'Continue').click())
+  await hb.waitForFunction(() => document.body.innerText.includes('Which topics are on your exam?'), { timeout: 8000 })
+  const count = () => sent.filter((e) => e.event_name === 'heartbeat').length
+  await new Promise((r) => setTimeout(r, 8500)) // 34 s of page time on screen
+  assert.equal(count(), 1, `one heartbeat after ~34 s visible (got ${count()})`)
+  await hb.evaluate(() => window.__setHidden(true))
+  await new Promise((r) => setTimeout(r, 9000)) // 36 s hidden
+  assert.equal(count(), 1, 'no heartbeats while hidden')
+  await hb.evaluate(() => window.__setHidden(false))
+  await new Promise((r) => setTimeout(r, 7000)) // 28 s more on screen: 34 + 28 = 62 s visible in total
+  assert.equal(count(), 2, `second heartbeat once visible time passes 60 s (got ${count()})`)
+  const beat = sent.find((e) => e.event_name === 'heartbeat')
+  assert.equal(beat.participant_id, 'P01')
+  assert.ok(beat.event_id && beat.client_timestamp_utc && beat.build_id, 'heartbeat carries the standard fields')
+  assert.deepEqual((await beats()).filter((e) => e.event_name === 'heartbeat'), [], 'heartbeats were sent, not left queued')
+  await ctx.close()
+  ok('16 heartbeats: one per 30 s on screen, paused while hidden')
+}
+
 assert.deepEqual(errors, [])
 ok('no page errors')
 await browser.close()

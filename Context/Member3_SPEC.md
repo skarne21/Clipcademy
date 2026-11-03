@@ -171,6 +171,7 @@ The study's numbers come from these events (see [validation-plan.md](validation-
 | `followup_requested` | App calls `startVideo` for a follow-up (not for the initial clip, not for Retry) | `variant_id` |
 | `objective_completed` / `objective_needs_review` | Result action is `complete` / `needs_review` | `objective_id` |
 | `demo_reset` | Reset demo is used | none |
+| `heartbeat` | Once per 30 s the app is on screen. Paused while hidden. Carries `topic_id`/`objective_id` on lesson screens (see Team_Spec, Activity events) | none |
 
 Every event also carries:
 - `event_id`: `crypto.randomUUID()`
@@ -205,6 +206,7 @@ Run against the live local service unless a case says samples.
 | 13 | Start the server with `CLIPCADEMY_BUILD_IDS=<the app's build_id>`, run cases 3–5, export `events.csv` | One row per action, all with the participant code and `build_id_status` `ok` |
 | 14 | Inspect the question screen before submitting | No feedback, correct answer, or misconception visible, including in the network response |
 | 15 | Open the hosted build on a phone, refresh mid-lesson | Works, and the refresh keeps the step (hash routes) |
+| 16 | Keep the app on screen for 60 s with a 36 s hidden gap in the middle | One heartbeat per 30 s on screen, none while hidden (`e2e/run.mjs` case 16 runs the page clock at 4×) |
 
 ## Done when
 

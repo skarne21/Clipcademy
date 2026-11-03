@@ -248,7 +248,7 @@ The validation study needs these events to measure in-app activity. Local storag
 | `followup_requested` | App requests a follow-up clip | `variant_id` |
 | `objective_completed` / `objective_needs_review` | Objective reaches that status | `objective_id` |
 | `demo_reset` | Reset demo is used | none |
-| `heartbeat` | Every 30 s while the app is open **and visible** (`document.visibilityState === "visible"`). Pause when the tab is hidden or the phone is locked, and send one at once when it becomes visible again. Include `topic_id`/`objective_id` when a lesson is open | none |
+| `heartbeat` | Once per 30 s of time the app is **on screen** (`document.visibilityState === "visible"`). Visible time is added up second by second, so a hidden tab or a locked phone pauses the count, and switching tabs quickly can't inflate it. Not sent before the participant code is entered. Includes `topic_id`/`objective_id` while a lesson screen is open. Implemented in `web/src/events.js` | none |
 
 **Time on app** comes from `heartbeat`: each one stands for about 30 seconds of the student actually having the app on screen. Queue and resend heartbeats like any other event. The original `client_timestamp_utc` keeps each one on the right day, even if it's sent late.
 
