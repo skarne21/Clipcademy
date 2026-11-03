@@ -3,7 +3,7 @@
     "method": "POST",
     "path": "/events",
     "body": {
-      "event_id": "evt-002",
+      "event_id": "82ea12f1-77b6-59d5-9ae8-c73a34bebdaf",
       "participant_id": "P01",
       "session_id": "s1",
       "event_name": "topic_selected",

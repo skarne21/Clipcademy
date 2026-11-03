@@ -138,7 +138,7 @@ These are proposed questions based on the notes, not observed student errors. Re
 
 ```json
 {
-  "attempt_id": "attempt-001",
+  "attempt_id": "0b7e3c52-9f1a-4d6e-8a2b-5c4d3e2f1a09",
   "question_id": "rep-q2",
   "correct": false,
   "action": "review_again",
@@ -212,9 +212,9 @@ Agree on these IDs and response shapes before working separately. Member 2's ser
 
 | Endpoint | Owner | Required behavior |
 | --- | --- | --- |
-| `GET /topics` | Member 2 | Return topic IDs, labels, source references, availability, and available objectives |
+| `GET /topics` | Member 2 | Return topic IDs, labels, source references, availability, and available objectives. Each objective includes its `initial_video_request`, which Member 3 sends to `POST /video-jobs` to start the lesson |
 | `GET /questions/{question_id}` | Member 2 | Return prompt and choice IDs/text without answer key |
-| `POST /attempts` | Member 2 | Accept attempt ID, question ID, selected choice, objective ID, and remediation state. Return feedback, action, and next question/video request |
+| `POST /attempts` | Member 2 | Accept attempt ID (a UUID; `event_id` is a UUID too), question ID, selected choice, objective ID, and remediation state. Return feedback, action, and next question/video request |
 | `POST /video-jobs` | Member 1 | Accept the approved video request. Return job ID and state |
 | `GET /video-jobs/{job_id}` | Member 1 | Return `queued`, `running`, `ready`, or `failed`. Ready includes playable video URL and transcript |
 | `POST /events` | Member 2 (stores), Member 3 (sends) | Accept one activity event and store it with a server timestamp. Ignore a repeated `event_id` (`200`, not an error). Reject an unknown `event_name` or a missing required field with `400`. Field list and the token-protected `GET /events.csv` export: [Member2_SPEC.md](Member2_SPEC.md), Service |
@@ -264,7 +264,7 @@ Member 3 calls the video service after Member 2 returns `review_again`. The ques
 Suggested file ownership is `video/` for Member 1, `learning/` and the shared lesson packets for Member 2, and `web/` for Member 3. Agree before editing shared contracts. Each member implements their own service wrapper, with Member 3 owning the development app's service configuration and final integration.
 
 **Hosting (study build):** one free PythonAnywhere web app serves everything from one origin. It runs Member 2's Python WSGI service, serves Member 3's built static files at `/`, and serves Member 1's pre-rendered clips at `/media/`. This affects the other members:
-- **Member 3:** the app must build to plain static files (HTML/JS/CSS) and call the API with relative paths (`/topics`, `/attempts`), so the same build works locally and when hosted. No Node server runs in production.
+- **Member 3:** the app must build to plain static files (HTML/JS/CSS) and call the API with relative paths (`/topics`, `/attempts`), so the same build works locally and when hosted. No Node server runs in production. Use hash routes (`/#/lesson`) or a single URL, never path routes like `/lesson`. The host serves a file if one exists and otherwise passes the request to Member 2's API, so refreshing `/lesson` would return a 404 instead of the app, and the spec requires a refresh to keep the student's progress.
 - **Member 1:** the host can't render video. Render every approved clip ahead of time, and expose `/video-jobs` as a small Python WSGI handler that Member 2's app mounts, returning the stored clip for each variant. Keep the clips small, because the whole account has 512 MiB.
 
 **What the free host can and can't do:**

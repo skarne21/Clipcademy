@@ -3,6 +3,7 @@ import copy
 import glob
 import json
 import os
+import uuid
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 MAX_CYCLES = 2
@@ -30,6 +31,14 @@ class GradingError(Exception):
 
 def _bad(field, message, status=400):
     raise GradingError(status, field, message)
+
+
+def is_uuid(value):
+    """IDs are UUIDs so two browsers (or one browser after Reset demo) can never collide."""
+    try:
+        return isinstance(value, str) and str(uuid.UUID(value)) == value.lower()
+    except ValueError:
+        return False
 
 
 def _read_state(raw, packet):
@@ -67,8 +76,8 @@ def grade(req, attempts):
     if not isinstance(req, dict):
         _bad("body", "must be a JSON object")
     attempt_id = req.get("attempt_id")
-    if not isinstance(attempt_id, str) or not attempt_id:
-        _bad("attempt_id", "must be a non-empty string")
+    if not is_uuid(attempt_id):
+        _bad("attempt_id", "must be a UUID, e.g. from crypto.randomUUID()")
     if attempt_id in attempts:
         seen_req, seen_result = attempts[attempt_id]
         if seen_req != req:

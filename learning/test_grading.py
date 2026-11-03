@@ -1,13 +1,19 @@
 """Member2_SPEC test cases for the grading module. Run: python learning/test_grading.py"""
 import unittest
+import uuid
 
 from grading import KEY, PACKETS, GradingError, grade
 
 OBJ = "synthesis_direction_and_primer"
 
 
+def uid(label):
+    """A stable UUID per test label; attempt IDs must be UUIDs."""
+    return str(uuid.uuid5(uuid.NAMESPACE_URL, label))
+
+
 def attempt(qid, choice, state, attempt_id="x", objective_id=OBJ):
-    return {"attempt_id": attempt_id, "question_id": qid, "selected_choice_id": choice,
+    return {"attempt_id": uid(attempt_id), "question_id": qid, "selected_choice_id": choice,
             "objective_id": objective_id, "remediation_state": state}
 
 
@@ -129,7 +135,7 @@ class SpecCases(unittest.TestCase):
 
     def test_10_unknown_ids_are_400_naming_the_field(self):
         for field, value in [("question_id", "nope"), ("selected_choice_id", "Z"), ("objective_id", "nope"),
-                             ("question_id", "dr-q1"), ("attempt_id", ""), ("remediation_state", "x")]:
+                             ("question_id", "dr-q1"), ("attempt_id", ""), ("attempt_id", "attempt-001"), ("remediation_state", "x")]:
             self.assertError(400, field, {**attempt("rep-q1", "A", {}), field: value})
         self.assertError(400, "body", ["not", "an", "object"])
 
@@ -148,6 +154,42 @@ class SpecCases(unittest.TestCase):
     def test_10d_out_of_order_question_is_409(self):
         e = self.assertError(409, "question_id", attempt("rep-q2", "A", {}))
         self.assertIn("rep-q1", e.message)
+
+
+class EveryPath(unittest.TestCase):
+    """Walk every possible answer sequence for every objective and check the flow invariants on each step."""
+
+    def test_invariants_hold_on_every_path(self):
+        endings = []
+
+        def walk(oid, state, shown, depth):
+            self.assertLess(depth, 12, "flow did not terminate")
+            qid = state.get("expected_question_id") or PACKETS[oid]["required_question_ids"][0]
+            for choice in KEY[qid]["choices"]:
+                req = attempt(qid, choice, state, f"{oid}-{depth}-{len(endings)}-{choice}-{qid}", oid)
+                r = grade(req, {})
+                st = r["remediation_state"]
+                self.assertEqual(r["feedback"], KEY[qid]["choices"][choice]["feedback"])
+                self.assertLessEqual(st["remediation_count"], 2)
+                self.assertEqual(st["expected_question_id"], r["next_question_id"])
+                if r["action"] == "review_again":
+                    self.assertNotIn(r["next_question_id"], shown, "a retry was shown twice")
+                    self.assertIn(r["next_video_request"]["variant_id"], PACKETS[oid]["variants"])
+                else:
+                    self.assertIsNone(r["next_video_request"])
+                if r["action"] == "complete":
+                    self.assertLessEqual(set(PACKETS[oid]["required_question_ids"]), set(st["satisfied_question_ids"]))
+                if r["next_question_id"] is None:
+                    endings.append(r["action"])
+                    with self.assertRaises(GradingError):  # a finished objective refuses more attempts
+                        grade({**req, "attempt_id": uid(f"late-{len(endings)}"), "remediation_state": st}, {})
+                else:
+                    walk(oid, st, shown | {r["next_question_id"]}, depth + 1)
+
+        for oid, packet in PACKETS.items():
+            walk(oid, {}, {packet["required_question_ids"][0]}, 0)
+        self.assertEqual(len(endings), 152)
+        self.assertEqual(set(endings), {"complete", "needs_review"})
 
 
 class Extra(unittest.TestCase):

@@ -13,6 +13,13 @@ from http import HTTPStatus
 import grading
 
 TOPICS = grading._load(os.path.join(grading.HERE, "data", "topics.json"))
+for _objective in (o for t in TOPICS["topics"] for o in t["objectives"]):
+    # Team_Spec flow step 3: Member 3 sends this to /video-jobs to start a lesson
+    _packet = grading.PACKETS[_objective["objective_id"]]
+    _objective["initial_video_request"] = {
+        "topic_id": _packet["topic_id"], "objective_id": _packet["objective_id"], "variant_id": "initial",
+        "teaching_goal": _packet["variants"]["initial"]["teaching_goal"],
+        "source_refs": _packet["variants"]["initial"]["source_refs"]}
 MAX_BODY = 64 * 1024
 EVENT_COLUMNS = ["event_id", "participant_id", "session_id", "event_name", "topic_id", "objective_id", "question_id",
                  "variant_id", "correct", "client_timestamp_utc", "timestamp_utc", "build_id", "build_id_status"]
@@ -60,6 +67,8 @@ def _validate_event(ev):
     for field in EVENT_REQUIRED:
         if not isinstance(ev.get(field), str) or not ev[field]:
             raise HttpError(400, field, "is required and must be a non-empty string")
+    if not grading.is_uuid(ev["event_id"]):
+        raise HttpError(400, "event_id", "must be a UUID, e.g. from crypto.randomUUID()")
     if ev["event_name"] not in EVENT_EXTRAS:
         raise HttpError(400, "event_name", f"must be one of {', '.join(EVENT_EXTRAS)}")
     for field in EVENT_OPTIONAL:
@@ -110,6 +119,12 @@ def make_app(db_path, allowed_origins, build_ids, admin_token, video_app=None):
         ev = read_json(environ)
         client_time = _validate_event(ev)
         row = {c: ev.get(c) for c in EVENT_COLUMNS[:-1]}
+        if ev["event_name"] == "question_answered":
+            # the H3 lesson split reads topic_id, so fill it from the question instead of trusting the client
+            if ev["question_id"] not in grading.QUESTIONS:
+                raise HttpError(400, "question_id", "unknown question")
+            row["objective_id"] = grading.QUESTIONS[ev["question_id"]]["objective_id"]
+            row["topic_id"] = grading.PACKETS[row["objective_id"]]["topic_id"]
         row.update(client_timestamp_utc=client_time, timestamp_utc=_utc_iso(datetime.now(timezone.utc)))
         with db:
             cur = db.execute(f"INSERT OR IGNORE INTO events VALUES ({', '.join('?' * len(row))})", list(row.values()))

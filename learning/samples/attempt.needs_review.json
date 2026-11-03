@@ -3,7 +3,7 @@
     "method": "POST",
     "path": "/attempts",
     "body": {
-      "attempt_id": "attempt-004",
+      "attempt_id": "a12fcc5d-faf7-53ab-a59c-77bcc3e07e45",
       "question_id": "rep-r3",
       "selected_choice_id": "B",
       "objective_id": "synthesis_direction_and_primer",
@@ -21,7 +21,7 @@
   },
   "status": 200,
   "response": {
-    "attempt_id": "attempt-004",
+    "attempt_id": "a12fcc5d-faf7-53ab-a59c-77bcc3e07e45",
     "question_id": "rep-r3",
     "correct": false,
     "action": "needs_review",

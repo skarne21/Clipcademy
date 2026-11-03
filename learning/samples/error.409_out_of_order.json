@@ -3,7 +3,7 @@
     "method": "POST",
     "path": "/attempts",
     "body": {
-      "attempt_id": "attempt-006",
+      "attempt_id": "20ec5e22-5d0c-508f-8cf3-600faf81990b",
       "question_id": "rep-q2",
       "selected_choice_id": "A",
       "objective_id": "synthesis_direction_and_primer",

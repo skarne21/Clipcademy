@@ -23,7 +23,17 @@
             "required_question_ids": [
               "rep-q1",
               "rep-q2"
-            ]
+            ],
+            "initial_video_request": {
+              "topic_id": "dna_replication",
+              "objective_id": "synthesis_direction_and_primer",
+              "variant_id": "initial",
+              "teaching_goal": "Explain 5′→3′ synthesis at the 3′ end and why a primer is needed",
+              "source_refs": [
+                "L19-p1",
+                "L19-p2"
+              ]
+            }
           }
         ]
       },
@@ -41,7 +51,16 @@
             "required_question_ids": [
               "dr-q1",
               "dr-q2"
-            ]
+            ],
+            "initial_video_request": {
+              "topic_id": "dna_repair",
+              "objective_id": "error_correction",
+              "variant_id": "initial",
+              "teaching_goal": "Compare proofreading, mismatch repair, and UV-damage repair",
+              "source_refs": [
+                "L20-p1"
+              ]
+            }
           }
         ]
       },
@@ -59,7 +78,16 @@
             "required_question_ids": [
               "tx-q1",
               "tx-q2"
-            ]
+            ],
+            "initial_video_request": {
+              "topic_id": "transcription",
+              "objective_id": "template_strand_and_promoter",
+              "variant_id": "initial",
+              "teaching_goal": "Explain which strand RNA polymerase reads and what the promoter does",
+              "source_refs": [
+                "L21-p1"
+              ]
+            }
           }
         ]
       },
@@ -78,7 +106,17 @@
             "required_question_ids": [
               "tl-q1",
               "tl-q2"
-            ]
+            ],
+            "initial_video_request": {
+              "topic_id": "translation",
+              "objective_id": "codon_pairing_and_ribosome_sites",
+              "variant_id": "initial",
+              "teaching_goal": "Explain codon–anticodon pairing and what happens in the A, P, and E sites",
+              "source_refs": [
+                "L22-p1",
+                "L22-p2"
+              ]
+            }
           }
         ]
       }

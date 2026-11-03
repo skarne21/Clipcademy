@@ -88,7 +88,14 @@ During development, `available` means the lesson is built, even while its packet
         {
           "objective_id": "synthesis_direction_and_primer",
           "label": "Synthesis direction and the primer requirement",
-          "required_question_ids": ["rep-q1", "rep-q2"]
+          "required_question_ids": ["rep-q1", "rep-q2"],
+          "initial_video_request": {
+            "topic_id": "dna_replication",
+            "objective_id": "synthesis_direction_and_primer",
+            "variant_id": "initial",
+            "teaching_goal": "Explain 5′→3′ synthesis at the 3′ end and why a primer is needed",
+            "source_refs": ["L19-p1", "L19-p2"]
+          }
         }
       ]
     },
@@ -214,7 +221,7 @@ The misconception mapping is a teaching choice, not a diagnosis of what the stud
 
 ```json
 {
-  "attempt_id": "attempt-001",
+  "attempt_id": "0b7e3c52-9f1a-4d6e-8a2b-5c4d3e2f1a09",
   "question_id": "rep-q2",
   "selected_choice_id": "B",
   "objective_id": "synthesis_direction_and_primer",
@@ -228,7 +235,7 @@ The misconception mapping is a teaching choice, not a diagnosis of what the stud
 }
 ```
 
-Member 3 saves `remediation_state` and sends it back with each attempt. The client keeps the state, and I make the decision. An empty state (`{}`) means a fresh start: status `in_progress`, count 0, and the expected question is the objective's first required question. Restart and Reset demo send an empty state. For a prototype the client is trusted to hold the state, but I check that it's consistent (rule 6).
+`attempt_id` must be a UUID (`crypto.randomUUID()` in the browser), new for every submission and reused only when resending the same submission. A counter like `attempt-001` would collide between students and after Reset demo, so the server rejects anything that isn't a UUID with `400`. Member 3 saves `remediation_state` and sends it back with each attempt. The client keeps the state, and I make the decision. An empty state (`{}`) means a fresh start: status `in_progress`, count 0, and the expected question is the objective's first required question. Restart and Reset demo send an empty state. For a prototype the client is trusted to hold the state, but I check that it's consistent (rule 6).
 
 ### Storage
 
@@ -258,8 +265,9 @@ Attempts (for idempotency) and events are stored server-side in one SQLite file,
 
 Member 3 sends one JSON event per action. The fields are the [events.csv](events.csv) columns, minus the ones the server adds (`timestamp_utc`, `build_id_status`).
 
+- **`event_id` must be a UUID** (`crypto.randomUUID()`), for the same reason as `attempt_id`: a counter would make two students' events look like duplicates, and one would be silently dropped. A retried send reuses its original `event_id`.
 - **Required on every event:** `event_id`, `participant_id`, `session_id`, `event_name`, `client_timestamp_utc` (ISO 8601 UTC, the time of the action on the device). `build_id` is expected but can be missing, in which case the event is still stored with status `missing`.
-- **`event_name`** must be one of the Activity events in Team_Spec. Each name also requires its extra fields: `topic_id` for `topic_selected`; `variant_id` for `video_started`, `video_completed`, and `followup_requested`; `question_id` and `correct` (a JSON boolean) for `question_answered`; `objective_id` for `objective_completed` and `objective_needs_review`. Include `topic_id` and `objective_id` whenever they're known, so lesson splits don't need lookups.
+- **`event_name`** must be one of the Activity events in Team_Spec. Each name also requires its extra fields: `topic_id` for `topic_selected`; `variant_id` for `video_started`, `video_completed`, and `followup_requested`; `question_id` and `correct` (a JSON boolean) for `question_answered`; `objective_id` for `objective_completed` and `objective_needs_review`. Include `topic_id` and `objective_id` whenever they're known. For `question_answered`, the server fills both in from `question_id`, and rejects an unknown `question_id` with `400`, so the H3 lesson split never depends on the client.
 - **Responses:** an invalid event gets `400` naming the field. A new event gets `201`. A repeated `event_id` gets `200` with `{"duplicate": true}`, is not stored again, and is not an error, so Member 3's retries are safe.
 - **Two timestamps:** the server records the receipt time as `timestamp_utc`. Member 3 retries failed sends, so a Day 0 action could arrive on Day 1. The analysis therefore uses `client_timestamp_utc` to assign events to calendar days (see validation-plan.md).
 
@@ -291,7 +299,7 @@ Every response returns the updated `remediation_state`, so Member 3 can save it.
 
 ```json
 {
-  "attempt_id": "attempt-001",
+  "attempt_id": "0b7e3c52-9f1a-4d6e-8a2b-5c4d3e2f1a09",
   "question_id": "rep-q2",
   "correct": false,
   "action": "review_again",

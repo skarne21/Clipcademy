@@ -7,6 +7,7 @@ import os
 import sys
 import tempfile
 import unittest
+import uuid
 from wsgiref.util import setup_testing_defaults
 
 os.environ.setdefault("CLIPCADEMY_DB", ":memory:")  # importing app must not create a real database
@@ -16,6 +17,11 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SAMPLES = os.path.join(HERE, "samples")
 OBJ = "synthesis_direction_and_primer"
 TOKEN = "test-token"
+
+
+def uid(label):
+    """A stable UUID per test label; attempt and event IDs must be UUIDs."""
+    return str(uuid.uuid5(uuid.NAMESPACE_URL, label))
 
 
 def new_app(db=":memory:", **kw):
@@ -37,12 +43,13 @@ def call(app, method, path, body=None, headers=None):
 
 
 def event(**overrides):
+    overrides["event_id"] = uid(overrides.get("event_id", "e1"))
     return {"event_id": "e1", "participant_id": "P01", "session_id": "s1", "event_name": "app_opened",
             "client_timestamp_utc": "2026-11-03T15:00:00Z", "build_id": "build-1", **overrides}
 
 
 def attempt(qid, choice, state, attempt_id):
-    return {"attempt_id": attempt_id, "question_id": qid, "selected_choice_id": choice, "objective_id": OBJ,
+    return {"attempt_id": uid(attempt_id), "question_id": qid, "selected_choice_id": choice, "objective_id": OBJ,
             "remediation_state": state}
 
 
@@ -52,6 +59,13 @@ class Content(unittest.TestCase):
         self.assertEqual(status, 200)
         self.assertEqual([t["topic_id"] for t in body["topics"]],
                          ["dna_replication", "dna_repair", "transcription", "translation"])
+
+    def test_topics_give_member3_the_initial_video_request(self):
+        objective = call(new_app(), "GET", "/topics")[2]["topics"][0]["objectives"][0]
+        self.assertEqual(objective["initial_video_request"], {
+            "topic_id": "dna_replication", "objective_id": OBJ, "variant_id": "initial",
+            "teaching_goal": "Explain 5′→3′ synthesis at the 3′ end and why a primer is needed",
+            "source_refs": ["L19-p1", "L19-p2"]})
 
     def test_11_question_has_no_answer_fields(self):
         status, _, body = call(new_app(), "GET", "/questions/rep-q2")
@@ -115,7 +129,7 @@ class Events(unittest.TestCase):
         call(app, "POST", "/events", event(event_id="unknown", build_id="old-build"))
         rows = self.export(app)[2]
         self.assertEqual({r["event_id"]: r["build_id_status"] for r in rows},
-                         {"ok": "ok", "missing": "missing", "unknown": "unknown"})
+                         {uid("ok"): "ok", uid("missing"): "missing", uid("unknown"): "unknown"})
 
     def test_export_columns_match_context_events_csv(self):
         with open(os.path.join(HERE, "..", "Context", "events.csv"), encoding="utf-8") as f:
@@ -145,10 +159,20 @@ class Events(unittest.TestCase):
                  ("variant_id", event(event_name="video_started")),
                  ("correct", event(event_name="question_answered", question_id="rep-q1", correct="yes")),
                  ("objective_id", event(event_name="objective_completed")),
-                 ("build_id", event(build_id=7))]
+                 ("build_id", event(build_id=7)),
+                 ("event_id", {**event(), "event_id": "evt-1"})]
         for field, body in cases:
             status, _, resp = call(new_app(), "POST", "/events", body)
             self.assertEqual((status, resp["error"]["field"]), (400, field), body)
+
+    def test_question_answered_gets_topic_and_objective_filled_in(self):
+        app = new_app()
+        call(app, "POST", "/events", event(event_name="question_answered", question_id="dr-q1", correct=True))
+        row = self.export(app)[2][0]
+        self.assertEqual((row["topic_id"], row["objective_id"]), ("dna_repair", "error_correction"))
+        status, _, body = call(app, "POST", "/events", event(event_id="e2", event_name="question_answered",
+                                                             question_id="nope", correct=True))
+        self.assertEqual((status, body["error"]["field"]), (400, "question_id"))
 
     def test_client_time_is_normalized_to_utc(self):
         app = new_app()
