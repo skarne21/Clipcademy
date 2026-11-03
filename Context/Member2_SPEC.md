@@ -35,11 +35,19 @@ Work through these in order. Each task ends with something I can share.
 | 11 | Check sources, the answer key, and stopping rules | checklist below is ticked | Team | Demo readiness |
 
 **Progress:**
-- **Tasks 1–9 are built and tested.**
-- **Content is still `draft`.** Every packet and question is waiting for content review.
-- **Still to build:** forwarding `/video-jobs` to Member 1's `video/jobs.py` (see Team_Spec, Hosting). Add it once that file exists.
-- **Task 10** waits on Member 3's UI.
-- **Task 11** waits on the content review and instructor permission.
+All Member 2 code is built and tested.
+
+- **Tasks 1–9:** built and tested. `/video-jobs` forwards to Member 1's `video/jobs.py` as soon as that file exists, and returns `503` until then.
+- **Task 10:** my half is tested. A wrong answer's `next_video_request` passes through `/video-jobs` unchanged, and its `next_question_id` loads (`test_app.py`, `VideoJobs`). The UI half waits on Member 3.
+- **Task 11:** the automated part is built. `python learning/check_content.py` checks sources, the answer key, and the stopping rules (it passes now). content-audit.csv is pre-filled with one `pending` row for each of the 58 items in the validation build. The human part waits on a reviewer and instructor permission (see Content review below).
+
+### Content review (task 11)
+
+1. The reviewer fills in content-audit.csv: `reviewer`, `review_status` (`approved` or `needs_fix`), `overlaps_app_question` for the `test:` rows, and `error_severity` and `correction` when something is wrong. `clip:` rows are checked against Member 1's transcripts once the clips exist.
+2. Fix anything marked `needs_fix` and have it re-reviewed. Each content edit changes the item, so set the row back to `pending` until it's re-approved.
+3. When every row for a lesson is `approved`, set that packet's `review_status` to `"reviewed"`. If you change availability in topics.json, run `python learning/test_app.py --write-samples`.
+4. Before the build freeze, run `python learning/check_content.py --freeze`. It fails while any `available` lesson has an unreviewed packet or an unapproved row. The freeze can only go ahead once it passes.
+5. If a new question or packet is added, `python learning/check_content.py --write-audit` adds its rows without touching existing ones.
 
 ## Data
 
@@ -228,7 +236,7 @@ Attempts (for idempotency) and events are stored server-side in one SQLite file,
 
 **Sample responses (task 7):** `learning/samples/<name>.json`, each shaped `{"request", "status", "response"}`. They cover topics, a question, every attempt action, 400/409 errors, and new and duplicate events. They're real app output, regenerated with `python learning/test_app.py --write-samples`, and `test_app.py` fails if a committed sample no longer matches the app. Video-job samples are Member 1's.
 
-**Tests:** `python learning/test_grading.py` and `python learning/test_app.py`.
+**Tests:** `python learning/test_grading.py`, `python learning/test_app.py`, and `python learning/test_check_content.py`.
 
 **Errors:** every 4xx response has the body `{"error": {"field": "...", "message": "..."}}`. The status is `400` for a bad request, `404` for an unknown path or question ID, and `409` for the conflicts in rule 6.
 
