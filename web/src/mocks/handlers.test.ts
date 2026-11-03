@@ -45,7 +45,7 @@ describe("MSW API handlers", () => {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
-          attempt_id: "attempt-test",
+          attempt_id: attemptContinue.attempt_id,
           question_id: "rep-q1",
           selected_choice_id,
           objective_id: "synthesis_direction_and_primer",

@@ -76,7 +76,7 @@ async function startSynthesisObjective(user: ReturnType<typeof userEvent.setup>)
 }
 
 function attemptPostHandler(
-  onPost: (body: AttemptRequest) => HttpResponse,
+  onPost: (body: AttemptRequest) => Response,
 ) {
   return http.post(apiUrl("/attempts"), async ({ request }) => {
     const body = (await request.json()) as AttemptRequest;
@@ -428,6 +428,33 @@ describe("App lesson and question flow (Part 2)", () => {
     });
     expect(attemptIds).toHaveLength(2);
     expect(attemptIds[0]).toBe(attemptIds[1]);
+  });
+
+  it("shows an error and stays on the question when the result attempt_id does not match", async () => {
+    const user = userEvent.setup();
+    server.use(
+      attemptPostHandler(() => HttpResponse.json(attemptContinue)),
+    );
+
+    renderApp();
+    await goToHome(user);
+    await startSynthesisObjective(user);
+    await waitFor(() => {
+      expect(screen.getByLabelText("Lesson video")).toBeInTheDocument();
+    });
+    await user.click(screen.getByRole("button", { name: "Answer question" }));
+    await waitFor(() => {
+      expect(screen.getByRole("group", { name: repQ1.prompt })).toBeInTheDocument();
+    });
+
+    await user.click(screen.getByRole("radio", { name: "3′ end" }));
+    await user.click(screen.getByRole("button", { name: "Submit" }));
+
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "The server returned an unexpected attempt.",
+    );
+    expect(screen.getByRole("group", { name: repQ1.prompt })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Correct" })).not.toBeInTheDocument();
   });
 
   it("sends only one POST /attempts when Submit is double-clicked", async () => {

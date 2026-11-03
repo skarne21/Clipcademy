@@ -4,8 +4,8 @@ import type { ActivityEvent } from "../api/types";
 import App from "../App";
 import { createEventTracker } from "../events/tracker";
 import {
-  createDefaultProgressState,
   loadParticipantCode,
+  loadProgress,
   saveParticipantCode,
   saveProgress,
 } from "../storage/progress";
@@ -56,9 +56,10 @@ export function renderApp(options: RenderAppOptions = {}) {
     saveParticipantCode(options.participantCode, storage);
   }
   if (options.selectedTopicIds) {
+    const existing = loadProgress(storage);
     saveProgress(
       {
-        ...createDefaultProgressState(),
+        ...existing,
         selected_topic_ids: options.selectedTopicIds,
       },
       storage,
