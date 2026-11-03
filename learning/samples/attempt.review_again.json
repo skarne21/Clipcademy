@@ -1,0 +1,57 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/attempts",
+    "body": {
+      "attempt_id": "attempt-002",
+      "question_id": "rep-q2",
+      "selected_choice_id": "B",
+      "objective_id": "synthesis_direction_and_primer",
+      "remediation_state": {
+        "objective_status": "in_progress",
+        "expected_question_id": "rep-q2",
+        "remediation_count": 0,
+        "satisfied_question_ids": [
+          "rep-q1"
+        ],
+        "asked_retry_ids": []
+      }
+    }
+  },
+  "status": 200,
+  "response": {
+    "attempt_id": "attempt-002",
+    "question_id": "rep-q2",
+    "correct": false,
+    "action": "review_again",
+    "feedback": "Ligase joins pieces of DNA. It does not add the new bases. DNA polymerase extends a primer that primase made.",
+    "misconception_id": "primer_requirement",
+    "next_video_request": {
+      "topic_id": "dna_replication",
+      "objective_id": "synthesis_direction_and_primer",
+      "variant_id": "primer_followup",
+      "teaching_goal": "Explain why DNA polymerase needs a primer",
+      "source_refs": [
+        "L19-p1",
+        "L19-p2"
+      ]
+    },
+    "next_question_id": "rep-r2",
+    "remediation_state": {
+      "objective_status": "in_progress",
+      "expected_question_id": "rep-r2",
+      "remediation_count": 1,
+      "satisfied_question_ids": [
+        "rep-q1"
+      ],
+      "asked_retry_ids": [
+        "rep-r2"
+      ]
+    },
+    "review_points": null,
+    "source_refs": [
+      "L19-p1",
+      "L19-p2"
+    ]
+  }
+}
