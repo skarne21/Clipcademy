@@ -30,6 +30,7 @@ EVENT_EXTRAS = {  # Team_Spec "Activity events": the extra fields each event mus
     "video_completed": ["variant_id"], "question_answered": ["question_id", "correct"],
     "followup_requested": ["variant_id"], "objective_completed": ["objective_id"],
     "objective_needs_review": ["objective_id"], "demo_reset": [],
+    "heartbeat": [],  # every 30 s while the app is visible, for time on app (validation-plan.md)
 }
 
 

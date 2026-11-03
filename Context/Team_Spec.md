@@ -248,6 +248,9 @@ The validation study needs these events to measure in-app activity. Local storag
 | `followup_requested` | App requests a follow-up clip | `variant_id` |
 | `objective_completed` / `objective_needs_review` | Objective reaches that status | `objective_id` |
 | `demo_reset` | Reset demo is used | none |
+| `heartbeat` | Every 30 s while the app is open **and visible** (`document.visibilityState === "visible"`). Pause when the tab is hidden or the phone is locked, and send one at once when it becomes visible again. Include `topic_id`/`objective_id` when a lesson is open | none |
+
+**Time on app** comes from `heartbeat`: each one stands for about 30 seconds of the student actually having the app on screen. Queue and resend heartbeats like any other event. The original `client_timestamp_utc` keeps each one on the right day, even if it's sent late.
 
 Member 3 calls the video service after Member 2 returns `review_again`. The question service can return that instruction without waiting for a renderer. Member 1 can generate from manually supplied requests without waiting for the quiz. All three use the same approved lesson packet.
 

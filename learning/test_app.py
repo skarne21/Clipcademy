@@ -174,6 +174,11 @@ class Events(unittest.TestCase):
                                                              question_id="nope", correct=True))
         self.assertEqual((status, body["error"]["field"]), (400, "question_id"))
 
+    def test_heartbeat_is_accepted_for_time_on_app(self):
+        app = new_app()
+        self.assertEqual(call(app, "POST", "/events", event(event_name="heartbeat"))[0], 201)
+        self.assertEqual(self.export(app)[2][0]["event_name"], "heartbeat")
+
     def test_client_time_is_normalized_to_utc(self):
         app = new_app()
         call(app, "POST", "/events", event(client_timestamp_utc="2026-11-03T10:00:00-05:00"))

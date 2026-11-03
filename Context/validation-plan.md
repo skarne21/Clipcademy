@@ -95,7 +95,9 @@ The app sends an event for every action to `POST /events` (defined in [Team_Spec
 | Day 0 repair use | Participants who opened DNA repair on Day 0 despite the script. Reported as a deviation |
 | Days active | Distinct calendar days with an `app_opened` event, per participant |
 | Sessions | Distinct `session_id` values per participant |
-| Active minutes | Sum over sessions of (last event time − first event time) |
+| Time on app (minutes) | `heartbeat` events × 0.5, per participant, per calendar day (by `client_timestamp_utc`), and in total. Heartbeats only count while the app is visible, so idle time in a hidden tab and the time after the last action are both handled. Accurate to about 30 seconds per session |
+| When they used it | Local time of day and calendar day of each session (`client_timestamp_utc` of its first and last event, converted to the study's time zone) |
+| Active minutes (fallback) | Sum over sessions of (last event time − first event time). Use this only for sessions with no heartbeats, for example from a build without them, and report which method each number used |
 | Questions answered / correct | Count of `question_answered` events, split by `correct` |
 | Follow-ups watched | `video_completed` events for follow-up variants |
 | Later-day recall accuracy | Share of `question_answered` events after Day 0 with `correct` true. Reported only, not a hypothesis |
