@@ -47,12 +47,40 @@ map unapproved files to a public static directory for participants.
 | Two requests, outputs, failed example | `samples/initial.json`, `primer_followup.json`, `failed.json` |
 | Three repair clips | `dna_repair.initial`, `timing_followup`, `uv_followup` in `media/` |
 
-All six clips are 960×540 H.264/yuv420p with AAC narration, approximately 43–46
-seconds each. Total MP4 size is 4,991,952 bytes (4.76 MiB, bytes / 1,048,576).
+All six clips are 960×540, 24 fps H.264/yuv420p with AAC narration, 44.8–55.2
+seconds each. Total MP4 size is 9,612,776 bytes (9.17 MiB, bytes / 1,048,576).
 Each manifest records duration, file hash, exact transcript, source references,
-synthetic voice and fingerprint. Captions use the same words as narration, grouped
-into short chunks with estimated timing within each separately narrated scene;
-they are not word-level forced alignments. Check their timing during human review.
+synthetic voice and fingerprint. Captions use the same words as narration, timed
+from eSpeak's own word events (when each word is actually spoken), and the line
+on screen highlights the word being spoken. Check their timing during human review.
+
+## Animation
+
+`render.py` narrates each scene, recording when each word is spoken, then
+`animation.py` draws every frame. Scenes are choreographed in the scripts, not in
+code: each scene has a `stage` (what is on screen at the start) and `beats`, where a
+spoken cue triggers named actions, e.g.
+
+```json
+{"on": "primase", "do": ["primase_build", "point:primase", "card:Primase makes the start"]}
+```
+
+- **Guide:** the same stick figure (green bow tie) in every clip. Walks in and waves,
+  points at whatever is named, shrugs or thinks with a `?` when something cannot
+  happen, wags a finger at a misconception, thumbs-up at the end. Mouth follows the
+  narration's loudness, eyes follow the pointing target, it blinks and breathes.
+- **Process:** DNA polymerase, primase and repair proteins are labeled shapes that
+  move. Polymerase tries and fails on a bare template, primase lays the RNA primer,
+  nucleotides fly in and join the 3′ end, wrong bases are added and excised, UV
+  bonds adjacent bases and kinks the backbone, sections are cut out, refilled and
+  resealed.
+- **Attention:** close-ups (`zoom:<target>`) and orange highlight rings
+  (`pulse:<target>`); summary cards (`card:`) only repeat the narration's claim.
+
+Rules are in `template.json` (`guide`, `motion_rules`). `test_animation.py` fails if
+a cue is not in the narration or a target does not exist. To check a single frame
+without audio: `python -c "import render,json;render.preview(render.load_script('dna_replication','initial'),2,6.0,'f.png')"`.
+Set `CLIPCADEMY_FONT_DIR` if DejaVu Sans is not installed system-wide.
 
 ## Render locally
 
@@ -128,7 +156,7 @@ Optional settings: `CLIPCADEMY_MEDIA_DIR`, `CLIPCADEMY_MEDIA_URL`,
 ## Verification
 
 ```sh
-python -m unittest discover -s video -v
+python -m unittest discover -s video -v   # includes test_animation.py
 python -m unittest discover -s learning -v
 python video/check_assets.py
 python learning/check_content.py
@@ -137,17 +165,26 @@ npm run check
 npm run build
 # With preview backend and Vite running:
 CHROME=/path/to/chrome node e2e/video-real.mjs
+CHROME=/path/to/chrome node e2e/video-flow.mjs
 CHROME=/path/to/chrome npm run e2e
 ```
 
-Verified here: 10 video/integration tests and 48 existing learning tests; all six
-files fully decoded with ffmpeg; ffprobe confirmed video/audio format and duration;
-content consistency, frontend sample checks, production build and diff whitespace
-checks passed. A representative rendered frame was visually inspected.
+Verified on 2026-11-03: 10 video/integration tests and 48 existing learning tests;
+all six files fully decoded with FFmpeg; ffprobe confirmed video/audio format and
+duration; content consistency, frontend sample checks and production build passed.
+The initial replication clip now has four scenes, including the required recap.
+All six clips were re-rendered with the animated guide and word-timed beats;
+sampled frames from every scene were visually inspected.
 
-Browser tests were attempted but **not executed**: Chromium failed to launch with
-`socket() failed: Operation not permitted`. The included real-media browser test
-checks actual playback, seeking to completion, captions and the real backend's
-wrong-answer flow. The existing interface suite now injects its failure scenario
-explicitly rather than assuming the video service is absent. Phone playback,
-subject-expert approval and hosted deployment remain unverified.
+All three browser scripts above passed in local Chrome. The real-media checks
+verified playback, seeking and captions; the real-interface check completed the
+wrong-answer flow at 1280×900 and emulated 390×844 phone sizes, including refresh.
+The broader interface suite verified errors, retries, persistence, duplicate
+submission handling, event export and visible-time heartbeats. These are local
+checks, not real-phone or deployed-host verification.
+
+Member 3's latest fetched branch was checked separately: 189 tests and its build
+passed, but `App.tsx` only renders a heading and its API configuration differs
+from the real service. It is not an integrated replacement yet. See
+[VERIFICATION.md](VERIFICATION.md) for evidence and remaining work, and
+[CONTENT_REVIEW.md](CONTENT_REVIEW.md) for the human review handoff.

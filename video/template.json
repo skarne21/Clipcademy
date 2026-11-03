@@ -1,18 +1,24 @@
 {
-  "version": 1,
+  "version": 2,
   "width": 960,
   "height": 540,
-  "fps": 12,
-  "background": "#FAF8F1",
-  "ink": "#20332D",
-  "accent": "#176B52",
-  "primer": "#96501A",
-  "damage": "#A32939",
+  "fps": 24,
+  "colors": {
+    "background": "#FAF8F1",
+    "ink": "#20332D",
+    "accent": "#176B52",
+    "primer": "#96501A",
+    "damage": "#A32939",
+    "highlight": "#E39B1B",
+    "protein": "#5B4A8B",
+    "uv": "#6B4FA0"
+  },
   "font": "DejaVuSans.ttf",
   "font_bold": "DejaVuSans-Bold.ttf",
   "voice": "en-us",
   "words_per_minute": 145,
-  "guide": "Same line-drawn guide on the left; points toward the diagram",
+  "guide": "Same line-drawn guide with a green bow tie on the left of every clip. Walks in and waves in the first scene, points at whatever the narration names, shrugs or thinks when something cannot happen, gives a thumbs-up at the end. Mouth follows narration loudness; eyes follow the pointing target.",
+  "motion_rules": "Every on-screen action is triggered by a spoken word (scene beats). Enzymes are rounded shapes behind the strands with their name inside: DNA polymerase green, primase brown, repair proteins purple. Close-ups magnify the diagram 1.75x and return before the scene ends. Orange rings highlight what is being named. Summary cards repeat the narration's claim, never add a new one.",
   "labels": {"template": "Template DNA", "new": "New complementary strand", "primer": "RNA primer"},
   "narration_style": "Calm, direct, one idea per scene; pronounce end labels as five prime and three prime. Synthetic narration disclosed in the manifest."
 }

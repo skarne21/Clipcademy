@@ -11,17 +11,179 @@
     {
       "diagram": "proof",
       "title": "Proofreading: during copying",
-      "narration": "DNA polymerase can proofread while copying DNA. If it adds a wrong base, its exonuclease activity removes the incorrect base from the three prime end, allowing the correct base to be added."
+      "narration": "DNA polymerase can proofread while copying DNA. If it adds a wrong base, its exonuclease activity removes the incorrect base from the three prime end, allowing the correct base to be added.",
+      "stage": {
+        "bottom": 3,
+        "polymerase": true
+      },
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "extend"
+          ]
+        },
+        {
+          "on": "proofread",
+          "do": [
+            "point:polymerase"
+          ]
+        },
+        {
+          "on": "wrong",
+          "do": [
+            "misadd",
+            "pose:surprised",
+            "pulse:damage"
+          ]
+        },
+        {
+          "on": "exonuclease",
+          "do": [
+            "zoom:damage"
+          ]
+        },
+        {
+          "on": "removes",
+          "do": [
+            "excise",
+            "card:Wrong base removed from the growing 3′ end"
+          ]
+        },
+        {
+          "on": "three prime",
+          "do": [
+            "pulse:three_end",
+            "point:three_end"
+          ]
+        },
+        {
+          "on": "correct",
+          "do": [
+            "fix",
+            "zoom_out",
+            "pose:thumbs"
+          ]
+        }
+      ]
     },
     {
       "diagram": "mismatch",
       "title": "Mismatch repair: after replication",
-      "narration": "Mismatch repair happens after replication is complete. Proteins scan the new double helix for mismatched bases. Specialized enzymes remove the affected section and replace it with the correct DNA nucleotides."
+      "narration": "Mismatch repair happens after replication is complete. Proteins scan the new double helix for mismatched bases. Specialized enzymes remove the affected section and replace it with the correct DNA nucleotides.",
+      "stage": {
+        "bottom": 11,
+        "wrong": 5
+      },
+      "beats": [
+        {
+          "on": "after",
+          "do": [
+            "pose:present"
+          ]
+        },
+        {
+          "on": "proteins",
+          "do": [
+            "scan",
+            "point:protein"
+          ]
+        },
+        {
+          "on": "mismatched",
+          "do": [
+            "found",
+            "zoom:damage",
+            "pulse:damage",
+            "pose:surprised"
+          ]
+        },
+        {
+          "on": "remove",
+          "do": [
+            "remove",
+            "zoom_out"
+          ]
+        },
+        {
+          "on": "replace",
+          "do": [
+            "replace",
+            "point:damage"
+          ]
+        },
+        {
+          "on": "correct",
+          "do": [
+            "pulse:damage",
+            "card:After replication: find and replace a mismatch"
+          ]
+        }
+      ]
     },
     {
       "diagram": "uv",
       "title": "UV damage: remove and replace",
-      "narration": "UV light can make adjacent cytosines and thymines bond covalently, distorting the DNA. Repair proteins recognize the damage, cut out the damaged section, replace the missing bases, and reseal the backbone."
+      "narration": "UV light can make adjacent cytosines and thymines bond covalently, distorting the DNA. Repair proteins recognize the damage, cut out the damaged section, replace the missing bases, and reseal the backbone.",
+      "stage": {
+        "bottom": 11
+      },
+      "beats": [
+        {
+          "on": "uv",
+          "do": [
+            "uv",
+            "point:damage"
+          ]
+        },
+        {
+          "on": "bond",
+          "do": [
+            "bond"
+          ]
+        },
+        {
+          "on": "distorting",
+          "do": [
+            "distort",
+            "pulse:damage",
+            "card:UV: adjacent bases bond and distort DNA"
+          ]
+        },
+        {
+          "on": "recognize",
+          "do": [
+            "recognize",
+            "point:protein"
+          ]
+        },
+        {
+          "on": "cut",
+          "do": [
+            "cut"
+          ]
+        },
+        {
+          "on": "section",
+          "do": [
+            "remove"
+          ]
+        },
+        {
+          "on": "replace",
+          "do": [
+            "replace",
+            "point:gap"
+          ]
+        },
+        {
+          "on": "reseal",
+          "do": [
+            "reseal",
+            "pulse:backbone"
+          ]
+        }
+      ]
     }
   ]
 }

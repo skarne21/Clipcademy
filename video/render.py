@@ -1,22 +1,27 @@
-"""Offline fixed-script renderer. No network, model, or runtime script generation."""
+"""Offline fixed-script renderer. No network, model, or runtime script generation.
+
+Pipeline: narrate each scene with eSpeak (recording when each word is spoken),
+then draw every frame with ``animation.py`` so on-screen actions, the guide's
+mouth and the highlighted caption word follow the narration.
+"""
 import argparse
+import array
 import ctypes
 import hashlib
+import importlib.util
 import json
 import math
-from pathlib import Path
+import re
+import shutil
 import subprocess
 import tempfile
 import wave
-from functools import lru_cache
-
-@lru_cache(maxsize=32)
-def cached_font(name, size):
-    from PIL import ImageFont
-    return ImageFont.truetype(name, size, layout_engine=ImageFont.Layout.BASIC)
+from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 TEMPLATE = json.loads((HERE / 'template.json').read_text())
+SOURCES = ('render.py', 'animation.py')
+LEAD, TAIL = 0.35, 0.65   # silence before and after each scene's narration
 
 
 def load_script(topic, variant):
@@ -30,23 +35,45 @@ def load_script(topic, variant):
 
 def fingerprint(script):
     payload = json.dumps([script, TEMPLATE], sort_keys=True, ensure_ascii=False).encode()
-    return hashlib.sha256(Path(__file__).read_bytes() + payload).hexdigest()[:16]
+    code = b''.join((HERE / name).read_bytes() for name in SOURCES)
+    return hashlib.sha256(code + payload).hexdigest()[:16]
 
 
-def narrate(text, path):
-    """eSpeak retrieval mode writes real PCM narration without an audio device."""
+def animation():
+    # Loaded by path: jobs.py imports this file without putting video/ on sys.path.
+    spec = importlib.util.spec_from_file_location('clipcademy_animation', HERE / 'animation.py')
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+class _Event(ctypes.Structure):
+    _fields_ = [('type', ctypes.c_int), ('unique_identifier', ctypes.c_uint), ('text_position', ctypes.c_int),
+                ('length', ctypes.c_int), ('audio_position', ctypes.c_int), ('sample', ctypes.c_int),
+                ('user_data', ctypes.c_void_p), ('id', ctypes.c_char * 8)]
+
+
+def narrate(text):
+    """Return (pcm bytes, sample rate, [(word, start s, end s)]) using eSpeak retrieval mode."""
     import espeakng_loader
     lib = ctypes.CDLL(espeakng_loader.get_library_path())
     lib.espeak_Initialize.argtypes = [ctypes.c_int, ctypes.c_int, ctypes.c_char_p, ctypes.c_int]
     rate = lib.espeak_Initialize(2, 0, str(Path(espeakng_loader.get_data_path()).parent).encode(), 0)
     if rate <= 0:
         raise RuntimeError('Could not initialize narration')
-    chunks = []
-    callback_type = ctypes.CFUNCTYPE(ctypes.c_int, ctypes.POINTER(ctypes.c_short), ctypes.c_int, ctypes.c_void_p)
+    chunks, marks = [], []
+    callback_type = ctypes.CFUNCTYPE(ctypes.c_int, ctypes.POINTER(ctypes.c_short), ctypes.c_int,
+                                     ctypes.POINTER(_Event))
+
     @callback_type
-    def collect(samples, count, _events):
+    def collect(samples, count, events):
         if samples and count:
             chunks.append(ctypes.string_at(samples, count * 2))
+        i = 0
+        while events and events[i].type != 0:
+            if events[i].type == 1:  # word event
+                marks.append((events[i].text_position - 1, events[i].sample / rate))
+            i += 1
         return 0
     lib.espeak_SetSynthCallback(collect)
     if lib.espeak_SetVoiceByName(TEMPLATE['voice'].encode()) != 0:
@@ -60,159 +87,161 @@ def narrate(text, path):
     lib.espeak_Terminate()
     if result or not chunks:
         raise RuntimeError('Narration failed')
-    with wave.open(str(path), 'wb') as out:
-        out.setnchannels(1)
-        out.setsampwidth(2)
-        out.setframerate(rate)
-        out.writeframes(b''.join(chunks))
-    return rate
+    pcm = b''.join(chunks)
+    return pcm, rate, word_times(text, marks, len(pcm) / 2 / rate)
 
 
-def frame(script, scene_index, progress, caption):
-    from PIL import Image, ImageDraw, ImageFont
-    t = TEMPLATE
-    im = Image.new('RGB', (t['width'], t['height']), t['background'])
-    d = ImageDraw.Draw(im)
-    def font(size, bold=False):
-        return cached_font(t['font_bold'] if bold else t['font'], size)
-    def label(x, y, text, size=24, color=None, bold=False):
-        d.text((x,y), text, fill=color or t['ink'], font=font(size,bold))
-    def line(points, color=None, width=5):
-        d.line(points, fill=color or t['ink'], width=width)
-    def arrow(x1,y1,x2,y2,color=None):
-        line([(x1,y1),(x2,y2)],color)
-        sign=1 if x2>x1 else -1
-        d.polygon([(x2,y2),(x2-sign*13,y2-8),(x2-sign*13,y2+8)],fill=color or t['ink'])
-    scene = script['scenes'][scene_index]
-    label(32,20,'Clipcademy · '+('DNA replication' if script['topic_id']=='dna_replication' else 'DNA repair'),20)
-    label(32,58,scene['title'],32,bold=True)
-    # One reusable guide, clearly separate from the molecular diagrams.
-    d.ellipse((54,159,106,211),outline=t['ink'],width=4)
-    line([(80,211),(80,290)])
-    line([(80,233),(118,251),(152,223)])
-    line([(80,235),(46,267)])
-    line([(80,290),(52,340)])
-    line([(80,290),(110,340)])
-    d.ellipse((68,178,72,182),fill=t['ink']); d.ellipse((88,178,92,182),fill=t['ink'])
-    d.arc((69,183,93,199),0,180,fill=t['ink'],width=2)
-    kind=scene['diagram']
-    if kind in {'antiparallel','growth','primer','bare'}:
-        label(235,122,t['labels']['template'],20)
-        line([(240,177),(866,177)])
-        label(188,158,'3′');label(884,158,'5′')
-        for x in range(265,850,40): line([(x,177),(x,193)],width=3)
-        if kind!='bare':
-            end = 510 if kind=='antiparallel' else int(450+350*progress)
-            if kind=='primer': end=450
-            line([(240,268),(450,268)],t['primer'],8)
-            if end>450: line([(450,268),(end,268)],t['accent'],8)
-            for x in range(265,end,40): line([(x,252),(x,268)],t['accent'],3)
-            label(188,250,'5′');label(end+15,250,'3′',color=t['accent'],bold=True)
-            label(235,302,t['labels']['primer'],20,t['primer'])
-            if kind=='growth': label(max(460,end-170),213,'DNA polymerase',18,t['accent'])
-            if kind in {'growth','antiparallel'}:
-                arrow(470,338,840,338,t['accent']);label(475,355,'New DNA grows 5′ → 3′',23)
-            else:
-                label(500,300,'Primase makes the start',23)
-                label(500,337,'Polymerase extends its 3′ end',21)
-        else:
-            label(240,248,'DNA polymerase needs an existing start.',24)
-            label(240,294,'No complementary strand to extend yet.',23)
-    elif kind=='timing':
-        arrow(240,232,860,232,t['accent'])
-        label(240,166,'During copying',25,bold=True)
-        label(600,166,'After replication',25,bold=True)
-        label(240,270,'Proofreading',24);label(600,270,'Mismatch repair',24)
-        label(240,325,'DNA polymerase',22);label(600,325,'Repair proteins',22)
-    else:
-        label(235,122,'DNA strands · schematic',20)
-        line([(240,184),(866,184)])
-        gap=kind=='cut'
-        if gap:
-            line([(240,264),(490,264)],t['accent']);line([(650,264),(866,264)],t['accent'])
-        else: line([(240,264),(866,264)],t['accent'])
-        for i,x in enumerate(range(270,850,58)):
-            if gap and 490<x<650: continue
-            bad = kind in {'proof','mismatch','uv'} and i in ([5,6] if kind=='uv' else [5])
-            label(x,199,'A',20)
-            label(x,235,'T' if kind=='uv' and i in [5,6] else ('C' if bad else 'T'),20,t['damage'] if bad else t['accent'])
-            if bad: d.ellipse((x-7,230,x+26,262),outline=t['damage'],width=2)
-        if kind=='uv':
-            line([(568,259),(626,259)],t['damage'],4)
-            label(240,302,'UV: adjacent bases bond and distort DNA',23)
-        elif kind=='cut': label(240,302,'Damaged section removed from one strand',23)
-        elif kind=='reseal': label(240,302,'Correct bases replace the gap; backbone resealed',22)
-        elif kind=='proof':
-            label(240,302,'Wrong base removed from the growing 3′ end',22)
-            # Short growing strand ends at the wrong base; do not show it internally.
-            d.rectangle((596,228,900,282),fill=t['background'])
-            label(604,242,'3′',22,t['accent'])
-        else: label(240,302,'After replication: find and replace a mismatch',23)
-    # Short timed captions contain exactly the spoken words, in order.
-    d.rectangle((0,410,960,505),fill='#E9EEE8')
-    words=caption.split(); rows=[]; row=''
-    for word in words:
-        candidate=(row+' '+word).strip()
-        if d.textlength(candidate,font=font(23))>885:
-            rows.append(row);row=word
-        else:row=candidate
-    rows.append(row)
-    for i,row in enumerate(rows): label(32,420+i*29,row,23)
-    label(32,513,'Sources: '+', '.join(script['source_refs'])+' · Review copy',16)
-    label(845,513,f'{scene_index+1} / {len(script["scenes"])}',16)
-    return im
+def word_times(text, marks, total):
+    """Map eSpeak word events (character offset, seconds) onto the script's words."""
+    spans = [(m.group(), m.start(), m.end()) for m in re.finditer(r'\S+', text)]
+    starts = [None] * len(spans)
+    for offset, seconds in marks:
+        for i, (_, a, b) in enumerate(spans):
+            if a <= offset < b or (offset < a and starts[i] is None):
+                if starts[i] is None:
+                    starts[i] = seconds
+                break
+    known = [(i, s) for i, s in enumerate(starts) if s is not None]
+    if not known:
+        known = [(0, 0.0)]
+    for i in range(len(starts)):
+        if starts[i] is None:  # interpolate the rare word eSpeak does not report
+            before = max((k for k in known if k[0] < i), default=(0, 0.0), key=lambda k: k[0])
+            after = min((k for k in known if k[0] > i), default=(len(spans), total), key=lambda k: k[0])
+            starts[i] = lerp(before[1], after[1], (i - before[0]) / max(after[0] - before[0], 1))
+    for i in range(1, len(starts)):
+        starts[i] = max(starts[i], starts[i - 1])
+    ends = starts[1:] + [total]
+    return [(w, s, e) for (w, _, _), s, e in zip(spans, starts, ends)]
+
+
+def lerp(a, b, k):
+    return a + (b - a) * k
+
+
+def loudness(samples, rate, fps, frames):
+    """Per-frame mouth openness in [0, 1] from narration RMS, fast attack and slow release."""
+    window = rate // fps
+    values = []
+    for n in range(frames):
+        part = samples[n * window:(n + 1) * window]
+        values.append(math.sqrt(sum(v * v for v in part[::4]) / max(len(part[::4]), 1)) if part else 0.0)
+    ref = sorted(values)[int(len(values) * 0.95)] or 1.0
+    out, level = [], 0.0
+    for v in values:
+        target = min(1.0, v / ref)
+        level = target if target > level else level * 0.6 + target * 0.4
+        out.append(level if level > 0.08 else 0.0)
+    return out
 
 
 def stamp(seconds):
-    ms=round(seconds*1000);h,ms=divmod(ms,3600000);m,ms=divmod(ms,60000);s,ms=divmod(ms,1000)
+    ms = round(seconds * 1000)
+    h, ms = divmod(ms, 3600000)
+    m, ms = divmod(ms, 60000)
+    s, ms = divmod(ms, 1000)
     return f'{h:02}:{m:02}:{s:02}.{ms:03}'
 
 
 def render(script, output_dir):
-    output_dir=Path(output_dir);output_dir.mkdir(parents=True,exist_ok=True)
-    stem=f'{script["topic_id"]}.{script["variant_id"]}.{fingerprint(script)}'
-    destination=output_dir/f'{stem}.mp4'
-    fps=TEMPLATE['fps']; offset=0; cues=[];segments=[]
+    art = animation()
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    stem = f'{script["topic_id"]}.{script["variant_id"]}.{fingerprint(script)}'
+    destination = output_dir / f'{stem}.mp4'
+    fps = TEMPLATE['fps']
+    # 1. Narrate every scene first so the whole clip's timing is known.
+    scenes, pcm, rate = [], bytearray(), None
+    for scene in script['scenes']:
+        audio, rate, words = narrate(scene['narration'])
+        speech = len(audio) / 2 / rate
+        frames = math.ceil((LEAD + speech + TAIL) * fps)
+        duration = frames / fps
+        words = [(w, s + LEAD, e + LEAD) for w, s, e in words]
+        silence_before = int(LEAD * rate) * 2
+        padded = bytes(silence_before) + audio
+        padded += bytes(max(0, int(duration * rate) * 2 - len(padded)))
+        padded = padded[:int(duration * rate) * 2]
+        samples = array.array('h', padded)
+        scenes.append((scene, words, duration, frames, loudness(samples, rate, fps, frames)))
+        pcm += padded
+    total = sum(s[2] for s in scenes)
+    if not 30 <= total <= 60:
+        raise ValueError(f'Clip duration {total:.2f}s is outside 30–60s')
+    # 2. Captions and transcript use exactly the narrated words, with measured timing.
+    cues, offset = [], 0.0
+    for scene, words, duration, _, _ in scenes:
+        for chunk in art.caption_chunks(words):
+            start, end = chunk[0][1], chunk[-1][2]
+            cues.append(f'{stamp(offset + start)} --> {stamp(offset + min(end, duration))}\n'
+                        + ' '.join(w for w, _, _ in chunk) + '\n')
+        offset += duration
     with tempfile.TemporaryDirectory(prefix='clipcademy-render-') as tmp:
-        tmp=Path(tmp)
-        for idx,scene in enumerate(script['scenes']):
-            wav=tmp/f'{idx}.wav';narrate(scene['narration'],wav)
-            with wave.open(str(wav)) as audio: duration=audio.getnframes()/audio.getframerate()
-            count=math.ceil((duration+.4)*fps);duration=count/fps
-            words=scene['narration'].split(); captions=[' '.join(words[i:i+13]) for i in range(0,len(words),13)]
-            for j,caption in enumerate(captions):
-                cues.append(f'{stamp(offset+j*duration/len(captions))} --> {stamp(offset+(j+1)*duration/len(captions))}\n{caption}\n')
-            segment=tmp/f'{idx}.mp4';segments.append(segment)
-            args=['ffmpeg','-v','error','-y','-f','rawvideo','-pix_fmt','rgb24','-s','960x540','-r',str(fps),'-i','pipe:0','-i',str(wav),'-af','apad','-t',str(duration),'-c:v','libx264','-threads','2','-preset','ultrafast','-crf','25','-pix_fmt','yuv420p','-c:a','aac','-b:a','64k','-movflags','+faststart',str(segment)]
-            process=subprocess.Popen(args,stdin=subprocess.PIPE)
-            try:
-                for n in range(count):
-                    progress=n/max(count-1,1)
-                    process.stdin.write(frame(script,idx,progress,captions[min(len(captions)-1,int(progress*len(captions)))]).tobytes())
-            finally:
-                process.stdin.close()
-            if process.wait()!=0: raise RuntimeError('FFmpeg failed')
-            offset+=duration
-        if not 30<=offset<=60: raise ValueError(f'Clip duration {offset:.2f}s is outside 30–60s')
-        concat=tmp/'concat.txt';concat.write_text(''.join(f"file '{p}'\n" for p in segments))
-        assembled=tmp/'final.mp4'
-        subprocess.run(['ffmpeg','-v','error','-y','-f','concat','-safe','0','-i',str(concat),'-c','copy','-movflags','+faststart',str(assembled)],check=True)
+        tmp = Path(tmp)
+        wav = tmp / 'narration.wav'
+        with wave.open(str(wav), 'wb') as out:
+            out.setnchannels(1)
+            out.setsampwidth(2)
+            out.setframerate(rate)
+            out.writeframes(bytes(pcm))
+        assembled = tmp / 'final.mp4'
+        args = ['ffmpeg', '-v', 'error', '-y', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-s',
+                f'{TEMPLATE["width"]}x{TEMPLATE["height"]}', '-r', str(fps), '-i', 'pipe:0', '-i', str(wav),
+                '-c:v', 'libx264', '-threads', '2', '-preset', 'veryfast', '-tune', 'animation', '-crf', '26',
+                '-g', str(fps * 2), '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '64k', '-shortest',
+                '-movflags', '+faststart', str(assembled)]
+        # 3. Draw every frame and stream it to FFmpeg.
+        process = subprocess.Popen(args, stdin=subprocess.PIPE)
+        try:
+            done = 0
+            total_frames = sum(s[3] for s in scenes)
+            for index, (scene, words, duration, frames, energy) in enumerate(scenes):
+                drawer = art.SceneArt(TEMPLATE, script, index, words, duration)
+                for n in range(frames):
+                    image = drawer.frame(n / fps, energy[n], (done + n) / total_frames)
+                    process.stdin.write(image.tobytes())
+                done += frames
+        finally:
+            process.stdin.close()
+        if process.wait() != 0:
+            raise RuntimeError('FFmpeg failed')
         # Copy into the destination filesystem then rename, so publication is atomic.
-        import shutil
-        staging=output_dir/f'.{stem}.tmp';shutil.copyfile(assembled,staging);staging.replace(destination)
-    (output_dir/f'{stem}.vtt').write_text('WEBVTT\n\n'+'\n'.join(cues))
-    transcript='\n\n'.join(s['narration'] for s in script['scenes'])
-    (output_dir/f'{stem}.txt').write_text(transcript+'\n')
-    record={'video_file':destination.name,'captions_file':f'{stem}.vtt','transcript':transcript,
-            'source_refs':script['source_refs'],'duration_seconds':round(offset,3),'fingerprint':fingerprint(script),
-            'review_status':script['review_status'],'narration':'synthetic: eSpeak NG en-us',
-            'sha256':hashlib.sha256(destination.read_bytes()).hexdigest()}
-    (output_dir/f'{stem}.json').write_text(json.dumps(record,ensure_ascii=False,indent=2)+'\n')
+        staging = output_dir / f'.{stem}.tmp'
+        shutil.copyfile(assembled, staging)
+        staging.replace(destination)
+    (output_dir / f'{stem}.vtt').write_text('WEBVTT\n\n' + '\n'.join(cues))
+    transcript = '\n\n'.join(s['narration'] for s in script['scenes'])
+    (output_dir / f'{stem}.txt').write_text(transcript + '\n')
+    record = {'video_file': destination.name, 'captions_file': f'{stem}.vtt', 'transcript': transcript,
+              'source_refs': script['source_refs'], 'duration_seconds': round(total, 3),
+              'fingerprint': fingerprint(script), 'review_status': script['review_status'],
+              'narration': 'synthetic: eSpeak NG en-us',
+              'sha256': hashlib.sha256(destination.read_bytes()).hexdigest()}
+    (output_dir / f'{stem}.json').write_text(json.dumps(record, ensure_ascii=False, indent=2) + '\n')
     return record
 
 
-if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--all',action='store_true');p.add_argument('--topic');p.add_argument('--variant');p.add_argument('--output',default=str(HERE/'media'))
-    args=p.parse_args()
-    scripts=[json.loads(p.read_text()) for p in sorted((HERE/'scripts').glob('*.json'))] if args.all else [load_script(args.topic,args.variant)]
-    for script in scripts: print(json.dumps(render(script,args.output)),flush=True)
+def preview(script, scene_index, seconds, path):
+    """Write one still frame (for review) without narration audio; word timing is estimated."""
+    art = animation()
+    scene = script['scenes'][scene_index]
+    words, at = [], LEAD
+    for word in scene['narration'].split():
+        length = 0.08 + 0.055 * len(word)
+        words.append((word, at, at + length))
+        at += length + 0.04
+    drawer = art.SceneArt(TEMPLATE, script, scene_index, words, at + TAIL)
+    drawer.frame(seconds, 0.5, 0.5).save(path)
+
+
+if __name__ == '__main__':
+    p = argparse.ArgumentParser()
+    p.add_argument('--all', action='store_true')
+    p.add_argument('--topic')
+    p.add_argument('--variant')
+    p.add_argument('--output', default=str(HERE / 'media'))
+    args = p.parse_args()
+    scripts = ([json.loads(f.read_text()) for f in sorted((HERE / 'scripts').glob('*.json'))]
+               if args.all else [load_script(args.topic, args.variant)])
+    for script in scripts:
+        print(json.dumps(render(script, args.output)), flush=True)

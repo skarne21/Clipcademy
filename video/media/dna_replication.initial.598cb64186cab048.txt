@@ -3,3 +3,5 @@ DNA strands run in opposite directions. This is called antiparallel. Notice that
 New DNA grows from five prime to three prime. Each new nucleotide joins the three prime end of the growing complementary strand. The labels describe the strand ends, not two possible directions of synthesis.
 
 DNA polymerase cannot start a complementary strand from scratch. Primase makes a short RNA primer on the template. DNA polymerase can then extend the primer by adding DNA nucleotides at its three prime end.
+
+Remember: new DNA grows five prime to three prime. DNA polymerase adds to the three prime end of an existing primer.

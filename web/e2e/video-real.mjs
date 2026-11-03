@@ -1,7 +1,11 @@
 // Start learning/app.py with CLIPCADEMY_VIDEO_PREVIEW=1 and Vite before running.
 import assert from 'node:assert/strict'
 import puppeteer from 'puppeteer-core'
-const browser=await puppeteer.launch({executablePath:process.env.CHROME??'/usr/bin/chromium',args:['--autoplay-policy=no-user-gesture-required',...(process.env.CHROME_NO_SANDBOX==='1'?['--no-sandbox']:[])]})
+const chrome = process.env.CHROME ?? ({
+ darwin: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+ win32: 'C:/Program Files/Google/Chrome/Application/chrome.exe',
+}[process.platform] ?? '/usr/bin/chromium')
+const browser=await puppeteer.launch({executablePath:chrome,args:['--autoplay-policy=no-user-gesture-required',...(process.env.CHROME_NO_SANDBOX==='1'?['--no-sandbox']:[])]})
 try {
  const page=await browser.newPage()
  await page.setViewport({width:390,height:844,isMobile:true,hasTouch:true})
