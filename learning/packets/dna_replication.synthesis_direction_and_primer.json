@@ -1,0 +1,75 @@
+{
+  "topic_id": "dna_replication",
+  "objective_id": "synthesis_direction_and_primer",
+  "label": "Synthesis direction and the primer requirement",
+  "source_excerpts": [
+    {
+      "ref": "L19-p1",
+      "text": "DNA synthesis occurs only in the 5′ to 3′ direction, meaning new bases are being added to the 3′ end of an existing strand. DNA polymerase can only add new bases to the 3′ end of an existing complementary strand. It can't synthesize a complementary strand of DNA from scratch."
+    },
+    {
+      "ref": "L19-p2",
+      "text": "Before this happens, primase synthesizes a short sequence of RNA that is complementary to the DNA on the top strand. The new result is RNA primer because it prepares (primes) the strand for DNA polymerase. Unlike DNA polymerase, primase can start synthesis from scratch on a single stranded template strand. Once the primer is made, DNA polymerase can start adding deoxyribonucleotides."
+    }
+  ],
+  "excluded_passages": [
+    "L19-p3 ligase / primer-removal order (unclear in notes, pending instructor review)"
+  ],
+  "required_question_ids": [
+    "rep-q1",
+    "rep-q2"
+  ],
+  "misconceptions": {
+    "growth_direction": {
+      "variant_id": "direction_followup",
+      "retry_question_ids": [
+        "rep-r1",
+        "rep-r3"
+      ]
+    },
+    "primer_requirement": {
+      "variant_id": "primer_followup",
+      "retry_question_ids": [
+        "rep-r2",
+        "rep-r4"
+      ]
+    }
+  },
+  "variants": {
+    "initial": {
+      "teaching_goal": "Explain 5′→3′ synthesis at the 3′ end and why a primer is needed",
+      "key_points": [
+        "Strands are antiparallel",
+        "New nucleotides join the 3′ end, so strands grow 5′→3′",
+        "DNA polymerase can't start a strand; primase makes an RNA primer it can extend"
+      ],
+      "source_refs": [
+        "L19-p1",
+        "L19-p2"
+      ]
+    },
+    "direction_followup": {
+      "teaching_goal": "Explain growth direction and which end grows",
+      "key_points": [
+        "Label the 5′ and 3′ ends",
+        "Show each new nucleotide joining the 3′ end"
+      ],
+      "source_refs": [
+        "L19-p1"
+      ]
+    },
+    "primer_followup": {
+      "teaching_goal": "Explain why DNA polymerase needs a primer",
+      "key_points": [
+        "Start from a bare template: polymerase can't begin",
+        "Primase lays down an RNA primer",
+        "Polymerase extends the primer's 3′ end"
+      ],
+      "source_refs": [
+        "L19-p1",
+        "L19-p2"
+      ]
+    }
+  },
+  "review_status": "draft"
+}
