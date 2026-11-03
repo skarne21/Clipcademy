@@ -34,6 +34,13 @@ Work through these in order. Each task ends with something I can share.
 | 10 | Return the follow-up request and a new question on wrong answers | verified with M3 | M1, M3 | Adaptive connection |
 | 11 | Check sources, the answer key, and stopping rules | checklist below is ticked | Team | Demo readiness |
 
+**Progress:**
+- **Tasks 1–9 are built and tested.**
+- **Content is still `draft`.** Every packet and question is waiting for content review.
+- **Still to build:** forwarding `/video-jobs` to Member 1's `video/jobs.py` (see Team_Spec, Hosting). Add it once that file exists.
+- **Task 10** waits on Member 3's UI.
+- **Task 11** waits on the content review and instructor permission.
+
 ## Data
 
 ### Topics (`GET /topics`)
