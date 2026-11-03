@@ -1,0 +1,14 @@
+{
+  "video_file": "dna_replication.initial.3a504ad21fd64ef2.mp4",
+  "captions_file": "dna_replication.initial.3a504ad21fd64ef2.vtt",
+  "transcript": "DNA strands run in opposite directions. This is called antiparallel. Notice that the template runs from three prime to five prime, while the complementary strand runs from five prime to three prime.\n\nNew DNA grows from five prime to three prime. Each new nucleotide joins the three prime end of the growing complementary strand. The labels describe the strand ends, not two possible directions of synthesis.\n\nDNA polymerase cannot start a complementary strand from scratch. Primase makes a short RNA primer on the template. DNA polymerase can then extend the primer by adding DNA nucleotides at its three prime end.",
+  "source_refs": [
+    "L19-p1",
+    "L19-p2"
+  ],
+  "duration_seconds": 44.0,
+  "fingerprint": "3a504ad21fd64ef2",
+  "review_status": "pending",
+  "narration": "synthetic: eSpeak NG en-us",
+  "sha256": "dcb0d5f6de70a0c03e492f1738965e2eda55575bfeedb7a3f6c0e5e17d948e31"
+}

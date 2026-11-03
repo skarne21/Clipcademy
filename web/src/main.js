@@ -335,9 +335,10 @@ async function loadClip(n, ctx, request, slot, transcript, followup) {
     onended: () => track('video_completed', ids),
     onerror: failed,
   })
+  if (job.captions_url) video.append(h('track', { kind: 'captions', src: job.captions_url, srclang: 'en', label: 'English' }))
   slot.replaceChildren(
     video,
-    h('p', { class: 'note' }, job.source === 'generated' ? 'This clip was generated for you just now.' : 'This clip was made ahead of time from a reviewed script.'),
+    h('p', { class: 'note' }, job.review_status === 'preview' ? 'Team review copy: content approval pending. Synthetic narration.' : job.source === 'generated' ? 'Rendered just now from a fixed reviewed script. Synthetic narration.' : 'Previously rendered from a fixed reviewed script. Synthetic narration.'),
   )
   if (job.transcript) transcript.replaceChildren(h('h2', {}, 'Transcript'), h('p', {}, job.transcript))
 }

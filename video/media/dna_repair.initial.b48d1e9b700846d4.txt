@@ -1,0 +1,5 @@
+DNA polymerase can proofread while copying DNA. If it adds a wrong base, its exonuclease activity removes the incorrect base from the three prime end, allowing the correct base to be added.
+
+Mismatch repair happens after replication is complete. Proteins scan the new double helix for mismatched bases. Specialized enzymes remove the affected section and replace it with the correct DNA nucleotides.
+
+UV light can make adjacent cytosines and thymines bond covalently, distorting the DNA. Repair proteins recognize the damage, cut out the damaged section, replace the missing bases, and reseal the backbone.

@@ -109,6 +109,7 @@ def frame(script, scene_index, progress, caption):
             for x in range(265,end,40): line([(x,252),(x,268)],t['accent'],3)
             label(188,250,'5′');label(end+15,250,'3′',color=t['accent'],bold=True)
             label(235,302,t['labels']['primer'],20,t['primer'])
+            if kind=='growth': label(max(460,end-170),213,'DNA polymerase',18,t['accent'])
             if kind in {'growth','antiparallel'}:
                 arrow(470,338,840,338,t['accent']);label(475,355,'New DNA grows 5′ → 3′',23)
             else:
@@ -133,7 +134,7 @@ def frame(script, scene_index, progress, caption):
         for i,x in enumerate(range(270,850,58)):
             if gap and 490<x<650: continue
             bad = kind in {'proof','mismatch','uv'} and i in ([5,6] if kind=='uv' else [5])
-            label(x,199,'T' if kind=='uv' and i in [5,6] else 'A',20)
+            label(x,199,'A',20)
             label(x,235,'T' if kind=='uv' and i in [5,6] else ('C' if bad else 'T'),20,t['damage'] if bad else t['accent'])
             if bad: d.ellipse((x-7,230,x+26,262),outline=t['damage'],width=2)
         if kind=='uv':

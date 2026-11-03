@@ -1,0 +1,13 @@
+{
+  "video_file": "dna_repair.initial.b48d1e9b700846d4.mp4",
+  "captions_file": "dna_repair.initial.b48d1e9b700846d4.vtt",
+  "transcript": "DNA polymerase can proofread while copying DNA. If it adds a wrong base, its exonuclease activity removes the incorrect base from the three prime end, allowing the correct base to be added.\n\nMismatch repair happens after replication is complete. Proteins scan the new double helix for mismatched bases. Specialized enzymes remove the affected section and replace it with the correct DNA nucleotides.\n\nUV light can make adjacent cytosines and thymines bond covalently, distorting the DNA. Repair proteins recognize the damage, cut out the damaged section, replace the missing bases, and reseal the backbone.",
+  "source_refs": [
+    "L20-p1"
+  ],
+  "duration_seconds": 43.833,
+  "fingerprint": "b48d1e9b700846d4",
+  "review_status": "pending",
+  "narration": "synthetic: eSpeak NG en-us",
+  "sha256": "5f164999ec3e549300ca604e8df7beb313354182ec8dbee4e077ded54229b709"
+}
