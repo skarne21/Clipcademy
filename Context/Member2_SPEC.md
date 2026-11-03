@@ -30,9 +30,9 @@ Work through these in order. Each task ends with something I can share.
 | 6 | Track remediation cycles and stop at 2 | part of the grading module | none | First independent build |
 | 7 | Write sample responses for every endpoint, before the real video service exists | `learning/samples/*.json` | M3 | Kickoff / first independent build |
 | 8 | Serve the three endpoints | API wrapper | M3 | First connection |
-| 9 | Return the follow-up request and a new question on wrong answers | verified with M3 | M1, M3 | Adaptive connection |
-| 10 | Check sources, the answer key, and stopping rules | checklist below is ticked | Team | Demo readiness |
-| 11 | Host `POST /events` and export `events.csv` (see Team_Spec.md, Activity events) | events endpoint | M3 | First connection |
+| 9 | Host `POST /events` and export `events.csv` (see Team_Spec.md, Activity events) | events endpoint | M3 | First connection |
+| 10 | Return the follow-up request and a new question on wrong answers | verified with M3 | M1, M3 | Adaptive connection |
+| 11 | Check sources, the answer key, and stopping rules | checklist below is ticked | Team | Demo readiness |
 
 ## Data
 
@@ -45,7 +45,7 @@ Work through these in order. Each task ends with something I can share.
 | `transcription` | Transcription | L21 p. 1 | `coming_soon` | `template_strand_and_promoter` |
 | `translation` | Translation | L22 pp. 1–2 | `coming_soon` | `codon_pairing_and_ribosome_sites` |
 
-Only topics with a finished and reviewed lesson can be `available`. The home page must not show unavailable topics as working.
+During development, `available` means the lesson is built, even while its packet is still `review_status: "draft"`. Before the build freeze, every `available` lesson must have its packet set to `review_status: "reviewed"` and all its items approved in content-audit.csv. Otherwise, set it back to `coming_soon` for the frozen build. The home page must not show unavailable topics as working.
 
 ```json
 {
@@ -136,7 +136,7 @@ The replication lesson is detailed below. The other lessons follow the same patt
 | `rep-r3` | 2nd retry for q1 | DNA polymerase is adding nucleotides to a growing strand. In which direction does the new strand grow? | A. 5′ to 3′ · B. 3′ to 5′ | A | B → `needs_review` (limit reached) |
 | `rep-r4` | 2nd retry for q2 | Once the RNA primer is in place, which enzyme adds DNA nucleotides to it? | A. Primase · B. DNA polymerase · C. Ligase | B | A, C → `needs_review` (limit reached) |
 
-Sources: q1, r1, and r3 come from L19 p. 1. q2, r2, and r4 come from L19 pp. 1–2.
+Sources: q1, r1, and r3 come from L19 p. 1. q2 and r4 come from L19 pp. 1–2. r2 (which enzyme makes the primer) comes from L19 p. 2 only.
 
 Every choice needs its own feedback text, including the correct one. Draft the feedback below, then get team review:
 
@@ -158,7 +158,7 @@ Every choice needs its own feedback text, including the correct one. Draft the f
 | `rep-r4` | B ✓ | Correct. Primase starts the strand with RNA, then DNA polymerase extends it. |
 | `rep-r4` | C | Ligase closes gaps in the backbone without adding new bases. DNA polymerase extends the primer. |
 
-Choice C on `rep-q2` names the wrong direction, so it goes to the direction follow-up (team decision, now also in Team_Spec). Answering `rep-r1` correctly does not count for `rep-q2`, so the student comes back to `rep-q2` afterwards.
+Choice C on `rep-q2` names the wrong direction, so it goes to the direction follow-up (team decision, now also in Team_Spec). Answering `rep-r1` correctly does not count for `rep-q2`, so the student comes back to `rep-q2` afterwards. This is the one allowed repeat: a missed required question returns after its follow-up so the student recalls it correctly. Retry questions are never shown twice.
 
 These questions are the app's practice bank. The study's pre-test and post-test in [assessment.md](assessment.md) must never reuse or closely reword them, so check both files whenever either changes.
 
@@ -190,6 +190,8 @@ The misconception mapping is a teaching choice, not a diagnosis of what the stud
   "selected_choice_id": "B",
   "objective_id": "synthesis_direction_and_primer",
   "remediation_state": {
+    "objective_status": "in_progress",
+    "expected_question_id": "rep-q2",
     "remediation_count": 0,
     "satisfied_question_ids": ["rep-q1"],
     "asked_retry_ids": []
@@ -197,7 +199,11 @@ The misconception mapping is a teaching choice, not a diagnosis of what the stud
 }
 ```
 
-Member 3 saves `remediation_state` and sends it back with each attempt. The client keeps the state, and I make the decision.
+Member 3 saves `remediation_state` and sends it back with each attempt. The client keeps the state, and I make the decision. An empty state (`{}`) means a fresh start: status `in_progress`, count 0, and the expected question is the objective's first required question. Restart and Reset demo send an empty state. For a prototype the client is trusted to hold the state, but I check that it's consistent (rule 6).
+
+### Storage
+
+Attempts (for idempotency) and events are stored server-side in one SQLite file, so they survive a server restart. The stored attempt keeps the full request body and the response.
 
 ### Rules
 
@@ -207,10 +213,15 @@ Member 3 saves `remediation_state` and sends it back with each attempt. The clie
    - If all are satisfied, return `complete`.
 3. **Wrong answer:**
    - If `remediation_count < 2`, return `review_again`, increment `remediation_count`, and include the mapped `misconception_id`, the `next_video_request` built from the packet variant, and `next_question_id` set to the first retry question for that misconception that is not yet in `asked_retry_ids` (direction: `rep-r1`, then `rep-r3`; primer: `rep-r2`, then `rep-r4`). Add it to `asked_retry_ids`, so every follow-up video is followed by a question the student hasn't seen.
-   - If `remediation_count == 2`, return `needs_review` with the reviewed explanation. Send no video request and no next question.
+   - If `remediation_count == 2`, return `needs_review`. Set `feedback` to the chosen choice's feedback and `review_points` to the packet's `variants.initial.key_points`. Both are already reviewed content, so nothing new needs writing. Send no video request and no next question.
 4. **Limit:** at most two follow-up cycles **per objective in total** (team decision). A correct answer does not reset the count. Example: missing q1 (cycle 1), answering the retry correctly, then missing q2 is cycle 2, and the next wrong answer returns `needs_review`.
-5. **Idempotency:** if an `attempt_id` has been seen before, return the stored result unchanged. Do not create a second attempt, count another cycle, or issue another video request.
-6. **Errors:** reply `400` for unknown question or choice IDs, a question that doesn't belong to the objective, or a malformed body. The error must say which field is wrong.
+5. **Idempotency:** if an `attempt_id` has been seen before with the same body, return the stored result unchanged. Do not create a second attempt, count another cycle, or issue another video request. The same `attempt_id` with a different body gets `409` and changes nothing.
+6. **Errors:** the error must say which field is wrong.
+   - `400` for unknown question or choice IDs, a question that doesn't belong to the objective, or a malformed body.
+   - `400` for an inconsistent `remediation_state`: an ID in `satisfied_question_ids` or `asked_retry_ids` that isn't part of this objective, a retry ID in `asked_retry_ids` that isn't a retry, or a `remediation_count` outside 0–2.
+   - `409` if `objective_status` is `complete` or `needs_review`. The student has to restart first.
+   - `409` if `question_id` isn't the state's `expected_question_id`.
+7. **State updates:** every response sets `objective_status` (`in_progress`, `complete`, or `needs_review`) and `expected_question_id` (the `next_question_id`, or `null` when the objective is finished).
 
 ### `POST /attempts` response
 
@@ -222,7 +233,7 @@ Every response returns the updated `remediation_state`, so Member 3 can save it.
   "question_id": "rep-q2",
   "correct": false,
   "action": "review_again",
-  "feedback": "DNA polymerase extends an existing complementary strand. Primase supplies the RNA primer that starts it.",
+  "feedback": "Ligase joins pieces of DNA. It does not add the new bases. DNA polymerase extends a primer that primase made.",
   "misconception_id": "primer_requirement",
   "next_video_request": {
     "topic_id": "dna_replication",
@@ -232,12 +243,13 @@ Every response returns the updated `remediation_state`, so Member 3 can save it.
     "source_refs": ["L19-p1", "L19-p2"]
   },
   "next_question_id": "rep-r2",
-  "remediation_state": { "remediation_count": 1, "satisfied_question_ids": ["rep-q1"], "asked_retry_ids": ["rep-r2"] },
+  "remediation_state": { "objective_status": "in_progress", "expected_question_id": "rep-r2", "remediation_count": 1, "satisfied_question_ids": ["rep-q1"], "asked_retry_ids": ["rep-r2"] },
+  "review_points": null,
   "source_refs": ["L19-p1", "L19-p2"]
 }
 ```
 
-For `continue_questions`, `complete`, and `needs_review`, `misconception_id` and `next_video_request` are `null`. `next_question_id` is `null` for `complete` and `needs_review`.
+For `continue_questions`, `complete`, and `needs_review`, `misconception_id` and `next_video_request` are `null`. `next_question_id` is `null` for `complete` and `needs_review`. `review_points` is filled only for `needs_review`. `feedback` always comes from `answer_key.json`, so the examples above use its exact text.
 
 ## Test cases
 
@@ -258,9 +270,14 @@ Each case starts from an empty `remediation_state` unless it says otherwise.
 | 8b | q1=A, r1=B, r3=A | `continue_questions`, next `rep-q2` |
 | 8c | q1=B, q2=B, r2=C | `review_again` (count 2, `primer_followup`, next `rep-r4`) |
 | 8d | `POST /events` with a repeated `event_id` | Stored once |
-| 8e | `POST /events` with no `build_id` | Stored, and flagged in the `events.csv` export |
+| 8e | `POST /events` with no `build_id`, then one with a build ID not on the list | Both stored; `build_id_status` is `missing` and `unknown` in the export |
+| 8f | Case 8, last response | `needs_review` with `feedback` from `rep-r3` choice B and `review_points` from the packet |
 | 9 | Send the same `attempt_id` twice | Identical response both times, count goes up only once |
+| 9b | Same `attempt_id`, different `selected_choice_id` | `409`, nothing changes |
 | 10 | Unknown `question_id` or `choice_id` | `400` with a clear error |
+| 10b | `asked_retry_ids` contains `dr-r1` on the replication objective | `400` naming `remediation_state.asked_retry_ids` |
+| 10c | Any attempt after `complete` or `needs_review` | `409` |
+| 10d | Empty state, answer `rep-q2` first | `409`, expected `rep-q1` |
 | 11 | `GET /questions/rep-q2` | No answer key fields in the response |
 
 Cover these cases with one runnable test file next to the grading code.
