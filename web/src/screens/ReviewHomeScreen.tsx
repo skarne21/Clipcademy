@@ -73,16 +73,18 @@ export function ReviewHomeScreen({
                   <li key={objective.objective_id}>
                     <section aria-label={objective.label}>
                       <h3>{objective.label}</h3>
-                      <p>{statusText(objective.label, remediation)}</p>
                       {startable ? (
-                        <button
-                          type="button"
-                          onClick={() =>
-                            onOpenObjective(topic.topic_id, objective.objective_id)
-                          }
-                        >
-                          Start, {objective.label}
-                        </button>
+                        <>
+                          <p>{statusText(objective.label, remediation)}</p>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              onOpenObjective(topic.topic_id, objective.objective_id)
+                            }
+                          >
+                            Start, {objective.label}
+                          </button>
+                        </>
                       ) : (
                         <p>Coming soon</p>
                       )}
