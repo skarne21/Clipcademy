@@ -15,7 +15,7 @@ import jobs
 
 class MountedVideoTest(unittest.TestCase):
     def test_wrong_answer_to_real_followup_and_retry(self):
-        with tempfile.TemporaryDirectory() as tmp:
+        with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as tmp:  # app holds its db open (Windows lock)
             video=jobs.VideoService(db_path=Path(tmp)/'video.db',preview=True)
             application=app.make_app(str(Path(tmp)/'learning.db'),['*'],['dev'],'t',video_app=video)
             def call(method,path,body=None):

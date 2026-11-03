@@ -21,7 +21,7 @@ def fake_words(text):
 class BeatTest(unittest.TestCase):
     def test_beats_resolve_in_order(self):
         for path in sorted((HERE / 'scripts').glob('*.json')):
-            script = json.loads(path.read_text())
+            script = json.loads(path.read_text(encoding='utf-8'))
             for i, scene in enumerate(script['scenes']):
                 with self.subTest(script=path.name, scene=i):
                     words, duration = fake_words(scene['narration'])
@@ -35,7 +35,7 @@ class BeatTest(unittest.TestCase):
 
     def test_cards_repeat_short_claims(self):
         for path in sorted((HERE / 'scripts').glob('*.json')):
-            for scene in json.loads(path.read_text())['scenes']:
+            for scene in json.loads(path.read_text(encoding='utf-8'))['scenes']:
                 cards = [b for beat in scene['beats'] for b in beat['do'] if b.startswith('card:')]
                 self.assertLessEqual(len(cards), 2, 'at most two cards fit above the captions')
 

@@ -1,0 +1,4 @@
+# video/render.py fingerprints its own source bytes; CRLF checkouts would mark every clip stale.
+video/*.py text eol=lf
+video/*.json text eol=lf
+video/scripts/*.json text eol=lf

@@ -1,6 +1,7 @@
 """WSGI video service mounted by learning/app.py. Hosted mode never renders."""
 import csv
 from concurrent.futures import ThreadPoolExecutor
+from contextlib import contextmanager
 import hashlib
 from http import HTTPStatus
 import json
@@ -41,15 +42,20 @@ class VideoService:
             db.execute('CREATE TABLE IF NOT EXISTS jobs (id TEXT PRIMARY KEY, cache_key TEXT, status TEXT, payload TEXT, updated REAL)')
         self.catalog = {}
         for path in sorted((HERE/'scripts').glob('*.json')):
-            script = json.loads(path.read_text())
+            script = json.loads(path.read_text(encoding='utf-8'))
             self.catalog[(script['topic_id'],script['objective_id'],script['variant_id'])] = script
 
+    @contextmanager
     def db(self):
-        return sqlite3.connect(self.db_path, timeout=20)
+        # sqlite3's own context manager commits but never closes; Windows then can't delete the file.
+        conn = sqlite3.connect(self.db_path, timeout=20)
+        try:
+            with conn: yield conn
+        finally: conn.close()
 
     def approved(self, script):
-        packet = json.loads((HERE.parent/'learning/packets'/f'{script["topic_id"]}.{script["objective_id"]}.json').read_text())
-        with (HERE.parent/'Context/content-audit.csv').open() as f:
+        packet = json.loads((HERE.parent/'learning/packets'/f'{script["topic_id"]}.{script["objective_id"]}.json').read_text(encoding='utf-8'))
+        with (HERE.parent/'Context/content-audit.csv').open(encoding='utf-8', newline='') as f:
             audit = {r['item_id']:r for r in csv.DictReader(f)}
         row = audit.get(f'clip:{script["objective_id"]}:{script["variant_id"]}',{})
         return (packet['review_status']=='reviewed' and row.get('review_status')=='approved'
@@ -73,7 +79,7 @@ class VideoService:
     def asset(self, script):
         stem=f'{script["topic_id"]}.{script["variant_id"]}.{renderer.fingerprint(script)}'
         try:
-            record=json.loads((self.media/f'{stem}.json').read_text())
+            record=json.loads((self.media/f'{stem}.json').read_text(encoding='utf-8'))
             if record['video_file'] != f'{stem}.mp4' or record['captions_file'] != f'{stem}.vtt': return None
             if not (self.media/record['captions_file']).is_file(): return None
             if hashlib.sha256((self.media/record['video_file']).read_bytes()).hexdigest()!=record['sha256']: return None

@@ -27,6 +27,9 @@ needs only Python's standard library; Pillow, eSpeak and FFmpeg are needed only
 when rendering new clips. DNA repair remains Coming soon in Member 2's topic
 catalog. Its three clips are ready for review through the API, but enabling that
 topic belongs to the team's existing content-review process.
+(Lead, on merge into MVP02: DNA repair is already `available` there, so all six
+clips are reachable in the app. Without the preview flag they 403 until approved,
+which the UI shows as "The clip couldn't load." with Retry.)
 
 `CLIPCADEMY_VIDEO_PREVIEW=1` is for team review only. Without it, requests are
 rejected with 403 until the packet is `reviewed` and the clip's audit row is

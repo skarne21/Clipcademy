@@ -206,11 +206,12 @@ def _load_video_app():
     spec = importlib.util.spec_from_file_location("video_jobs", path)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
+    media_spec = importlib.util.spec_from_file_location("video_media", os.path.join(os.path.dirname(path), "media.py"))
+    media = importlib.util.module_from_spec(media_spec)
+    media_spec.loader.exec_module(media)
+
     def mounted(environ, start_response):
         if environ.get("PATH_INFO", "").startswith("/media/"):
-            media_spec = importlib.util.spec_from_file_location("video_media", os.path.join(os.path.dirname(path), "media.py"))
-            media = importlib.util.module_from_spec(media_spec)
-            media_spec.loader.exec_module(media)
             return media.serve(environ, start_response, module.application.media)
         return module.application(environ, start_response)
     return mounted
