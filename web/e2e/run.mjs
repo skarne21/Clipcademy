@@ -101,16 +101,17 @@ ok('1 participant code')
 // 2. picker
 const rows = await page.$$eval('.row', (r) => r.map((x) => x.innerText))
 assert.equal(rows.length, 4)
-assert.equal(rows.filter((r) => r.includes('Coming soon')).length, 3)
+// validation build: replication and DNA repair available, the other two coming soon
+assert.deepEqual(rows.map((r) => r.endsWith('Coming soon')), [false, false, true, true])
 await click('DNA replication\nReady to review')
-await click('DNA repair and telomeres\nComing soon')
-assert.deepEqual((await store()).selected_topic_ids, ['dna_replication', 'dna_repair'])
+await click('Translation\nComing soon')
+assert.deepEqual((await store()).selected_topic_ids, ['dna_replication', 'translation'])
 await click('Continue')
 await waitText('Your review')
 let t = await text()
 assert.match(t, /Not started/)
 assert.match(t, /Coming soon\. This topic/)
-assert.doesNotMatch(t.split('DNA repair and telomeres')[1], /Complete|Start|Resume/)
+assert.doesNotMatch(t.split('Translation')[1], /Complete|Start|Resume/)
 assert.match(t, /P01/)
 ok('2 coming-soon topics selectable, never startable')
 
@@ -171,9 +172,13 @@ await waitText('See summary')
 assert.match(await text(), /Complete/)
 ok('3 q1=B q2=A complete; 6 refresh keeps feedback/question/summary')
 
-// 4. demo walkthrough: q1=B, q2=B, follow-up, r2=B
-await click('See summary')
+// 4. demo walkthrough: q1=B, q2=B, follow-up, r2=B. Starts like the scripted task: "Tap Restart" on home.
+await click('See summary') // home's link still opens the summary
+await waitText('Return home')
+await click('Return home')
 await click('Restart')
+assert.match(await hash(), /#\/lesson\/synthesis_direction_and_primer/)
+assert.equal((await store()).objectives.synthesis_direction_and_primer.attempts.length, 0)
 await click('Answer the question')
 await answer('B', 'Correct')
 await click('Next question')

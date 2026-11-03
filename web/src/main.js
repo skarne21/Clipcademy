@@ -230,8 +230,9 @@ function objectiveRow(topic, objective) {
       open()
     })
   } else if (status === 'complete' || status === 'needs_review') {
-    text = status === 'complete' ? 'Complete' : 'Needs review'
-    action = secondary('See summary', open)
+    // Restart sits on the row because the moderator's scripted task begins with "Tap Restart".
+    text = [status === 'complete' ? 'Complete' : 'Needs review', ' · ', h('button', { type: 'button', class: 'link', onclick: open }, 'See summary')]
+    action = secondary('Restart', () => restart({ id, topic }))
   } else {
     text = STEP_TEXT[o.step] ?? 'In progress'
     action = primary('Resume', open)

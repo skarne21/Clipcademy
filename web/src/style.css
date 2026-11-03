@@ -238,6 +238,10 @@ input[type='radio'] {
   flex: none;
 }
 
+.objective .link {
+  min-height: 2.75rem;
+}
+
 section h2 {
   margin-top: 1.5rem;
 }
