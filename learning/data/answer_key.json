@@ -148,7 +148,7 @@
         "misconception_id": "uv_damage"
       },
       "B": {
-        "feedback": "UV doesn't change DNA into RNA. It bonds adjacent C's and T's, creating a bulge.",
+        "feedback": "Removing bases is part of the repair. UV itself bonds adjacent C's and T's, creating a bulge.",
         "misconception_id": "uv_damage"
       },
       "C": {
@@ -472,7 +472,7 @@
         "misconception_id": "anticodon_pairing"
       },
       "C": {
-        "feedback": "tRNAs entering the A site are charged. Pairing with the codon is what matters.",
+        "feedback": "tRNAs entering the A site still carry their amino acid. Pairing with the codon is what matters.",
         "misconception_id": "anticodon_pairing"
       }
     }

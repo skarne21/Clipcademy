@@ -57,8 +57,9 @@ All Member 2 code is built and tested.
   - `rep-r2` A, which is sourced to L19 p. 2 only
   - `dr-q1` C and `dr-r4` B, which mentioned ligase and primers from Lecture 19 while sourced to L20 only
 
+**Longest-answer cue, fixed 2026-11-02:** in 8 questions the correct choice was clearly the longest, so students could pick it by recognition: `rep-q2`, `dr-q1`, `dr-q2`, `dr-r4`, `tx-q2`, `tx-r1`, `tx-r4`, and `tl-r4`. Their choices were reworded to similar lengths, using only facts in the notes. Correct letters, misconceptions, and follow-up routing are unchanged. Two feedback lines changed to match their new choice text (`dr-q2` B, `tl-r4` C). `check_content.py` now fails if a correct choice is much longer than every distractor. Reviewer: `rep-q2` A ("DNA polymerase can't start a new strand") is the same idea as post-test item A3, but that was true before this change too. Confirm the formats differ enough, since A3 is free response and asks for a reason.
+
 **For the reviewer to decide:**
-- In `rep-q2` and `dr-q2`, the correct choice is clearly the longest and most specific. A student can pick it by recognition rather than recall. Consider shortening it or lengthening the distractors. Changing `rep-q2` also means updating its examples in this file, Team_Spec, and `learning/samples/`.
 - The excluded L19 p. 3 passage says ligase closes the gap *before* the RNA primer is removed. Standard textbooks give the reverse order (primer removed and replaced, then ligase seals), so keep it excluded until the instructor clarifies.
 - Typos in the notes ("One the primer is made," "like G to A") weren't carried into any app text.
 
@@ -158,7 +159,7 @@ The replication lesson is detailed below. The other lessons follow the same patt
 | ID | Role | Prompt | Choices | Correct | Wrong choice leads to |
 | --- | --- | --- | --- | --- | --- |
 | `rep-q1` | required | Which end receives new nucleotides during DNA synthesis? | A. 5′ end · B. 3′ end | B | A → `growth_direction` → `direction_followup` → `rep-r1` |
-| `rep-q2` | required | Why is a primer needed? | A. DNA polymerase needs an existing complementary strand to extend · B. Ligase adds all new bases · C. DNA is synthesized only 3′ to 5′ | A | B → `primer_requirement` → `primer_followup` → `rep-r2` · C → `growth_direction` → `direction_followup` → `rep-r1` |
+| `rep-q2` | required | Why is a primer needed? | A. DNA polymerase can't start a new strand · B. Ligase uses it to add the new bases · C. It lets DNA grow in the 3′ to 5′ direction | A | B → `primer_requirement` → `primer_followup` → `rep-r2` · C → `growth_direction` → `direction_followup` → `rep-r1` |
 | `rep-r1` | retry for q1 | A complementary primer is already present. Where does DNA polymerase add the next DNA nucleotide? | A. Its 3′ end · B. Its 5′ end | A | B → `growth_direction` → `direction_followup` → `rep-r3` |
 | `rep-r2` | retry for q2 | Which enzyme makes the RNA primer? | A. Ligase · B. Primase · C. DNA polymerase | B | A, C → `primer_requirement` → `primer_followup` → `rep-r4` |
 | `rep-r3` | 2nd retry for q1 | DNA polymerase is adding nucleotides to a growing strand. In which direction does the new strand grow? | A. 5′ to 3′ · B. 3′ to 5′ | A | B → `needs_review` (limit reached) |
@@ -200,9 +201,9 @@ The misconception mapping is a teaching choice, not a diagnosis of what the stud
   "objective_id": "synthesis_direction_and_primer",
   "prompt": "Why is a primer needed?",
   "choices": [
-    { "choice_id": "A", "text": "DNA polymerase needs an existing complementary strand to extend" },
-    { "choice_id": "B", "text": "Ligase adds all new bases" },
-    { "choice_id": "C", "text": "DNA is synthesized only 3′ to 5′" }
+    { "choice_id": "A", "text": "DNA polymerase can't start a new strand" },
+    { "choice_id": "B", "text": "Ligase uses it to add the new bases" },
+    { "choice_id": "C", "text": "It lets DNA grow in the 3′ to 5′ direction" }
   ]
 }
 ```

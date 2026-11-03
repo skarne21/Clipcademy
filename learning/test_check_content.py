@@ -41,6 +41,8 @@ class CheckContent(unittest.TestCase):
             "topics and packet disagree": lambda d: d["topics"][0]["objectives"][0]["required_question_ids"].pop(),
             "counts_for outside objective": lambda d: d["key"]["rep-r1"].update(counts_for="dr-q1"),
             "variant missing": lambda d: d["packets"]["synthesis_direction_and_primer"]["variants"].pop("primer_followup"),
+            "correct answer is the giveaway longest": lambda d: d["questions"]["rep-q1"]["choices"][1].update(
+                text="The 3′ end, where DNA polymerase adds each new nucleotide"),
         }
         for name, breakage in breakages.items():
             data = copy.deepcopy(load())
