@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { formatSourceRefs } from "../content/sourceRefs";
 
 type LessonScreenProps = {
@@ -32,6 +32,11 @@ export function LessonScreen({
 }: LessonScreenProps) {
   const startedRef = useRef(false);
   const completedRef = useRef(false);
+
+  useEffect(() => {
+    startedRef.current = false;
+    completedRef.current = false;
+  }, [videoUrl]);
 
   const answerEnabled = videoStatus === "ready";
   const sourceLabel =
