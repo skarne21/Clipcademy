@@ -213,7 +213,10 @@ export function navReducer(state: NavState, action: NavAction): NavState {
       return { ...state, video_status: "failed", video_job_id: action.job_id };
 
     case "RETRY_VIDEO":
-      if (state.screen !== "lesson" || state.video_status !== "failed") {
+      if (
+        !isVideoScreen(state.screen) ||
+        state.video_status !== "failed"
+      ) {
         return state;
       }
       return {

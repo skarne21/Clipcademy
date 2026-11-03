@@ -491,6 +491,34 @@ describe("video failure", () => {
     expect(retry.pending_question_id).toBe("rep-r2");
   });
 
+  it("from followup_preparing with video_status failed, RETRY_VIDEO sets preparing, clears job_id, keeps video_request and pending_question_id, and increments token", () => {
+    let state = navReducer(feedbackState(attemptReviewAgain), { type: "CONTINUE" });
+    const token = state.token;
+    const videoRequest = state.video_request;
+    const pendingQuestionId = state.pending_question_id;
+
+    state = navReducer(state, {
+      type: "VIDEO_JOB_CREATED",
+      token,
+      job_id: "followup-fail-1",
+    });
+    state = navReducer(state, {
+      type: "VIDEO_FAILED",
+      token,
+      job_id: "followup-fail-1",
+    });
+    expect(state.screen).toBe("followup_preparing");
+    expect(state.video_status).toBe("failed");
+
+    const retry = navReducer(state, { type: "RETRY_VIDEO" });
+    expect(retry.screen).toBe("followup_preparing");
+    expect(retry.video_status).toBe("preparing");
+    expect(retry.video_job_id).toBeUndefined();
+    expect(retry.video_request).toEqual(videoRequest);
+    expect(retry.pending_question_id).toBe(pendingQuestionId);
+    expect(retry.token).toBe(token + 1);
+  });
+
   it("ignores RETRY_VIDEO when not failed", () => {
     const ready = lessonReadyState();
     expect(navReducer(ready, { type: "RETRY_VIDEO" })).toBe(ready);
