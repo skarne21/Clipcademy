@@ -63,7 +63,7 @@
     ],
     "choices": {
       "A": {
-        "feedback": "Ligase joins DNA fragments. Primase makes the RNA primer.",
+        "feedback": "Primase makes the RNA primer. Unlike DNA polymerase, it can start from scratch on a single template strand.",
         "misconception_id": "primer_requirement"
       },
       "B": {
@@ -131,7 +131,7 @@
         "misconception_id": null
       },
       "C": {
-        "feedback": "Ligase joins backbone gaps. It doesn't remove wrong bases.",
+        "feedback": "The wrong base is fixed right away by DNA polymerase's own exonuclease activity, not by ligase.",
         "misconception_id": "repair_timing"
       }
     }
@@ -228,7 +228,7 @@
         "misconception_id": "uv_damage"
       },
       "B": {
-        "feedback": "Primers belong to replication, not UV-damage repair.",
+        "feedback": "No primer is involved. The last step reseals the backbone with phosphodiester linkages.",
         "misconception_id": "uv_damage"
       },
       "C": {
