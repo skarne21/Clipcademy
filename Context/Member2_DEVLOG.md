@@ -1,0 +1,146 @@
+# Member 2 development log
+
+Owner: Member 2 (questions, adaptive lesson logic, learning service) · Code: `learning/` · Spec: [Member2_SPEC.md](Member2_SPEC.md)
+Period covered: 2026-11-02 · Branch: `MVP02` · Tag: `V1` (`bf28f92`, before the end-to-end review)
+
+## Where things stand
+
+All the code Member 2 owns is built, tested, and pushed. What's left depends on other people: a content reviewer, Members 1 and 3 delivering their parts, and the PythonAnywhere deployment.
+
+| Area | State |
+| --- | --- |
+| Topics, packets, question bank, answer key (tasks 1–4) | Done. Content is `draft` until review |
+| Grading and the 2-cycle limit (tasks 5–6) | Done. `learning/grading.py` |
+| Sample responses for Member 3 (task 7) | Done. `learning/samples/`, 11 files of real app output |
+| API: topics, questions, attempts (task 8) | Done. `learning/app.py` |
+| Events and `events.csv` export (task 9) | Done |
+| Wrong-answer flow with Members 1 and 3 (task 10) | Member 2's half is tested. Waits on Member 3's UI |
+| Content check (task 11) | Automated check done. 58 audit rows wait for a human reviewer |
+| Hosting | PythonAnywhere free plan chosen. Member 2 owns the account. Not deployed yet |
+
+**Tests:** 3 suites, run with `python learning/test_grading.py`, `python learning/test_app.py`, and `python learning/test_check_content.py`. They include a test that walks all 152 possible answer sequences across the 4 lessons. `python learning/check_content.py` passes.
+
+## Timeline
+
+### 1. Spec review
+
+I read the whole `Context/` folder and checked the data files against each other: every question has an answer-key entry, choice IDs match, and every misconception maps to a real video variant and retry questions. I flagged 10 problems:
+- **Contradictions:** a required question is shown again after a different misconception's retry, the example feedback didn't match the answer key, draft content was marked `available`, and `rep-r2`'s source didn't match.
+- **Gaps:** no `needs_review` explanation was defined, there was no flag column for events, no storage choice, no rules for invalid or out-of-order requests, and no checks on the state the client sends.
+
+The team resolved these in `0f394ce`, which defined `objective_status`, `expected_question_id`, `review_points`, `build_id_status`, and the `409`/`400` rules.
+
+### 2. Grading module (tasks 5–6)
+
+I wrote the tests first from the spec's test cases, then `grading.py`.
+
+The module is one function, `grade(request, attempts)`. It validates the request and the state the client sends, enforces the order of questions, applies the transition rules, caps follow-up cycles at 2 per objective, and replays a stored result when the same submission is resent. It reads all four lessons from the data files, so adding a lesson needs no code change.
+
+While I was building it, `0f394ce` landed with different field names. I undid my overlapping spec edits and brought the code in line with the committed contract.
+
+### 3. Service decisions (`c4a0f92`)
+
+| Decision | Why |
+| --- | --- |
+| Python standard library only, no framework | Nothing to install, and it runs anywhere |
+| SQLite for attempts and events | Resends are recognized even after a restart, and events are durable |
+| Settings in environment variables (port, database, allowed origins, build IDs, admin token) | Same code locally and when hosted |
+| `POST /events` checks fields strictly; a repeated `event_id` returns `200`, not an error | Keeps the study data clean, and makes Member 3's resends safe |
+| Added `client_timestamp_utc` to events | A resent Day 0 event arriving on Day 1 would otherwise count as a return visit and inflate H3 |
+| `GET /events.csv` needs a token | The export holds participant activity |
+| No LLM API key | Grading follows fixed rules and all content is pre-written |
+
+### 4. Hosting (`68652c8`, `0621a79`)
+
+I compared free and low-cost hosts. PythonAnywhere's free plan is the cheapest that keeps its disk between restarts, which SQLite needs. Render's free plan spins down and seems to have no persistent disk, Fly.io no longer has a free tier, and Koyeb now needs a card hold. Everything is served from one place: my service, Member 3's static files at `/`, and Member 1's clips at `/media/`.
+
+What this means for the rest of the team:
+- The service became a WSGI app. Locally it runs on `wsgiref`.
+- The free plan can't render video live. Member 1 renders the clips ahead of time.
+- Member 3's app must build to static files and call the API with relative paths.
+
+### 5. Clarifying adaptation (`a363432`)
+
+The MVP adapts by *selecting* pre-written content, not by generating it: a wrong answer picks which follow-up video and which retry question come next. Every item must pass content review before students see it, so nothing is generated during a session. This is now stated plainly in Team_Spec. The same commit defined how Member 1's `/video-jobs` plugs into my service and how Member 3 proxies the API during local development.
+
+### 6. Service build (`1f91188`, `441b9d1`)
+
+- **`app.py`:** serves `/topics`, `/questions/{id}`, `/attempts`, `/events`, and `/events.csv`. It handles browser access permissions, a 64 KB limit on request size, and the standard error format.
+- **`/video-jobs`:** passed to Member 1's `video/jobs.py` once that file exists. Until then it returns `503`.
+- **`samples/`:** generated by running the real app. The tests fail if a sample no longer matches.
+- **`check_content.py`:** checks that sources, the answer key, misconceptions, video variants, retry counts, and topics are consistent. With `--freeze`, it also requires approved content for every `available` lesson.
+- **`content-audit.csv`:** pre-filled with 58 `pending` rows, one for each validation-build item.
+
+I also smoke-tested the real server with curl.
+
+### 7. Permission and account (`84fb60a`)
+
+Instructor permission for the note excerpts was received on 2026-11-02. Member 2 owns the PythonAnywhere account. I added step-by-step deployment instructions to Member2_SPEC.
+
+### 8. Content pre-check against the lecture notes (`2a4f7fe`)
+
+I extracted the text of L19 pp. 1–3 and L20 p. 1 and compared every validation-build question and feedback line with it. Every answer was correct. I fixed some sourcing problems:
+- I added two L19 p. 1 excerpts the content already relied on: anti-parallel strands, and ligase adding no new bases.
+- I reworded 3 feedback lines (`rep-r2` A, `dr-q1` C, `dr-r4` B) that cited facts from outside their listed sources.
+
+### 9. Longest-answer cue (`bf28f92`, tagged `V1`)
+
+In 8 questions, the correct choice was clearly the longest, so students could pick it by recognition rather than recall. The affected questions were `rep-q2`, `dr-q1`, `dr-q2`, `dr-r4`, `tx-q2`, `tx-r1`, `tx-r4`, and `tl-r4`. I reworded their choices to similar lengths, using only facts from the notes. Correct letters, misconceptions, and follow-up videos are unchanged, and two feedback lines changed to match their new choice text. `check_content.py` now flags this pattern.
+
+### 10. End-to-end review (`accfd82`)
+
+`V1` was tagged first, before any testing. Then I tested everything in four ways:
+- Ran the 3 test suites.
+- Checked every one of the 152 possible answer sequences against the flow rules.
+- Ran a real HTTP server, acting as both Member 3 (browser app) and Member 1 (video service).
+- Compared the spec's examples with live responses.
+
+That review found 4 real problems:
+
+| Problem | Impact | Fix |
+| --- | --- | --- |
+| Member 3 had no way to build the initial video request | A student couldn't start a lesson | `/topics` gives each objective an `initial_video_request` |
+| IDs numbered like the spec examples (`attempt-001`) collided between students and after Reset demo | A student got another student's result or was blocked with `409`, and events were silently dropped | `attempt_id` and `event_id` must be UUIDs |
+| `topic_id` on `question_answered` events was optional | The H3 split between replication and repair could come out empty | The server fills in `topic_id` and `objective_id` from the question |
+| Path routes like `/lesson` would hit the API when the page is refreshed | A refresh would show a 404 | Member 3 uses hash routes (`/#/lesson`) |
+
+The 152-path check is now a permanent test. It also catches a version that I broke on purpose.
+
+### 11. Member 3 spec review
+
+I checked Member3_SPEC (committed in `22bb6b0`) against this API. It's consistent. I suggested four small additions, which aren't applied yet:
+- Member 1's ready response should say whether a clip was pre-rendered.
+- The first question of a fresh lesson comes from `required_question_ids[0]`.
+- Every `409` should be handled as "state out of sync," not only the one for `question_id`.
+- Test case 13 needs the local server started with the app's build ID.
+
+## Commits
+
+| Commit | Change |
+| --- | --- |
+| `c4a0f92` | Service details: stack, config, events contract, export |
+| `68652c8` | PythonAnywhere hosting |
+| `1f91188` | Learning service: grading, WSGI API, events, samples |
+| `0621a79` | Free-host limits and confirmations for Members 1 and 3 |
+| `a363432` | Selection not generation, `/video-jobs` plug-in, local dev proxy |
+| `441b9d1` | `/video-jobs` forwarding, content check, audit sheet |
+| `84fb60a` | Instructor permission, account owner, deploy steps |
+| `2a4f7fe` | Content pre-check against the lecture notes |
+| `bf28f92` (`V1`) | Longest-answer cue removed from 8 questions |
+| `accfd82` | Integration fixes from the end-to-end review |
+
+## Next steps for Member 2
+
+1. **Deploy the API now:** Member2_SPEC, Deploying, steps 1–4 and 6.
+2. **Tell Members 1 and 3 about the contract changes** from `accfd82`: UUID IDs, `initial_video_request`, hash routes, and `video/jobs.py`.
+3. **Find a content reviewer** for the 58 rows in content-audit.csv.
+4. **When Member 3's UI exists:** finish task 10 together, and map `web/dist` to `/`.
+5. **When Member 1 adds `video/jobs.py`:** confirm `/video-jobs` serves clips, and map `/media/`.
+6. **Build freeze:**
+   - Mark the reviewed packets `reviewed`.
+   - Set `dna_repair` to `available`.
+   - Delete the development database.
+   - Set the build ID and allowed origin on the server.
+   - Run `check_content.py --freeze`.
+7. **Day 0:** extend the web app's expiry first.
+8. **After Day 2:** download the database and `events.csv`.
