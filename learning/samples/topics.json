@@ -43,7 +43,7 @@
         "source_refs": [
           "L20-p1"
         ],
-        "availability": "coming_soon",
+        "availability": "available",
         "objectives": [
           {
             "objective_id": "error_correction",
