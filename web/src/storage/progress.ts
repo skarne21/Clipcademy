@@ -27,9 +27,13 @@ export type StoredStep = {
   topic_id?: string;
   objective_id?: string;
   question_id?: string;
+  pending_question_id?: string;
+  video_kind?: "initial" | "followup";
   video_job_id?: string;
   video_request?: VideoRequest;
   attempt_id?: string;
+  initial_video_request?: VideoRequest;
+  initial_first_question_id?: string;
 };
 
 export type StoredAttempt = {
