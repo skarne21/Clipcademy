@@ -73,6 +73,8 @@ Every 4xx has the body `{"error": {"field": "...", "message": "..."}}`. Show the
 
 ## Screens
 
+Visual and interaction rules for every screen are in [UI_Guidelines.md](UI_Guidelines.md).
+
 | Screen | Route | Visible elements | Next action |
 | --- | --- | --- | --- |
 | Participant code | `#/code` | Code entry (first open only) | Exam topics |
