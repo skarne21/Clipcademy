@@ -38,7 +38,7 @@ Work through these in order. Each task ends with something I can share.
 | 13 | Reset demo, failure, persistence, and late-response checks; build for the host | checklist below is ticked, static build in `web/dist` | Team | Demo readiness |
 
 **Progress:**
-Not started. Member 2's service and samples are ready to build against. Member 1's `/video-jobs` returns `503` until `video/jobs.py` exists, so tasks 6 and 8 use a sample MP4 and a fake ready response in the data-access module until then.
+Task 2 done: `web/` is Vite vanilla JS, and `web/src/api.js` runs in `live` or `samples` mode (`VITE_DATA_MODE=samples npm run dev`; `npm run check` tests samples mode). To develop against the hosted API instead of a local one, run `API_TARGET=https://clipcademy.pythonanywhere.com npm run dev`. The earlier React + TypeScript scaffold was dropped to match this spec. Member 2's service and samples are ready to build against. Member 1's `/video-jobs` returns `503` until `video/jobs.py` exists, so tasks 6 and 8 use a sample MP4 and a fake ready response in the data-access module until then.
 
 ## Stack
 

@@ -1,0 +1,14 @@
+{
+  "name": "clipcademy-web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "node check-samples.mjs"
+  },
+  "devDependencies": {
+    "vite": "^8.3.5"
+  }
+}
