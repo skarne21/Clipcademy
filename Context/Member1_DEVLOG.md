@@ -19,3 +19,18 @@ The shared template specifies one guide, labeled diagrams, colors, fonts and voi
 The packets are still `draft` and the content audit is still `pending`.
 These are review assets, not evidence of course-expert approval. Do not release to
 participants until the existing content-review and freeze process passes.
+
+## Completed implementation and handoff
+
+- Added the Python WSGI handler at the existing backend mount, persistent jobs,
+  cache reuse, local asynchronous rendering, honest failures and retry recovery.
+- Added six actual narrated MP4s, sidecar transcripts/captions, source-linked
+  manifests, two sample request/results and a missing-asset failure example.
+- Added local byte-range media delivery and Vite media proxy. The existing UI
+  labels previews honestly and loads captions from the response.
+- Verified 10 video/integration and 48 learning tests, six full MP4 decodes,
+  frontend sample checks/build, and content consistency. Browser launch was
+  denied by the execution environment, so browser and phone checks remain open.
+- No study results or review approvals were fabricated. Course review and the
+  existing freeze gate remain pending. See `video/README.md` for exact commands,
+  response shapes, review fingerprints, hosting and Member 3 integration notes.
