@@ -181,7 +181,7 @@ def make_app(db_path, allowed_origins, build_ids, admin_token, video_app=None):
                         ("Access-Control-Allow-Headers", "Content-Type, Authorization")]
             start_response("204 No Content", headers)
             return [b""]
-        if video_app is not None and _is_video_path(path):
+        if video_app is not None and (_is_video_path(path) or path.startswith("/media/")):
             return video_app(environ, start_response)  # Member 1's handler owns these responses (Team_Spec, Hosting)
         try:
             status, body = route(method, path, environ)
@@ -206,7 +206,14 @@ def _load_video_app():
     spec = importlib.util.spec_from_file_location("video_jobs", path)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
-    return module.application
+    def mounted(environ, start_response):
+        if environ.get("PATH_INFO", "").startswith("/media/"):
+            media_spec = importlib.util.spec_from_file_location("video_media", os.path.join(os.path.dirname(path), "media.py"))
+            media = importlib.util.module_from_spec(media_spec)
+            media_spec.loader.exec_module(media)
+            return media.serve(environ, start_response, module.application.media)
+        return module.application(environ, start_response)
+    return mounted
 
 
 def _env_list(name, default=""):

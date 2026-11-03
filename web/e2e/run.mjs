@@ -17,7 +17,7 @@ const CHROME =
   '/usr/bin/google-chrome'
 const clip = await readFile(new URL('./clip.mp4', import.meta.url))
 
-const browser = await puppeteer.launch({ executablePath: CHROME, args: ['--autoplay-policy=no-user-gesture-required'] })
+const browser = await puppeteer.launch({ executablePath: CHROME, args: ['--autoplay-policy=no-user-gesture-required', ...(process.env.CHROME_NO_SANDBOX === '1' ? ['--no-sandbox'] : [])] })
 const page = await browser.newPage()
 await page.setViewport({ width: 390, height: 844, isMobile: true, hasTouch: true })
 
@@ -27,7 +27,7 @@ page.on('console', (m) => m.type() === 'error' && !/Failed to load resource/.tes
 
 // ---- network control ----
 const log = { attempts: [], events: [], videoPosts: 0, questionBodies: [] }
-let video = 'real' // real | broken (clip URL 404s) | playable | slow
+let video = 'broken' // real | broken (clip URL 404s) | playable | slow
 let eventsDown = false
 let attemptHook = null
 let jobPolls = 0
@@ -115,7 +115,7 @@ assert.doesNotMatch(t.split('Translation')[1], /Complete|Start|Resume/)
 assert.match(t, /P01/)
 ok('2 coming-soon topics selectable, never startable')
 
-// 9. the server's real /video-jobs answer (503 until Member 1 ships), then a clip URL that won't load
+// 9. A missing clip, then retry.
 await click('Start')
 await waitText("The clip couldn't load.")
 assert.match(await hash(), /#\/lesson\/synthesis_direction_and_primer/)
@@ -130,7 +130,7 @@ video = 'playable'
 await click('Retry')
 await page.waitForSelector('video')
 await waitText('Test transcript.')
-assert.match(await text(), /made ahead of time/)
+assert.match(await text(), /Previously rendered/)
 await page.$eval('video', (v) => {
   v.muted = true
   return v.play()

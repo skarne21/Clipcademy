@@ -1,0 +1,13 @@
+{
+  "video_file": "dna_repair.timing_followup.5a118265db053f5c.mp4",
+  "captions_file": "dna_repair.timing_followup.5a118265db053f5c.vtt",
+  "transcript": "Use timing to distinguish these repair processes. During copying, DNA polymerase can catch a wrong base it just added. Its exonuclease activity removes that incorrect base from the three prime end.\n\nAfter replication is complete, mismatch repair proteins scan the new double helix. When they find a mismatch, enzymes remove the affected section and replace it with the correct DNA nucleotides.\n\nProofreading is a check during copying by DNA polymerase itself. Mismatch repair is a check after replication. Both correct mistakes, but the timing and the proteins doing the checking distinguish the two processes.",
+  "source_refs": [
+    "L20-p1"
+  ],
+  "duration_seconds": 44.792,
+  "fingerprint": "5a118265db053f5c",
+  "review_status": "pending",
+  "narration": "synthetic: eSpeak NG en-us",
+  "sha256": "c9510516f0373d8f98316871f4d2604f937af971948cac765b1fcabf0a0f13c2"
+}

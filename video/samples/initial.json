@@ -1,0 +1,34 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/video-jobs",
+    "body": {
+      "topic_id": "dna_replication",
+      "objective_id": "synthesis_direction_and_primer",
+      "variant_id": "initial",
+      "teaching_goal": "Explain 5′→3′ synthesis at the 3′ end and why a primer is needed",
+      "source_refs": [
+        "L19-p1",
+        "L19-p2"
+      ]
+    }
+  },
+  "status": 200,
+  "response": {
+    "job_id": "video-2a1447a8f645471b9bba7f96ca7f1e91",
+    "status": "ready",
+    "topic_id": "dna_replication",
+    "objective_id": "synthesis_direction_and_primer",
+    "variant_id": "initial",
+    "source_refs": [
+      "L19-p1",
+      "L19-p2"
+    ],
+    "source": "prerendered",
+    "video_url": "/media/dna_replication.initial.598cb64186cab048.mp4",
+    "captions_url": "/media/dna_replication.initial.598cb64186cab048.vtt",
+    "transcript": "DNA strands run in opposite directions. This is called antiparallel. Notice that the template runs from three prime to five prime, while the complementary strand runs from five prime to three prime.\n\nNew DNA grows from five prime to three prime. Each new nucleotide joins the three prime end of the growing complementary strand. The labels describe the strand ends, not two possible directions of synthesis.\n\nDNA polymerase cannot start a complementary strand from scratch. Primase makes a short RNA primer on the template. DNA polymerase can then extend the primer by adding DNA nucleotides at its three prime end.",
+    "duration_seconds": 55.167,
+    "review_status": "preview"
+  }
+}

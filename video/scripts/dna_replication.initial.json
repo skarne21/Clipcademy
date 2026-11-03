@@ -1,0 +1,231 @@
+{
+  "topic_id": "dna_replication",
+  "objective_id": "synthesis_direction_and_primer",
+  "variant_id": "initial",
+  "teaching_goal": "Explain 5′→3′ synthesis at the 3′ end and why a primer is needed",
+  "source_refs": [
+    "L19-p1",
+    "L19-p2"
+  ],
+  "review_status": "pending",
+  "scenes": [
+    {
+      "diagram": "antiparallel",
+      "title": "Two strands, opposite directions",
+      "narration": "DNA strands run in opposite directions. This is called antiparallel. Notice that the template runs from three prime to five prime, while the complementary strand runs from five prime to three prime.",
+      "stage": {
+        "template": "draw",
+        "complement": "hidden",
+        "primer": 5,
+        "dna": 2,
+        "primer_label": false
+      },
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "template_in"
+          ]
+        },
+        {
+          "on": "strands",
+          "do": [
+            "complement_in"
+          ]
+        },
+        {
+          "on": "opposite",
+          "do": [
+            "arrows"
+          ]
+        },
+        {
+          "on": "antiparallel",
+          "do": [
+            "pose:present"
+          ]
+        },
+        {
+          "on": "template",
+          "do": [
+            "point:template"
+          ]
+        },
+        {
+          "on": "three prime",
+          "do": [
+            "pulse:template_3"
+          ]
+        },
+        {
+          "on": "five prime",
+          "do": [
+            "pulse:template_5"
+          ]
+        },
+        {
+          "on": "complementary",
+          "do": [
+            "point:complement"
+          ]
+        },
+        {
+          "on": "five prime",
+          "do": [
+            "pulse:new_5"
+          ]
+        },
+        {
+          "on": "three prime",
+          "do": [
+            "pulse:new_3"
+          ]
+        }
+      ]
+    },
+    {
+      "diagram": "growth",
+      "title": "Add to the 3′ end",
+      "narration": "New DNA grows from five prime to three prime. Each new nucleotide joins the three prime end of the growing complementary strand. The labels describe the strand ends, not two possible directions of synthesis.",
+      "stage": {
+        "primer": 5,
+        "dna": 2,
+        "polymerase": true
+      },
+      "beats": [
+        {
+          "on": "grows",
+          "do": [
+            "arrow",
+            "extend",
+            "point:polymerase"
+          ]
+        },
+        {
+          "on": "nucleotide",
+          "do": [
+            "zoom:three_end",
+            "point:three_end"
+          ]
+        },
+        {
+          "on": "three prime",
+          "do": [
+            "pulse:three_end"
+          ]
+        },
+        {
+          "on": "labels",
+          "do": [
+            "zoom_out"
+          ]
+        },
+        {
+          "on": "strand ends",
+          "do": [
+            "pulse:new_5",
+            "pulse:new_3",
+            "point:new_5"
+          ]
+        },
+        {
+          "on": "not",
+          "do": [
+            "pose:wag"
+          ]
+        }
+      ]
+    },
+    {
+      "diagram": "primer",
+      "title": "Primase provides the start",
+      "narration": "DNA polymerase cannot start a complementary strand from scratch. Primase makes a short RNA primer on the template. DNA polymerase can then extend the primer by adding DNA nucleotides at its three prime end.",
+      "stage": {},
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "polymerase_try"
+          ]
+        },
+        {
+          "on": "cannot",
+          "do": [
+            "pose:shrug"
+          ]
+        },
+        {
+          "on": "primase",
+          "do": [
+            "primase_build",
+            "point:primase",
+            "card:Primase makes the start"
+          ]
+        },
+        {
+          "on": "template",
+          "do": [
+            "point:primer",
+            "pulse:primer"
+          ]
+        },
+        {
+          "on": "extend",
+          "do": [
+            "polymerase_enter",
+            "extend",
+            "card:Polymerase extends its 3′ end"
+          ]
+        },
+        {
+          "on": "three prime end",
+          "do": [
+            "zoom:three_end",
+            "pulse:three_end",
+            "point:three_end"
+          ]
+        }
+      ]
+    },
+    {
+      "diagram": "growth",
+      "title": "Recap: direction and the primer",
+      "narration": "Remember: new DNA grows five prime to three prime. DNA polymerase adds to the three prime end of an existing primer.",
+      "stage": {
+        "primer": 5,
+        "dna": 4,
+        "polymerase": true
+      },
+      "beats": [
+        {
+          "on": "remember",
+          "do": [
+            "pose:present"
+          ]
+        },
+        {
+          "on": "grows",
+          "do": [
+            "extend",
+            "card:New DNA grows 5′ → 3′",
+            "point:three_end"
+          ]
+        },
+        {
+          "on": "adds",
+          "do": [
+            "card:Polymerase adds at the primer's 3′ end",
+            "pulse:three_end"
+          ]
+        },
+        {
+          "on": "existing primer",
+          "do": [
+            "pulse:primer",
+            "point:primer"
+          ]
+        }
+      ]
+    }
+  ]
+}

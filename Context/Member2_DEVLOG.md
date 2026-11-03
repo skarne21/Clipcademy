@@ -18,7 +18,7 @@ All the code Member 2 owns is built, tested, pushed, and **live**. What's left d
 | Content check (task 11) | Automated check done. 58 audit rows wait for a human reviewer |
 | Hosting | **Deployed** on PythonAnywhere (account `ClipCademy`). The API and Member 3's app are served from one site |
 | Time on app | Done. `heartbeat` events, in the server and the app |
-| Validation build | `study-1`. DNA repair is `available`. The final freeze waits on content review and clips |
+| Validation build | `study-2` is live and verified on a phone-sized browser. DNA repair is `available`. The final freeze waits on content review and clips |
 
 **Tests:** 3 suites, run with `python learning/test_grading.py`, `python learning/test_app.py`, and `python learning/test_check_content.py`. They include a test that walks all 152 possible answer sequences across the 4 lessons. `python learning/check_content.py` passes.
 
@@ -171,6 +171,39 @@ The React data layer would lose all study data. Events use `participant_code` an
   - `study-1` events get `201`
   - browser access is limited to the live site
 
+### 17. Phone test of `study-1`
+
+The `TEST` export summary showed that every `study-1` event arrived with `build_id_status` `ok`:
+- **Answers were recorded once each.** 5 answers, 2 follow-ups and 1 completion form a valid path.
+- **`unknown` rows came from before the build ID was set.** They're the old `dev` build plus my earlier tests, and the analysis excludes them.
+
+The export also showed a measurement gap. On-screen time was added up in the page's memory, so **a refresh threw away up to 29 seconds** of time on app.
+
+### 18. Heartbeat carry-over across a refresh, build `study-2` (`0a90b93`)
+
+- **The fix:** `events.js` saves the seconds not yet worth a heartbeat when the page is hidden or closed. It saves on both, because phones often skip the close event when a tab is swiped away. Those seconds carry into the next load if it comes within 5 minutes, so yesterday's leftover can't count as today's time.
+- **The test:** `web/e2e/heartbeat.mjs` checks that 20 s on screen, then a refresh, then 14 s gives exactly one heartbeat. It's a separate file because another session had uncommitted edits in `run.mjs`. I wrote the test first, and it failed with 0 heartbeats. With the fix, it passes, and the full suite still passes all 17 checks.
+- **A test-environment problem:** two copies of `learning/app.py` were listening on port 8000. The other session's copy had loaded the topics before DNA repair became `available`, so my first run failed against it. I stopped only my own process (I identified it by start time), and reran on separate ports, 8020 and 5180.
+- **Build ID:** bumped to `study-2`, because time on app is now measured differently from `study-1`. I built it from committed code only. On the server, `CLIPCADEMY_BUILD_IDS` is `study-1,study-2` until the freeze.
+- **Checked live:**
+  - the new bundle is served, with `study-2` and the carry-over code in it
+  - topics are correct
+  - events get `201`
+
+### 19. Live check in a real browser
+
+The Chrome extension wasn't connected, so I drove the local Chrome directly, the same way the browser tests do. The test used a phone-sized window, the real site and **real time** (no fast clock):
+
+| Time | What happened |
+|---|---|
+| 2.8 s | Code `TEST` entered. The queued `app_opened` events are sent, and the server returns `201` |
+| 2.8–22.8 s | Topic picker on screen. No heartbeat yet, correctly |
+| 23.0 s | Refresh: a new session and `app_opened`. The screen stays on `#/topics` |
+| 23.6 s | **21.7 s carried over** from before the refresh |
+| 32.1 s | **Heartbeat sent** at exactly 30 s on screen in total (21.7 s + 8.5 s). The server returns `201` |
+
+Every event was built as `study-2` and stored, with no page errors. The phone test, including the refresh case, is done. Its `TEST` rows will be wiped at the freeze.
+
 ## Commits
 
 | Commit | Change |
@@ -190,17 +223,19 @@ The React data layer would lose all study data. Events use `participant_code` an
 | `f72eaec` | Server accepts `heartbeat`; validation plan measures time on app |
 | `b921e62` | Heartbeat in the web app, plus e2e case 16 |
 | `0bfcd6b` | Validation build: DNA repair available, build ID `study-1` |
+| `4d6f408` | Log and progress: deployment, heartbeat, app audit, `study-1` |
+| `0a90b93` | Heartbeat carries over a refresh; test; build ID `study-2` |
 
 ## Next steps for Member 2
 
-1. **Phone test:** check that the `TEST` events arrived once each, with `build_id_status` `ok` (export `/events.csv` with the admin token).
-2. **Find a content reviewer** for the 58 rows in content-audit.csv, including the clip transcripts once the clips exist.
-3. **When Member 1 adds `video/jobs.py` and the clips:** `git pull`, map `/media/` to the clips folder, Reload, and check that the follow-up clips play.
-4. **Team decision:** confirm the plain-JS app as Member 3's study app. If the other session's `web/src` edits go in, rebuild with a new build ID (`study-2`), and add it to `CLIPCADEMY_BUILD_IDS`.
-5. **Final freeze:**
+1. **Find a content reviewer** for the 58 rows in content-audit.csv, including the clip transcripts once the clips exist.
+2. **When Member 1 adds `video/jobs.py` and the clips:** `git pull`, map `/media/` to the clips folder, Reload, and check that the follow-up clips play.
+3. **Team decision:** confirm the plain-JS app as Member 3's study app. Any further change to the app means a new build ID (`study-3`), added to `CLIPCADEMY_BUILD_IDS`.
+4. **Final freeze:**
    - Mark the approved packets `reviewed`.
    - Run `check_content.py --freeze`, which must pass.
+   - Set `CLIPCADEMY_BUILD_IDS` to just the frozen build's ID.
    - Delete `learning/clipcademy.db`, then Reload.
-   - Test on a phone.
-6. **Day 0:** extend the web app's expiry first ("Run until 1 month from today").
-7. **After Day 2:** download `clipcademy.db` and `events.csv`.
+   - Repeat the live browser check.
+5. **Day 0:** extend the web app's expiry first ("Run until 1 month from today").
+6. **After Day 2:** download `clipcademy.db` and `events.csv`.

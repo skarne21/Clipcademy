@@ -1,0 +1,13 @@
+{
+  "video_file": "dna_repair.uv_followup.a9daddba3a8d81c3.mp4",
+  "captions_file": "dna_repair.uv_followup.a9daddba3a8d81c3.vtt",
+  "transcript": "UV light can cause adjacent cytosines and thymines to form covalent bonds. The resulting distortion in the DNA backbone interferes with normal copying and transcription. This is damage that must be recognized and removed.\n\nRepair proteins recognize the damaged site. Enzymes cut the backbone on either side of the problem and remove the damaged section from that strand. The diagram shows the gap left by that removal.\n\nThe missing section is replaced with correct DNA nucleotides. The backbone is then resealed by forming phosphodiester linkages. Remember the sequence: recognize the damage, cut out the section, replace it, and reseal the backbone.",
+  "source_refs": [
+    "L20-p1"
+  ],
+  "duration_seconds": 47.75,
+  "fingerprint": "a9daddba3a8d81c3",
+  "review_status": "pending",
+  "narration": "synthetic: eSpeak NG en-us",
+  "sha256": "3a8336e26bf185f132655afbe6aa5572572e4e8567d66f6c27db404ac0955479"
+}

@@ -35,7 +35,7 @@ Work through these in order. Each task ends with something I can share.
 | 11 | Check sources, the answer key, and stopping rules | checklist below is ticked | Team | Demo readiness |
 
 **Progress:**
-All Member 2 code is built, tested, and **live at https://clipcademy.pythonanywhere.com** (build `study-1`, with DNA repair `available`). Time on app is measured with `heartbeat` events. The final freeze waits on content review and Member 1's clips. Full history: [Member2_DEVLOG.md](Member2_DEVLOG.md).
+All Member 2 code is built, tested, and **live at https://clipcademy.pythonanywhere.com** (build `study-2`, with DNA repair `available`, verified in a live browser test on 2026-11-03). Time on app is measured with `heartbeat` events. The final freeze waits on content review and Member 1's clips. Full history: [Member2_DEVLOG.md](Member2_DEVLOG.md).
 
 - **Tasks 1–9:** built and tested. `/video-jobs` forwards to Member 1's `video/jobs.py` as soon as that file exists, and returns `503` until then.
 - **Task 10:** my half is tested. A wrong answer's `next_video_request` passes through `/video-jobs` unchanged, and its `next_question_id` loads (`test_app.py`, `VideoJobs`). The UI half waits on Member 3.

@@ -1,0 +1,187 @@
+{
+  "topic_id": "dna_replication",
+  "objective_id": "synthesis_direction_and_primer",
+  "variant_id": "direction_followup",
+  "teaching_goal": "Explain growth direction and which end grows",
+  "source_refs": [
+    "L19-p1"
+  ],
+  "review_status": "pending",
+  "scenes": [
+    {
+      "diagram": "antiparallel",
+      "title": "Read the end labels",
+      "narration": "The two strands point in opposite directions. Follow the end labels: the template runs three prime to five prime. Its complementary strand runs five prime to three prime. These are different strands.",
+      "stage": {
+        "template": "draw",
+        "complement": "hidden",
+        "primer": 5,
+        "dna": 2,
+        "primer_label": false
+      },
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "template_in"
+          ]
+        },
+        {
+          "on": "two",
+          "do": [
+            "complement_in"
+          ]
+        },
+        {
+          "on": "opposite",
+          "do": [
+            "arrows"
+          ]
+        },
+        {
+          "on": "labels",
+          "do": [
+            "pose:present"
+          ]
+        },
+        {
+          "on": "template",
+          "do": [
+            "point:template"
+          ]
+        },
+        {
+          "on": "three prime",
+          "do": [
+            "pulse:template_3"
+          ]
+        },
+        {
+          "on": "five prime",
+          "do": [
+            "pulse:template_5"
+          ]
+        },
+        {
+          "on": "complementary",
+          "do": [
+            "point:complement"
+          ]
+        },
+        {
+          "on": "five prime",
+          "do": [
+            "pulse:new_5"
+          ]
+        },
+        {
+          "on": "three prime",
+          "do": [
+            "pulse:new_3"
+          ]
+        },
+        {
+          "on": "different",
+          "do": [
+            "pulse:template",
+            "pulse:complement"
+          ]
+        }
+      ]
+    },
+    {
+      "diagram": "growth",
+      "title": "The growing end is 3′",
+      "narration": "Watch the complementary strand get longer. Each added nucleotide joins its three prime end. The five prime end stays at the start. Adding to the three prime end makes synthesis proceed five prime to three prime.",
+      "stage": {
+        "primer": 5,
+        "dna": 2,
+        "polymerase": true
+      },
+      "beats": [
+        {
+          "on": "watch",
+          "do": [
+            "extend",
+            "point:complement"
+          ]
+        },
+        {
+          "on": "joins",
+          "do": [
+            "zoom:three_end",
+            "point:three_end",
+            "pulse:three_end"
+          ]
+        },
+        {
+          "on": "five prime end",
+          "do": [
+            "zoom_out",
+            "point:new_5",
+            "pulse:new_5"
+          ]
+        },
+        {
+          "on": "adding",
+          "do": [
+            "point:three_end",
+            "pulse:three_end"
+          ]
+        },
+        {
+          "on": "proceed",
+          "do": [
+            "arrow"
+          ]
+        }
+      ]
+    },
+    {
+      "diagram": "growth",
+      "title": "Direction and end agree",
+      "narration": "Keep these two descriptions together: DNA grows five prime to three prime, and new nucleotides are added at the three prime end. Reading the template in the opposite direction does not reverse new DNA synthesis.",
+      "stage": {
+        "primer": 5,
+        "dna": 8,
+        "polymerase": true
+      },
+      "beats": [
+        {
+          "on": "keep",
+          "do": [
+            "pose:present"
+          ]
+        },
+        {
+          "on": "grows",
+          "do": [
+            "extend",
+            "card:DNA grows 5′ → 3′"
+          ]
+        },
+        {
+          "on": "added",
+          "do": [
+            "card:New nucleotides join the 3′ end",
+            "pulse:three_end",
+            "point:three_end"
+          ]
+        },
+        {
+          "on": "reading",
+          "do": [
+            "point:template",
+            "pulse:template"
+          ]
+        },
+        {
+          "on": "not",
+          "do": [
+            "pose:wag"
+          ]
+        }
+      ]
+    }
+  ]
+}

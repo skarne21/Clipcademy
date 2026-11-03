@@ -1,0 +1,29 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/video-jobs",
+    "body": {
+      "topic_id": "dna_replication",
+      "objective_id": "synthesis_direction_and_primer",
+      "variant_id": "primer_followup",
+      "teaching_goal": "Explain why DNA polymerase needs a primer",
+      "source_refs": [
+        "L19-p1",
+        "L19-p2"
+      ]
+    }
+  },
+  "status": 200,
+  "response": {
+    "job_id": "video-734f4428eb714ad9abd2b60135266bd5",
+    "status": "failed",
+    "topic_id": "dna_replication",
+    "objective_id": "synthesis_direction_and_primer",
+    "variant_id": "primer_followup",
+    "source_refs": [
+      "L19-p1",
+      "L19-p2"
+    ],
+    "error": "Prepared clip is missing or invalid. Restore the asset and retry."
+  }
+}

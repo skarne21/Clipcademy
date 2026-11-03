@@ -1,0 +1,157 @@
+{
+  "topic_id": "dna_repair",
+  "objective_id": "error_correction",
+  "variant_id": "uv_followup",
+  "teaching_goal": "Explain what UV light does to DNA and how it is repaired",
+  "source_refs": [
+    "L20-p1"
+  ],
+  "review_status": "pending",
+  "scenes": [
+    {
+      "diagram": "uv",
+      "title": "UV can distort DNA",
+      "narration": "UV light can cause adjacent cytosines and thymines to form covalent bonds. The resulting distortion in the DNA backbone interferes with normal copying and transcription. This is damage that must be recognized and removed.",
+      "stage": {
+        "bottom": 11
+      },
+      "beats": [
+        {
+          "on": "uv",
+          "do": [
+            "uv",
+            "point:damage"
+          ]
+        },
+        {
+          "on": "covalent",
+          "do": [
+            "bond",
+            "pulse:damage"
+          ]
+        },
+        {
+          "on": "distortion",
+          "do": [
+            "distort",
+            "zoom:damage"
+          ]
+        },
+        {
+          "on": "interferes",
+          "do": [
+            "pose:surprised"
+          ]
+        },
+        {
+          "on": "this",
+          "do": [
+            "zoom_out",
+            "card:UV: adjacent bases bond and distort DNA"
+          ]
+        },
+        {
+          "on": "recognized",
+          "do": [
+            "point:damage",
+            "pulse:damage"
+          ]
+        }
+      ]
+    },
+    {
+      "diagram": "cut",
+      "title": "Recognize and cut out",
+      "narration": "Repair proteins recognize the damaged site. Enzymes cut the backbone on either side of the problem and remove the damaged section from that strand. The diagram shows the gap left by that removal.",
+      "stage": {
+        "bottom": 11,
+        "damaged": true
+      },
+      "beats": [
+        {
+          "on": "repair",
+          "do": [
+            "recognize",
+            "point:protein"
+          ]
+        },
+        {
+          "on": "cut",
+          "do": [
+            "cut",
+            "pulse:cuts"
+          ]
+        },
+        {
+          "on": "remove",
+          "do": [
+            "remove"
+          ]
+        },
+        {
+          "on": "gap",
+          "do": [
+            "pulse:gap",
+            "point:gap",
+            "card:Damaged section removed from one strand"
+          ]
+        }
+      ]
+    },
+    {
+      "diagram": "reseal",
+      "title": "Replace and reseal",
+      "narration": "The missing section is replaced with correct DNA nucleotides. The backbone is then resealed by forming phosphodiester linkages. Remember the sequence: recognize the damage, cut out the section, replace it, and reseal the backbone.",
+      "stage": {
+        "bottom": 11,
+        "gap": true
+      },
+      "beats": [
+        {
+          "on": "replaced",
+          "do": [
+            "replace",
+            "point:gap"
+          ]
+        },
+        {
+          "on": "resealed",
+          "do": [
+            "reseal",
+            "pulse:backbone"
+          ]
+        },
+        {
+          "on": "remember",
+          "do": [
+            "pose:present"
+          ]
+        },
+        {
+          "on": "recognize",
+          "do": [
+            "step:Recognize"
+          ]
+        },
+        {
+          "on": "cut",
+          "do": [
+            "step:Cut out"
+          ]
+        },
+        {
+          "on": "replace",
+          "do": [
+            "step:Replace"
+          ]
+        },
+        {
+          "on": "reseal",
+          "do": [
+            "step:Reseal"
+          ]
+        }
+      ]
+    }
+  ]
+}
