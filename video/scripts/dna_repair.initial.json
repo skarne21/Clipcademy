@@ -1,0 +1,27 @@
+{
+  "topic_id": "dna_repair",
+  "objective_id": "error_correction",
+  "variant_id": "initial",
+  "teaching_goal": "Compare proofreading, mismatch repair, and UV-damage repair",
+  "source_refs": [
+    "L20-p1"
+  ],
+  "review_status": "pending",
+  "scenes": [
+    {
+      "diagram": "proof",
+      "title": "Proofreading: during copying",
+      "narration": "DNA polymerase can proofread while copying DNA. If it adds a wrong base, its exonuclease activity removes the incorrect base from the three prime end, allowing the correct base to be added."
+    },
+    {
+      "diagram": "mismatch",
+      "title": "Mismatch repair: after replication",
+      "narration": "Mismatch repair happens after replication is complete. Proteins scan the new double helix for mismatched bases. Specialized enzymes remove the affected section and replace it with the correct DNA nucleotides."
+    },
+    {
+      "diagram": "uv",
+      "title": "UV damage: remove and replace",
+      "narration": "UV light can make adjacent cytosines and thymines bond covalently, distorting the DNA. Repair proteins recognize the damage, cut out the damaged section, replace the missing bases, and reseal the backbone."
+    }
+  ]
+}

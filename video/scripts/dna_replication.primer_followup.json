@@ -1,0 +1,28 @@
+{
+  "topic_id": "dna_replication",
+  "objective_id": "synthesis_direction_and_primer",
+  "variant_id": "primer_followup",
+  "teaching_goal": "Explain why DNA polymerase needs a primer",
+  "source_refs": [
+    "L19-p1",
+    "L19-p2"
+  ],
+  "review_status": "pending",
+  "scenes": [
+    {
+      "diagram": "bare",
+      "title": "A template alone is not enough",
+      "narration": "Here is a bare DNA template. DNA polymerase cannot begin a complementary strand from scratch. It needs an existing complementary start with a three prime end that it can extend."
+    },
+    {
+      "diagram": "primer",
+      "title": "Primase makes an RNA primer",
+      "narration": "Primase supplies that start. It builds a short RNA primer complementary to the template. Unlike DNA polymerase, primase can begin on a single stranded template without an existing complementary strand."
+    },
+    {
+      "diagram": "growth",
+      "title": "Polymerase extends the primer",
+      "narration": "Now DNA polymerase adds DNA nucleotides to the primer's three prime end. The strand grows five prime to three prime. Primase makes the start; polymerase extends it. The template by itself was not that start."
+    }
+  ]
+}

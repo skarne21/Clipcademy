@@ -1,0 +1,27 @@
+{
+  "topic_id": "dna_replication",
+  "objective_id": "synthesis_direction_and_primer",
+  "variant_id": "direction_followup",
+  "teaching_goal": "Explain growth direction and which end grows",
+  "source_refs": [
+    "L19-p1"
+  ],
+  "review_status": "pending",
+  "scenes": [
+    {
+      "diagram": "antiparallel",
+      "title": "Read the end labels",
+      "narration": "The two strands point in opposite directions. Follow the end labels: the template runs three prime to five prime. Its complementary strand runs five prime to three prime. These are different strands."
+    },
+    {
+      "diagram": "growth",
+      "title": "The growing end is 3′",
+      "narration": "Watch the complementary strand get longer. Each added nucleotide joins its three prime end. The five prime end stays at the start. Adding to the three prime end makes synthesis proceed five prime to three prime."
+    },
+    {
+      "diagram": "growth",
+      "title": "Direction and end agree",
+      "narration": "Keep these two descriptions together: DNA grows five prime to three prime, and new nucleotides are added at the three prime end. Reading the template in the opposite direction does not reverse new DNA synthesis."
+    }
+  ]
+}

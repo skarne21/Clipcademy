@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "width": 960,
+  "height": 540,
+  "fps": 12,
+  "background": "#FAF8F1",
+  "ink": "#20332D",
+  "accent": "#176B52",
+  "primer": "#96501A",
+  "damage": "#A32939",
+  "font": "DejaVuSans.ttf",
+  "font_bold": "DejaVuSans-Bold.ttf",
+  "voice": "en-us",
+  "words_per_minute": 145,
+  "guide": "Same line-drawn guide on the left; points toward the diagram",
+  "labels": {"template": "Template DNA", "new": "New complementary strand", "primer": "RNA primer"},
+  "narration_style": "Calm, direct, one idea per scene; pronounce end labels as five prime and three prime. Synthetic narration disclosed in the manifest."
+}
