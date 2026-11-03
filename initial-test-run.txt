@@ -1,0 +1,124 @@
+test_cc_01 (test_contracts.AlphaContracts.test_cc_01) ... ERROR
+test_cc_02 (test_contracts.AlphaContracts.test_cc_02) ... ERROR
+test_cc_03 (test_contracts.AlphaContracts.test_cc_03) ... ERROR
+test_cc_04 (test_contracts.AlphaContracts.test_cc_04) ... ERROR
+test_cc_05 (test_contracts.AlphaContracts.test_cc_05) ... ERROR
+test_cc_06 (test_contracts.AlphaContracts.test_cc_06) ... ERROR
+test_cc_07 (test_contracts.AlphaContracts.test_cc_07) ... ERROR
+test_cc_08 (test_contracts.AlphaContracts.test_cc_08) ... ERROR
+test_cc_09 (test_contracts.AlphaContracts.test_cc_09) ... ERROR
+test_cc_10 (test_contracts.AlphaContracts.test_cc_10) ... ERROR
+
+======================================================================
+ERROR: test_cc_01 (test_contracts.AlphaContracts.test_cc_01)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/431b766f2cce/clipcademy-project/tests/test_contracts.py", line 8, in test_cc_01
+    app.prepare_lesson(source_refs=[], approved=False)
+  File "/workspace/scratch/431b766f2cce/clipcademy-project/src/contracts.py", line 4, in prepare_lesson
+    raise NotImplementedError("Implement after recording the failing test")
+NotImplementedError: Implement after recording the failing test
+
+======================================================================
+ERROR: test_cc_02 (test_contracts.AlphaContracts.test_cc_02)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/431b766f2cce/clipcademy-project/tests/test_contracts.py", line 12, in test_cc_02
+    first = app.create_video_job(request)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/431b766f2cce/clipcademy-project/src/contracts.py", line 7, in create_video_job
+    raise NotImplementedError("Implement after recording the failing test")
+NotImplementedError: Implement after recording the failing test
+
+======================================================================
+ERROR: test_cc_03 (test_contracts.AlphaContracts.test_cc_03)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/431b766f2cce/clipcademy-project/tests/test_contracts.py", line 17, in test_cc_03
+    question = app.get_question("rep-q2")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/431b766f2cce/clipcademy-project/src/contracts.py", line 10, in get_question
+    raise NotImplementedError("Implement after recording the failing test")
+NotImplementedError: Implement after recording the failing test
+
+======================================================================
+ERROR: test_cc_04 (test_contracts.AlphaContracts.test_cc_04)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/431b766f2cce/clipcademy-project/tests/test_contracts.py", line 22, in test_cc_04
+    result = app.grade_attempt("a1", "rep-q2", "B")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/431b766f2cce/clipcademy-project/src/contracts.py", line 13, in grade_attempt
+    raise NotImplementedError("Implement after recording the failing test")
+NotImplementedError: Implement after recording the failing test
+
+======================================================================
+ERROR: test_cc_05 (test_contracts.AlphaContracts.test_cc_05)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/431b766f2cce/clipcademy-project/tests/test_contracts.py", line 29, in test_cc_05
+    self.assertEqual(app.advance_progress(required=["q1", "q2"], resolved=["q1"], cycles=0), "continue_questions")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/431b766f2cce/clipcademy-project/src/contracts.py", line 16, in advance_progress
+    raise NotImplementedError("Implement after recording the failing test")
+NotImplementedError: Implement after recording the failing test
+
+======================================================================
+ERROR: test_cc_06 (test_contracts.AlphaContracts.test_cc_06)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/431b766f2cce/clipcademy-project/tests/test_contracts.py", line 33, in test_cc_06
+    result = app.select_topics(["dna_replication"])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/431b766f2cce/clipcademy-project/src/contracts.py", line 19, in select_topics
+    raise NotImplementedError("Implement after recording the failing test")
+NotImplementedError: Implement after recording the failing test
+
+======================================================================
+ERROR: test_cc_07 (test_contracts.AlphaContracts.test_cc_07)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/431b766f2cce/clipcademy-project/tests/test_contracts.py", line 38, in test_cc_07
+    self.assertEqual(app.video_view({"status": "running"}), "preparing")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/431b766f2cce/clipcademy-project/src/contracts.py", line 22, in video_view
+    raise NotImplementedError("Implement after recording the failing test")
+NotImplementedError: Implement after recording the failing test
+
+======================================================================
+ERROR: test_cc_08 (test_contracts.AlphaContracts.test_cc_08)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/431b766f2cce/clipcademy-project/tests/test_contracts.py", line 44, in test_cc_08
+    self.assertEqual(app.controller_transition(state, action)["screen"], "video_pending")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/431b766f2cce/clipcademy-project/src/contracts.py", line 25, in controller_transition
+    raise NotImplementedError("Implement after recording the failing test")
+NotImplementedError: Implement after recording the failing test
+
+======================================================================
+ERROR: test_cc_09 (test_contracts.AlphaContracts.test_cc_09)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/431b766f2cce/clipcademy-project/tests/test_contracts.py", line 49, in test_cc_09
+    self.assertEqual(app.restore_session("invalid json")["screen"], "topic_selection")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/431b766f2cce/clipcademy-project/src/contracts.py", line 28, in restore_session
+    raise NotImplementedError("Implement after recording the failing test")
+NotImplementedError: Implement after recording the failing test
+
+======================================================================
+ERROR: test_cc_10 (test_contracts.AlphaContracts.test_cc_10)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/431b766f2cce/clipcademy-project/tests/test_contracts.py", line 53, in test_cc_10
+    event = app.make_event(participant_id="P01", session_id="S01", topic_id="dna_replication", event_name="topic_completed")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/431b766f2cce/clipcademy-project/src/contracts.py", line 31, in make_event
+    raise NotImplementedError("Implement after recording the failing test")
+NotImplementedError: Implement after recording the failing test
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.002s
+
+FAILED (errors=10)

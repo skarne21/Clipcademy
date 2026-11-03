@@ -1,0 +1,1 @@
+local_issue_id,github_issue_url,owner,test_file,ai_prompt_summary,human_corrections,red_command,red_result,red_commit,green_command,green_result,green_commit
