@@ -205,6 +205,35 @@ Member 3 saves `remediation_state` and sends it back with each attempt. The clie
 
 Attempts (for idempotency) and events are stored server-side in one SQLite file, so they survive a server restart. The stored attempt keeps the full request body and the response.
 
+## Service
+
+**Stack:** Python 3.11+ with the standard library only (`http.server`, `sqlite3`, `json`). There are no third-party packages, no framework, and no LLM or other API keys: grading is rule-based and every question and feedback line is pre-written. The code is in `learning/`, with grading in `grading.py` and its tests in `test_grading.py`. Run `python learning/server.py` to start the service.
+
+**Configuration** (environment variables):
+
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| `PORT` | `8000` | Port to listen on. Endpoints have no path prefix (`/topics`, `/attempts`, …) |
+| `CLIPCADEMY_DB` | `learning/clipcademy.db` | SQLite file (git-ignored) |
+| `CLIPCADEMY_ALLOWED_ORIGINS` | `*` | Comma-separated browser origins allowed by CORS. Set this to the app's URL when the build is frozen |
+| `CLIPCADEMY_BUILD_IDS` | empty | Comma-separated valid build IDs, set at the build freeze. While it's empty, every event that carries a `build_id` exports as `unknown` |
+| `CLIPCADEMY_ADMIN_TOKEN` | unset | Required to export events. If it's unset, the export is disabled |
+
+**Errors:** every 4xx response has the body `{"error": {"field": "...", "message": "..."}}`. The status is `400` for a bad request, `404` for an unknown path or question ID, and `409` for the conflicts in rule 6.
+
+### `POST /events`
+
+Member 3 sends one JSON event per action. The fields are the [events.csv](events.csv) columns, minus the ones the server adds (`timestamp_utc`, `build_id_status`).
+
+- **Required on every event:** `event_id`, `participant_id`, `session_id`, `event_name`, `client_timestamp_utc` (ISO 8601 UTC, the time of the action on the device). `build_id` is expected but can be missing, in which case the event is still stored with status `missing`.
+- **`event_name`** must be one of the Activity events in Team_Spec. Each name also requires its extra fields: `topic_id` for `topic_selected`; `variant_id` for `video_started`, `video_completed`, and `followup_requested`; `question_id` and `correct` (a JSON boolean) for `question_answered`; `objective_id` for `objective_completed` and `objective_needs_review`. Include `topic_id` and `objective_id` whenever they're known, so lesson splits don't need lookups.
+- **Responses:** an invalid event gets `400` naming the field. A new event gets `201`. A repeated `event_id` gets `200` with `{"duplicate": true}`, is not stored again, and is not an error, so Member 3's retries are safe.
+- **Two timestamps:** the server records the receipt time as `timestamp_utc`. Member 3 retries failed sends, so a Day 0 action could arrive on Day 1. The analysis therefore uses `client_timestamp_utc` to assign events to calendar days (see validation-plan.md).
+
+### Exporting `events.csv`
+
+`GET /events.csv` with the header `Authorization: Bearer <CLIPCADEMY_ADMIN_TOKEN>` returns every stored event as CSV in the [events.csv](events.csv) column order, oldest first. Each row's `build_id_status` is `ok`, `missing`, or `unknown`, computed against `CLIPCADEMY_BUILD_IDS` at export time. A wrong or missing token gets `401`. The export is protected because it holds participant activity.
+
 ### Rules
 
 1. **Required questions.** Each objective's required questions and retry order come from its packet (`required_question_ids`, `misconceptions.*.retry_question_ids`), and `counts_for` in the answer key says which required question a retry stands in for. For replication, the objective requires `rep-q1` and `rep-q2`. A correct answer on a retry question also counts for the required question it stands in for (`rep-r1`/`rep-r3` count for `rep-q1`, and `rep-r2`/`rep-r4` count for `rep-q2`).
@@ -293,6 +322,11 @@ Cover these cases with one runnable test file next to the grading code.
 - [ ] Sample responses are committed and Member 3 has used them
 - [ ] Topic availability matches the lessons that are actually built
 
+## Decisions
+
+1. **Language and framework:** Python standard library (see Service). Members 1 and 3 can use any stack, because they connect to this service over HTTP.
+2. **Member 3 hasn't started building**, so the sample responses (task 7) come first. Member 3 builds against them, then switches to the live service by changing one base URL in their data-access module.
+
 ## Open questions for the team
 
-1. **Framework and language** for the service have not been chosen yet.
+1. **Hosting for the study.** Participants use the app on their own devices for two days, so it needs a public URL. Recommendation: one host runs this service and also serves Member 3's built `web/` files and Member 1's `/media` clips. With a single origin there's no CORS in production and students get one link. Decide this before the build freeze.

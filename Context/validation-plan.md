@@ -99,7 +99,7 @@ The app sends an event for every action to `POST /events` (defined in [Team_Spec
 | Follow-ups watched | `video_completed` events for follow-up variants |
 | Later-day recall accuracy | Share of `question_answered` events after Day 0 with `correct` true. Reported only, not a hypothesis |
 
-Events are stored in UTC (`timestamp_utc`). Convert them to the study's local time zone before deciding which calendar day an event falls on. Leave out events whose `build_id_status` is `missing` or `unknown`, and report how many there were.
+Events carry two UTC times: `client_timestamp_utc` (when the action happened on the device) and `timestamp_utc` (when the server received it). Use `client_timestamp_utc`, converted to the study's local time zone, to decide which calendar day an event falls on. A send retried the next day must not count as a later-day return. Report any event whose two times are more than 10 minutes apart, since that points to a retried send or a wrong device clock. Leave out events whose `build_id_status` is `missing` or `unknown`, and report how many there were.
 
 At n = 6, 5/6 = 83%, 4/6 = 67%, and 3/6 = 50%. These are threshold examples, not results.
 
