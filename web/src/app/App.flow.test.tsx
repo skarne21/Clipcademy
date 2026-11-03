@@ -2,9 +2,14 @@ import { fireEvent, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { http, HttpResponse } from "msw";
 import { afterEach, describe, expect, it } from "vitest";
-import type { AttemptRequest } from "../api/types";
+import type { AttemptRequest, Question } from "../api/types";
 import { apiUrl } from "../api/config";
-import { attemptContinue } from "../fixtures/attempts";
+import {
+  attemptComplete,
+  attemptContinue,
+  attemptNeedsReview,
+  attemptReviewAgain,
+} from "../fixtures/attempts";
 import { repQ1 } from "../fixtures/questions";
 import { topics } from "../fixtures/topics";
 import {
@@ -81,6 +86,66 @@ function attemptPostHandler(
   return http.post(apiUrl("/attempts"), async ({ request }) => {
     const body = (await request.json()) as AttemptRequest;
     return onPost(body);
+  });
+}
+
+const repQ2: Question = {
+  question_id: "rep-q2",
+  objective_id: "synthesis_direction_and_primer",
+  prompt: "Which enzyme synthesizes the RNA primer?",
+  choices: [
+    { choice_id: "A", text: "Primase" },
+    { choice_id: "B", text: "Helicase" },
+  ],
+};
+
+const repR2: Question = {
+  question_id: "rep-r2",
+  objective_id: "synthesis_direction_and_primer",
+  prompt: "Which enzyme extends the primer?",
+  choices: [
+    { choice_id: "A", text: "DNA polymerase" },
+    { choice_id: "B", text: "Primase" },
+  ],
+};
+
+function synthesisQuestionsHandler() {
+  return http.get(apiUrl("/questions/:questionId"), ({ params }) => {
+    const questionId = params.questionId as string;
+    if (questionId === "rep-q1") {
+      return HttpResponse.json(repQ1);
+    }
+    if (questionId === "rep-q2") {
+      return HttpResponse.json(repQ2);
+    }
+    if (questionId === "rep-r2") {
+      return HttpResponse.json(repR2);
+    }
+    return HttpResponse.json(
+      { error: "not_found", message: `Question not found: ${questionId}` },
+      { status: 404 },
+    );
+  });
+}
+
+async function reachRepQ2Question(user: ReturnType<typeof userEvent.setup>) {
+  await goToHome(user);
+  await startSynthesisObjective(user);
+  await waitFor(() => {
+    expect(screen.getByLabelText("Lesson video")).toBeInTheDocument();
+  });
+  await user.click(screen.getByRole("button", { name: "Answer question" }));
+  await waitFor(() => {
+    expect(screen.getByRole("group", { name: repQ1.prompt })).toBeInTheDocument();
+  });
+  await user.click(screen.getByRole("radio", { name: "3′ end" }));
+  await user.click(screen.getByRole("button", { name: "Submit" }));
+  await waitFor(() => {
+    expect(screen.getByRole("heading", { name: "Correct" })).toBeInTheDocument();
+  });
+  await user.click(screen.getByRole("button", { name: "Next question" }));
+  await waitFor(() => {
+    expect(screen.getByRole("group", { name: repQ2.prompt })).toBeInTheDocument();
   });
 }
 
@@ -576,6 +641,567 @@ describe("App lesson and question flow (Part 2)", () => {
       expect(
         screen.getByRole("group", { name: "Which enzyme extends the primer?" }),
       ).toBeInTheDocument();
+    });
+  });
+});
+
+describe("App follow-up and summary flow (Part 3)", () => {
+  afterEach(() => {
+    server.resetHandlers();
+  });
+
+  it("after a wrong answer, follow-up preparing, follow-up lesson, and rep-r2 question", async () => {
+    const user = userEvent.setup();
+    server.use(
+      synthesisQuestionsHandler(),
+      attemptPostHandler((body) => {
+        if (body.question_id === "rep-q1") {
+          return HttpResponse.json({
+            ...attemptContinue,
+            attempt_id: body.attempt_id,
+          });
+        }
+        return HttpResponse.json({
+          ...attemptReviewAgain,
+          attempt_id: body.attempt_id,
+        });
+      }),
+      http.post(apiUrl("/video-jobs"), async ({ request }) => {
+        const body = (await request.json()) as { variant_id: string };
+        if (body.variant_id === "primer_followup") {
+          return HttpResponse.json({
+            ...videoJobQueued,
+            job_id: "followup-job-1",
+            variant_id: "primer_followup",
+          });
+        }
+        return HttpResponse.json(videoJobQueued);
+      }),
+      http.get(apiUrl("/video-jobs/:jobId"), ({ params }) => {
+        const jobId = params.jobId as string;
+        if (jobId === "followup-job-1") {
+          return HttpResponse.json({
+            ...videoJobRunning,
+            job_id: jobId,
+            variant_id: "primer_followup",
+          });
+        }
+        if (jobId === "video-001") {
+          return HttpResponse.json({
+            ...videoJobReady,
+            variant_id: "initial",
+            video_url: "https://example.com/initial.mp4",
+          });
+        }
+        return HttpResponse.json(
+          { error: "not_found", message: "missing" },
+          { status: 404 },
+        );
+      }),
+    );
+
+    const { send } = renderApp();
+    await reachRepQ2Question(user);
+
+    await user.click(screen.getByRole("radio", { name: "Helicase" }));
+    await user.click(screen.getByRole("button", { name: "Submit" }));
+
+    await waitFor(() => {
+      expect(screen.getByRole("heading", { name: "Not quite" })).toBeInTheDocument();
+    });
+    await user.click(
+      screen.getByRole("button", { name: "Watch a short follow-up" }),
+    );
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("heading", { name: "Preparing a short follow-up" }),
+      ).toBeInTheDocument();
+    });
+
+    expect(eventsNamed(send, "followup_requested")).toEqual([
+      expect.objectContaining({ variant_id: "primer_followup" }),
+    ]);
+
+    server.use(
+      http.get(apiUrl("/video-jobs/:jobId"), ({ params }) => {
+        const jobId = params.jobId as string;
+        if (jobId === "followup-job-1") {
+          return HttpResponse.json({
+            ...videoJobReady,
+            job_id: jobId,
+            variant_id: "primer_followup",
+            video_url: "https://example.com/followup.mp4",
+          });
+        }
+        if (jobId === "video-001") {
+          return HttpResponse.json({
+            ...videoJobReady,
+            variant_id: "initial",
+            video_url: "https://example.com/initial.mp4",
+          });
+        }
+        return HttpResponse.json(
+          { error: "not_found", message: "missing" },
+          { status: 404 },
+        );
+      }),
+    );
+
+    await waitFor(() => {
+      expect(screen.getByLabelText("Lesson video")).toBeInTheDocument();
+      expect(
+        screen.getByText("This short clip focuses on the idea from the last question."),
+      ).toBeInTheDocument();
+    });
+
+    await user.click(screen.getByRole("button", { name: "Answer question" }));
+    await waitFor(() => {
+      expect(screen.getByRole("group", { name: repR2.prompt })).toBeInTheDocument();
+    });
+  });
+
+  it("does not send followup_requested again when retrying a failed follow-up job", async () => {
+    const user = userEvent.setup();
+    let followupJobCreates = 0;
+
+    server.use(
+      synthesisQuestionsHandler(),
+      attemptPostHandler((body) => {
+        if (body.question_id === "rep-q1") {
+          return HttpResponse.json({
+            ...attemptContinue,
+            attempt_id: body.attempt_id,
+          });
+        }
+        return HttpResponse.json({
+          ...attemptReviewAgain,
+          attempt_id: body.attempt_id,
+        });
+      }),
+      http.post(apiUrl("/video-jobs"), async ({ request }) => {
+        const body = (await request.json()) as { variant_id: string };
+        if (body.variant_id === "primer_followup") {
+          followupJobCreates += 1;
+          return HttpResponse.json({
+            ...videoJobQueued,
+            job_id:
+              followupJobCreates === 1 ? "followup-fail-1" : "followup-retry-1",
+            variant_id: "primer_followup",
+          });
+        }
+        return HttpResponse.json(videoJobQueued);
+      }),
+      http.get(apiUrl("/video-jobs/:jobId"), ({ params }) => {
+        const jobId = params.jobId as string;
+        if (jobId === "followup-fail-1") {
+          return HttpResponse.json({
+            ...videoJobFailed,
+            job_id: jobId,
+            variant_id: "primer_followup",
+          });
+        }
+        if (jobId === "followup-retry-1") {
+          return HttpResponse.json({
+            ...videoJobReady,
+            job_id: jobId,
+            variant_id: "primer_followup",
+            video_url: "https://example.com/followup-retry.mp4",
+          });
+        }
+        if (jobId === "video-001") {
+          return HttpResponse.json({
+            ...videoJobReady,
+            variant_id: "initial",
+            video_url: "https://example.com/initial.mp4",
+          });
+        }
+        return HttpResponse.json(
+          { error: "not_found", message: "missing" },
+          { status: 404 },
+        );
+      }),
+    );
+
+    const { send } = renderApp();
+    await reachRepQ2Question(user);
+    await user.click(screen.getByRole("radio", { name: "Helicase" }));
+    await user.click(screen.getByRole("button", { name: "Submit" }));
+    await user.click(
+      screen.getByRole("button", { name: "Watch a short follow-up" }),
+    );
+
+    await waitFor(() => {
+      expect(screen.getByRole("alert")).toHaveTextContent(
+        /follow-up video couldn't be prepared/i,
+      );
+    });
+
+    expect(eventsNamed(send, "followup_requested")).toHaveLength(1);
+
+    await user.click(screen.getByRole("button", { name: "Try again" }));
+
+    await waitFor(() => {
+      expect(screen.getByLabelText("Lesson video")).toHaveAttribute(
+        "src",
+        "https://example.com/followup-retry.mp4",
+      );
+    });
+    expect(eventsNamed(send, "followup_requested")).toHaveLength(1);
+  });
+
+  it("shows summary and objective_completed when the objective is complete", async () => {
+    const user = userEvent.setup();
+    server.use(
+      synthesisQuestionsHandler(),
+      attemptPostHandler((body) =>
+        HttpResponse.json({
+          ...attemptComplete,
+          attempt_id: body.attempt_id,
+          question_id: body.question_id,
+        }),
+      ),
+    );
+
+    const { send } = renderApp();
+    await goToHome(user);
+    await startSynthesisObjective(user);
+    await waitFor(() => {
+      expect(screen.getByLabelText("Lesson video")).toBeInTheDocument();
+    });
+    await user.click(screen.getByRole("button", { name: "Answer question" }));
+    await waitFor(() => {
+      expect(screen.getByRole("group", { name: repQ1.prompt })).toBeInTheDocument();
+    });
+    await user.click(screen.getByRole("radio", { name: "3′ end" }));
+    await user.click(screen.getByRole("button", { name: "Submit" }));
+
+    await waitFor(() => {
+      expect(screen.getByRole("heading", { name: "Correct" })).toBeInTheDocument();
+    });
+    await user.click(screen.getByRole("button", { name: "See summary" }));
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("heading", { name: "Objective complete" }),
+      ).toBeInTheDocument();
+    });
+
+    await waitFor(() => {
+      expect(eventsNamed(send, "objective_completed")).toEqual([
+        expect.objectContaining({
+          objective_id: "synthesis_direction_and_primer",
+        }),
+      ]);
+    });
+
+    await user.click(screen.getByRole("button", { name: "Back to home" }));
+    await waitFor(() => {
+      expect(screen.getByRole("heading", { name: "Review home" })).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          "Objective complete: Synthesis direction and primer requirement",
+        ),
+      ).toBeInTheDocument();
+    });
+  });
+
+  it("shows needs_review summary with key points and sends objective_needs_review", async () => {
+    const user = userEvent.setup();
+    server.use(
+      synthesisQuestionsHandler(),
+      attemptPostHandler((body) =>
+        HttpResponse.json({
+          ...attemptNeedsReview,
+          attempt_id: body.attempt_id,
+          question_id: body.question_id,
+        }),
+      ),
+    );
+
+    const { send } = renderApp();
+    await goToHome(user);
+    await startSynthesisObjective(user);
+    await waitFor(() => {
+      expect(screen.getByLabelText("Lesson video")).toBeInTheDocument();
+    });
+    await user.click(screen.getByRole("button", { name: "Answer question" }));
+    await waitFor(() => {
+      expect(screen.getByRole("group", { name: repQ1.prompt })).toBeInTheDocument();
+    });
+    await user.click(screen.getByRole("radio", { name: "3′ end" }));
+    await user.click(screen.getByRole("button", { name: "Submit" }));
+
+    await waitFor(() => {
+      expect(screen.getByRole("heading", { name: "Not quite" })).toBeInTheDocument();
+    });
+    await user.click(screen.getByRole("button", { name: "See summary" }));
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("heading", { name: "Let's review this one" }),
+      ).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: "Key points" })).toBeInTheDocument();
+      expect(
+        screen.getByText("DNA polymerase can only extend from a 3′ OH."),
+      ).toBeInTheDocument();
+    });
+
+    await waitFor(() => {
+      expect(eventsNamed(send, "objective_needs_review")).toEqual([
+        expect.objectContaining({
+          objective_id: "synthesis_direction_and_primer",
+        }),
+      ]);
+    });
+  });
+
+  it("restart from summary returns to the initial lesson with initial remediation on submit", async () => {
+    const user = userEvent.setup();
+    const attemptBodies: AttemptRequest[] = [];
+
+    server.use(
+      synthesisQuestionsHandler(),
+      attemptPostHandler((body) => {
+        attemptBodies.push(body);
+        if (attemptBodies.length === 1) {
+          return HttpResponse.json({
+            ...attemptComplete,
+            attempt_id: body.attempt_id,
+            question_id: body.question_id,
+          });
+        }
+        return HttpResponse.json({
+          ...attemptContinue,
+          attempt_id: body.attempt_id,
+        });
+      }),
+    );
+
+    renderApp();
+    await goToHome(user);
+    await startSynthesisObjective(user);
+    await waitFor(() => {
+      expect(screen.getByLabelText("Lesson video")).toBeInTheDocument();
+    });
+    await user.click(screen.getByRole("button", { name: "Answer question" }));
+    await waitFor(() => {
+      expect(screen.getByRole("group", { name: repQ1.prompt })).toBeInTheDocument();
+    });
+    await user.click(screen.getByRole("radio", { name: "3′ end" }));
+    await user.click(screen.getByRole("button", { name: "Submit" }));
+    await user.click(screen.getByRole("button", { name: "See summary" }));
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("heading", { name: "Objective complete" }),
+      ).toBeInTheDocument();
+    });
+
+    await user.click(screen.getByRole("button", { name: "Restart this objective" }));
+
+    await waitFor(() => {
+      expect(screen.getByText(/Preparing your video/)).toBeInTheDocument();
+    });
+    await waitFor(() => {
+      expect(screen.getByLabelText("Lesson video")).toBeInTheDocument();
+    });
+    await user.click(screen.getByRole("button", { name: "Answer question" }));
+    await waitFor(() => {
+      expect(screen.getByRole("group", { name: repQ1.prompt })).toBeInTheDocument();
+    });
+    await user.click(screen.getByRole("radio", { name: "3′ end" }));
+    await user.click(screen.getByRole("button", { name: "Submit" }));
+
+    await waitFor(() => {
+      expect(attemptBodies.length).toBeGreaterThanOrEqual(2);
+    });
+    expect(attemptBodies[1]!.remediation_state).toEqual(initialRemediationState);
+  });
+
+  it("ignores a stale video job after going home and starting again", async () => {
+    const user = userEvent.setup();
+    let jobCreates = 0;
+
+    server.use(
+      synthesisQuestionsHandler(),
+      http.post(apiUrl("/video-jobs"), () => {
+        jobCreates += 1;
+        return HttpResponse.json({
+          ...videoJobQueued,
+          job_id: jobCreates === 1 ? "stale-job-1" : "fresh-job-2",
+          variant_id: "initial",
+        });
+      }),
+      http.get(apiUrl("/video-jobs/:jobId"), ({ params }) => {
+        const jobId = params.jobId as string;
+        if (jobId === "stale-job-1") {
+          return HttpResponse.json({
+            ...videoJobRunning,
+            job_id: jobId,
+            variant_id: "initial",
+          });
+        }
+        if (jobId === "fresh-job-2") {
+          return HttpResponse.json({
+            ...videoJobReady,
+            job_id: jobId,
+            variant_id: "initial",
+            video_url: "https://example.com/fresh-lesson.mp4",
+          });
+        }
+        return HttpResponse.json(
+          { error: "not_found", message: "missing" },
+          { status: 404 },
+        );
+      }),
+    );
+
+    renderApp();
+    await goToHome(user);
+    await startSynthesisObjective(user);
+    await waitFor(() => {
+      expect(screen.getByText(/Preparing your video/)).toBeInTheDocument();
+    });
+
+    await user.click(screen.getByRole("button", { name: "Back" }));
+    await waitFor(() => {
+      expect(screen.getByRole("heading", { name: "Review home" })).toBeInTheDocument();
+    });
+
+    await startSynthesisObjective(user);
+    await waitFor(() => {
+      expect(screen.getByLabelText("Lesson video")).toHaveAttribute(
+        "src",
+        "https://example.com/fresh-lesson.mp4",
+      );
+    });
+    expect(screen.queryByLabelText("Lesson video")).not.toHaveAttribute(
+      "src",
+      "https://example.com/stale-lesson.mp4",
+    );
+  });
+
+  it("does not show a stale question after leaving home while a question is loading", async () => {
+    const user = userEvent.setup();
+    let repQ1Fetches = 0;
+    let repQ1DelayMs = 200;
+
+    server.use(
+      http.get(apiUrl("/questions/:questionId"), async ({ params }) => {
+        const questionId = params.questionId as string;
+        if (questionId === "rep-q1") {
+          repQ1Fetches += 1;
+          await new Promise((resolve) => setTimeout(resolve, repQ1DelayMs));
+          return HttpResponse.json(repQ1);
+        }
+        if (questionId === "rep-r2") {
+          return HttpResponse.json(repR2);
+        }
+        return HttpResponse.json(
+          { error: "not_found", message: "missing" },
+          { status: 404 },
+        );
+      }),
+    );
+
+    const { storage } = renderApp();
+    await goToHome(user);
+    await startSynthesisObjective(user);
+    await waitFor(() => {
+      expect(screen.getByLabelText("Lesson video")).toBeInTheDocument();
+    });
+    await user.click(screen.getByRole("button", { name: "Answer question" }));
+    expect(screen.getByRole("status", { name: "Loading question" })).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Back" }));
+    await waitFor(() => {
+      expect(screen.getByRole("heading", { name: "Review home" })).toBeInTheDocument();
+    });
+
+    saveRemediationState(
+      "synthesis_direction_and_primer",
+      {
+        objective_status: "in_progress",
+        expected_question_id: "rep-r2",
+        remediation_count: 1,
+        satisfied_question_ids: ["rep-q1"],
+        asked_retry_ids: [],
+      },
+      storage,
+    );
+    repQ1DelayMs = 0;
+
+    await startSynthesisObjective(user);
+    await waitFor(() => {
+      expect(screen.getByLabelText("Lesson video")).toBeInTheDocument();
+    });
+    await user.click(screen.getByRole("button", { name: "Answer question" }));
+
+    await waitFor(() => {
+      expect(screen.getByRole("group", { name: repR2.prompt })).toBeInTheDocument();
+    });
+    expect(screen.queryByRole("group", { name: repQ1.prompt })).not.toBeInTheDocument();
+    expect(repQ1Fetches).toBeGreaterThanOrEqual(1);
+  });
+
+  it("sends video_started for each job even when the video_url is the same", async () => {
+    const user = userEvent.setup();
+    let jobCreates = 0;
+    const sharedUrl = "https://example.com/shared-lesson.mp4";
+
+    server.use(
+      synthesisQuestionsHandler(),
+      http.post(apiUrl("/video-jobs"), () => {
+        jobCreates += 1;
+        return HttpResponse.json({
+          ...videoJobQueued,
+          job_id: jobCreates === 1 ? "shared-url-a" : "shared-url-b",
+          variant_id: "initial",
+        });
+      }),
+      http.get(apiUrl("/video-jobs/:jobId"), ({ params }) => {
+        const jobId = params.jobId as string;
+        if (jobId === "shared-url-a" || jobId === "shared-url-b") {
+          return HttpResponse.json({
+            ...videoJobReady,
+            job_id: jobId,
+            variant_id: "initial",
+            video_url: sharedUrl,
+          });
+        }
+        return HttpResponse.json(
+          { error: "not_found", message: "missing" },
+          { status: 404 },
+        );
+      }),
+    );
+
+    const { send } = renderApp();
+    await goToHome(user);
+
+    await startSynthesisObjective(user);
+    await waitFor(() => {
+      expect(screen.getByLabelText("Lesson video")).toHaveAttribute("src", sharedUrl);
+    });
+    fireEvent.play(screen.getByLabelText("Lesson video"));
+    await user.click(screen.getByRole("button", { name: "Back" }));
+    await waitFor(() => {
+      expect(screen.getByRole("heading", { name: "Review home" })).toBeInTheDocument();
+    });
+
+    await startSynthesisObjective(user);
+    await waitFor(() => {
+      expect(screen.getByLabelText("Lesson video")).toHaveAttribute("src", sharedUrl);
+    });
+    fireEvent.play(screen.getByLabelText("Lesson video"));
+
+    await waitFor(() => {
+      expect(eventsNamed(send, "video_started")).toHaveLength(2);
+      expect(eventsNamed(send, "video_started")).toEqual([
+        expect.objectContaining({ variant_id: "initial" }),
+        expect.objectContaining({ variant_id: "initial" }),
+      ]);
     });
   });
 });
