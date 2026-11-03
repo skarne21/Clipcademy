@@ -410,7 +410,9 @@ Member 2 owns the PythonAnywhere account. Other members get access through Pytho
 2. In a Bash console, run `git clone https://github.com/skarne21/Clipcademy.git` (GitHub is reachable from free accounts), then `git checkout` the frozen branch or tag.
 3. On the Web tab, choose **Add a new web app → Manual configuration → Python 3.11** or newer.
 4. Edit the WSGI file the Web tab links to, and replace its contents with the snippet under Hosting above. Use a long random admin token, and keep it out of git.
-5. Add static file mappings: URL `/` to Member 3's built folder (for example `/home/<username>/Clipcademy/web/dist`), and URL `/media/` to Member 1's clips folder.
+5. Add static file mappings: URL `/` to Member 3's built folder, and URL `/media/` to Member 1's clips folder.
+   - **How the web build gets there (decided: upload).** `web/dist` is git-ignored, so `git pull` doesn't bring it. Member 3 runs `npm run build` and sends Member 2 the `web/dist` folder. Member 2 uploads it with the **Files** tab to `/home/ClipCademy/Clipcademy/web/dist`, replacing the old copy, then clicks Reload. If uploads get tedious, switch to committing the build on the deploy branch. Nothing else changes.
+   - The live account's username is `ClipCademy` (paths are case-sensitive), and the site is `https://clipcademy.pythonanywhere.com`.
 6. Click **Reload**, then open `https://<username>.pythonanywhere.com/topics` and check that it returns JSON. After that, test the full flow from a phone.
 7. Right before Day 0, click **Run until 1 month from today**. After Day 2, download `learning/clipcademy.db` and fetch `/events.csv` with the admin token.
 
