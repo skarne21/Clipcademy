@@ -1,13 +1,26 @@
-import { screen, waitFor } from "@testing-library/react";
+import { fireEvent, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { http, HttpResponse } from "msw";
 import { afterEach, describe, expect, it } from "vitest";
+import type { AttemptRequest } from "../api/types";
 import { apiUrl } from "../api/config";
+import { attemptContinue } from "../fixtures/attempts";
+import { repQ1 } from "../fixtures/questions";
 import { topics } from "../fixtures/topics";
+import {
+  videoJobFailed,
+  videoJobQueued,
+  videoJobReady,
+  videoJobRunning,
+} from "../fixtures/videoJobs";
 import { server } from "../mocks/server";
 import {
+  createDefaultProgressState,
   loadParticipantCode,
   loadProgress,
+  saveParticipantCode,
+  saveProgress,
+  saveRemediationState,
 } from "../storage/progress";
 import {
   createMemoryStorage,
@@ -35,6 +48,39 @@ async function goToHomeFromTopics(user: ReturnType<typeof userEvent.setup>) {
   await user.click(screen.getByRole("button", { name: "Continue" }));
   await waitFor(() => {
     expect(screen.getByRole("heading", { name: "Review home" })).toBeInTheDocument();
+  });
+}
+
+const initialRemediationState = {
+  objective_status: "not_started" as const,
+  expected_question_id: null,
+  remediation_count: 0,
+  satisfied_question_ids: [] as string[],
+  asked_retry_ids: [] as string[],
+};
+
+async function goToHome(user: ReturnType<typeof userEvent.setup>) {
+  await enterParticipantCode(user, "P001");
+  await goToHomeFromTopics(user);
+}
+
+async function startSynthesisObjective(user: ReturnType<typeof userEvent.setup>) {
+  await user.click(
+    screen.getByRole("button", {
+      name: "Start, Synthesis direction and primer requirement",
+    }),
+  );
+  await waitFor(() => {
+    expect(screen.getByText(/Preparing your video/)).toBeInTheDocument();
+  });
+}
+
+function attemptPostHandler(
+  onPost: (body: AttemptRequest) => HttpResponse,
+) {
+  return http.post(apiUrl("/attempts"), async ({ request }) => {
+    const body = (await request.json()) as AttemptRequest;
+    return onPost(body);
   });
 }
 
@@ -171,6 +217,338 @@ describe("App shell flow (Part 1)", () => {
 
     await waitFor(() => {
       expect(eventsNamed(send, "demo_reset").length).toBeGreaterThanOrEqual(1);
+    });
+  });
+});
+
+describe("App lesson and question flow (Part 2)", () => {
+  afterEach(() => {
+    server.resetHandlers();
+  });
+
+  it("starts a lesson, shows preparing, then the video when the job becomes ready", async () => {
+    const user = userEvent.setup();
+    let polls = 0;
+    server.use(
+      http.get(apiUrl("/video-jobs/:jobId"), () => {
+        polls += 1;
+        if (polls === 1) {
+          return HttpResponse.json({
+            ...videoJobRunning,
+            variant_id: "initial",
+          });
+        }
+        return HttpResponse.json({
+          ...videoJobReady,
+          variant_id: "initial",
+          video_url: "https://example.com/lesson.mp4",
+        });
+      }),
+    );
+
+    renderApp();
+    await goToHome(user);
+    await startSynthesisObjective(user);
+
+    await waitFor(() => {
+      expect(screen.getByLabelText("Lesson video")).toHaveAttribute(
+        "src",
+        "https://example.com/lesson.mp4",
+      );
+    });
+  });
+
+  it("shows Try again on a failed job; retry creates a new job and reaches ready", async () => {
+    const user = userEvent.setup();
+    let jobCreates = 0;
+    let pollsAfterRetry = 0;
+
+    server.use(
+      http.post(apiUrl("/video-jobs"), () => {
+        jobCreates += 1;
+        return HttpResponse.json({
+          ...videoJobQueued,
+          job_id: jobCreates === 1 ? "video-fail-1" : "video-retry-1",
+        });
+      }),
+      http.get(apiUrl("/video-jobs/:jobId"), ({ params }) => {
+        const jobId = params.jobId as string;
+        if (jobId === "video-fail-1") {
+          return HttpResponse.json({
+            ...videoJobFailed,
+            job_id: jobId,
+            variant_id: "initial",
+          });
+        }
+        pollsAfterRetry += 1;
+        if (pollsAfterRetry === 1) {
+          return HttpResponse.json({
+            ...videoJobRunning,
+            job_id: jobId,
+            variant_id: "initial",
+          });
+        }
+        return HttpResponse.json({
+          ...videoJobReady,
+          job_id: jobId,
+          variant_id: "initial",
+          video_url: "https://example.com/retry-lesson.mp4",
+        });
+      }),
+    );
+
+    renderApp();
+    await goToHome(user);
+    await startSynthesisObjective(user);
+
+    await user.click(await screen.findByRole("button", { name: "Try again" }));
+    await waitFor(() => {
+      expect(screen.getByLabelText("Lesson video")).toHaveAttribute(
+        "src",
+        "https://example.com/retry-lesson.mp4",
+      );
+    });
+    expect(jobCreates).toBeGreaterThanOrEqual(2);
+  });
+
+  it("sends video_started and video_completed with variant_id initial on play and ended", async () => {
+    const user = userEvent.setup();
+    const { send } = renderApp();
+    await goToHome(user);
+    await startSynthesisObjective(user);
+
+    await waitFor(() => {
+      expect(screen.getByLabelText("Lesson video")).toBeInTheDocument();
+    });
+
+    const video = screen.getByLabelText("Lesson video");
+    fireEvent.play(video);
+    fireEvent.ended(video);
+
+    await waitFor(() => {
+      expect(eventsNamed(send, "video_started")).toEqual([
+        expect.objectContaining({ variant_id: "initial" }),
+      ]);
+      expect(eventsNamed(send, "video_completed")).toEqual([
+        expect.objectContaining({ variant_id: "initial" }),
+      ]);
+    });
+  });
+
+  it("submits rep-q1, shows feedback, and sends question_answered", async () => {
+    const user = userEvent.setup();
+    const attemptBodies: AttemptRequest[] = [];
+    server.use(
+      attemptPostHandler((body) => {
+        attemptBodies.push(body);
+        return HttpResponse.json({
+          ...attemptContinue,
+          attempt_id: body.attempt_id,
+        });
+      }),
+    );
+
+    const { send } = renderApp();
+    await goToHome(user);
+    await startSynthesisObjective(user);
+
+    await waitFor(() => {
+      expect(screen.getByLabelText("Lesson video")).toBeInTheDocument();
+    });
+    await user.click(screen.getByRole("button", { name: "Answer question" }));
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("group", { name: repQ1.prompt }),
+      ).toBeInTheDocument();
+    });
+
+    await user.click(screen.getByRole("radio", { name: "3′ end" }));
+    await user.click(screen.getByRole("button", { name: "Submit" }));
+
+    await waitFor(() => {
+      expect(screen.getByRole("heading", { name: "Correct" })).toBeInTheDocument();
+    });
+
+    expect(attemptBodies).toHaveLength(1);
+    expect(attemptBodies[0]!.question_id).toBe("rep-q1");
+    expect(attemptBodies[0]!.remediation_state).toEqual(initialRemediationState);
+
+    await waitFor(() => {
+      expect(eventsNamed(send, "question_answered")).toEqual([
+        expect.objectContaining({
+          question_id: "rep-q1",
+          correct: true,
+        }),
+      ]);
+    });
+  });
+
+  it("shows a submit error on 500 and retries with the same attempt_id", async () => {
+    const user = userEvent.setup();
+    let postCount = 0;
+    const attemptIds: string[] = [];
+
+    server.use(
+      attemptPostHandler((body) => {
+        postCount += 1;
+        attemptIds.push(body.attempt_id);
+        if (postCount === 1) {
+          return HttpResponse.json(
+            { error: "server_error", message: "Submit failed" },
+            { status: 500 },
+          );
+        }
+        return HttpResponse.json({
+          ...attemptContinue,
+          attempt_id: body.attempt_id,
+        });
+      }),
+    );
+
+    renderApp();
+    await goToHome(user);
+    await startSynthesisObjective(user);
+    await waitFor(() => {
+      expect(screen.getByLabelText("Lesson video")).toBeInTheDocument();
+    });
+    await user.click(screen.getByRole("button", { name: "Answer question" }));
+    await waitFor(() => {
+      expect(screen.getByRole("group", { name: repQ1.prompt })).toBeInTheDocument();
+    });
+
+    await user.click(screen.getByRole("radio", { name: "3′ end" }));
+    await user.click(screen.getByRole("button", { name: "Submit" }));
+
+    expect(await screen.findByRole("alert")).toHaveTextContent("Submit failed");
+    await user.click(screen.getByRole("button", { name: "Submit" }));
+
+    await waitFor(() => {
+      expect(screen.getByRole("heading", { name: "Correct" })).toBeInTheDocument();
+    });
+    expect(attemptIds).toHaveLength(2);
+    expect(attemptIds[0]).toBe(attemptIds[1]);
+  });
+
+  it("sends only one POST /attempts when Submit is double-clicked", async () => {
+    const user = userEvent.setup();
+    let postCount = 0;
+    server.use(
+      attemptPostHandler((body) => {
+        postCount += 1;
+        return HttpResponse.json({
+          ...attemptContinue,
+          attempt_id: body.attempt_id,
+        });
+      }),
+    );
+
+    renderApp();
+    await goToHome(user);
+    await startSynthesisObjective(user);
+    await waitFor(() => {
+      expect(screen.getByLabelText("Lesson video")).toBeInTheDocument();
+    });
+    await user.click(screen.getByRole("button", { name: "Answer question" }));
+    await waitFor(() => {
+      expect(screen.getByRole("group", { name: repQ1.prompt })).toBeInTheDocument();
+    });
+
+    await user.click(screen.getByRole("radio", { name: "3′ end" }));
+    await user.dblClick(screen.getByRole("button", { name: "Submit" }));
+
+    await waitFor(() => {
+      expect(screen.getByRole("heading", { name: "Correct" })).toBeInTheDocument();
+    });
+    expect(postCount).toBe(1);
+  });
+
+  it("persists remediation state from the attempt result exactly", async () => {
+    const user = userEvent.setup();
+    const { storage } = renderApp();
+    await goToHome(user);
+    await startSynthesisObjective(user);
+    await waitFor(() => {
+      expect(screen.getByLabelText("Lesson video")).toBeInTheDocument();
+    });
+    await user.click(screen.getByRole("button", { name: "Answer question" }));
+    await waitFor(() => {
+      expect(screen.getByRole("group", { name: repQ1.prompt })).toBeInTheDocument();
+    });
+    await user.click(screen.getByRole("radio", { name: "3′ end" }));
+    await user.click(screen.getByRole("button", { name: "Submit" }));
+
+    await waitFor(() => {
+      expect(screen.getByRole("heading", { name: "Correct" })).toBeInTheDocument();
+    });
+
+    expect(
+      loadProgress(storage).remediation_states.synthesis_direction_and_primer,
+    ).toEqual(attemptContinue.remediation_state);
+  });
+
+  it("uses expected_question_id rep-r2 as the first question when saved state is in progress", async () => {
+    const user = userEvent.setup();
+    const storage = createMemoryStorage();
+    saveParticipantCode("P001", storage);
+    saveProgress(
+      {
+        ...createDefaultProgressState(),
+        selected_topic_ids: ["dna_replication"],
+      },
+      storage,
+    );
+    saveRemediationState(
+      "synthesis_direction_and_primer",
+      {
+        objective_status: "in_progress",
+        expected_question_id: "rep-r2",
+        remediation_count: 1,
+        satisfied_question_ids: ["rep-q1"],
+        asked_retry_ids: [],
+      },
+      storage,
+    );
+
+    server.use(
+      http.get(apiUrl("/questions/:questionId"), ({ params }) => {
+        const questionId = params.questionId as string;
+        if (questionId === "rep-r2") {
+          return HttpResponse.json({
+            question_id: "rep-r2",
+            objective_id: "synthesis_direction_and_primer",
+            prompt: "Which enzyme extends the primer?",
+            choices: [
+              { choice_id: "A", text: "DNA polymerase" },
+              { choice_id: "B", text: "Primase" },
+            ],
+          });
+        }
+        return HttpResponse.json(
+          { error: "not_found", message: "missing" },
+          { status: 404 },
+        );
+      }),
+    );
+
+    renderApp({ storage, participantCode: "P001", selectedTopicIds: ["dna_replication"] });
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", {
+          name: "Start, Synthesis direction and primer requirement",
+        }),
+      ).toBeInTheDocument();
+    });
+    await startSynthesisObjective(user);
+    await waitFor(() => {
+      expect(screen.getByLabelText("Lesson video")).toBeInTheDocument();
+    });
+    await user.click(screen.getByRole("button", { name: "Answer question" }));
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("group", { name: "Which enzyme extends the primer?" }),
+      ).toBeInTheDocument();
     });
   });
 });
