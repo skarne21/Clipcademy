@@ -39,7 +39,7 @@ All Member 2 code is built and tested.
 
 - **Tasks 1–9:** built and tested. `/video-jobs` forwards to Member 1's `video/jobs.py` as soon as that file exists, and returns `503` until then.
 - **Task 10:** my half is tested. A wrong answer's `next_video_request` passes through `/video-jobs` unchanged, and its `next_question_id` loads (`test_app.py`, `VideoJobs`). The UI half waits on Member 3.
-- **Task 11:** the automated part is built. `python learning/check_content.py` checks sources, the answer key, and the stopping rules (it passes now). content-audit.csv is pre-filled with one `pending` row for each of the 58 items in the validation build. The human part waits on a reviewer and instructor permission (see Content review below).
+- **Task 11:** the automated part is built. `python learning/check_content.py` checks sources, the answer key, and the stopping rules (it passes now). content-audit.csv is pre-filled with one `pending` row for each of the 58 items in the validation build. Instructor permission was received on 2026-11-02. The human part now waits only on a reviewer (see Content review below).
 
 ### Content review (task 11)
 
@@ -380,6 +380,20 @@ Cover these cases with one runnable test file next to the grading code.
 
 Verify these limits on PythonAnywhere's [free account page](https://help.pythonanywhere.com/pages/FreeAccountsFeatures/) before deploying, because free tiers change.
 
+### Deploying (account owner: Member 2)
+
+Member 2 owns the PythonAnywhere account. Other members get access through PythonAnywhere's account-sharing setting, never through a shared password.
+
+1. Create a free Beginner account at pythonanywhere.com. The username becomes the URL: `https://<username>.pythonanywhere.com`.
+2. In a Bash console, run `git clone https://github.com/skarne21/Clipcademy.git` (GitHub is reachable from free accounts), then `git checkout` the frozen branch or tag.
+3. On the Web tab, choose **Add a new web app → Manual configuration → Python 3.11** or newer.
+4. Edit the WSGI file the Web tab links to, and replace its contents with the snippet under Hosting above. Use a long random admin token, and keep it out of git.
+5. Add static file mappings: URL `/` to Member 3's built folder (for example `/home/<username>/Clipcademy/web/dist`), and URL `/media/` to Member 1's clips folder.
+6. Click **Reload**, then open `https://<username>.pythonanywhere.com/topics` and check that it returns JSON. After that, test the full flow from a phone.
+7. Right before Day 0, click **Run until 1 month from today**. After Day 2, download `learning/clipcademy.db` and fetch `/events.csv` with the admin token.
+
+Until Members 1 and 3 have built their parts, steps 1–4 and 6 can be done now, so the API is live for them to try.
+
 ## Open questions for the team
 
-1. **Who owns the PythonAnywhere account?** Create one team account, and share access through the dashboard, not a shared password.
+None for Member 2 right now. Content review is the remaining dependency, and it isn't a question.
