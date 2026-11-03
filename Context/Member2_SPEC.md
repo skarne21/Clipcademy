@@ -207,7 +207,7 @@ Attempts (for idempotency) and events are stored server-side in one SQLite file,
 
 ## Service
 
-**Stack:** Python 3.11+ with the standard library only (`http.server`, `sqlite3`, `json`). There are no third-party packages, no framework, and no LLM or other API keys: grading is rule-based and every question and feedback line is pre-written. The code is in `learning/`, with grading in `grading.py` and its tests in `test_grading.py`. Run `python learning/server.py` to start the service.
+**Stack:** Python 3.11+ with the standard library only (`wsgiref`, `sqlite3`, `json`). There are no third-party packages, no framework, and no LLM or other API keys: grading is rule-based and every question and feedback line is pre-written. The code is in `learning/`: grading in `grading.py`, the WSGI app in `app.py` (it exposes `application`), and their tests next to them. Run `python learning/app.py` to serve locally with `wsgiref`. The same `application` object runs unchanged on the host (see Hosting).
 
 **Configuration** (environment variables):
 
@@ -327,6 +327,32 @@ Cover these cases with one runnable test file next to the grading code.
 1. **Language and framework:** Python standard library (see Service). Members 1 and 3 can use any stack, because they connect to this service over HTTP.
 2. **Member 3 hasn't started building**, so the sample responses (task 7) come first. Member 3 builds against them, then switches to the live service by changing one base URL in their data-access module.
 
+3. **Hosting:** PythonAnywhere free (Beginner) account. It's the cheapest option that works, at $0 with no card. See Hosting.
+
+## Hosting
+
+**Choice:** a free PythonAnywhere account, serving the app at `https://<username>.pythonanywhere.com` with HTTPS included. It's the cheapest host that fits, because SQLite needs a disk that survives restarts:
+
+| Option | Cost | Why not |
+| --- | --- | --- |
+| **PythonAnywhere Beginner** | $0, no card | **Chosen.** Persistent 512 MiB disk, one Python web app, and static file mappings |
+| Render free | $0 | Free services spin down after 15 minutes idle, and free services have no persistent disk, so SQLite data would be lost |
+| Fly.io | Pay as you go (about $2+/month) | No free tier for new accounts since October 2024 |
+| Koyeb free | $0 + $29 card hold | Scales to zero, and needs a card |
+| Oracle Cloud Always Free VM | $0, needs a card | Works, but means running a whole server (OS updates, HTTPS, firewall). Fallback only if PythonAnywhere's limits are hit |
+
+**One origin for everything:** the PythonAnywhere web app runs this WSGI service. Static file mappings serve Member 3's built files at `/` and Member 1's pre-rendered clips at `/media/`. Students get one link and the browser needs no CORS. The API paths (`/topics`, `/questions/…`, `/attempts`, `/events`, `/events.csv`) and Member 1's `/video-jobs` are routed to Python, and every other path is served as a static file.
+
+**Limits and how the plan handles them:**
+- **512 MiB disk:** this holds the code, the SQLite file, the web build, and the clips. Keep the clips to around 30–60 s at 720p or lower, so the 9 validation clips use well under 200 MiB.
+- **Restricted outbound internet and limited CPU:** no video is rendered on the host. Member 1 renders the clips ahead of time, and the hosted `/video-jobs` returns the stored clip for the requested variant. That's the "served from a previously rendered version" case in Team_Spec, and presenters say so.
+- **The web app expires one month after it's last extended:** click "Run until 1 month from today" on the Web tab right before Day 0, so it can't lapse during Days 0–2.
+- **One web worker:** requests are handled one at a time, which is fine for 6 participants and short SQLite writes.
+- **Configuration:** set the environment variables (see Service) at the top of the PythonAnywhere WSGI file before importing `application`.
+- **Backups:** download `clipcademy.db` and the `events.csv` export at the end of Day 2. Free accounts can be cleaned up after long inactivity.
+
+Verify these limits on PythonAnywhere's [free account page](https://help.pythonanywhere.com/pages/FreeAccountsFeatures/) before deploying, because free tiers change.
+
 ## Open questions for the team
 
-1. **Hosting for the study.** Participants use the app on their own devices for two days, so it needs a public URL. Recommendation: one host runs this service and also serves Member 3's built `web/` files and Member 1's `/media` clips. With a single origin there's no CORS in production and students get one link. Decide this before the build freeze.
+1. **Who owns the PythonAnywhere account?** Create one team account, and share access through the dashboard, not a shared password.
