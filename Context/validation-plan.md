@@ -57,6 +57,7 @@ The original pitch KPIs (about 60 students over three weeks, weekly topic comple
 1. Get written permission from the instructor to use the lecture-note excerpts.
 2. **Content audit.** A course-knowledgeable reviewer checks every app question, feedback line, lesson packet, clip transcript, and test item against the lecture notes. Record one row per item in [content-audit.csv](content-audit.csv), including whether a test item overlaps an app question. Nothing reaches participants unless its `review_status` is approved. Fix and re-review anything with an error. Then set each approved lesson packet to `review_status: "reviewed"`. Any lesson that isn't fully approved goes back to `coming_soon` in the frozen build.
 3. Freeze the build and set its `build_id` in the app, so every event carries it. Add the same ID to the server's list of valid build IDs.
+4. Deploy the frozen build to the PythonAnywhere web app, and open it from a phone to check it works. Right before Day 0, extend the web app's expiry ("Run until 1 month from today"), so it can't lapse during the study. After Day 2, download the database and the `events.csv` export.
 
 ### Day 0 (moderated, about 20 minutes)
 

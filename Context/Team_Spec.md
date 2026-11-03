@@ -263,6 +263,12 @@ Member 3 calls the video service after Member 2 returns `review_again`. The ques
 
 Suggested file ownership is `video/` for Member 1, `learning/` and the shared lesson packets for Member 2, and `web/` for Member 3. Agree before editing shared contracts. Each member implements their own service wrapper, with Member 3 owning the development app's service configuration and final integration.
 
+**Hosting (study build):** one free PythonAnywhere web app serves everything from one origin. It runs Member 2's Python WSGI service, serves Member 3's built static files at `/`, and serves Member 1's pre-rendered clips at `/media/`. This affects the other members:
+- **Member 3:** the app must build to plain static files (HTML/JS/CSS) and call the API with relative paths (`/topics`, `/attempts`), so the same build works locally and when hosted. No Node server runs in production.
+- **Member 1:** the host can't render video. Render every approved clip ahead of time, and expose `/video-jobs` as a small Python WSGI handler that Member 2's app mounts, returning the stored clip for each variant. Keep the clips small, because the whole account has 512 MiB.
+
+Costs, limits, and alternatives are in [Member2_SPEC.md](Member2_SPEC.md), Hosting.
+
 ## Whole-product acceptance checklist
 
 - [ ] Topic picker uses the four supplied lectures and does not imply confirmed exam coverage.
