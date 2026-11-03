@@ -331,14 +331,15 @@ describe("retry", () => {
     send
       .mockRejectedValueOnce(
         new ApiRequestError(0, "network_error", "offline"),
-      )
+      ) // call 1: app_opened — fail (initial flush)
       .mockRejectedValueOnce(
         new ApiRequestError(0, "network_error", "offline"),
-      )
-      .mockResolvedValueOnce(undefined)
+      ) // call 2: app_opened — fail (1s retry)
+      .mockResolvedValueOnce(undefined) // call 3: app_opened — success (2s retry)
       .mockRejectedValueOnce(
         new ApiRequestError(0, "network_error", "offline"),
-      );
+      ) // call 4: demo_reset — fail (flush after track)
+      .mockResolvedValueOnce(undefined); // call 5: demo_reset — success (1s retry after call 4)
 
     const { tracker } = createTestTracker({
       send,
@@ -363,18 +364,45 @@ describe("retry", () => {
     await tracker.flush();
     expect(send).toHaveBeenCalledTimes(4);
 
-    send.mockRejectedValueOnce(
-      new ApiRequestError(0, "network_error", "offline"),
-    );
-    send.mockResolvedValueOnce(undefined);
+    await vi.advanceTimersByTimeAsync(999);
+    expect(send).toHaveBeenCalledTimes(4);
+    await vi.advanceTimersByTimeAsync(1);
+    expect(send).toHaveBeenCalledTimes(5);
+  });
+
+  it("explicit flush cancels a pending retry and resets the delay", async () => {
+    const send = vi
+      .fn<SendFn>()
+      .mockRejectedValueOnce(
+        new ApiRequestError(0, "network_error", "offline"),
+      ) // call 1: app_opened — fail (initial flush)
+      .mockRejectedValueOnce(
+        new ApiRequestError(0, "network_error", "offline"),
+      ) // call 2: app_opened — fail (1s retry; next scheduled delay would be 2s)
+      .mockRejectedValueOnce(
+        new ApiRequestError(0, "network_error", "offline"),
+      ) // call 3: app_opened — fail (explicit flush cancels 2s timer, resets backoff)
+      .mockResolvedValueOnce(undefined); // call 4: app_opened — success (1s retry after call 3)
+
+    const { tracker } = createTestTracker({
+      send,
+      retryDelaysMs: [1000, 2000, 4000],
+    });
+    tracker.startSession();
 
     await tracker.flush();
-    expect(send).toHaveBeenCalledTimes(5);
+    expect(send).toHaveBeenCalledTimes(1);
+
+    await vi.advanceTimersByTimeAsync(1000);
+    expect(send).toHaveBeenCalledTimes(2);
+
+    await tracker.flush();
+    expect(send).toHaveBeenCalledTimes(3);
 
     await vi.advanceTimersByTimeAsync(999);
-    expect(send).toHaveBeenCalledTimes(5);
+    expect(send).toHaveBeenCalledTimes(3);
     await vi.advanceTimersByTimeAsync(1);
-    expect(send).toHaveBeenCalledTimes(6);
+    expect(send).toHaveBeenCalledTimes(4);
   });
 });
 
