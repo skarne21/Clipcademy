@@ -55,8 +55,8 @@ The original pitch KPIs (about 60 students over three weeks, weekly topic comple
 ### Before recruiting
 
 1. Get written permission from the instructor to use the lecture-note excerpts.
-2. **Content audit.** A course-knowledgeable reviewer checks every app question, feedback line, lesson packet, clip transcript, and test item against the lecture notes. Record one row per item in [content-audit.csv](content-audit.csv), including whether a test item overlaps an app question. Nothing reaches participants unless its `review_status` is approved. Fix and re-review anything with an error.
-3. Freeze the build and set its `build_id` in the app, so every event carries it.
+2. **Content audit.** A course-knowledgeable reviewer checks every app question, feedback line, lesson packet, clip transcript, and test item against the lecture notes. Record one row per item in [content-audit.csv](content-audit.csv), including whether a test item overlaps an app question. Nothing reaches participants unless its `review_status` is approved. Fix and re-review anything with an error. Then set each approved lesson packet to `review_status: "reviewed"`. Any lesson that isn't fully approved goes back to `coming_soon` in the frozen build.
+3. Freeze the build and set its `build_id` in the app, so every event carries it. Add the same ID to the server's list of valid build IDs.
 
 ### Day 0 (moderated, about 20 minutes)
 
@@ -99,7 +99,7 @@ The app sends an event for every action to `POST /events` (defined in [Team_Spec
 | Follow-ups watched | `video_completed` events for follow-up variants |
 | Later-day recall accuracy | Share of `question_answered` events after Day 0 with `correct` true. Reported only, not a hypothesis |
 
-Events are stored in UTC (`timestamp_utc`). Convert them to the study's local time zone before deciding which calendar day an event falls on. Leave out events flagged for a missing or wrong `build_id`, and report how many there were.
+Events are stored in UTC (`timestamp_utc`). Convert them to the study's local time zone before deciding which calendar day an event falls on. Leave out events whose `build_id_status` is `missing` or `unknown`, and report how many there were.
 
 At n = 6, 5/6 = 83%, 4/6 = 67%, and 3/6 = 50%. These are threshold examples, not results.
 

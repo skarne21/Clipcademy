@@ -6,7 +6,7 @@ This document proposes a build plan for three teammates working at the same time
 
 The subject is biology (confirmed), using the lecture notes in [Notes/](../Notes/). The notes establish possible review topics, but do not identify an exam's coverage. Students select their exam topics from a prepared list for this prototype.
 
-The product goal is **active recall**. Students pull answers from memory by answering a question before seeing any explanation of it. A wrong answer triggers a short video aimed only at what they couldn't recall, followed by a fresh question they haven't seen. Feedback never appears before the student commits to an answer, and a retry never repeats a question.
+The product goal is **active recall**. Students pull answers from memory by answering a question before seeing any explanation of it. A wrong answer triggers a short video aimed only at what they couldn't recall, followed by a fresh question they haven't seen. Feedback never appears before the student commits to an answer, and a retry question is never shown twice. The one planned repeat is a required question the student missed: it comes back after its follow-up, so they recall it correctly before the objective counts as complete.
 
 Build one working browser experience with topic selection, a stick-figure review video, questions, feedback, a targeted follow-up video, and saved progress. Use four topic cards derived from the four lectures. Fully implement one adaptive lesson first, then expand only after that flow works.
 
@@ -37,7 +37,7 @@ Content review is required before publication. Lecture 22 describes tRNA functio
 6. Correct answer shows explanatory feedback. After all required questions for that objective are correct, mark it complete.
 7. Incorrect answer shows feedback and identifies a possible misconception based on the chosen option. Request a follow-up video for that objective and misconception.
 8. Student watches the follow-up and answers a new question. Save the attempt and updated progress.
-9. Allow at most two follow-up cycles per objective in this prototype. After that, show the reviewed explanation, mark the objective `needs_review`, and offer another topic or a restart.
+9. Allow at most two follow-up cycles per objective in this prototype. After that, show the reviewed explanation (the feedback for the chosen answer plus the lesson's key points from its packet), mark the objective `needs_review`, and offer another topic or a restart.
 
 Treat answer-to-misconception mapping as a teaching choice, not a confirmed diagnosis of the student's thinking. Choosing a wrong option is enough to select a relevant explanation for this demo.
 
@@ -119,7 +119,7 @@ Own the reviewed lesson text, question bank, correct answers, feedback, and deci
 5. Build answer checking and the transition rules for `continue_questions`, `review_again`, `complete`, and `needs_review`.
 6. Track remediation cycles per objective (total count; a correct answer does not reset it) and stop at the configured limit of two.
 7. Provide sample question responses and answer-result responses before connecting the real video service.
-8. Host `POST /events` and export the stored events as `events.csv` for the validation study. Store events that arrive without a `build_id`, but flag them in the export.
+8. Host `POST /events` and export the stored events as `events.csv` for the validation study. The server holds the list of valid build IDs, set at the build freeze. Store every event, and mark each one `ok`, `missing`, or `unknown` in the export's `build_id_status` column.
 
 ### Starter question bank
 
@@ -142,7 +142,7 @@ These are proposed questions based on the notes, not observed student errors. Re
   "question_id": "rep-q2",
   "correct": false,
   "action": "review_again",
-  "feedback": "DNA polymerase extends an existing complementary strand. Primase supplies the RNA primer that starts it.",
+  "feedback": "Ligase joins pieces of DNA. It does not add the new bases. DNA polymerase extends a primer that primase made.",
   "misconception_id": "primer_requirement",
   "next_video_request": {
     "topic_id": "dna_replication",
@@ -152,7 +152,7 @@ These are proposed questions based on the notes, not observed student errors. Re
     "source_refs": ["L19-p1", "L19-p2"]
   },
   "next_question_id": "rep-r2",
-  "remediation_state": { "remediation_count": 1, "satisfied_question_ids": ["rep-q1"], "asked_retry_ids": ["rep-r2"] },
+  "remediation_state": { "objective_status": "in_progress", "expected_question_id": "rep-r2", "remediation_count": 1, "satisfied_question_ids": ["rep-q1"], "asked_retry_ids": ["rep-r2"] },
   "source_refs": ["L19-p1", "L19-p2"]
 }
 ```
@@ -276,7 +276,7 @@ Suggested file ownership is `video/` for Member 1, `learning/` and the shared le
 - [ ] Unclear note passages remain unpublished pending review.
 - [ ] Presenters accurately identify prepared scripts, previously rendered assets, and live generation.
 - [ ] Every activity event reaches `POST /events` with a participant code and `build_id`, and `events.csv` exports correctly.
-- [ ] No feedback or explanation appears before the student submits an answer, and no retry repeats a question already asked.
+- [ ] No feedback or explanation appears before the student submits an answer, and no retry question is shown twice. Only a missed required question comes back.
 
 ## Presentation walkthrough
 
