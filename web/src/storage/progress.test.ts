@@ -1,7 +1,7 @@
 import { describe, expect, it, beforeEach, vi } from "vitest";
 import { attemptContinue, attemptReviewAgain } from "../fixtures/attempts";
 import type { AttemptRequest, ProgressState, StoredStep } from "./progress";
-import { EVENTS_KEY, PARTICIPANT_KEY, PROGRESS_KEY } from "./keys";
+import { EVENTS_KEY, PROGRESS_KEY } from "./keys";
 import {
   getPendingAttempt,
   loadParticipantCode,
