@@ -225,6 +225,7 @@ Every event was built as `study-2` and stored, with no page errors. The phone te
 | `0bfcd6b` | Validation build: DNA repair available, build ID `study-1` |
 | `4d6f408` | Log and progress: deployment, heartbeat, app audit, `study-1` |
 | `0a90b93` | Heartbeat carries over a refresh; test; build ID `study-2` |
+| `7b0d1a9` | This log's study-1/study-2 sections. **It also contains work staged by other sessions, committed by mistake under this message:** Member 1's `video/` folder (renderer, `jobs.py`, tests, and all 6 clips with transcripts and captions), Member 3's `web/` changes (captions, disclosure text, `/media` proxy, two e2e files), and a change to `learning/app.py` that also passes `/media/` to Member 1's handler. All Member 2 tests pass on it. Kept as is, by team decision, rather than rewriting shared history |
 
 ## Next steps for Member 2
 
