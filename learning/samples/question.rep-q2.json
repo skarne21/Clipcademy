@@ -12,15 +12,15 @@
     "choices": [
       {
         "choice_id": "A",
-        "text": "DNA polymerase needs an existing complementary strand to extend"
+        "text": "DNA polymerase can't start a new strand"
       },
       {
         "choice_id": "B",
-        "text": "Ligase adds all new bases"
+        "text": "Ligase uses it to add the new bases"
       },
       {
         "choice_id": "C",
-        "text": "DNA is synthesized only 3′ to 5′"
+        "text": "It lets DNA grow in the 3′ to 5′ direction"
       }
     ]
   }

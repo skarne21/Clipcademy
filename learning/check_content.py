@@ -67,6 +67,11 @@ def check(data, freeze=False):
             problems.append(f"{qid}: choice IDs differ between questions.json and answer_key.json")
         if k["correct_choice_id"] not in k["choices"]:
             problems.append(f"{qid}: correct_choice_id {k['correct_choice_id']} is not a choice")
+        lengths = {c["choice_id"]: len(c["text"]) for c in q["choices"]}
+        correct_len = lengths.pop(k["correct_choice_id"], 0)
+        # ponytail: length is the one recognition cue a script can see; the reviewer judges the rest
+        if lengths and correct_len > 1.3 * max(lengths.values()) and correct_len - max(lengths.values()) > 8:
+            problems.append(f"{qid}: the correct choice is much longer than every distractor, so it can be picked by recognition")
         if not k["source_refs"] or not set(k["source_refs"]) <= refs:
             problems.append(f"{qid}: source_refs {k['source_refs']} must be non-empty and in the packet's excerpts {sorted(refs)}")
         if k["counts_for"] not in packet["required_question_ids"]:

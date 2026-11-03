@@ -22,15 +22,15 @@
       "choices": [
         {
           "choice_id": "A",
-          "text": "DNA polymerase needs an existing complementary strand to extend"
+          "text": "DNA polymerase can't start a new strand"
         },
         {
           "choice_id": "B",
-          "text": "Ligase adds all new bases"
+          "text": "Ligase uses it to add the new bases"
         },
         {
           "choice_id": "C",
-          "text": "DNA is synthesized only 3′ to 5′"
+          "text": "It lets DNA grow in the 3′ to 5′ direction"
         }
       ]
     },
@@ -109,15 +109,15 @@
       "choices": [
         {
           "choice_id": "A",
-          "text": "Mismatch repair proteins"
+          "text": "Mismatch repair proteins scanning the helix"
         },
         {
           "choice_id": "B",
-          "text": "DNA polymerase's own exonuclease activity (proofreading)"
+          "text": "Proofreading by DNA polymerase"
         },
         {
           "choice_id": "C",
-          "text": "Ligase"
+          "text": "DNA ligase sealing the backbone"
         }
       ]
     },
@@ -128,15 +128,15 @@
       "choices": [
         {
           "choice_id": "A",
-          "text": "Splits the double helix into single strands"
+          "text": "Breaks the hydrogen bonds between base pairs"
         },
         {
           "choice_id": "B",
-          "text": "Converts DNA into RNA"
+          "text": "Removes bases from one strand"
         },
         {
           "choice_id": "C",
-          "text": "Makes adjacent C's and T's bond covalently, creating a bulge"
+          "text": "Bonds adjacent C's and T's together"
         }
       ]
     },
@@ -200,15 +200,15 @@
       "choices": [
         {
           "choice_id": "A",
-          "text": "Breaking hydrogen bonds to open the helix"
+          "text": "Opening the double helix"
         },
         {
           "choice_id": "B",
-          "text": "Adding an RNA primer"
+          "text": "Adding an RNA primer to the strand"
         },
         {
           "choice_id": "C",
-          "text": "Forming phosphodiester linkages to reseal the backbone"
+          "text": "Forming phosphodiester linkages"
         }
       ]
     },
@@ -234,15 +234,15 @@
       "choices": [
         {
           "choice_id": "A",
-          "text": "The region where RNA polymerase first contacts DNA to start transcription"
+          "text": "Where RNA polymerase first contacts the gene"
         },
         {
           "choice_id": "B",
-          "text": "The codon that starts translation"
+          "text": "The start codon at the beginning of translation"
         },
         {
           "choice_id": "C",
-          "text": "The finished RNA molecule"
+          "text": "The RNA molecule that transcription produces"
         }
       ]
     },
@@ -257,7 +257,7 @@
         },
         {
           "choice_id": "B",
-          "text": "The coding (non-template) strand"
+          "text": "The coding strand"
         }
       ]
     },
@@ -302,15 +302,15 @@
       "choices": [
         {
           "choice_id": "A",
-          "text": "A tRNA must bind to it"
+          "text": "A tRNA must bind to the promoter"
         },
         {
           "choice_id": "B",
-          "text": "Ligase must seal it"
+          "text": "Ligase must seal the backbone there"
         },
         {
           "choice_id": "C",
-          "text": "Initial proteins open it and unwind the double helix"
+          "text": "The double helix must be unwound"
         }
       ]
     },
@@ -416,15 +416,15 @@
       "choices": [
         {
           "choice_id": "A",
-          "text": "Whether its anticodon is complementary to the exposed codon"
+          "text": "Whether its anticodon pairs with the codon"
         },
         {
           "choice_id": "B",
-          "text": "Whether it carries methionine"
+          "text": "Whether it carries the amino acid methionine"
         },
         {
           "choice_id": "C",
-          "text": "Whether it is uncharged"
+          "text": "Whether it has already lost its amino acid"
         }
       ]
     }

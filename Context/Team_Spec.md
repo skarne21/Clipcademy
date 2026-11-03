@@ -126,7 +126,7 @@ Own the reviewed lesson text, question bank, correct answers, feedback, and deci
 | ID | Question and choices | Correct answer | Wrong-answer follow-up | Source |
 | --- | --- | --- | --- | --- |
 | `rep-q1` | Which end receives new nucleotides during DNA synthesis? A. 5′ end B. 3′ end | B | `direction_followup` explains growth direction and the growing end | L19 p. 1 |
-| `rep-q2` | Why is a primer needed? A. DNA polymerase needs an existing complementary strand to extend B. Ligase adds all new bases C. DNA is synthesized only 3′ to 5′ | A | B → `primer_followup` focuses on the existing start and polymerase's role; C → `direction_followup` (C states the wrong direction) | L19 pp. 1–2 |
+| `rep-q2` | Why is a primer needed? A. DNA polymerase can't start a new strand B. Ligase uses it to add the new bases C. It lets DNA grow in the 3′ to 5′ direction | A | B → `primer_followup` focuses on the existing start and polymerase's role; C → `direction_followup` (C states the wrong direction) | L19 pp. 1–2 |
 | `rep-r1` | A complementary primer is already present. Where does DNA polymerase add the next DNA nucleotide? A. Its 3′ end B. Its 5′ end | A | Return to the direction explanation within the retry limit | L19 p. 1 |
 | `rep-r2` | Which enzyme makes the RNA primer? A. Ligase B. Primase C. DNA polymerase | B | Return to the primer explanation within the retry limit | L19 p. 2 |
 
