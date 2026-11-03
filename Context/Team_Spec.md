@@ -181,7 +181,7 @@ Build the connected student experience and own the shared application shell, nav
 5. Build feedback and follow-up screens. Display preparing and failure states with a retry button.
 6. Save question position, selected topics, attempts, remediation count, and objective status in browser storage.
 7. Create a Reset demo control and connect the actual question/video services through one replaceable data-access module.
-8. Ask for a participant code on first open, store it locally, and send an event to `POST /events` for every action listed under Activity events. Every event includes the `build_id`, a fixed value set in the app when the build is frozen. Reset demo keeps the participant code.
+8. Ask for a participant code on first open, store it locally, and send an event to `POST /events` for every action listed under Activity events. Every event includes the `build_id`, a fixed value set in the app when the build is frozen, and `client_timestamp_utc`, the device time when the action happened. A retried send keeps the original timestamp and `event_id`. Reset demo keeps the participant code.
 
 ### Screen behavior
 
@@ -208,7 +208,7 @@ Build the connected student experience and own the shared application shell, nav
 
 ## Shared integration contract
 
-Agree on these IDs and response shapes before working separately. These are proposed endpoints, independent of the framework the team selects.
+Agree on these IDs and response shapes before working separately. Member 2's service is Python (standard library) on port 8000 with no path prefix. Member 1's video endpoints can use any stack. Errors use the body `{"error": {"field": "...", "message": "..."}}`.
 
 | Endpoint | Owner | Required behavior |
 | --- | --- | --- |
@@ -217,7 +217,7 @@ Agree on these IDs and response shapes before working separately. These are prop
 | `POST /attempts` | Member 2 | Accept attempt ID, question ID, selected choice, objective ID, and remediation state. Return feedback, action, and next question/video request |
 | `POST /video-jobs` | Member 1 | Accept the approved video request. Return job ID and state |
 | `GET /video-jobs/{job_id}` | Member 1 | Return `queued`, `running`, `ready`, or `failed`. Ready includes playable video URL and transcript |
-| `POST /events` | Member 2 (stores), Member 3 (sends) | Accept one activity event and store it with a server timestamp. Ignore a repeated `event_id` |
+| `POST /events` | Member 2 (stores), Member 3 (sends) | Accept one activity event and store it with a server timestamp. Ignore a repeated `event_id` (`200`, not an error). Reject an unknown `event_name` or a missing required field with `400`. Field list and the token-protected `GET /events.csv` export: [Member2_SPEC.md](Member2_SPEC.md), Service |
 | Local session storage | Member 3 | Persist participant code, selection, objective status, current step, attempts, and job ID for this browser |
 
 Example ready video response follows.
