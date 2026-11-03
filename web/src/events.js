@@ -54,8 +54,16 @@ addEventListener('online', flush)
 const BEAT_MS = 30_000
 const MAX_STEP_MS = 5_000 // a sleeping laptop that never fired visibilitychange doesn't count as time on app
 const LESSON_SCREENS = /^#\/(lesson|question|feedback|followup|summary)(\/|$)/
-let visibleMs = 0
+const CARRY_MS = 5 * 60_000 // leftover seconds survive a refresh or quick reopen, not yesterday's visit
+const carry = state.heartbeat_carry
+let visibleMs = carry && Date.now() - carry.at < CARRY_MS ? carry.ms : 0
 let lastTick = null
+
+// Saves the seconds not yet worth a heartbeat, so a refresh doesn't throw them away.
+function saveCarry() {
+  state.heartbeat_carry = { ms: visibleMs, at: Date.now() }
+  save()
+}
 
 function heartbeatTick() {
   const now = Date.now()
@@ -69,5 +77,12 @@ function heartbeatTick() {
 }
 
 setInterval(heartbeatTick, 1_000)
-document.addEventListener('visibilitychange', heartbeatTick)
+document.addEventListener('visibilitychange', () => {
+  heartbeatTick()
+  if (document.visibilityState === 'hidden') saveCarry() // phones often skip pagehide when a tab is swiped away
+})
+addEventListener('pagehide', () => {
+  heartbeatTick()
+  saveCarry()
+})
 heartbeatTick()
