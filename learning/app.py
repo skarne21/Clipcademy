@@ -2,6 +2,7 @@
 Local: python learning/app.py   Hosted: point the PythonAnywhere WSGI file at `application`."""
 import csv
 import hmac
+import importlib.util
 import io
 import json
 import os
@@ -78,7 +79,11 @@ def _validate_event(ev):
     return _utc_iso(client_time)
 
 
-def make_app(db_path, allowed_origins, build_ids, admin_token):
+def _is_video_path(path):
+    return path == "/video-jobs" or path.startswith("/video-jobs/")
+
+
+def make_app(db_path, allowed_origins, build_ids, admin_token, video_app=None):
     # ponytail: one shared connection, fine for wsgiref and PythonAnywhere's single free worker; open one per request if workers > 1
     db = sqlite3.connect(db_path, check_same_thread=False)
     db.executescript("""
@@ -139,6 +144,8 @@ def make_app(db_path, allowed_origins, build_ids, admin_token):
             allowed, handler = "POST", lambda: post_event(environ)
         elif path == "/events.csv":
             allowed, handler = "GET", lambda: export_events(environ)
+        elif _is_video_path(path):
+            raise HttpError(503, "path", "video service not installed yet (Member 1's video/jobs.py)")
         else:
             raise HttpError(404, "path", f"no endpoint at {path}")
         if method != allowed:
@@ -158,6 +165,8 @@ def make_app(db_path, allowed_origins, build_ids, admin_token):
                         ("Access-Control-Allow-Headers", "Content-Type, Authorization")]
             start_response("204 No Content", headers)
             return [b""]
+        if video_app is not None and _is_video_path(path):
+            return video_app(environ, start_response)  # Member 1's handler owns these responses (Team_Spec, Hosting)
         try:
             status, body = route(method, path, environ)
         except (HttpError, grading.GradingError) as e:
@@ -173,6 +182,17 @@ def make_app(db_path, allowed_origins, build_ids, admin_token):
     return application
 
 
+def _load_video_app():
+    """Member 1's WSGI handler from video/jobs.py, or None until it exists."""
+    path = os.path.join(grading.HERE, "..", "video", "jobs.py")
+    if not os.path.exists(path):
+        return None
+    spec = importlib.util.spec_from_file_location("video_jobs", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.application
+
+
 def _env_list(name, default=""):
     return [v.strip() for v in os.environ.get(name, default).split(",") if v.strip()]
 
@@ -182,6 +202,7 @@ application = make_app(
     allowed_origins=_env_list("CLIPCADEMY_ALLOWED_ORIGINS", "*"),
     build_ids=_env_list("CLIPCADEMY_BUILD_IDS"),
     admin_token=os.environ.get("CLIPCADEMY_ADMIN_TOKEN"),
+    video_app=_load_video_app(),
 )
 
 if __name__ == "__main__":

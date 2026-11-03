@@ -167,6 +167,36 @@ class Cors(unittest.TestCase):
         self.assertEqual(headers["Access-Control-Allow-Origin"], "*")
 
 
+def fake_video_app(environ, start_response):
+    """Stands in for Member 1's video/jobs.py; echoes what it received."""
+    body = json.dumps({"method": environ["REQUEST_METHOD"], "path": environ["PATH_INFO"],
+                       "body": environ["wsgi.input"].read(int(environ.get("CONTENT_LENGTH") or 0)).decode()}).encode()
+    start_response("202 Accepted", [("Content-Type", "application/json")])
+    return [body]
+
+
+class VideoJobs(unittest.TestCase):
+    def test_503_until_member1_handler_exists(self):
+        status, _, body = call(new_app(video_app=None), "POST", "/video-jobs", {"variant_id": "primer_followup"})
+        self.assertEqual((status, body["error"]["field"]), (503, "path"))
+
+    def test_requests_pass_through_unchanged(self):
+        app = new_app(video_app=fake_video_app)
+        status, _, body = call(app, "POST", "/video-jobs", {"variant_id": "primer_followup"})
+        self.assertEqual((status, body["path"], json.loads(body["body"])), (202, "/video-jobs", {"variant_id": "primer_followup"}))
+        self.assertEqual(call(app, "GET", "/video-jobs/video-001")[2]["path"], "/video-jobs/video-001")
+
+    def test_wrong_answer_flow_reaches_video_service(self):
+        """Member 2's half of task 10: a wrong answer's next_video_request is accepted by /video-jobs as-is."""
+        app = new_app(video_app=fake_video_app)
+        _, _, result = call(app, "POST", "/attempts", attempt("rep-q1", "B", {}, "w1"))
+        _, _, result = call(app, "POST", "/attempts", attempt("rep-q2", "B", result["remediation_state"], "w2"))
+        status, _, echoed = call(app, "POST", "/video-jobs", result["next_video_request"])
+        self.assertEqual((status, json.loads(echoed["body"])["variant_id"]), (202, "primer_followup"))
+        status, _, question = call(app, "GET", f"/questions/{result['next_question_id']}")
+        self.assertEqual((status, question["question_id"]), (200, "rep-r2"))
+
+
 # Sample responses for Member 3 (task 7): real outputs of the app, so they can't drift from the contract.
 def sample_exchanges():
     app, out = new_app(), {}
