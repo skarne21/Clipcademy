@@ -182,10 +182,10 @@ describe("never blocks", () => {
       key(index: number) {
         return memory.key(index);
       },
-      removeItem(key: string) {
+      removeItem(_key: string) {
         throw new Error("storage write failed");
       },
-      setItem(key: string, value: string) {
+      setItem(_key: string, _value: string) {
         throw new Error("storage write failed");
       },
     };
@@ -338,8 +338,7 @@ describe("retry", () => {
       .mockResolvedValueOnce(undefined)
       .mockRejectedValueOnce(
         new ApiRequestError(0, "network_error", "offline"),
-      )
-      .mockResolvedValueOnce(undefined);
+      );
 
     const { tracker } = createTestTracker({
       send,
@@ -350,12 +349,14 @@ describe("retry", () => {
     await tracker.flush();
     expect(send).toHaveBeenCalledTimes(1);
 
-    await vi.advanceTimersByTimeAsync(1000);
-    await vi.runOnlyPendingTimersAsync();
+    await vi.advanceTimersByTimeAsync(999);
+    expect(send).toHaveBeenCalledTimes(1);
+    await vi.advanceTimersByTimeAsync(1);
     expect(send).toHaveBeenCalledTimes(2);
 
-    await vi.advanceTimersByTimeAsync(2000);
-    await vi.runOnlyPendingTimersAsync();
+    await vi.advanceTimersByTimeAsync(1999);
+    expect(send).toHaveBeenCalledTimes(2);
+    await vi.advanceTimersByTimeAsync(1);
     expect(send).toHaveBeenCalledTimes(3);
 
     tracker.track("demo_reset");
@@ -370,8 +371,9 @@ describe("retry", () => {
     await tracker.flush();
     expect(send).toHaveBeenCalledTimes(5);
 
-    await vi.advanceTimersByTimeAsync(1000);
-    await vi.runOnlyPendingTimersAsync();
+    await vi.advanceTimersByTimeAsync(999);
+    expect(send).toHaveBeenCalledTimes(5);
+    await vi.advanceTimersByTimeAsync(1);
     expect(send).toHaveBeenCalledTimes(6);
   });
 });
