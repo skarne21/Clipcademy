@@ -6,7 +6,7 @@ This document proposes a build plan for three teammates working at the same time
 
 The subject is biology (confirmed), using the lecture notes in [Notes/](../Notes/). The notes establish possible review topics, but do not identify an exam's coverage. Students select their exam topics from a prepared list for this prototype.
 
-The product goal is **active recall**. Students pull answers from memory by answering a question before seeing any explanation of it. A wrong answer triggers a short video aimed only at what they couldn't recall, followed by a fresh question they haven't seen. Feedback never appears before the student commits to an answer, and a retry question is never shown twice. The one planned repeat is a required question the student missed: it comes back after its follow-up, so they recall it correctly before the objective counts as complete.
+The product goal is **active recall**. Students pull answers from memory by answering a question before seeing any explanation of it. A wrong answer triggers a short video aimed only at what they couldn't recall, followed by a fresh question they haven't seen. Feedback never appears before the student commits to an answer, and a retry question is never shown twice. In the MVP, adapting means **selecting, not generating**: the wrong answer picks which pre-written follow-up video and which pre-written retry question come next. Nothing is written by an LLM during a session, because every item must pass content review before students see it (validation-plan.md). Generating new videos or questions per student would be a later product change. It would need an LLM API key and a new review process. The one planned repeat is a required question the student missed: it comes back after its follow-up, so they recall it correctly before the objective counts as complete.
 
 Build one working browser experience with topic selection, a stick-figure review video, questions, feedback, a targeted follow-up video, and saved progress. Use four topic cards derived from the four lectures. Fully implement one adaptive lesson first, then expand only after that flow works.
 
@@ -284,6 +284,10 @@ The study doesn't need live rendering. Every clip comes from an approved script 
 2. **Member 1:** encode clips small, at 30–60 s and 720p or lower. The whole account has 512 MiB.
 3. **Member 3:** pick a frontend that builds to static files (plain HTML/JS, or a static build from a tool like Vite), not one that needs a server at runtime (such as Next.js server rendering). Call the API with relative paths.
 4. **Everyone:** after deploying, test playback and the full flow from a phone. The free plan's bandwidth is described only as "low," with no number.
+
+**How `/video-jobs` plugs in:** Member 1 provides `video/jobs.py` exposing a WSGI callable named `application`. It handles `POST /video-jobs` and `GET /video-jobs/{job_id}` with the responses in the contract above. Member 2's app passes every request whose path starts with `/video-jobs` to it unchanged, and returns `503` with the standard error body until that file exists.
+
+**Local development:** run Member 2's service with `python learning/app.py` (port 8000). Member 3's dev server must proxy the API paths (`/topics`, `/questions`, `/attempts`, `/events`, `/video-jobs`) to `http://localhost:8000`, so the relative paths work locally exactly as they do when hosted. With Vite, that's the `server.proxy` setting. Until the service is connected, Member 3 can build against `learning/samples/`.
 
 Costs, limits, and alternatives are in [Member2_SPEC.md](Member2_SPEC.md), Hosting.
 
