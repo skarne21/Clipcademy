@@ -1,11 +1,11 @@
 # Member 2 development log
 
 Owner: Member 2 (questions, adaptive lesson logic, learning service) · Code: `learning/` · Spec: [Member2_SPEC.md](Member2_SPEC.md)
-Period covered: 2026-11-02 · Branch: `MVP02` · Tag: `V1` (`bf28f92`, before the end-to-end review)
+Period covered: 2026-11-02 to 2026-11-03 · Branch: `MVP02` · Tag: `V1` (`bf28f92`, before the end-to-end review) · Live: https://clipcademy.pythonanywhere.com
 
 ## Where things stand
 
-All the code Member 2 owns is built, tested, and pushed. What's left depends on other people: a content reviewer, Members 1 and 3 delivering their parts, and the PythonAnywhere deployment.
+All the code Member 2 owns is built, tested, pushed, and **live**. What's left depends on other people: a content reviewer, and Member 1's clips.
 
 | Area | State |
 | --- | --- |
@@ -14,9 +14,11 @@ All the code Member 2 owns is built, tested, and pushed. What's left depends on 
 | Sample responses for Member 3 (task 7) | Done. `learning/samples/`, 11 files of real app output |
 | API: topics, questions, attempts (task 8) | Done. `learning/app.py` |
 | Events and `events.csv` export (task 9) | Done |
-| Wrong-answer flow with Members 1 and 3 (task 10) | Member 2's half is tested. Waits on Member 3's UI |
+| Wrong-answer flow with Members 1 and 3 (task 10) | Tested end to end with Member 3's app (17 browser checks). Video part waits on Member 1 |
 | Content check (task 11) | Automated check done. 58 audit rows wait for a human reviewer |
-| Hosting | PythonAnywhere free plan chosen. Member 2 owns the account. Not deployed yet |
+| Hosting | **Deployed** on PythonAnywhere (account `ClipCademy`). The API and Member 3's app are served from one site |
+| Time on app | Done. `heartbeat` events, in the server and the app |
+| Validation build | `study-1`. DNA repair is `available`. The final freeze waits on content review and clips |
 
 **Tests:** 3 suites, run with `python learning/test_grading.py`, `python learning/test_app.py`, and `python learning/test_check_content.py`. They include a test that walks all 152 possible answer sequences across the 4 lessons. `python learning/check_content.py` passes.
 
@@ -114,6 +116,61 @@ I checked Member3_SPEC (committed in `22bb6b0`) against this API. It's consisten
 - Every `409` should be handled as "state out of sync," not only the one for `question_id`.
 - Test case 13 needs the local server started with the app's build ID.
 
+### 12. Deployment (2026-11-03)
+
+I walked through the PythonAnywhere setup step by step:
+- **Path fix:** the WSGI file had to use the exact username, `ClipCademy` (case-sensitive).
+- **Token:** rotated after the first one was shared in chat. The old token now gets `401`.
+
+A live test of 24 checks against the deployed site all passed: every endpoint, resends, conflicts, events, export, browser access (CORS), and HTTPS. One `504` happened only while the app was restarting.
+
+### 13. Member 3's app hosted
+
+I zipped Member 3's built app, and you uploaded it and mapped it to `/`. That confirmed the one hosting behaviour that couldn't be tested locally: PythonAnywhere serves a file when it exists, and otherwise passes the request to the API. So `/` serves the app, while `/topics` and the other API paths still reach the API.
+
+A "clip couldn't load" message on the phone was expected. Member 1's `/video-jobs` doesn't exist yet, and the app handles that with a Retry button plus **Answer the question**.
+
+### 14. Time on app: `heartbeat` (`f72eaec`, `b921e62`)
+
+The timestamps already showed *when* students used the app. *How long* was only a rough first-to-last-event estimate. I added a `heartbeat` event:
+- **What it measures:** one heartbeat per 30 s of time the app is actually on screen, added up second by second. Hidden tabs and locked phones pause it, and switching tabs quickly can't inflate it.
+- **Laptop sleep:** each step is capped, so a sleeping laptop can't add time.
+- **Lesson split:** heartbeats sent during a lesson carry its topic.
+- **Server:** accepts `heartbeat` events.
+- **Validation plan:** time on app = heartbeats × 0.5 min.
+- **Testing:** I wrote e2e case 16 (page clock at 4×) first and watched it fail. With the feature in place, all 17 browser checks pass.
+
+Two git problems came up along the way:
+- **Commits weren't reaching GitHub.** The working copy had been switched to a local `member3` branch, so my two commits never reached GitHub's `MVP02`. You chose to fast-forward `MVP02`, which brought in the plain-JS app's source along with the heartbeat.
+- **GitHub's `member3` branch is someone else's.** It belongs to VMahajan10, and I didn't touch it.
+
+### 15. Audit of the two Member 3 apps
+
+I compared the plain-JS app (live) with VMahajan10's React + TypeScript app.
+
+| | Plain JS | React + TS |
+| --- | --- | --- |
+| Screens | 8 of 8 | 0 of 8 (only a heading) |
+| Against the real server | 17 of 17 browser checks pass | 3 of 3 contract probes fail |
+| Own tests | e2e plus a check that its sample data matches | 72 unit tests, but only against hand-written mocks |
+| Bundle size | 13 KB | 220 KB |
+
+The React data layer would lose all study data. Events use `participant_code` and `client_timestamp` instead of `participant_id` and `client_timestamp_utc`, so every event gets a `400` and is silently dropped. It also calls absolute `http://localhost/api` addresses, reads topics as a list when the server sends an object, uses the same session ID on every load, and reads errors from the wrong place.
+
+**Recommendation:** keep the plain-JS app for the study. VMahajan10's testing work could go into splitting up `main.js` and adding unit tests.
+
+### 16. Validation build `study-1` (`0bfcd6b`)
+
+- **DNA repair:** set to `available`. `check_content.py --freeze` still blocks the final build until the review is approved.
+- **Build ID:** `study-1`, in the app's `config.js` and in the server's `CLIPCADEMY_BUILD_IDS`.
+- **Allowed origin:** limited to the live site.
+- **The upload:** a clean build from committed code only. Another session had uncommitted edits in `web/src`, and those aren't in this build.
+- **Checked live:**
+  - the new bundle with `study-1` is served
+  - DNA repair is `available`
+  - `study-1` events get `201`
+  - browser access is limited to the live site
+
 ## Commits
 
 | Commit | Change |
@@ -128,19 +185,22 @@ I checked Member3_SPEC (committed in `22bb6b0`) against this API. It's consisten
 | `2a4f7fe` | Content pre-check against the lecture notes |
 | `bf28f92` (`V1`) | Longest-answer cue removed from 8 questions |
 | `accfd82` | Integration fixes from the end-to-end review |
+| `1dbb4bb`, `a7611cd` | This log; `secrets.txt` ignored |
+| `88b61d9` | Web build is uploaded via the Files tab; live username and URL recorded |
+| `f72eaec` | Server accepts `heartbeat`; validation plan measures time on app |
+| `b921e62` | Heartbeat in the web app, plus e2e case 16 |
+| `0bfcd6b` | Validation build: DNA repair available, build ID `study-1` |
 
 ## Next steps for Member 2
 
-1. **Deploy the API now:** Member2_SPEC, Deploying, steps 1–4 and 6.
-2. **Tell Members 1 and 3 about the contract changes** from `accfd82`: UUID IDs, `initial_video_request`, hash routes, and `video/jobs.py`.
-3. **Find a content reviewer** for the 58 rows in content-audit.csv.
-4. **When Member 3's UI exists:** finish task 10 together, and map `web/dist` to `/`.
-5. **When Member 1 adds `video/jobs.py`:** confirm `/video-jobs` serves clips, and map `/media/`.
-6. **Build freeze:**
-   - Mark the reviewed packets `reviewed`.
-   - Set `dna_repair` to `available`.
-   - Delete the development database.
-   - Set the build ID and allowed origin on the server.
-   - Run `check_content.py --freeze`.
-7. **Day 0:** extend the web app's expiry first.
-8. **After Day 2:** download the database and `events.csv`.
+1. **Phone test:** check that the `TEST` events arrived once each, with `build_id_status` `ok` (export `/events.csv` with the admin token).
+2. **Find a content reviewer** for the 58 rows in content-audit.csv, including the clip transcripts once the clips exist.
+3. **When Member 1 adds `video/jobs.py` and the clips:** `git pull`, map `/media/` to the clips folder, Reload, and check that the follow-up clips play.
+4. **Team decision:** confirm the plain-JS app as Member 3's study app. If the other session's `web/src` edits go in, rebuild with a new build ID (`study-2`), and add it to `CLIPCADEMY_BUILD_IDS`.
+5. **Final freeze:**
+   - Mark the approved packets `reviewed`.
+   - Run `check_content.py --freeze`, which must pass.
+   - Delete `learning/clipcademy.db`, then Reload.
+   - Test on a phone.
+6. **Day 0:** extend the web app's expiry first ("Run until 1 month from today").
+7. **After Day 2:** download `clipcademy.db` and `events.csv`.
