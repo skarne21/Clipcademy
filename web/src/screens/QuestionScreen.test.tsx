@@ -145,7 +145,7 @@ describe("QuestionScreen", () => {
     expect(screen.getByRole("radio", { name: "3′ end" })).toBeChecked();
 
     rerender(<QuestionScreen {...props} question={repQ2} />);
-    expect(screen.getByRole("radio", { name: "3′ end" })).not.toBeChecked();
+    screen.getAllByRole("radio").forEach((r) => expect(r).not.toBeChecked());
     expect(screen.getByRole("radio", { name: "Primase" })).not.toBeChecked();
     expect(screen.getByRole("button", { name: "Submit" })).toBeDisabled();
   });
