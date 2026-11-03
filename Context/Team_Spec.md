@@ -267,6 +267,24 @@ Suggested file ownership is `video/` for Member 1, `learning/` and the shared le
 - **Member 3:** the app must build to plain static files (HTML/JS/CSS) and call the API with relative paths (`/topics`, `/attempts`), so the same build works locally and when hosted. No Node server runs in production.
 - **Member 1:** the host can't render video. Render every approved clip ahead of time, and expose `/video-jobs` as a small Python WSGI handler that Member 2's app mounts, returning the stored clip for each variant. Keep the clips small, because the whole account has 512 MiB.
 
+**What the free host can and can't do:**
+
+| Part | On PythonAnywhere? |
+| --- | --- |
+| Member 2 service, SQLite data, events export | Yes |
+| Member 3's app, as static files | Yes |
+| Playing pre-rendered clips from `/media/` | Yes |
+| Member 1's `/video-jobs` returning stored clips | Yes, if written in Python |
+| **Live video rendering** | **No.** It has one web worker (a render would freeze the app for every student), limited CPU, outbound internet restricted to an allowlist (a hosted text-to-speech API may be blocked), and no Node |
+
+The study doesn't need live rendering. Every clip comes from an approved script for a fixed variant, so it can be rendered ahead of time and served as "previously rendered," which Team_Spec allows if presenters say so. To show live generation in the class presentation, run Member 1's renderer on a laptop.
+
+**Confirm these with the team before building further:**
+1. **Member 1:** write `/video-jobs` in Python, as a WSGI handler Member 2's app can mount. If the renderer itself uses another language, that's fine, as long as it runs on a laptop and only the stored MP4s go to the host. If `/video-jobs` has to be Node, it needs a second host and its own CORS setup.
+2. **Member 1:** encode clips small, at 30–60 s and 720p or lower. The whole account has 512 MiB.
+3. **Member 3:** pick a frontend that builds to static files (plain HTML/JS, or a static build from a tool like Vite), not one that needs a server at runtime (such as Next.js server rendering). Call the API with relative paths.
+4. **Everyone:** after deploying, test playback and the full flow from a phone. The free plan's bandwidth is described only as "low," with no number.
+
 Costs, limits, and alternatives are in [Member2_SPEC.md](Member2_SPEC.md), Hosting.
 
 ## Whole-product acceptance checklist
