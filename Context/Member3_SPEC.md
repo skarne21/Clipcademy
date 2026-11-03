@@ -40,8 +40,8 @@ Work through these in order. Each task ends with something I can share.
 **Progress:**
 Tasks 2–11 and 13 are built in `web/` (Vite vanilla JS; the earlier React + TypeScript scaffold was dropped to match this spec). `web/src/api.js` runs in `live` or `samples` mode (`VITE_DATA_MODE=samples npm run dev`; `npm run check` tests samples mode). To develop against the hosted API, run `API_TARGET=https://clipcademy.pythonanywhere.com npm run dev`.
 
-Test cases 1–14 pass in headless Chrome against the local service, with `/video-jobs` faked where a case needs it. Still open:
-- **Task 12 and real playback:** Member 1's `/video-jobs` returns `503`, so no clip has played yet and `video_started` / `video_completed` are untested.
+Test cases 1–14 pass with `npm run e2e` (headless Chrome, production build, local service; how to run it is at the top of `web/e2e/run.mjs`). `/video-jobs` is faked per case with a 2-second test clip, so playback, the transcript, and `video_started` / `video_completed` are tested too. Screens were also checked at 320 px wide with 200% text and reduced motion. Still open, all waiting on someone else:
+- **Task 12 with real clips (Member 1):** `/video-jobs` returns `503` until `video/jobs.py` exists. Rerun `npm run e2e` once it does.
 - **Case 15:** needs the build uploaded to PythonAnywhere and opened on a phone.
 - **Build freeze:** set `BUILD_ID` in `web/src/config.js` and add it to the server's `CLIPCADEMY_BUILD_IDS`.
 - **Classmate walkthrough** (first Done-when box): needs a real person. Member 1's `/video-jobs` returns `503` until `video/jobs.py` exists, so tasks 6 and 8 use a sample MP4 and a fake ready response in the data-access module until then.

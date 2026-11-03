@@ -6,9 +6,11 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "check": "node check-samples.mjs"
+    "check": "node check-samples.mjs",
+    "e2e": "node e2e/run.mjs"
   },
   "devDependencies": {
+    "puppeteer-core": "^25.16.0",
     "vite": "^8.3.5"
   }
 }
