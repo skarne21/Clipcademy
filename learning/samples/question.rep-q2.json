@@ -1,0 +1,27 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/questions/rep-q2",
+    "body": null
+  },
+  "status": 200,
+  "response": {
+    "question_id": "rep-q2",
+    "objective_id": "synthesis_direction_and_primer",
+    "prompt": "Why is a primer needed?",
+    "choices": [
+      {
+        "choice_id": "A",
+        "text": "DNA polymerase needs an existing complementary strand to extend"
+      },
+      {
+        "choice_id": "B",
+        "text": "Ligase adds all new bases"
+      },
+      {
+        "choice_id": "C",
+        "text": "DNA is synthesized only 3′ to 5′"
+      }
+    ]
+  }
+}

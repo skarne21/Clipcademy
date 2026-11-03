@@ -219,6 +219,10 @@ Attempts (for idempotency) and events are stored server-side in one SQLite file,
 | `CLIPCADEMY_BUILD_IDS` | empty | Comma-separated valid build IDs, set at the build freeze. While it's empty, every event that carries a `build_id` exports as `unknown` |
 | `CLIPCADEMY_ADMIN_TOKEN` | unset | Required to export events. If it's unset, the export is disabled |
 
+**Sample responses (task 7):** `learning/samples/<name>.json`, each shaped `{"request", "status", "response"}`. They cover topics, a question, every attempt action, 400/409 errors, and new and duplicate events. They're real app output, regenerated with `python learning/test_app.py --write-samples`, and `test_app.py` fails if a committed sample no longer matches the app. Video-job samples are Member 1's.
+
+**Tests:** `python learning/test_grading.py` and `python learning/test_app.py`.
+
 **Errors:** every 4xx response has the body `{"error": {"field": "...", "message": "..."}}`. The status is `400` for a bad request, `404` for an unknown path or question ID, and `409` for the conflicts in rule 6.
 
 ### `POST /events`
@@ -313,11 +317,11 @@ Cover these cases with one runnable test file next to the grading code.
 
 ## Done when
 
-- [ ] Every choice returns the expected feedback and next action (cases 1–8)
-- [ ] Wrong answers request the matching video variant and a retry question
-- [ ] One correct answer doesn't skip any remaining required questions (case 1)
-- [ ] Two failed remediation cycles lead to `needs_review` (case 8)
-- [ ] A repeated submission creates no extra attempt and no extra video request (case 9)
+- [x] Every choice returns the expected feedback and next action (cases 1–8)
+- [x] Wrong answers request the matching video variant and a retry question
+- [x] One correct answer doesn't skip any remaining required questions (case 1)
+- [x] Two failed remediation cycles lead to `needs_review` (case 8)
+- [x] A repeated submission creates no extra attempt and no extra video request (case 9)
 - [ ] Every released question, feedback line, and packet has a reviewed source ref
 - [ ] Sample responses are committed and Member 3 has used them
 - [ ] Topic availability matches the lessons that are actually built
@@ -348,7 +352,15 @@ Cover these cases with one runnable test file next to the grading code.
 - **Restricted outbound internet and limited CPU:** no video is rendered on the host. Member 1 renders the clips ahead of time, and the hosted `/video-jobs` returns the stored clip for the requested variant. That's the "served from a previously rendered version" case in Team_Spec, and presenters say so.
 - **The web app expires one month after it's last extended:** click "Run until 1 month from today" on the Web tab right before Day 0, so it can't lapse during Days 0–2.
 - **One web worker:** requests are handled one at a time, which is fine for 6 participants and short SQLite writes.
-- **Configuration:** set the environment variables (see Service) at the top of the PythonAnywhere WSGI file before importing `application`.
+- **Configuration:** set the environment variables (see Service) at the top of the PythonAnywhere WSGI file before importing `application`:
+
+  ```python
+  import os, sys
+  os.environ.update(CLIPCADEMY_BUILD_IDS="study-1", CLIPCADEMY_ADMIN_TOKEN="<long random string>",
+                    CLIPCADEMY_ALLOWED_ORIGINS="https://<username>.pythonanywhere.com")
+  sys.path.insert(0, "/home/<username>/Clipcademy/learning")
+  from app import application
+  ```
 - **Backups:** download `clipcademy.db` and the `events.csv` export at the end of Day 2. Free accounts can be cleaned up after long inactivity.
 
 Verify these limits on PythonAnywhere's [free account page](https://help.pythonanywhere.com/pages/FreeAccountsFeatures/) before deploying, because free tiers change.

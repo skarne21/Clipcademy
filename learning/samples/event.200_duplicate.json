@@ -1,0 +1,22 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/events",
+    "body": {
+      "event_id": "evt-001",
+      "participant_id": "P01",
+      "session_id": "s1",
+      "event_name": "question_answered",
+      "client_timestamp_utc": "2026-11-03T15:00:00Z",
+      "build_id": "build-1",
+      "topic_id": "dna_replication",
+      "objective_id": "synthesis_direction_and_primer",
+      "question_id": "rep-q1",
+      "correct": true
+    }
+  },
+  "status": 200,
+  "response": {
+    "duplicate": true
+  }
+}

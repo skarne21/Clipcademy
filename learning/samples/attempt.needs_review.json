@@ -1,0 +1,51 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/attempts",
+    "body": {
+      "attempt_id": "attempt-004",
+      "question_id": "rep-r3",
+      "selected_choice_id": "B",
+      "objective_id": "synthesis_direction_and_primer",
+      "remediation_state": {
+        "objective_status": "in_progress",
+        "expected_question_id": "rep-r3",
+        "remediation_count": 2,
+        "satisfied_question_ids": [],
+        "asked_retry_ids": [
+          "rep-r1",
+          "rep-r3"
+        ]
+      }
+    }
+  },
+  "status": 200,
+  "response": {
+    "attempt_id": "attempt-004",
+    "question_id": "rep-r3",
+    "correct": false,
+    "action": "needs_review",
+    "feedback": "The new strand grows 5′ to 3′ because nucleotides are added only at the 3′ end.",
+    "misconception_id": null,
+    "next_video_request": null,
+    "next_question_id": null,
+    "remediation_state": {
+      "objective_status": "needs_review",
+      "expected_question_id": null,
+      "remediation_count": 2,
+      "satisfied_question_ids": [],
+      "asked_retry_ids": [
+        "rep-r1",
+        "rep-r3"
+      ]
+    },
+    "review_points": [
+      "Strands are antiparallel",
+      "New nucleotides join the 3′ end, so strands grow 5′→3′",
+      "DNA polymerase can't start a strand; primase makes an RNA primer it can extend"
+    ],
+    "source_refs": [
+      "L19-p1"
+    ]
+  }
+}
