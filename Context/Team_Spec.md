@@ -4,11 +4,15 @@
 
 This document proposes a build plan for three teammates working at the same time. It specifies intended behavior, not features already implemented.
 
-The latest attachments are biology notes. This specification therefore uses biology in place of the earlier Calculus I examples. The team should confirm that subject choice before producing final content. The notes establish possible review topics, but do not identify an exam's coverage. Students select their exam topics from a prepared list for this prototype.
+The subject is biology (confirmed), using the lecture notes in [Notes/](../Notes/). The notes establish possible review topics, but do not identify an exam's coverage. Students select their exam topics from a prepared list for this prototype.
+
+The product goal is **active recall**. Students pull answers from memory by answering a question before seeing any explanation of it. A wrong answer triggers a short video aimed only at what they couldn't recall, followed by a fresh question they haven't seen. Feedback never appears before the student commits to an answer, and a retry never repeats a question.
 
 Build one working browser experience with topic selection, a stick-figure review video, questions, feedback, a targeted follow-up video, and saved progress. Use four topic cards derived from the four lectures. Fully implement one adaptive lesson first, then expand only after that flow works.
 
-The proposed first lesson is DNA synthesis direction and the need for a primer. It has a clear source in Lecture 19, page 1, and a concrete wrong-answer branch. The same stick-figure guide should appear in every clip, with biological diagrams used to explain the actual process.
+The validation build has two lessons: DNA replication (Lecture 19) and DNA repair (Lecture 20). One lesson takes about 10 minutes, which leaves students nothing new to come back to. DNA repair follows replication directly in the course and its notes are clear once the flagged passage is left out. Transcription and translation stay "Coming soon" for the study, because Lectures 21 and 22 have unclear or inconsistent passages and each lecture adds three clips and a full content review.
+
+The proposed first lesson is DNA synthesis direction and the need for a primer. It has a clear source in Lecture 19, pp. 1–2, and a concrete wrong-answer branch. The same stick-figure guide should appear in every clip, with biological diagrams used to explain the actual process.
 
 ## Source map
 
@@ -16,12 +20,12 @@ Page numbers below are PDF page numbers. These references support the lesson con
 
 | Source | Available review topics | Proposed topic ID |
 | --- | --- | --- |
-| [Lecture 19](https://chatgpt.com/library?file_id=libfile_4bd03856c8a08191bddf29949d765aac&account_id=personal), pp. 1â€“3 | DNA synthesis direction, primers, leading and lagging strands, ligase, replication proteins | `dna_replication` |
-| [Lecture 20](https://chatgpt.com/library?file_id=libfile_c58c0a3737008191868ab03a701cf9df&account_id=personal), p. 1 | Telomerase, proofreading, mismatch correction, UV-damage repair | `dna_repair` |
-| [Lecture 21](https://chatgpt.com/library?file_id=libfile_7783873f2e2c81919904dd06f4157a84&account_id=personal), p. 1 | RNA polymerase, template and coding strands, promoter | `transcription` |
-| [Lecture 22](https://chatgpt.com/library?file_id=libfile_7b34267a38288191a8c5d0d441121bf5&account_id=personal), pp. 1â€“2 | tRNA, codonâ€“anticodon pairing, initiation, A/P/E sites, elongation | `translation` |
+| [Lecture 19](../Notes/Lec%20%2319.pdf), pp. 1–3 | DNA synthesis direction, primers, leading and lagging strands, ligase, replication proteins | `dna_replication` |
+| [Lecture 20](../Notes/Lec%20%2320.pdf), p. 1 | Telomerase, proofreading, mismatch correction, UV-damage repair | `dna_repair` |
+| [Lecture 21](../Notes/Lec%20%2321.pdf), p. 1 | RNA polymerase, template and coding strands, promoter | `transcription` |
+| [Lecture 22](../Notes/Lec%20%2322.pdf), pp. 1–2 | tRNA, codon–anticodon pairing, initiation, A/P/E sites, elongation | `translation` |
 
-Content review is required before publication. Lecture 22 describes tRNA functions and then says â€œtRNAs consist of two subunits,â€ while its later text attributes small and large subunits to the ribosome. Clarify that inconsistency with the instructor. Lecture 19's joining/primer-removal sequence and Lecture 21's upstream/downstream wording also require clarification before animating those sequences or testing those definitions. Lecture 20's cancer/senescence claim should be reviewed before inclusion. These passages remain unpublished until reviewed. I cannot confirm these passages as written from the supplied notes alone.
+Content review is required before publication. Lecture 22 describes tRNA functions and then says “tRNAs consist of two subunits,” while its later text attributes small and large subunits to the ribosome. Clarify that inconsistency with the instructor. Lecture 19's joining/primer-removal sequence and Lecture 21's upstream/downstream wording also require clarification before animating those sequences or testing those definitions. Lecture 20's cancer/senescence claim should be reviewed before inclusion. These passages remain unpublished until reviewed. The lecture notes belong to the instructor, so get written permission to use excerpts from them before any student sees a clip.
 
 ## Whole-product behavior
 
@@ -41,14 +45,15 @@ Treat answer-to-misconception mapping as a teaching choice, not a confirmed diag
 
 - Four visible topic cards with accurate content labels and explicit availability.
 - One fully working replication lesson, one initial clip, and one targeted follow-up.
+- For the validation build: the DNA repair lesson (`error_correction`) also working, with its initial clip and both follow-ups (`timing_followup`, `uv_followup`), after content review.
 - Two initial questions and at least two follow-up questions for the first objective.
 - Two initial wrong-answer choices can share the same follow-up explanation when appropriate.
 - Real playback, question checking, branching, retry, and progress persistence in the same browser.
 - A tested input-to-video pipeline for the approved lesson variants. Clearly disclose whether a shown clip was generated during the session or served from a previously rendered version.
 
-Additional topics can display â€œComing soonâ€ until their content and questions are ready. Define completion at the objective level. A completed synthesis-direction objective must not imply mastery of all DNA replication.
+Additional topics can display “Coming soon” until their content and questions are ready. Define completion at the objective level. A completed synthesis-direction objective must not imply mastery of all DNA replication.
 
-## Member 1 â€” video generation and visual consistency
+## Member 1 — video generation and visual consistency
 
 ### Responsibility
 
@@ -59,17 +64,18 @@ Turn an approved lesson request into a video using a reusable stick-figure and d
 1. Define the guide character, colors, fonts, diagram labels, and narration style in one shared template.
 2. Prepare the approved source excerpt and two lesson scripts for the replication objective.
 3. Build a renderer that accepts a lesson variant, text, labels, and diagram parameters. Return a video job ID immediately and a playable URL when finished.
-4. Add narration and a matching transcript. A proposed duration is 30â€“60 seconds per clip.
+4. Add narration and a matching transcript. A proposed duration is 30–60 seconds per clip.
 5. Add the follow-up variant explaining why DNA polymerase needs an existing complementary strand started by a primer.
 6. Provide two sample requests, their outputs, and one failed-job example to the team.
+7. After the replication clips work, render the three DNA repair clips (initial, `timing_followup`, `uv_followup`) from the repair lesson packet for the validation build.
 
 ### Initial clip storyboard
 
 | Scene | Visual | Teaching point and source |
 | --- | --- | --- |
 | 1 | Guide points at a template and a short complementary strand with both ends labeled | DNA strands run antiparallel. Lecture 19, p. 1. |
-| 2 | Highlight the growing strand's 3â€² end and add a nucleotide there | New DNA is synthesized 5â€² to 3â€² by adding to the 3â€² end. Lecture 19, p. 1. |
-| 3 | Show an RNA primer and DNA polymerase extending the strand | DNA polymerase requires an existing complementary start. Primase makes the RNA primer. Lecture 19, pp. 1â€“2. |
+| 2 | Highlight the growing strand's 3′ end and add a nucleotide there | New DNA is synthesized 5′ to 3′ by adding to the 3′ end. Lecture 19, p. 1. |
+| 3 | Show an RNA primer and DNA polymerase extending the strand | DNA polymerase requires an existing complementary start. Primase makes the RNA primer. Lecture 19, pp. 1–2. |
 | 4 | Recap direction and primer requirement with the guide | Prepare the learner for the two objective questions. |
 
 ### Follow-up clip
@@ -98,7 +104,7 @@ For the prototype, use approved scripts and fixed variants as renderer inputs. A
 - A repeated request reuses the same completed asset when appropriate.
 - The follow-up explains the requested difficulty and has a valid source reference.
 
-## Member 2 â€” questions and adaptive lesson logic
+## Member 2 — questions and adaptive lesson logic
 
 ### Responsibility
 
@@ -108,20 +114,23 @@ Own the reviewed lesson text, question bank, correct answers, feedback, and deci
 
 1. Create the topic list and objective IDs from the source map.
 2. Prepare a lesson packet for the first objective, with source excerpts and initial/follow-up teaching goals. Share it immediately with Members 1 and 3.
-3. Write two initial questions, two retry questions, and feedback for each choice.
+3. Write two initial questions, four retry questions (two per misconception, so a second follow-up never repeats a question), and feedback for each choice.
 4. Map wrong choices to misconception IDs and approved video variants.
 5. Build answer checking and the transition rules for `continue_questions`, `review_again`, `complete`, and `needs_review`.
 6. Track remediation cycles per objective (total count; a correct answer does not reset it) and stop at the configured limit of two.
 7. Provide sample question responses and answer-result responses before connecting the real video service.
+8. Host `POST /events` and export the stored events as `events.csv` for the validation study. Store events that arrive without a `build_id`, but flag them in the export.
 
 ### Starter question bank
 
 | ID | Question and choices | Correct answer | Wrong-answer follow-up | Source |
 | --- | --- | --- | --- | --- |
-| `rep-q1` | Which end receives new nucleotides during DNA synthesis? A. 5â€² end B. 3â€² end | B | `direction_followup` explains growth direction and the growing end | L19 p. 1 |
-| `rep-q2` | Why is a primer needed? A. DNA polymerase needs an existing complementary strand to extend B. Ligase adds all new bases C. DNA is synthesized only 3â€² to 5â€² | A | B â†’ `primer_followup` focuses on the existing start and polymerase's role; C â†’ `direction_followup` (C states the wrong direction) | L19 pp. 1â€“2 |
-| `rep-r1` | A complementary primer is already present. Where does DNA polymerase add the next DNA nucleotide? A. Its 3â€² end B. Its 5â€² end | A | Return to the direction explanation within the retry limit | L19 p. 1 |
+| `rep-q1` | Which end receives new nucleotides during DNA synthesis? A. 5′ end B. 3′ end | B | `direction_followup` explains growth direction and the growing end | L19 p. 1 |
+| `rep-q2` | Why is a primer needed? A. DNA polymerase needs an existing complementary strand to extend B. Ligase adds all new bases C. DNA is synthesized only 3′ to 5′ | A | B → `primer_followup` focuses on the existing start and polymerase's role; C → `direction_followup` (C states the wrong direction) | L19 pp. 1–2 |
+| `rep-r1` | A complementary primer is already present. Where does DNA polymerase add the next DNA nucleotide? A. Its 3′ end B. Its 5′ end | A | Return to the direction explanation within the retry limit | L19 p. 1 |
 | `rep-r2` | Which enzyme makes the RNA primer? A. Ligase B. Primase C. DNA polymerase | B | Return to the primer explanation within the retry limit | L19 p. 2 |
+
+This table is a summary. The complete bank, including the second retries `rep-r3` and `rep-r4` and feedback for every choice, is in [Member2_SPEC.md](Member2_SPEC.md).
 
 These are proposed questions based on the notes, not observed student errors. Review them with the team before publishing. The question API must omit correct-choice IDs until the student submits an answer. Keep the answer key with the grading logic.
 
@@ -143,6 +152,7 @@ These are proposed questions based on the notes, not observed student errors. Re
     "source_refs": ["L19-p1", "L19-p2"]
   },
   "next_question_id": "rep-r2",
+  "remediation_state": { "remediation_count": 1, "satisfied_question_ids": ["rep-q1"], "asked_retry_ids": ["rep-r2"] },
   "source_refs": ["L19-p1", "L19-p2"]
 }
 ```
@@ -156,7 +166,7 @@ These are proposed questions based on the notes, not observed student errors. Re
 - Repeating the same submission does not create another attempt or another video request.
 - All released content has reviewed source references.
 
-## Member 3 â€” student interface and application integration
+## Member 3 — student interface and application integration
 
 ### Responsibility
 
@@ -171,11 +181,13 @@ Build the connected student experience and own the shared application shell, nav
 5. Build feedback and follow-up screens. Display preparing and failure states with a retry button.
 6. Save question position, selected topics, attempts, remediation count, and objective status in browser storage.
 7. Create a Reset demo control and connect the actual question/video services through one replaceable data-access module.
+8. Ask for a participant code on first open, store it locally, and send an event to `POST /events` for every action listed under Activity events. Every event includes the `build_id`, a fixed value set in the app when the build is frozen. Reset demo keeps the participant code.
 
 ### Screen behavior
 
 | Screen | Visible elements | Next action |
 | --- | --- | --- |
+| Participant code | Code entry (first open only) | Exam topics |
 | Exam topics | Four topic cards, selections, availability labels | Start selected available topic |
 | Review home | Selected topics, objective progress, Resume | Open initial lesson or resume saved step |
 | Lesson | Video, transcript, title, lesson purpose | Open current question |
@@ -191,6 +203,7 @@ Build the connected student experience and own the shared application shell, nav
 - Refresh preserves the student's last completed step and progress.
 - A failed video job can be retried without losing the student's answer.
 - A late response cannot replace a lesson after the student switches topics.
+- Every action in Activity events sends one event with the participant code and `build_id`. A failed send is retried and never blocks the student.
 - The home page does not label unavailable topics as working or completed.
 
 ## Shared integration contract
@@ -204,7 +217,8 @@ Agree on these IDs and response shapes before working separately. These are prop
 | `POST /attempts` | Member 2 | Accept attempt ID, question ID, selected choice, objective ID, and remediation state. Return feedback, action, and next question/video request |
 | `POST /video-jobs` | Member 1 | Accept the approved video request. Return job ID and state |
 | `GET /video-jobs/{job_id}` | Member 1 | Return `queued`, `running`, `ready`, or `failed`. Ready includes playable video URL and transcript |
-| Local session storage | Member 3 | Persist selection, objective status, current step, attempts, and job ID for this browser |
+| `POST /events` | Member 2 (stores), Member 3 (sends) | Accept one activity event and store it with a server timestamp. Ignore a repeated `event_id` |
+| Local session storage | Member 3 | Persist participant code, selection, objective status, current step, attempts, and job ID for this browser |
 
 Example ready video response follows.
 
@@ -220,6 +234,20 @@ Example ready video response follows.
 ```
 
 The URL above is an illustrative local path, not an existing asset. The sample transcript is a placeholder to replace during implementation. An unknown ID or malformed request must produce a clear error. Failed generation must return `failed` rather than a fake ready response.
+
+### Activity events
+
+The validation study needs these events to measure in-app activity. Local storage alone can't do that, because it never leaves the student's device. Each event has the columns in [events.csv](events.csv), including the `build_id` of the app that sent it.
+
+| `event_name` | When | Extra fields |
+| --- | --- | --- |
+| `app_opened` | App loads (starts a new `session_id`) | none |
+| `topic_selected` | Student selects a topic | `topic_id` |
+| `video_started` / `video_completed` | Clip starts playing / reaches the end | `variant_id` |
+| `question_answered` | Attempt result comes back | `question_id`, `correct` |
+| `followup_requested` | App requests a follow-up clip | `variant_id` |
+| `objective_completed` / `objective_needs_review` | Objective reaches that status | `objective_id` |
+| `demo_reset` | Reset demo is used | none |
 
 Member 3 calls the video service after Member 2 returns `review_again`. The question service can return that instruction without waiting for a renderer. Member 1 can generate from manually supplied requests without waiting for the quiz. All three use the same approved lesson packet.
 
@@ -244,9 +272,11 @@ Suggested file ownership is `video/` for Member 1, `learning/` and the shared le
 - [ ] Required question completion and the two-cycle limit are enforced.
 - [ ] Generation failures and duplicate submissions preserve consistent state.
 - [ ] Reset demo restores a clean session.
-- [ ] Available topic cards match actual implemented lessons.
+- [ ] Available topic cards match actual implemented lessons. For the validation build, that means replication and DNA repair only.
 - [ ] Unclear note passages remain unpublished pending review.
 - [ ] Presenters accurately identify prepared scripts, previously rendered assets, and live generation.
+- [ ] Every activity event reaches `POST /events` with a participant code and `build_id`, and `events.csv` exports correctly.
+- [ ] No feedback or explanation appears before the student submits an answer, and no retry repeats a question already asked.
 
 ## Presentation walkthrough
 
@@ -257,4 +287,4 @@ Suggested file ownership is `video/` for Member 1, `learning/` and the shared le
 5. Answer the new question correctly.
 6. Return home to show the completed objective, then refresh to demonstrate persistence.
 
-The intended prototype demonstrates the review-and-remediation workflow. Testing whether students return voluntarily or learn more requires a subsequent user study. Topic-level completion is a demo progress rule, not proof of mastery.
+The intended prototype demonstrates the review-and-remediation workflow. Whether students use it voluntarily and learn from it is tested separately in [validation-plan.md](validation-plan.md). Topic-level completion is a demo progress rule, not proof of mastery.

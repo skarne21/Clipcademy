@@ -1,8 +1,8 @@
 # Member 2 spec: questions and adaptive lesson logic
 
-Owner: Member 2 · Folder: `learning/` (plus the shared lesson packets)
-Source of truth: [Team_Spec](Team_Spec). If this file and Team_Spec disagree, Team_Spec wins until the team agrees on a change.
-Subject: biology (confirmed). Lecture notes are in [Notes/](Notes/).
+Owner: Member 2 · Code folder: `learning/` (this spec lives in `Context/`)
+Source of truth: [Team_Spec.md](Team_Spec.md). If this file and Team_Spec disagree, Team_Spec wins until the team agrees on a change.
+Subject: biology (confirmed). Lecture notes are in [Notes/](../Notes/).
 
 ## What I own
 
@@ -12,7 +12,7 @@ Subject: biology (confirmed). Lecture notes are in [Notes/](Notes/).
 - Mapping each wrong answer to a misconception and a video variant
 - Answer checking and the next-action decision (`continue_questions`, `review_again`, `complete`, `needs_review`)
 - Enforcing the two-cycle remediation limit
-- Endpoints: `GET /topics`, `GET /questions/{question_id}`, `POST /attempts`
+- Endpoints: `GET /topics`, `GET /questions/{question_id}`, `POST /attempts`, `POST /events` (storage and `events.csv` export)
 
 Not mine: rendering video (Member 1), calling `/video-jobs`, UI, or browser storage (Member 3). I return a `next_video_request`, and Member 3 sends it to Member 1.
 
@@ -32,6 +32,7 @@ Work through these in order. Each task ends with something I can share.
 | 8 | Serve the three endpoints | API wrapper | M3 | First connection |
 | 9 | Return the follow-up request and a new question on wrong answers | verified with M3 | M1, M3 | Adaptive connection |
 | 10 | Check sources, the answer key, and stopping rules | checklist below is ticked | Team | Demo readiness |
+| 11 | Host `POST /events` and export `events.csv` (see Team_Spec.md, Activity events) | events endpoint | M3 | First connection |
 
 ## Data
 
@@ -40,9 +41,9 @@ Work through these in order. Each task ends with something I can share.
 | `topic_id` | Label | Source refs | Availability | Objectives |
 | --- | --- | --- | --- | --- |
 | `dna_replication` | DNA replication | L19 pp. 1–3 | `available` | `synthesis_direction_and_primer` |
-| `dna_repair` | DNA repair and telomeres | L20 p. 1 | `coming_soon` | none |
-| `transcription` | Transcription | L21 p. 1 | `coming_soon` | none |
-| `translation` | Translation | L22 pp. 1–2 | `coming_soon` | none |
+| `dna_repair` | DNA repair and telomeres | L20 p. 1 | `coming_soon` (→ `available` for the validation build) | `error_correction` |
+| `transcription` | Transcription | L21 p. 1 | `coming_soon` | `template_strand_and_promoter` |
+| `translation` | Translation | L22 pp. 1–2 | `coming_soon` | `codon_pairing_and_ribosome_sites` |
 
 Only topics with a finished and reviewed lesson can be `available`. The home page must not show unavailable topics as working.
 
@@ -62,7 +63,19 @@ Only topics with a finished and reviewed lesson can be `available`. The home pag
         }
       ]
     },
-    { "topic_id": "dna_repair", "label": "DNA repair and telomeres", "source_refs": ["L20-p1"], "availability": "coming_soon", "objectives": [] }
+    {
+      "topic_id": "dna_repair",
+      "label": "DNA repair and telomeres",
+      "source_refs": ["L20-p1"],
+      "availability": "coming_soon",
+      "objectives": [
+        {
+          "objective_id": "error_correction",
+          "label": "Proofreading, mismatch repair, and UV-damage repair",
+          "required_question_ids": ["dr-q1", "dr-q2"]
+        }
+      ]
+    }
   ]
 }
 ```
@@ -76,8 +89,8 @@ The packet is shared by all three members. Member 1 renders from it and Member 3
   "topic_id": "dna_replication",
   "objective_id": "synthesis_direction_and_primer",
   "source_excerpts": [
-    { "ref": "L19-p1", "text": "<paste the approved excerpt>" },
-    { "ref": "L19-p2", "text": "<paste the approved excerpt>" }
+    { "ref": "L19-p1", "text": "DNA synthesis occurs only in the 5′ to 3′ direction, meaning new bases are being added to the 3′ end of an existing strand. DNA polymerase can only add new bases to the 3′ end of an existing complementary strand. It can't synthesize a complementary strand of DNA from scratch." },
+    { "ref": "L19-p2", "text": "Before this happens, primase synthesizes a short sequence of RNA that is complementary to the DNA on the top strand. The new result is RNA primer because it prepares (primes) the strand for DNA polymerase. Unlike DNA polymerase, primase can start synthesis from scratch on a single stranded template strand. Once the primer is made, DNA polymerase can start adding deoxyribonucleotides." }
   ],
   "variants": {
     "initial": { "teaching_goal": "Explain 5′→3′ synthesis at the 3′ end and why a primer is needed", "source_refs": ["L19-p1", "L19-p2"] },
@@ -90,7 +103,29 @@ The packet is shared by all three members. Member 1 renders from it and Member 3
 
 Do not include the Lecture 19 joining/primer-removal sequence until the instructor clarifies it.
 
-### Question bank
+### All four lessons (draft content)
+
+Every topic now has one objective with a lesson packet, 2 required questions, 4 retries, and feedback for every choice. The data files are the source of truth:
+
+| File | Contents |
+| --- | --- |
+| [learning/data/topics.json](../learning/data/topics.json) | `GET /topics` response |
+| [learning/data/questions.json](../learning/data/questions.json) | `GET /questions` content, with no answers |
+| [learning/data/answer_key.json](../learning/data/answer_key.json) | Correct choice, `counts_for`, and feedback/misconception per choice (server only) |
+| [learning/packets/](../learning/packets/) | One packet per objective: source excerpts, excluded passages, misconception → follow-up variant and retry order, and teaching goals with key points for Member 1 |
+
+| Topic | Objective | Misconceptions → follow-up variant | Question IDs |
+| --- | --- | --- | --- |
+| DNA replication | `synthesis_direction_and_primer` | `growth_direction` → `direction_followup`, `primer_requirement` → `primer_followup` | `rep-*` |
+| DNA repair | `error_correction` (proofreading, mismatch repair, UV repair) | `repair_timing` → `timing_followup`, `uv_damage` → `uv_followup` | `dr-*` |
+| Transcription | `template_strand_and_promoter` | `template_vs_coding` → `template_followup`, `promoter_role` → `promoter_followup` | `tx-*` |
+| Translation | `codon_pairing_and_ribosome_sites` (anticodons, A/P/E sites) | `site_roles` → `sites_followup`, `anticodon_pairing` → `pairing_followup` | `tl-*` |
+
+Passages Team_Spec flags as unclear are left out and listed in each packet's `excluded_passages`: L19 ligase/primer-removal order, L20 cancer/senescence claim, L21 upstream/downstream, and L22 "tRNAs consist of two subunits." DNA repair is the second lesson for the validation study. Flip its `availability` to `available` in topics.json once its items pass the content audit and Member 1 has rendered its three clips. Transcription and translation stay `coming_soon` for the study, because their notes have unclear or inconsistent passages.
+
+The replication lesson is detailed below. The other lessons follow the same pattern.
+
+### Question bank (replication)
 
 | ID | Role | Prompt | Choices | Correct | Wrong choice leads to |
 | --- | --- | --- | --- | --- | --- |
@@ -99,7 +134,7 @@ Do not include the Lecture 19 joining/primer-removal sequence until the instruct
 | `rep-r1` | retry for q1 | A complementary primer is already present. Where does DNA polymerase add the next DNA nucleotide? | A. Its 3′ end · B. Its 5′ end | A | B → `growth_direction` → `direction_followup` → `rep-r3` |
 | `rep-r2` | retry for q2 | Which enzyme makes the RNA primer? | A. Ligase · B. Primase · C. DNA polymerase | B | A, C → `primer_requirement` → `primer_followup` → `rep-r4` |
 | `rep-r3` | 2nd retry for q1 | DNA polymerase is adding nucleotides to a growing strand. In which direction does the new strand grow? | A. 5′ to 3′ · B. 3′ to 5′ | A | B → `needs_review` (limit reached) |
-| `rep-r4` | 2nd retry for q2 | DNA polymerase sits on a bare template strand with no primer. What happens? | A. It cannot start a new strand · B. It starts a new strand at the 5′ end · C. Ligase starts the strand instead | A | B, C → `needs_review` (limit reached) |
+| `rep-r4` | 2nd retry for q2 | Once the RNA primer is in place, which enzyme adds DNA nucleotides to it? | A. Primase · B. DNA polymerase · C. Ligase | B | A, C → `needs_review` (limit reached) |
 
 Sources: q1, r1, and r3 come from L19 p. 1. q2, r2, and r4 come from L19 pp. 1–2.
 
@@ -119,11 +154,13 @@ Every choice needs its own feedback text, including the correct one. Draft the f
 | `rep-r2` | C | DNA polymerase can't start a strand on its own. Primase makes the primer first. |
 | `rep-r3` | A ✓ | Correct. Nucleotides join at the 3′ end, so the strand grows 5′ to 3′. |
 | `rep-r3` | B | The new strand grows 5′ to 3′ because nucleotides are added only at the 3′ end. |
-| `rep-r4` | A ✓ | Correct. Without a primer, DNA polymerase has nothing to extend. |
-| `rep-r4` | B | DNA polymerase can't start a strand anywhere on its own. It needs a primer to extend. |
-| `rep-r4` | C | Ligase joins DNA pieces and doesn't start strands. Primase makes the primer, and polymerase extends it. |
+| `rep-r4` | A | Primase makes the primer but doesn't extend it. DNA polymerase adds the DNA nucleotides. |
+| `rep-r4` | B ✓ | Correct. Primase starts the strand with RNA, then DNA polymerase extends it. |
+| `rep-r4` | C | Ligase closes gaps in the backbone without adding new bases. DNA polymerase extends the primer. |
 
-Choice C on `rep-q2` names the wrong direction, so it goes to the direction follow-up (team decision; this changes Team_Spec's original mapping). Answering `rep-r1` correctly does not count for `rep-q2`, so the student comes back to `rep-q2` afterwards.
+Choice C on `rep-q2` names the wrong direction, so it goes to the direction follow-up (team decision, now also in Team_Spec). Answering `rep-r1` correctly does not count for `rep-q2`, so the student comes back to `rep-q2` afterwards.
+
+These questions are the app's practice bank. The study's pre-test and post-test in [assessment.md](assessment.md) must never reuse or closely reword them, so check both files whenever either changes.
 
 The misconception mapping is a teaching choice, not a diagnosis of what the student was thinking.
 
@@ -164,7 +201,7 @@ Member 3 saves `remediation_state` and sends it back with each attempt. The clie
 
 ### Rules
 
-1. **Required questions.** The objective requires `rep-q1` and `rep-q2`. A correct answer on a retry question also counts for the required question it stands in for (`rep-r1`/`rep-r3` count for `rep-q1`, and `rep-r2`/`rep-r4` count for `rep-q2`).
+1. **Required questions.** Each objective's required questions and retry order come from its packet (`required_question_ids`, `misconceptions.*.retry_question_ids`), and `counts_for` in the answer key says which required question a retry stands in for. For replication, the objective requires `rep-q1` and `rep-q2`. A correct answer on a retry question also counts for the required question it stands in for (`rep-r1`/`rep-r3` count for `rep-q1`, and `rep-r2`/`rep-r4` count for `rep-q2`).
 2. **Correct answer:** add the question to `satisfied_question_ids`.
    - If any required question is still unsatisfied, return `continue_questions` with `next_question_id` set to the first unsatisfied one. A single correct answer must never skip the remaining required questions.
    - If all are satisfied, return `complete`.
@@ -220,6 +257,8 @@ Each case starts from an empty `remediation_state` unless it says otherwise.
 | 8 | q1=A, r1=B, r3=B | `review_again` → `review_again` (count 2, next `rep-r3`) → `needs_review` |
 | 8b | q1=A, r1=B, r3=A | `continue_questions`, next `rep-q2` |
 | 8c | q1=B, q2=B, r2=C | `review_again` (count 2, `primer_followup`, next `rep-r4`) |
+| 8d | `POST /events` with a repeated `event_id` | Stored once |
+| 8e | `POST /events` with no `build_id` | Stored, and flagged in the `events.csv` export |
 | 9 | Send the same `attempt_id` twice | Identical response both times, count goes up only once |
 | 10 | Unknown `question_id` or `choice_id` | `400` with a clear error |
 | 11 | `GET /questions/rep-q2` | No answer key fields in the response |

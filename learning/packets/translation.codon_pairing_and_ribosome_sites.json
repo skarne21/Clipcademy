@@ -1,0 +1,82 @@
+{
+  "topic_id": "translation",
+  "objective_id": "codon_pairing_and_ribosome_sites",
+  "label": "Codon–anticodon pairing and the A, P, and E sites",
+  "source_excerpts": [
+    {
+      "ref": "L22-p1",
+      "text": "The anticodon is a sequence of three bases that is complementary to a codon in an mRNA. tRNAs carry an amino acid to the correct codon in mRNA."
+    },
+    {
+      "ref": "L22-p1",
+      "text": "Each mRNA contains the start codon AUG (codes for amino acid methionine). Initiation requires a ribosome and a tRNA with the anticodon UAC that is complementary to the AUG start codon in the mRNA and carries the amino acid methionine."
+    },
+    {
+      "ref": "L22-p1",
+      "text": "A - where amino acid charged tRNAs enter the ribosome. If the anticodon of a tRNA binds to the exposed codon in the mRNA, the tRNA and mRNA bind together."
+    },
+    {
+      "ref": "L22-p2",
+      "text": "P - the site where peptide bond formation takes place. E - where tRNAs sit once the amino acid they were carrying has been added to the growing protein. The now uncharged tRNA exits the ribosome from this site."
+    }
+  ],
+  "excluded_passages": [
+    "L22-p1 'tRNAs consist of two subunits' and all subunit questions (inconsistent with later text, pending instructor review)"
+  ],
+  "required_question_ids": [
+    "tl-q1",
+    "tl-q2"
+  ],
+  "misconceptions": {
+    "site_roles": {
+      "variant_id": "sites_followup",
+      "retry_question_ids": [
+        "tl-r1",
+        "tl-r3"
+      ]
+    },
+    "anticodon_pairing": {
+      "variant_id": "pairing_followup",
+      "retry_question_ids": [
+        "tl-r2",
+        "tl-r4"
+      ]
+    }
+  },
+  "variants": {
+    "initial": {
+      "teaching_goal": "Explain codon–anticodon pairing and what happens in the A, P, and E sites",
+      "key_points": [
+        "An anticodon is three bases complementary to an mRNA codon",
+        "AUG start codon pairs with the UAC anticodon on the methionine tRNA",
+        "A: charged tRNA enters · P: peptide bond forms · E: uncharged tRNA exits"
+      ],
+      "source_refs": [
+        "L22-p1",
+        "L22-p2"
+      ]
+    },
+    "sites_followup": {
+      "teaching_goal": "Explain the job of each ribosome site",
+      "key_points": [
+        "Follow one tRNA from A to P to E",
+        "Show where the peptide bond forms and where the tRNA leaves"
+      ],
+      "source_refs": [
+        "L22-p1",
+        "L22-p2"
+      ]
+    },
+    "pairing_followup": {
+      "teaching_goal": "Explain how anticodons pair with codons",
+      "key_points": [
+        "Line up a codon and its complementary anticodon",
+        "Use AUG–UAC as the worked example"
+      ],
+      "source_refs": [
+        "L22-p1"
+      ]
+    }
+  },
+  "review_status": "draft"
+}
