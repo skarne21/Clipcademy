@@ -49,6 +49,19 @@ All Member 2 code is built and tested.
 4. Before the build freeze, run `python learning/check_content.py --freeze`. It fails while any `available` lesson has an unreviewed packet or an unapproved row. The freeze can only go ahead once it passes.
 5. If a new question or packet is added, `python learning/check_content.py --write-audit` adds its rows without touching existing ones.
 
+**Pre-check by Member 2 (2026-11-02).** Every validation-build question, answer, and feedback line was compared with the text of L19 pp. 1–3 and L20 p. 1. This doesn't replace the reviewer. All rows stay `pending`.
+
+**Fixed before review:**
+- **Replication packet:** added two L19 p. 1 excerpts that the content already relied on: the "strands are anti-parallel" sentence (initial clip scene 1) and rule 3, "ligase closes the gap… without adding new bases" (used in `rep-q2` B and `rep-r4` C feedback). Rule 3 isn't the flagged passage. The flagged one is the ligase/primer-removal *order* on p. 3, which stays excluded.
+- **Feedback that cited facts outside its question's sources** (it was rewritten to use only those sources):
+  - `rep-r2` A, which is sourced to L19 p. 2 only
+  - `dr-q1` C and `dr-r4` B, which mentioned ligase and primers from Lecture 19 while sourced to L20 only
+
+**For the reviewer to decide:**
+- In `rep-q2` and `dr-q2`, the correct choice is clearly the longest and most specific. A student can pick it by recognition rather than recall. Consider shortening it or lengthening the distractors. Changing `rep-q2` also means updating its examples in this file, Team_Spec, and `learning/samples/`.
+- The excluded L19 p. 3 passage says ligase closes the gap *before* the RNA primer is removed. Standard textbooks give the reverse order (primer removed and replaced, then ligase seals), so keep it excluded until the instructor clarifies.
+- Typos in the notes ("One the primer is made," "like G to A") weren't carried into any app text.
+
 ## Data
 
 ### Topics (`GET /topics`)
@@ -164,7 +177,7 @@ Every choice needs its own feedback text, including the correct one. Draft the f
 | `rep-q2` | C | DNA is synthesized 5′ to 3′. The primer matters because polymerase needs an existing start to extend. |
 | `rep-r1` | A ✓ | Correct. The primer's 3′ end is where polymerase adds the next nucleotide. |
 | `rep-r1` | B | Polymerase adds to the 3′ end, never the 5′ end. |
-| `rep-r2` | A | Ligase joins DNA fragments. Primase makes the RNA primer. |
+| `rep-r2` | A | Primase makes the RNA primer. Unlike DNA polymerase, it can start from scratch on a single template strand. |
 | `rep-r2` | B ✓ | Correct. Primase makes the RNA primer that DNA polymerase extends. |
 | `rep-r2` | C | DNA polymerase can't start a strand on its own. Primase makes the primer first. |
 | `rep-r3` | A ✓ | Correct. Nucleotides join at the 3′ end, so the strand grows 5′ to 3′. |

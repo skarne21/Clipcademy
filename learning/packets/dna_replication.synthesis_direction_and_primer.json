@@ -5,7 +5,15 @@
   "source_excerpts": [
     {
       "ref": "L19-p1",
+      "text": "DNA strands are anti-parallel, new strands are synthesized in the 5′ to 3′ direction and the complementary strands run in the opposite 3′ to 5′ direction."
+    },
+    {
+      "ref": "L19-p1",
       "text": "DNA synthesis occurs only in the 5′ to 3′ direction, meaning new bases are being added to the 3′ end of an existing strand. DNA polymerase can only add new bases to the 3′ end of an existing complementary strand. It can't synthesize a complementary strand of DNA from scratch."
+    },
+    {
+      "ref": "L19-p1",
+      "text": "When DNA replication occurs, gaps form between the ends of newly synthesized segments. DNA ligase closes this gap in the sugar phosphate backbone without adding new bases to the 3′ of the growing strand."
     },
     {
       "ref": "L19-p2",
