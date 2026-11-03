@@ -1,6 +1,6 @@
 import { http, HttpResponse } from "msw";
 import { afterEach, describe, expect, it } from "vitest";
-import { API_BASE_URL } from "../api/config";
+import { apiUrl } from "../api/config";
 import { attemptContinue, attemptReviewAgain } from "../fixtures/attempts";
 import { repQ1 } from "../fixtures/questions";
 import { topics } from "../fixtures/topics";
@@ -14,7 +14,7 @@ describe("MSW API handlers", () => {
   });
 
   it("GET /topics returns four topics", async () => {
-    const res = await fetch(`${API_BASE_URL}/topics`);
+    const res = await fetch(apiUrl("/topics"));
     expect(res.ok).toBe(true);
     const body = await res.json();
     expect(body).toHaveLength(4);
@@ -22,7 +22,7 @@ describe("MSW API handlers", () => {
   });
 
   it("GET /questions/rep-q1 returns question without answer fields", async () => {
-    const res = await fetch(`${API_BASE_URL}/questions/rep-q1`);
+    const res = await fetch(apiUrl("/questions/rep-q1"));
     expect(res.ok).toBe(true);
     const body = await res.json();
     expect(body).toEqual(repQ1);
@@ -32,7 +32,7 @@ describe("MSW API handlers", () => {
   });
 
   it("GET /questions/unknown returns 404 ApiError", async () => {
-    const res = await fetch(`${API_BASE_URL}/questions/unknown-id`);
+    const res = await fetch(apiUrl("/questions/unknown-id"));
     expect(res.status).toBe(404);
     const body = await res.json();
     expect(body.error).toBe("not_found");
@@ -41,7 +41,7 @@ describe("MSW API handlers", () => {
 
   it("POST /attempts returns attemptContinue for choice A or B", async () => {
     for (const selected_choice_id of ["A", "B"]) {
-      const res = await fetch(`${API_BASE_URL}/attempts`, {
+      const res = await fetch(apiUrl("/attempts"), {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
@@ -60,9 +60,9 @@ describe("MSW API handlers", () => {
 
   it("POST /attempts can be overridden to return attemptReviewAgain", async () => {
     server.use(
-      http.post(`${API_BASE_URL}/attempts`, () => HttpResponse.json(attemptReviewAgain)),
+      http.post(apiUrl("/attempts"), () => HttpResponse.json(attemptReviewAgain)),
     );
-    const res = await fetch(`${API_BASE_URL}/attempts`, {
+    const res = await fetch(apiUrl("/attempts"), {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
@@ -77,7 +77,7 @@ describe("MSW API handlers", () => {
   });
 
   it("POST /video-jobs returns queued job", async () => {
-    const res = await fetch(`${API_BASE_URL}/video-jobs`, {
+    const res = await fetch(apiUrl("/video-jobs"), {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
@@ -95,7 +95,7 @@ describe("MSW API handlers", () => {
   });
 
   it("GET /video-jobs/video-001 returns ready job with video_url", async () => {
-    const res = await fetch(`${API_BASE_URL}/video-jobs/video-001`);
+    const res = await fetch(apiUrl("/video-jobs/video-001"));
     expect(res.ok).toBe(true);
     const body = await res.json();
     expect(body.status).toBe("ready");
@@ -104,7 +104,7 @@ describe("MSW API handlers", () => {
   });
 
   it("POST /events returns 204 with no body", async () => {
-    const res = await fetch(`${API_BASE_URL}/events`, {
+    const res = await fetch(apiUrl("/events"), {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
