@@ -1,8 +1,13 @@
 /** Browser/dev API origin (MSW and tests use the same absolute URLs). */
 export const API_ORIGIN = "http://localhost";
 
-/** Path prefix for JSON API routes (default `/api`). */
-export const API_BASE_PATH = "/api";
+function normalizeBasePath(raw: string | undefined): string {
+  const value = raw?.trim() || "/api";
+  return value.startsWith("/") ? value : `/${value}`;
+}
+
+/** Path prefix for JSON API routes (default `/api`, overridable via VITE_API_BASE_URL). */
+export const API_BASE_PATH = normalizeBasePath(import.meta.env.VITE_API_BASE_URL);
 
 /** @deprecated Use apiUrl() for fetch and MSW handler paths. */
 export const API_BASE_URL = `${API_ORIGIN}${API_BASE_PATH}`;
