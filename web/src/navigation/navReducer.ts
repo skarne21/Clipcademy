@@ -481,8 +481,19 @@ export function restoreNavState(
         ...common,
         attempt_id: step.attempt_id,
       };
-    case "summary":
-      return common;
+    case "summary": {
+      if (!step.attempt_id) {
+        return { screen: "home", token: 0 };
+      }
+      const stored = progress.attempts[step.attempt_id];
+      if (stored?.result) {
+        return {
+          ...common,
+          last_result: stored.result,
+        };
+      }
+      return { screen: "home", token: 0 };
+    }
     case "participant_code":
     case "topics":
     case "home":
