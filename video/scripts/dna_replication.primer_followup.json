@@ -2,160 +2,92 @@
   "topic_id": "dna_replication",
   "objective_id": "synthesis_direction_and_primer",
   "variant_id": "primer_followup",
+  "format": "vertical",
   "teaching_goal": "Explain why DNA polymerase needs a primer",
   "source_refs": [
     "L19-p1",
     "L19-p2"
   ],
   "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L19-p1: DNA polymerase can only work if the new strand has already been started. L19-p2: primase makes the RNA primer.",
+    "analogy": "A starter block that building begins from.",
+    "new_term": "none new (follow-up)"
+  },
   "scenes": [
     {
-      "diagram": "bare",
-      "title": "A template alone is not enough",
-      "narration": "Here is a bare DNA template. DNA polymerase cannot begin a complementary strand from scratch. It needs an existing complementary start with a three prime end that it can extend.",
+      "diagram": "strand",
+      "title": "Why does DNA polymerase need a primer?",
+      "narration": "Here's the problem. A bare template has no new strand. DNA polymerase can't begin here. It needs a 3-prime end to add to. So primase steps in. It lays down a short RNA primer. Think of it as a starter block. Now polymerase has a 3-prime end. It extends the primer with DNA. Now try the question again.",
       "stage": {
-        "template": "draw"
+        "strand": 0
       },
       "beats": [
         {
           "on": "^",
           "do": [
-            "template_in"
+            "pose:present",
+            "pulse:template"
           ]
         },
         {
           "on": "bare",
           "do": [
             "point:template",
-            "pulse:template"
+            "ghost"
           ]
         },
         {
-          "on": "polymerase",
+          "on": "can't",
           "do": [
-            "polymerase_try"
-          ]
-        },
-        {
-          "on": "cannot",
-          "do": [
-            "pose:shrug"
+            "polymerase"
           ]
         },
         {
           "on": "needs",
           "do": [
-            "ghost",
-            "pose:think",
-            "card:DNA polymerase needs an existing start."
+            "fail",
+            "pose:shrug"
           ]
         },
         {
-          "on": "three prime",
-          "do": [
-            "pulse:ghost_3"
-          ]
-        }
-      ]
-    },
-    {
-      "diagram": "primer",
-      "title": "Primase makes an RNA primer",
-      "narration": "Primase supplies that start. It builds a short RNA primer complementary to the template. Unlike DNA polymerase, primase can begin on a single stranded template without an existing complementary strand.",
-      "stage": {
-        "primase_stay": true
-      },
-      "beats": [
-        {
           "on": "primase",
           "do": [
-            "primase_build",
+            "primase",
             "point:primase"
           ]
         },
         {
           "on": "rna",
           "do": [
-            "point:primer"
-          ]
-        },
-        {
-          "on": "complementary",
-          "do": [
             "pulse:primer"
           ]
         },
         {
-          "on": "begin",
+          "on": "starter",
           "do": [
-            "card:Primase makes the start",
-            "pose:present"
+            "pose:present",
+            "card:Primer = starter block"
           ]
         },
-        {
-          "on": "single",
-          "do": [
-            "point:template",
-            "pulse:template"
-          ]
-        }
-      ]
-    },
-    {
-      "diagram": "growth",
-      "title": "Polymerase extends the primer",
-      "narration": "Now DNA polymerase adds DNA nucleotides to the primer's three prime end. The strand grows five prime to three prime. Primase makes the start; polymerase extends it. The template by itself was not that start.",
-      "stage": {
-        "primer": 5
-      },
-      "beats": [
         {
           "on": "now",
           "do": [
-            "polymerase_enter",
-            "extend"
-          ]
-        },
-        {
-          "on": "nucleotides",
-          "do": [
-            "point:three_end"
-          ]
-        },
-        {
-          "on": "three prime end",
-          "do": [
-            "zoom:three_end",
-            "pulse:three_end"
-          ]
-        },
-        {
-          "on": "grows",
-          "do": [
-            "zoom_out",
-            "point:complement"
-          ]
-        },
-        {
-          "on": "primase",
-          "do": [
-            "pulse:primer",
-            "point:primer",
-            "card:Primase makes the start"
+            "point:polymerase"
           ]
         },
         {
           "on": "extends",
           "do": [
-            "pulse:polymerase",
-            "card:Polymerase extends its 3′ end"
+            "extend",
+            "zoom:new_3"
           ]
         },
         {
-          "on": "template",
+          "on": "again",
           "do": [
-            "point:template",
-            "pulse:template"
+            "zoom_out",
+            "pose:thumbs"
           ]
         }
       ]

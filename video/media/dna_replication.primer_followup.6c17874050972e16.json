@@ -1,0 +1,19 @@
+{
+  "video_file": "dna_replication.primer_followup.6c17874050972e16.mp4",
+  "captions_file": "dna_replication.primer_followup.6c17874050972e16.vtt",
+  "transcript": "Here's the problem. A bare template has no new strand. DNA polymerase can't begin here. It needs a 3-prime end to add to. So primase steps in. It lays down a short RNA primer. Think of it as a starter block. Now polymerase has a 3-prime end. It extends the primer with DNA. Now try the question again.",
+  "source_refs": [
+    "L19-p1",
+    "L19-p2"
+  ],
+  "duration_seconds": 20.875,
+  "width": 720,
+  "height": 1280,
+  "fps": 24,
+  "fingerprint": "6c17874050972e16",
+  "review_status": "pending",
+  "narration": "synthetic: ElevenLabs eleven_multilingual_v2, voice Liam (ElevenLabs premade)",
+  "visuals": "Remotion 4.0.537, Clipcademy stick-figure template",
+  "longest_still_seconds": 2.59,
+  "sha256": "8488f9d874b8b46781fbc2e95b5c166a3cbadd3c1a7d9ec4d86e9970e8a3406e"
+}

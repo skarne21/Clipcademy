@@ -219,7 +219,7 @@ def render(script, output_dir):
         props = {'fps': fps, 'durationInFrames': frames, 'audio': f'job/{stem}/audio.wav',
                  'title': scene['title'], 'diagram': scene['diagram'],
                  'sources': 'Sources: ' + ', '.join(script['source_refs']) + ' · Review copy',
-                 'stage': p['stage'], 'events': p['events'], 'attach': p['attach'],
+                 'stage': p['stage'], 'events': p['events'], 'pieces': p['pieces'],
                  'words': [{'text': w, 'start': round(s, 3), 'end': round(e, 3)} for w, s, e in words],
                  'energy': [round(v, 3) for v in energy]}
         with tempfile.TemporaryDirectory(prefix='clipcademy-render-') as tmp:

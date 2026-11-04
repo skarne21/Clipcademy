@@ -15,7 +15,7 @@
   },
   "status": 200,
   "response": {
-    "job_id": "video-fa7e0f4e094d420cb99c730b775b3980",
+    "job_id": "video-006faec877254570a2d477056a2d7c1c",
     "status": "ready",
     "topic_id": "dna_replication",
     "objective_id": "synthesis_direction_and_primer",
@@ -25,10 +25,12 @@
       "L19-p2"
     ],
     "source": "prerendered",
-    "video_url": "/media/dna_replication.primer_followup.a083709236ac88c8.mp4",
-    "captions_url": "/media/dna_replication.primer_followup.a083709236ac88c8.vtt",
-    "transcript": "Here is a bare DNA template. DNA polymerase cannot begin a complementary strand from scratch. It needs an existing complementary start with a three prime end that it can extend.\n\nPrimase supplies that start. It builds a short RNA primer complementary to the template. Unlike DNA polymerase, primase can begin on a single stranded template without an existing complementary strand.\n\nNow DNA polymerase adds DNA nucleotides to the primer's three prime end. The strand grows five prime to three prime. Primase makes the start; polymerase extends it. The template by itself was not that start.",
-    "duration_seconds": 45.125,
+    "video_url": "/media/dna_replication.primer_followup.6c17874050972e16.mp4",
+    "captions_url": "/media/dna_replication.primer_followup.6c17874050972e16.vtt",
+    "transcript": "Here's the problem. A bare template has no new strand. DNA polymerase can't begin here. It needs a 3-prime end to add to. So primase steps in. It lays down a short RNA primer. Think of it as a starter block. Now polymerase has a 3-prime end. It extends the primer with DNA. Now try the question again.",
+    "duration_seconds": 20.875,
+    "width": 720,
+    "height": 1280,
     "review_status": "preview"
   }
 }

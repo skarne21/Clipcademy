@@ -1,0 +1,18 @@
+{
+  "video_file": "translation.pairing_followup.1dcbea12a0f6e1c0.mp4",
+  "captions_file": "translation.pairing_followup.1dcbea12a0f6e1c0.vtt",
+  "transcript": "Let's line them up. Here's the codon A-U-G on the mRNA. Here's a tRNA with the anticodon U-A-C. A pairs with U. U pairs with A. G pairs with C. All three match, so they bind. This tRNA carries methionine. Like matching each letter to its partner. Now try the question again.",
+  "source_refs": [
+    "L22-p1"
+  ],
+  "duration_seconds": 22.958,
+  "width": 720,
+  "height": 1280,
+  "fps": 24,
+  "fingerprint": "1dcbea12a0f6e1c0",
+  "review_status": "pending",
+  "narration": "synthetic: ElevenLabs eleven_multilingual_v2, voice Liam (ElevenLabs premade)",
+  "visuals": "Remotion 4.0.537, Clipcademy stick-figure template",
+  "longest_still_seconds": 2.53,
+  "sha256": "2814541a14e212cfa047bb09675c51bd93594c5c25602636075726de57ea83ae"
+}

@@ -1,0 +1,18 @@
+{
+  "video_file": "dna_repair.intro_3.328d02eace6048cb.mp4",
+  "captions_file": "dna_repair.intro_3.328d02eace6048cb.vtt",
+  "transcript": "What does UV light do to your DNA? Watch these two neighbors, a C and a T. UV light hits them. Now they're stuck together by a covalent bond, a strong chemical link. That bond bends the backbone into a bulge. Like a kink in a garden hose. The bulge stops genes from being copied normally. UV light bonds neighboring C's and T's together, which makes a bulge. How is it fixed? Swipe.",
+  "source_refs": [
+    "L20-p1"
+  ],
+  "duration_seconds": 26.292,
+  "width": 720,
+  "height": 1280,
+  "fps": 24,
+  "fingerprint": "328d02eace6048cb",
+  "review_status": "pending",
+  "narration": "synthetic: ElevenLabs eleven_multilingual_v2, voice Liam (ElevenLabs premade)",
+  "visuals": "Remotion 4.0.537, Clipcademy stick-figure template",
+  "longest_still_seconds": 2.03,
+  "sha256": "1f5acc45259dbb20a082f8966fed7e5d4216f28fe3b793b4f1ed35068c54b80e"
+}

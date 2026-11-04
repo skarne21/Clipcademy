@@ -1,0 +1,97 @@
+{
+  "topic_id": "transcription",
+  "objective_id": "template_strand_and_promoter",
+  "variant_id": "intro_1",
+  "format": "vertical",
+  "teaching_goal": "RNA polymerase reads one DNA strand, the template strand, to build RNA.",
+  "source_refs": [
+    "L21-p1"
+  ],
+  "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L21-p1: the strand that is read by RNA polymerase and transcribed is called the template strand.",
+    "analogy": "Tracing a drawing by following just one line.",
+    "new_term": "template strand"
+  },
+  "scenes": [
+    {
+      "diagram": "transcription",
+      "title": "How does a gene become RNA?",
+      "narration": "How does a gene become RNA? Meet RNA polymerase. DNA has two strands, but it reads just one. That one is called the template strand. First, the DNA opens up. Then polymerase builds RNA that matches the template, one base at a time. Like tracing a drawing by following just one line. RNA polymerase reads one DNA strand, the template strand, to build RNA. So what's the other strand? Swipe.",
+      "stage": {},
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "pose:think",
+            "pulse:template"
+          ]
+        },
+        {
+          "on": "meet",
+          "do": [
+            "polymerase",
+            "point:polymerase"
+          ]
+        },
+        {
+          "on": "two",
+          "do": [
+            "pulse:coding"
+          ]
+        },
+        {
+          "on": "one",
+          "do": [
+            "pulse:template"
+          ]
+        },
+        {
+          "on": "called",
+          "do": [
+            "point:template",
+            "card:Template strand = read"
+          ]
+        },
+        {
+          "on": "opens",
+          "do": [
+            "open"
+          ]
+        },
+        {
+          "on": "builds",
+          "do": [
+            "extend",
+            "zoom:rna_end"
+          ]
+        },
+        {
+          "on": "tracing",
+          "do": [
+            "zoom_out",
+            "pose:present"
+          ]
+        },
+        {
+          "on": "reads",
+          "do": [
+            "pulse:rna"
+          ]
+        },
+        {
+          "on": "other",
+          "do": [
+            "pose:think"
+          ]
+        },
+        {
+          "on": "swipe",
+          "do": [
+            "pulse:coding"
+          ]
+        }
+      ]
+    }
+  ]
+}

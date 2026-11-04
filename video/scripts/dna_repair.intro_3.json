@@ -1,0 +1,98 @@
+{
+  "topic_id": "dna_repair",
+  "objective_id": "error_correction",
+  "variant_id": "intro_3",
+  "format": "vertical",
+  "teaching_goal": "UV light bonds neighboring C's and T's together, which makes a bulge.",
+  "source_refs": [
+    "L20-p1"
+  ],
+  "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L20-p1: When UV light hits DNA, it causes adjacent C's and T's to form covalent bonds; the bulge prevents genes from being copied normally.",
+    "analogy": "A kink in a garden hose.",
+    "new_term": "covalent bond"
+  },
+  "scenes": [
+    {
+      "diagram": "repair",
+      "title": "What does UV light do to DNA?",
+      "narration": "What does UV light do to your DNA? Watch these two neighbors, a C and a T. UV light hits them. Now they're stuck together by a covalent bond, a strong chemical link. That bond bends the backbone into a bulge. Like a kink in a garden hose. The bulge stops genes from being copied normally. UV light bonds neighboring C's and T's together, which makes a bulge. How is it fixed? Swipe.",
+      "stage": {
+        "bottom": 9
+      },
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "pose:think",
+            "pulse:damage"
+          ]
+        },
+        {
+          "on": "neighbors",
+          "do": [
+            "point:damage",
+            "pulse:damage"
+          ]
+        },
+        {
+          "on": "hits",
+          "do": [
+            "uv",
+            "pose:surprised"
+          ]
+        },
+        {
+          "on": "stuck",
+          "do": [
+            "bond"
+          ]
+        },
+        {
+          "on": "covalent",
+          "do": [
+            "zoom:damage"
+          ]
+        },
+        {
+          "on": "bends",
+          "do": [
+            "bulge"
+          ]
+        },
+        {
+          "on": "hose",
+          "do": [
+            "zoom_out",
+            "pose:present"
+          ]
+        },
+        {
+          "on": "stops",
+          "do": [
+            "pulse:damage"
+          ]
+        },
+        {
+          "on": "bonds",
+          "do": [
+            "card:UV: C–T bond makes a bulge"
+          ]
+        },
+        {
+          "on": "fixed",
+          "do": [
+            "pose:think"
+          ]
+        },
+        {
+          "on": "swipe",
+          "do": [
+            "pulse:damage"
+          ]
+        }
+      ]
+    }
+  ]
+}

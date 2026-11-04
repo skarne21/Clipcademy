@@ -1,0 +1,98 @@
+{
+  "topic_id": "dna_replication",
+  "objective_id": "synthesis_direction_and_primer",
+  "variant_id": "intro_3",
+  "format": "vertical",
+  "teaching_goal": "DNA polymerase can't start a new strand from nothing.",
+  "source_refs": [
+    "L19-p1"
+  ],
+  "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L19-p1: DNA polymerase can't synthesize a complementary strand of DNA from scratch.",
+    "analogy": "A zipper with nothing to start it: it needs a start before it can run.",
+    "new_term": "bare template"
+  },
+  "scenes": [
+    {
+      "diagram": "strand",
+      "title": "Can DNA polymerase start from scratch?",
+      "narration": "Can DNA polymerase start a new strand from scratch? Let's test it. Here's a bare template. No new strand yet. DNA polymerase shows up, ready to build. But there's no 3-prime end to add to. It's stuck. Like a zipper with nothing to start it. DNA polymerase can't start a new strand from nothing. So who starts it? Swipe.",
+      "stage": {
+        "strand": 0
+      },
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "pose:think",
+            "pulse:template"
+          ]
+        },
+        {
+          "on": "test",
+          "do": [
+            "pose:present"
+          ]
+        },
+        {
+          "on": "bare",
+          "do": [
+            "pulse:template",
+            "point:template"
+          ]
+        },
+        {
+          "on": "no",
+          "do": [
+            "ghost"
+          ]
+        },
+        {
+          "on": "shows",
+          "do": [
+            "polymerase",
+            "point:polymerase"
+          ]
+        },
+        {
+          "on": "no 3-prime",
+          "do": [
+            "fail",
+            "pose:shrug"
+          ]
+        },
+        {
+          "on": "stuck",
+          "do": [
+            "pulse:polymerase"
+          ]
+        },
+        {
+          "on": "zipper",
+          "do": [
+            "pose:wag"
+          ]
+        },
+        {
+          "on": "can't",
+          "do": [
+            "card:Can't start from nothing"
+          ]
+        },
+        {
+          "on": "who",
+          "do": [
+            "pose:think"
+          ]
+        },
+        {
+          "on": "swipe",
+          "do": [
+            "pulse:ghost"
+          ]
+        }
+      ]
+    }
+  ]
+}

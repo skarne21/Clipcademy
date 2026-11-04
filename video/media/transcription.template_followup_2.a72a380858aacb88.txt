@@ -1,0 +1,1 @@
+Let's build the RNA one base at a time. Here's a T on the template strand. The RNA gets an A. Next, a C. The RNA gets a G. Then a G, so the RNA gets a C. Every new RNA base pairs with the template strand. None pair with the coding strand. Like matching a pattern, piece by piece. So the template strand is the one read. Now try the question again.

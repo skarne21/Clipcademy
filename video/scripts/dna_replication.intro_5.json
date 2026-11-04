@@ -1,0 +1,101 @@
+{
+  "topic_id": "dna_replication",
+  "objective_id": "synthesis_direction_and_primer",
+  "variant_id": "intro_5",
+  "format": "vertical",
+  "teaching_goal": "New DNA grows 5′ to 3′, and it needs a primer to start.",
+  "source_refs": [
+    "L19-p1",
+    "L19-p2"
+  ],
+  "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L19-p1 (5′ to 3′, adds to the 3′ end) and L19-p2 (primer first).",
+    "analogy": "A first domino that starts the chain: the primer comes first.",
+    "new_term": "none new (recap)"
+  },
+  "scenes": [
+    {
+      "diagram": "strand",
+      "title": "Recap: how new DNA gets built",
+      "narration": "Quick recap. Two rules. Rule one: new pieces only join the 3-prime end. So new DNA grows 5-prime to 3-prime. Rule two: DNA polymerase can't start from nothing. A short RNA primer comes first. Like a first domino that starts the chain. New DNA grows 5-prime to 3-prime, and it needs a primer to start. Let's see what you remember.",
+      "stage": {
+        "primer": 2,
+        "strand": 1
+      },
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "pose:present",
+            "pulse:strand"
+          ]
+        },
+        {
+          "on": "two",
+          "do": [
+            "pose:think"
+          ]
+        },
+        {
+          "on": "one",
+          "do": [
+            "card:Rule 1: grows 5′ → 3′"
+          ]
+        },
+        {
+          "on": "join",
+          "do": [
+            "extend:3",
+            "zoom:new_3"
+          ]
+        },
+        {
+          "on": "grows",
+          "do": [
+            "zoom_out",
+            "arrow"
+          ]
+        },
+        {
+          "on": "two",
+          "do": [
+            "card:Rule 2: needs a primer"
+          ]
+        },
+        {
+          "on": "can't",
+          "do": [
+            "pose:wag"
+          ]
+        },
+        {
+          "on": "primer",
+          "do": [
+            "pulse:primer",
+            "point:primer"
+          ]
+        },
+        {
+          "on": "domino",
+          "do": [
+            "pose:present"
+          ]
+        },
+        {
+          "on": "needs",
+          "do": [
+            "pose:thumbs",
+            "pulse:strand"
+          ]
+        },
+        {
+          "on": "remember",
+          "do": [
+            "pulse:primer"
+          ]
+        }
+      ]
+    }
+  ]
+}

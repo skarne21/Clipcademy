@@ -2,183 +2,98 @@
   "topic_id": "dna_replication",
   "objective_id": "synthesis_direction_and_primer",
   "variant_id": "direction_followup",
+  "format": "vertical",
   "teaching_goal": "Explain growth direction and which end grows",
   "source_refs": [
     "L19-p1"
   ],
   "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L19-p1: new bases are added to the 3′ end, so synthesis runs 5′ to 3′.",
+    "analogy": "A line where people only join at the back.",
+    "new_term": "none new (follow-up)"
+  },
   "scenes": [
     {
-      "diagram": "antiparallel",
-      "title": "Read the end labels",
-      "narration": "The two strands point in opposite directions. Follow the end labels: the template runs three prime to five prime. Its complementary strand runs five prime to three prime. These are different strands.",
+      "diagram": "strand",
+      "title": "Which end does new DNA grow from?",
+      "narration": "Let's fix this one. Find the two ends of the new strand. This end is 5-prime. This end is 3-prime. Now watch where new pieces go. Every single one joins the 3-prime end. Like a line where people only join at the back. The 5-prime end never changes. Adding at the 3-prime end means DNA grows 5-prime to 3-prime. Now try the question again.",
       "stage": {
-        "template": "draw",
-        "complement": "hidden",
-        "primer": 5,
-        "dna": 2,
-        "primer_label": false
+        "strand": 3
       },
       "beats": [
         {
           "on": "^",
           "do": [
-            "template_in"
+            "pose:present",
+            "pulse:strand"
           ]
         },
         {
-          "on": "two",
+          "on": "find",
           "do": [
-            "complement_in"
+            "point:strand"
           ]
         },
         {
-          "on": "opposite",
+          "on": "5-prime",
           "do": [
-            "arrows"
+            "label:5",
+            "pulse:new_5",
+            "point:new_5"
           ]
         },
         {
-          "on": "labels",
+          "on": "3-prime",
           "do": [
-            "pose:present"
+            "label:3",
+            "pulse:new_3",
+            "point:new_3"
           ]
         },
         {
-          "on": "template",
+          "on": "watch",
           "do": [
-            "point:template"
+            "zoom:new_3",
+            "extend"
           ]
         },
         {
-          "on": "three prime",
-          "do": [
-            "pulse:template_3"
-          ]
-        },
-        {
-          "on": "five prime",
-          "do": [
-            "pulse:template_5"
-          ]
-        },
-        {
-          "on": "complementary",
-          "do": [
-            "point:complement"
-          ]
-        },
-        {
-          "on": "five prime",
-          "do": [
-            "pulse:new_5"
-          ]
-        },
-        {
-          "on": "three prime",
+          "on": "every",
           "do": [
             "pulse:new_3"
           ]
         },
         {
-          "on": "different",
-          "do": [
-            "pulse:template",
-            "pulse:complement"
-          ]
-        }
-      ]
-    },
-    {
-      "diagram": "growth",
-      "title": "The growing end is 3′",
-      "narration": "Watch the complementary strand get longer. Each added nucleotide joins its three prime end. The five prime end stays at the start. Adding to the three prime end makes synthesis proceed five prime to three prime.",
-      "stage": {
-        "primer": 5,
-        "dna": 2,
-        "polymerase": true
-      },
-      "beats": [
-        {
-          "on": "watch",
-          "do": [
-            "extend",
-            "point:complement"
-          ]
-        },
-        {
-          "on": "joins",
-          "do": [
-            "zoom:three_end",
-            "point:three_end",
-            "pulse:three_end"
-          ]
-        },
-        {
-          "on": "five prime end",
-          "do": [
-            "zoom_out",
-            "point:new_5",
-            "pulse:new_5"
-          ]
-        },
-        {
-          "on": "adding",
-          "do": [
-            "point:three_end",
-            "pulse:three_end"
-          ]
-        },
-        {
-          "on": "proceed",
-          "do": [
-            "arrow"
-          ]
-        }
-      ]
-    },
-    {
-      "diagram": "growth",
-      "title": "Direction and end agree",
-      "narration": "Keep these two descriptions together: DNA grows five prime to three prime, and new nucleotides are added at the three prime end. Reading the template in the opposite direction does not reverse new DNA synthesis.",
-      "stage": {
-        "primer": 5,
-        "dna": 8,
-        "polymerase": true
-      },
-      "beats": [
-        {
-          "on": "keep",
+          "on": "line",
           "do": [
             "pose:present"
           ]
         },
         {
-          "on": "grows",
+          "on": "never",
           "do": [
-            "extend",
-            "card:DNA grows 5′ → 3′"
+            "zoom_out",
+            "pulse:new_5",
+            "point:new_5"
           ]
         },
         {
-          "on": "added",
+          "on": "adding",
           "do": [
-            "card:New nucleotides join the 3′ end",
-            "pulse:three_end",
-            "point:three_end"
+            "arrow"
           ]
         },
         {
-          "on": "reading",
+          "on": "means",
           "do": [
-            "point:template",
-            "pulse:template"
+            "card:Grows 5′ → 3′"
           ]
         },
         {
-          "on": "not",
+          "on": "again",
           "do": [
-            "pose:wag"
+            "pose:thumbs"
           ]
         }
       ]

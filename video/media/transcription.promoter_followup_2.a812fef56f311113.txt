@@ -1,0 +1,1 @@
+Can RNA polymerase start anywhere on a gene? Let's try the middle. Nothing happens. Transcription can't begin at a random spot. Now try the promoter. Polymerase makes first contact here. Proteins open the helix. Now it can read the template strand. The promoter is the start line. Now try the question again.

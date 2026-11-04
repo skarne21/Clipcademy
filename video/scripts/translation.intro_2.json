@@ -1,0 +1,114 @@
+{
+  "topic_id": "translation",
+  "objective_id": "codon_pairing_and_ribosome_sites",
+  "variant_id": "intro_2",
+  "format": "vertical",
+  "teaching_goal": "A charged tRNA enters at the A site and stays if its anticodon matches the codon.",
+  "source_refs": [
+    "L22-p1",
+    "L22-p2"
+  ],
+  "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L22-p1: A is where amino-acid-charged tRNAs enter; if the anticodon binds the exposed codon, the tRNA stays.",
+    "analogy": "A key that only fits its own lock.",
+    "new_term": "A site"
+  },
+  "scenes": [
+    {
+      "diagram": "translation",
+      "title": "The A site: where tRNAs come in",
+      "narration": "The ribosome has three spots: E, P, and A. New tRNAs always come in at the A site. Each one carries an amino acid. Here's one that doesn't match. Its anticodon doesn't pair, so it leaves. Here's one that does. It pairs with the codon and stays. Like a key that only fits its own lock. A charged tRNA enters at the A site and stays if its anticodon matches the codon. Swipe.",
+      "stage": {},
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "pose:present",
+            "pulse:p_site"
+          ]
+        },
+        {
+          "on": "e",
+          "do": [
+            "pulse:e_site"
+          ]
+        },
+        {
+          "on": "p",
+          "do": [
+            "pulse:p_site"
+          ]
+        },
+        {
+          "on": "a",
+          "do": [
+            "pulse:a_site"
+          ]
+        },
+        {
+          "on": "new",
+          "do": [
+            "point:a_site"
+          ]
+        },
+        {
+          "on": "carries",
+          "do": [
+            "pulse:chain"
+          ]
+        },
+        {
+          "on": "doesn't",
+          "do": [
+            "reject:GGA"
+          ]
+        },
+        {
+          "on": "leaves",
+          "do": [
+            "pose:wag"
+          ]
+        },
+        {
+          "on": "does",
+          "do": [
+            "enter"
+          ]
+        },
+        {
+          "on": "pairs",
+          "do": [
+            "pair",
+            "zoom:anticodon"
+          ]
+        },
+        {
+          "on": "stays",
+          "do": [
+            "pose:thumbs"
+          ]
+        },
+        {
+          "on": "key",
+          "do": [
+            "zoom_out",
+            "pose:present"
+          ]
+        },
+        {
+          "on": "charged",
+          "do": [
+            "card:Enters at A, stays if it matches"
+          ]
+        },
+        {
+          "on": "swipe",
+          "do": [
+            "pulse:a_site"
+          ]
+        }
+      ]
+    }
+  ]
+}

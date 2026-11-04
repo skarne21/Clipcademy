@@ -1,0 +1,101 @@
+{
+  "topic_id": "dna_replication",
+  "objective_id": "synthesis_direction_and_primer",
+  "variant_id": "intro_4",
+  "format": "vertical",
+  "teaching_goal": "Primase makes a short RNA primer, and DNA polymerase builds onto it.",
+  "source_refs": [
+    "L19-p1",
+    "L19-p2"
+  ],
+  "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L19-p2: Unlike DNA polymerase, primase can start synthesis from scratch; once the primer is made, DNA polymerase can start adding.",
+    "analogy": "The first brick the rest stack on: the primer is the starting piece.",
+    "new_term": "RNA primer"
+  },
+  "scenes": [
+    {
+      "diagram": "strand",
+      "title": "Who starts the new DNA strand?",
+      "narration": "So who starts the new strand? Meet primase. Primase can start from scratch. It lays down a short piece of RNA called a primer. Like the first brick the rest stack on. Now DNA polymerase has a 3-prime end. It adds DNA right onto the primer. Primase makes a short RNA primer, and DNA polymerase builds onto it. Swipe for the recap.",
+      "stage": {
+        "strand": 0
+      },
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "pose:think",
+            "pulse:template"
+          ]
+        },
+        {
+          "on": "meet",
+          "do": [
+            "primase",
+            "point:primase"
+          ]
+        },
+        {
+          "on": "scratch",
+          "do": [
+            "pulse:primase"
+          ]
+        },
+        {
+          "on": "rna",
+          "do": [
+            "pulse:primer",
+            "point:primer"
+          ]
+        },
+        {
+          "on": "primer",
+          "do": [
+            "card:RNA primer = the starter"
+          ]
+        },
+        {
+          "on": "brick",
+          "do": [
+            "pose:present"
+          ]
+        },
+        {
+          "on": "now",
+          "do": [
+            "polymerase",
+            "point:polymerase"
+          ]
+        },
+        {
+          "on": "adds",
+          "do": [
+            "extend",
+            "zoom:new_3"
+          ]
+        },
+        {
+          "on": "makes",
+          "do": [
+            "zoom_out",
+            "pulse:primer"
+          ]
+        },
+        {
+          "on": "builds",
+          "do": [
+            "pose:thumbs"
+          ]
+        },
+        {
+          "on": "recap",
+          "do": [
+            "pulse:strand"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "video_file": "translation.sites_followup_2.c1b56133bf58c002.mp4",
+  "captions_file": "translation.sites_followup_2.c1b56133bf58c002.vtt",
+  "transcript": "Let's freeze the ribosome mid-step. Look at the A site. A new tRNA just came in with its amino acid. Now the P site. Its tRNA holds the growing chain, and the peptide bond forms here. Now the E site. This tRNA is empty, and it's on its way out. Like a snapshot of a relay race. In at A, bond at P, out from E. Now try the question again.",
+  "source_refs": [
+    "L22-p1",
+    "L22-p2"
+  ],
+  "duration_seconds": 23.417,
+  "width": 720,
+  "height": 1280,
+  "fps": 24,
+  "fingerprint": "c1b56133bf58c002",
+  "review_status": "pending",
+  "narration": "synthetic: ElevenLabs eleven_multilingual_v2, voice Liam (ElevenLabs premade)",
+  "visuals": "Remotion 4.0.537, Clipcademy stick-figure template",
+  "longest_still_seconds": 2.53,
+  "sha256": "25dda48e6739797a819aa7aec26c4b8222f72c456c5a6e04213058deefd81744"
+}

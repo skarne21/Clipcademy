@@ -74,11 +74,12 @@ class JobsTest(unittest.TestCase):
         with self.service.db() as db:db.execute('UPDATE jobs SET updated=0')
         _,failed=self.call('GET','/video-jobs/video-stale');self.assertEqual(failed['status'],'failed')
     def test_all_variants_have_real_assets(self):
-        self.assertEqual(len(self.service.catalog),6)
+        self.assertEqual(len(self.service.catalog),35)  # notes.md: 4-5 intro clips + 4 follow-ups, for 4 topics
         for script in self.service.catalog.values():
             record=self.service.asset(script)
             self.assertIsNotNone(record,script['variant_id'])
-            self.assertGreaterEqual(record['duration_seconds'],30);self.assertLessEqual(record['duration_seconds'],60)
+            self.assertGreaterEqual(record['duration_seconds'],15);self.assertLessEqual(record['duration_seconds'],30)
+            self.assertEqual((record['width'],record['height']),(720,1280))
             self.assertEqual(record['transcript'],'\n\n'.join(s['narration'] for s in script['scenes']))
 
 

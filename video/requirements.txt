@@ -1,2 +1,2 @@
-Pillow==13.0.0
+# Offline eSpeak drafts only (CLIPCADEMY_VOICE=espeak). Real clips use ElevenLabs (tts.py, standard library).
 espeakng-loader==0.2.4

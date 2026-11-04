@@ -1,15 +1,23 @@
 # Member 1: video generation and visual consistency
 
 Implements the Member 1 section of [Team_Spec](../Context/Team_Spec.md).
-This branch is based on `MVP02`; it does not merge the separate React app on
-`member3`. Six fixed-script, narrated review clips are included. No LLM writes
-student-facing content and no paid service or API key is needed.
+Thirty-five fixed-script, vertical (720×1280) narrated clips are included, following
+[notes.md](../Context/notes.md). No LLM writes student-facing content. Playing the prerendered clips needs only
+Python's standard library; rendering new ones needs Node 18+, an ElevenLabs API key and (for checks) FFmpeg.
 
-## Vertical clips (v2, Context/notes.md): pilot stage
+## Vertical clips (v2, Context/notes.md)
 
-**Status:** one pilot clip, `dna_replication.intro_2` (19.0 s, 720×1280, ElevenLabs voice Liam). Per notes.md the other
-31–35 clips are not scripted until the pilot passes Member 3's phone check and the product owner's
-"does this feel like TikTok, and is it clear?" check. The landscape clips below are legacy and will be replaced.
+**Status:** all 35 vertical clips from the packets are scripted and rendered (replication 9, repair 9,
+transcription 8, translation 9: 4–5 intro clips per topic plus v1 and v2 follow-ups per misconception), with the
+ElevenLabs voice Liam. All are **pending content review**: the reviewer works from
+[SCRIPTS_FOR_REVIEW.md](SCRIPTS_FOR_REVIEW.md) (narration, hook claim and analogy per clip). Scripts are written by
+`write_scripts.py`, which reads teaching goals and source references from the packets. The landscape clips from the
+first MVP have been removed. Member 3's phone check of the pilot (`dna_replication.intro_2`) is still to do.
+
+Diagrams (`remotion/src/scenes/`): `strand` (replication: primer, polymerase, 3′ growth), `repair` (proofreading,
+mismatch repair, UV bond and bulge, cut/replace/reseal), `transcription` (promoter, opening, RNA built on the template
+strand), `translation` (ribosome E/P/A sites, tRNA pairing, peptide bond, shift, exit) and `timeline` (during vs
+after copying). Enzymes are small characters with faces so each molecule reads as an actor.
 
 Pipeline (`python video/render.py --topic dna_replication --variant intro_2`):
 
@@ -55,14 +63,9 @@ npm run dev
 ```
 
 Open the URL printed by Vite. Its proxy includes `/media`, so video playback,
-seeking, captions and API calls use the same origin. Previously rendered mode
-needs only Python's standard library; Pillow, eSpeak and FFmpeg are needed only
-when rendering new clips. DNA repair remains Coming soon in Member 2's topic
-catalog. Its three clips are ready for review through the API, but enabling that
-topic belongs to the team's existing content-review process.
-(Lead, on merge into MVP02: DNA repair is already `available` there, so all six
-clips are reachable in the app. Without the preview flag they 403 until approved,
-which the UI shows as "The clip couldn't load." with Retry.)
+seeking, captions and API calls use the same origin. Restart `learning/app.py` after adding or
+re-rendering clips: the video catalog is read at startup. Transcription and translation are `coming_soon`
+in Member 2's topic catalog; their clips are ready through the API for review.
 
 `CLIPCADEMY_VIDEO_PREVIEW=1` is for team review only. Without it, requests are
 rejected with 403 until the packet is `reviewed` and the clip's audit row is
@@ -73,81 +76,34 @@ map unapproved files to a public static directory for participants.
 
 ## Files and tasks
 
-| Member 1 task | Implementation |
+| Member 1 task (notes.md) | Implementation |
 | --- | --- |
-| Shared character, colors, fonts, labels, voice | `template.json`, `render.py:frame` |
-| Source excerpts and replication scripts | Existing replication packet in `learning/packets`; three fixed scripts in `scripts/` |
-| Renderer and immediate job ID | `render.py`, `jobs.py`; asynchronous local mode |
-| Narration and matching transcript | AAC audio, embedded captions, `.txt` and `.vtt` beside each MP4 |
-| Primer follow-up | `scripts/dna_replication.primer_followup.json` and matching media |
-| Two requests, outputs, failed example | `samples/initial.json`, `primer_followup.json`, `failed.json` |
-| Three repair clips | `dna_repair.initial`, `timing_followup`, `uv_followup` in `media/` |
-
-All six clips are 960×540, 24 fps H.264/yuv420p with AAC narration, 44.8–55.2
-seconds each. Total MP4 size is 9,612,776 bytes (9.17 MiB, bytes / 1,048,576).
-Each manifest records duration, file hash, exact transcript, source references,
-synthetic voice and fingerprint. Captions use the same words as narration, timed
-from eSpeak's own word events (when each word is actually spoken), and the line
-on screen highlights the word being spoken. Check their timing during human review.
-
-## Animation
-
-`render.py` narrates each scene, recording when each word is spoken, then
-`animation.py` draws every frame. Scenes are choreographed in the scripts, not in
-code: each scene has a `stage` (what is on screen at the start) and `beats`, where a
-spoken cue triggers named actions, e.g.
-
-```json
-{"on": "primase", "do": ["primase_build", "point:primase", "card:Primase makes the start"]}
-```
-
-- **Guide:** the same stick figure (green bow tie) in every clip. Walks in and waves,
-  points at whatever is named, shrugs or thinks with a `?` when something cannot
-  happen, wags a finger at a misconception, thumbs-up at the end. Mouth follows the
-  narration's loudness, eyes follow the pointing target, it blinks and breathes.
-- **Process:** DNA polymerase, primase and repair proteins are labeled shapes that
-  move. Polymerase tries and fails on a bare template, primase lays the RNA primer,
-  nucleotides fly in and join the 3′ end, wrong bases are added and excised, UV
-  bonds adjacent bases and kinks the backbone, sections are cut out, refilled and
-  resealed.
-- **Attention:** close-ups (`zoom:<target>`) and orange highlight rings
-  (`pulse:<target>`); summary cards (`card:`) only repeat the narration's claim.
-
-Rules are in `template.json` (`guide`, `motion_rules`). `test_animation.py` fails if
-a cue is not in the narration or a target does not exist. To check a single frame
-without audio: `python -c "import render,json;render.preview(render.load_script('dna_replication','initial'),2,6.0,'f.png')"`.
-Set `CLIPCADEMY_FONT_DIR` if DejaVu Sans is not installed system-wide.
+| Portrait template, safe zones | `template.json`, `remotion/src/theme.ts`, `remotion/src/Clip.tsx` |
+| Burned-in captions, `.vtt`, `.txt` | `Clip.tsx` (1–3 words, spoken word highlighted); `render.py` writes `.vtt` and `.txt` |
+| Hook from frame 1, change every 2–3 s | Hook title from frame 1; `beats.py` rejects >3 s with no change and fills long gaps with a guide gesture |
+| Voice and sound | `tts.py` (ElevenLabs, voice Liam, cached); `sfx.py` (our own sounds, series sting) |
+| Pilot clip | `scripts/dna_replication.intro_2.json` |
+| Scripts, reviewer text | `write_scripts.py` writes `scripts/*.json` and [SCRIPTS_FOR_REVIEW.md](SCRIPTS_FOR_REVIEW.md) |
+| All clips, tests | `media/` (35 clips), `check_assets.py`, `test_beats.py`, `test_jobs.py`, `test_integration.py` |
+| `width`/`height` in ready response | `jobs.py` |
+| UTF-8 file I/O | `render.py`, `beats.py`, `tts.py`, `write_scripts.py` |
+| Two sample requests and outputs, one failure | `samples/initial.json` (`intro_1`), `samples/primer_followup.json`, `samples/failed.json` |
 
 ## Render locally
 
-Install FFmpeg (including ffprobe) on the laptop and DejaVu Sans fonts. Then:
-
 ```sh
-python -m pip install -r video/requirements.txt
-python video/render.py --all
-# Or one variant:
-python video/render.py --topic dna_replication --variant primer_followup
-python video/check_assets.py
+cd video/remotion && npm ci && cd ../..         # once
+printf 'ELEVENLABS_API_KEY=\n' > video/.env      # then paste the key after = (git-ignored)
+python3 video/write_scripts.py                   # after editing scripts in write_scripts.py
+python3 video/render.py --topic dna_replication --variant intro_2
+python3 video/render.py --all
+python3 video/check_assets.py                    # needs ffmpeg and ffprobe on PATH
 ```
 
-The renderer accepts the fixed script's text, scene/diagram IDs and template
-parameters internally. Public API callers select a catalog variant, never supply
-arbitrary narration, commands or paths. Source excerpts stay in Member 2's lesson
-packets, avoiding a divergent copy. All referenced passages are listed there.
-
-To demonstrate asynchronous rendering instead of reusing the included assets:
-
-```sh
-CLIPCADEMY_VIDEO_PREVIEW=1 CLIPCADEMY_VIDEO_MODE=live \
-CLIPCADEMY_MEDIA_DIR=/tmp/clipcademy-live-media \
-CLIPCADEMY_VIDEO_DB=/tmp/clipcademy-live-jobs.db python learning/app.py
-```
-
-Send one of the sample request bodies. POST returns `202` with `queued`; poll the
-job to observe `running` and then `ready` or `failed`. Live rendering is bounded to
-one worker, with a 300-second subprocess timeout. A process interrupted during a
-job is reported failed after 360 seconds and can be retried. Shut down the local
-server before deleting its cache/database. **Do not use live mode on PythonAnywhere.**
+Narration is cached by text and voice settings in `video/.cache/tts/`, so re-rendering after a visual change spends
+no credits; changing a script's narration does (1 credit per character). The 35 narrations total 12,019 characters;
+this round spent about 15,000 credits including voice samples and re-takes. One clip renders
+in about 10 s (19–30 s clips at 24 fps). `CLIPCADEMY_VOICE=espeak` makes a free offline draft with its own fingerprint.
 
 ## HTTP contract
 
@@ -156,8 +112,8 @@ server before deleting its cache/database. **Do not use live mode on PythonAnywh
   The teaching goal is descriptive; the selected script is always the fixed one.
 - `GET /video-jobs/{job_id}`: persistent job state. Unknown IDs return 404.
 - Ready response: `job_id`, `status`, topic/objective/variant IDs, `source_refs`,
-  `video_url`, `captions_url`, `transcript`, `duration_seconds`, `review_status`,
-  `source: "prerendered" | "generated"`.
+  `video_url`, `captions_url`, `transcript`, `duration_seconds`, `width`, `height`,
+  `review_status`, `source: "prerendered" | "generated"`.
 - A completed repeated request reuses the same asset and job ID (`200`,
   `cache_hit: true`). Concurrent queued/running requests reuse the job (`202`).
 - Failed jobs include a plain `error` string and no playable URL. Retrying the
@@ -192,35 +148,14 @@ Optional settings: `CLIPCADEMY_MEDIA_DIR`, `CLIPCADEMY_MEDIA_URL`,
 ## Verification
 
 ```sh
-python -m unittest discover -s video -v   # includes test_animation.py
-python -m unittest discover -s learning -v
-python video/check_assets.py
-python learning/check_content.py
-cd web
-npm run check
-npm run build
-# With preview backend and Vite running:
-CHROME=/path/to/chrome node e2e/video-real.mjs
-CHROME=/path/to/chrome node e2e/video-flow.mjs
-CHROME=/path/to/chrome npm run e2e
+python3 -m unittest discover -s video -v
+python3 -m unittest discover -s learning -v
+python3 video/check_assets.py
+python3 learning/check_content.py
 ```
 
-Verified on 2026-11-03: 10 video/integration tests and 48 existing learning tests;
-all six files fully decoded with FFmpeg; ffprobe confirmed video/audio format and
-duration; content consistency, frontend sample checks and production build passed.
-The initial replication clip now has four scenes, including the required recap.
-All six clips were re-rendered with the animated guide and word-timed beats;
-sampled frames from every scene were visually inspected.
-
-All three browser scripts above passed in local Chrome. The real-media checks
-verified playback, seeking and captions; the real-interface check completed the
-wrong-answer flow at 1280×900 and emulated 390×844 phone sizes, including refresh.
-The broader interface suite verified errors, retries, persistence, duplicate
-submission handling, event export and visible-time heartbeats. These are local
-checks, not real-phone or deployed-host verification.
-
-Member 3's latest fetched branch was checked separately: 189 tests and its build
-passed, but `App.tsx` only renders a heading and its API configuration differs
-from the real service. It is not an integrated replacement yet. See
-[VERIFICATION.md](VERIFICATION.md) for evidence and remaining work, and
-[CONTENT_REVIEW.md](CONTENT_REVIEW.md) for the human review handoff.
+Verified on 2026-11-04: 15 video tests pass, including the mounted wrong-answer flow over every replication intro
+clip; 51 learning tests and the content check pass; all 35 clips decode fully and are 720×1280 H.264 + AAC,
+18–30 s, with a longest still stretch of 1.7–2.6 s. Every intro and follow-up request from `/topics` and the packets
+(19 intro, 16 follow-up) returns a ready clip in preview mode. Frames from every clip were inspected.
+Not yet done: Member 3's real-phone check, product-owner sign-off and the content review.

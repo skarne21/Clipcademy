@@ -1,0 +1,111 @@
+{
+  "topic_id": "translation",
+  "objective_id": "codon_pairing_and_ribosome_sites",
+  "variant_id": "sites_followup_2",
+  "format": "vertical",
+  "teaching_goal": "Explain the job of each ribosome site",
+  "source_refs": [
+    "L22-p1",
+    "L22-p2"
+  ],
+  "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L22-p1 and L22-p2: the A, P and E site roles.",
+    "analogy": "A snapshot of a relay race.",
+    "new_term": "none new (follow-up)"
+  },
+  "scenes": [
+    {
+      "diagram": "translation",
+      "title": "What is each site doing right now?",
+      "narration": "Let's freeze the ribosome mid-step. Look at the A site. A new tRNA just came in with its amino acid. Now the P site. Its tRNA holds the growing chain, and the peptide bond forms here. Now the E site. This tRNA is empty, and it's on its way out. Like a snapshot of a relay race. In at A, bond at P, out from E. Now try the question again.",
+      "stage": {},
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "enter",
+            "pose:present"
+          ]
+        },
+        {
+          "on": "freeze",
+          "do": [
+            "bond"
+          ]
+        },
+        {
+          "on": "ribosome",
+          "do": [
+            "shift"
+          ]
+        },
+        {
+          "on": "mid-step",
+          "do": [
+            "enter"
+          ]
+        },
+        {
+          "on": "look",
+          "do": [
+            "point:a_site",
+            "pulse:a_site",
+            "card:A: new tRNA in"
+          ]
+        },
+        {
+          "on": "p",
+          "do": [
+            "point:p_site",
+            "pulse:p_site"
+          ]
+        },
+        {
+          "on": "holds",
+          "do": [
+            "pulse:chain"
+          ]
+        },
+        {
+          "on": "bond",
+          "do": [
+            "bond",
+            "card:P: peptide bond"
+          ]
+        },
+        {
+          "on": "e",
+          "do": [
+            "point:e_site",
+            "pulse:e_site"
+          ]
+        },
+        {
+          "on": "empty",
+          "do": [
+            "card:E: empty tRNA out"
+          ]
+        },
+        {
+          "on": "out",
+          "do": [
+            "exit"
+          ]
+        },
+        {
+          "on": "relay",
+          "do": [
+            "pose:present"
+          ]
+        },
+        {
+          "on": "again",
+          "do": [
+            "pose:thumbs"
+          ]
+        }
+      ]
+    }
+  ]
+}

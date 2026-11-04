@@ -1,0 +1,19 @@
+{
+  "video_file": "translation.sites_followup.9b1b9fee40306bd7.mp4",
+  "captions_file": "translation.sites_followup.9b1b9fee40306bd7.vtt",
+  "transcript": "Follow one tRNA all the way through. It enters at the A site. Its anticodon matches, so it stays. A peptide bond forms at the P site. Then our tRNA moves to the P site. Another tRNA comes in, and the chain is handed over. Now our tRNA moves to the E site, empty. Then it leaves. A, then P, then E, like stops on a train line. Now try the question again.",
+  "source_refs": [
+    "L22-p1",
+    "L22-p2"
+  ],
+  "duration_seconds": 25.042,
+  "width": 720,
+  "height": 1280,
+  "fps": 24,
+  "fingerprint": "9b1b9fee40306bd7",
+  "review_status": "pending",
+  "narration": "synthetic: ElevenLabs eleven_multilingual_v2, voice Liam (ElevenLabs premade)",
+  "visuals": "Remotion 4.0.537, Clipcademy stick-figure template",
+  "longest_still_seconds": 2.39,
+  "sha256": "b3b79c59833843fe20871e595dc4ed8265fb18f2d6805ffea89708a6e66c9ee4"
+}

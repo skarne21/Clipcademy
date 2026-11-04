@@ -1,5 +1,0 @@
-Here is a bare DNA template. DNA polymerase cannot begin a complementary strand from scratch. It needs an existing complementary start with a three prime end that it can extend.
-
-Primase supplies that start. It builds a short RNA primer complementary to the template. Unlike DNA polymerase, primase can begin on a single stranded template without an existing complementary strand.
-
-Now DNA polymerase adds DNA nucleotides to the primer's three prime end. The strand grows five prime to three prime. Primase makes the start; polymerase extends it. The template by itself was not that start.

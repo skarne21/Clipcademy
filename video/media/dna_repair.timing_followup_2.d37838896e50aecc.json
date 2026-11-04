@@ -1,0 +1,18 @@
+{
+  "video_file": "dna_repair.timing_followup_2.d37838896e50aecc.mp4",
+  "captions_file": "dna_repair.timing_followup_2.d37838896e50aecc.vtt",
+  "transcript": "Picture one round of copying as a timeline. While copying happens, DNA polymerase proofreads. It fixes a wrong base right away. Now copying is done. After that, mismatch repair proteins scan the finished DNA. They fix wrong bases they find. It's like fixing typos as you type, then rereading the essay after. Proofreading is during. Mismatch repair is after. Now try the question again.",
+  "source_refs": [
+    "L20-p1"
+  ],
+  "duration_seconds": 27.417,
+  "width": 720,
+  "height": 1280,
+  "fps": 24,
+  "fingerprint": "d37838896e50aecc",
+  "review_status": "pending",
+  "narration": "synthetic: ElevenLabs eleven_multilingual_v2, voice Liam (ElevenLabs premade)",
+  "visuals": "Remotion 4.0.537, Clipcademy stick-figure template",
+  "longest_still_seconds": 2.05,
+  "sha256": "0e9a9ad3d88c9bb41157517429b1391925f746c97564f9cc19ea4e1416ad5aac"
+}

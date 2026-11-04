@@ -1,0 +1,18 @@
+{
+  "video_file": "transcription.template_followup.9a68034f7f407369.mp4",
+  "captions_file": "transcription.template_followup.9a68034f7f407369.vtt",
+  "transcript": "Let's sort out the two strands. On the bottom is the template strand. RNA polymerase reads this one. Watch the RNA build up to match it. On top is the coding strand. It is not read, and it is not transcribed. Think of tracing paper laid over just one side. Template strand: read. Coding strand: not read. Now try the question again.",
+  "source_refs": [
+    "L21-p1"
+  ],
+  "duration_seconds": 24.917,
+  "width": 720,
+  "height": 1280,
+  "fps": 24,
+  "fingerprint": "9a68034f7f407369",
+  "review_status": "pending",
+  "narration": "synthetic: ElevenLabs eleven_multilingual_v2, voice Liam (ElevenLabs premade)",
+  "visuals": "Remotion 4.0.537, Clipcademy stick-figure template",
+  "longest_still_seconds": 2.1,
+  "sha256": "71ba9b263aa65938a6548f49123b14cf47b700a8b5bc4d206b28aed878a30f9e"
+}

@@ -1,0 +1,18 @@
+{
+  "video_file": "transcription.promoter_followup_2.a812fef56f311113.mp4",
+  "captions_file": "transcription.promoter_followup_2.a812fef56f311113.vtt",
+  "transcript": "Can RNA polymerase start anywhere on a gene? Let's try the middle. Nothing happens. Transcription can't begin at a random spot. Now try the promoter. Polymerase makes first contact here. Proteins open the helix. Now it can read the template strand. The promoter is the start line. Now try the question again.",
+  "source_refs": [
+    "L21-p1"
+  ],
+  "duration_seconds": 20.208,
+  "width": 720,
+  "height": 1280,
+  "fps": 24,
+  "fingerprint": "a812fef56f311113",
+  "review_status": "pending",
+  "narration": "synthetic: ElevenLabs eleven_multilingual_v2, voice Liam (ElevenLabs premade)",
+  "visuals": "Remotion 4.0.537, Clipcademy stick-figure template",
+  "longest_still_seconds": 2.46,
+  "sha256": "2cc1630909aa9a0184d938a60dc1706941bd47e2e0a3d45f3114ee7fec31b6a3"
+}

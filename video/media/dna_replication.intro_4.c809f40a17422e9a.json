@@ -1,0 +1,19 @@
+{
+  "video_file": "dna_replication.intro_4.c809f40a17422e9a.mp4",
+  "captions_file": "dna_replication.intro_4.c809f40a17422e9a.vtt",
+  "transcript": "So who starts the new strand? Meet primase. Primase can start from scratch. It lays down a short piece of RNA called a primer. Like the first brick the rest stack on. Now DNA polymerase has a 3-prime end. It adds DNA right onto the primer. Primase makes a short RNA primer, and DNA polymerase builds onto it. Swipe for the recap.",
+  "source_refs": [
+    "L19-p1",
+    "L19-p2"
+  ],
+  "duration_seconds": 23.208,
+  "width": 720,
+  "height": 1280,
+  "fps": 24,
+  "fingerprint": "c809f40a17422e9a",
+  "review_status": "pending",
+  "narration": "synthetic: ElevenLabs eleven_multilingual_v2, voice Liam (ElevenLabs premade)",
+  "visuals": "Remotion 4.0.537, Clipcademy stick-figure template",
+  "longest_still_seconds": 2.51,
+  "sha256": "29e5d0849e87b78b9ea3a9279b084f80977267d77b3d3eb19886c7e968e9f8e5"
+}

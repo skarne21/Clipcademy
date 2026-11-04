@@ -1,3 +1,5 @@
+> **Superseded 2026-11-04:** this file records the landscape MVP clips, which have been replaced by the 35 vertical clips. Current verification is in [README.md](README.md#verification).
+
 # Member 1 requirement verification
 
 Checked 2026-11-03 against [Team_Spec.md](../Context/Team_Spec.md).

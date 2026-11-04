@@ -1,0 +1,19 @@
+{
+  "video_file": "dna_replication.intro_5.8fc4c94ec0e10fac.mp4",
+  "captions_file": "dna_replication.intro_5.8fc4c94ec0e10fac.vtt",
+  "transcript": "Quick recap. Two rules. Rule one: new pieces only join the 3-prime end. So new DNA grows 5-prime to 3-prime. Rule two: DNA polymerase can't start from nothing. A short RNA primer comes first. Like a first domino that starts the chain. New DNA grows 5-prime to 3-prime, and it needs a primer to start. Let's see what you remember.",
+  "source_refs": [
+    "L19-p1",
+    "L19-p2"
+  ],
+  "duration_seconds": 23.667,
+  "width": 720,
+  "height": 1280,
+  "fps": 24,
+  "fingerprint": "8fc4c94ec0e10fac",
+  "review_status": "pending",
+  "narration": "synthetic: ElevenLabs eleven_multilingual_v2, voice Liam (ElevenLabs premade)",
+  "visuals": "Remotion 4.0.537, Clipcademy stick-figure template",
+  "longest_still_seconds": 2.4,
+  "sha256": "a5c7652b8287186007867a319301d6c0417f770a62950f26aaeecddf94f45fcc"
+}

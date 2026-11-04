@@ -1,0 +1,1 @@
+Two fixes, two different times. First, during copying. DNA polymerase adds a wrong base. It catches it and swaps it out right away. That's proofreading. Now copying is finished. Repair proteins scan the new DNA. They find a mismatch, cut it out, and replace it. That's mismatch repair. Like checking as you write, then rereading after. Now try the question again.

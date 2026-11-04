@@ -1,0 +1,18 @@
+{
+  "video_file": "dna_replication.direction_followup_2.8917afbbc7065b3d.mp4",
+  "captions_file": "dna_replication.direction_followup_2.8917afbbc7065b3d.vtt",
+  "transcript": "Let's test the wrong idea. Can a new piece join the 5-prime end? Try it. Nope. It bounces right off. Now try the 3-prime end. Click. It fits. Like a puzzle piece that only fits on one side. Pieces always join the 3-prime end, so DNA grows 5-prime to 3-prime. Now try the question again.",
+  "source_refs": [
+    "L19-p1"
+  ],
+  "duration_seconds": 22.0,
+  "width": 720,
+  "height": 1280,
+  "fps": 24,
+  "fingerprint": "8917afbbc7065b3d",
+  "review_status": "pending",
+  "narration": "synthetic: ElevenLabs eleven_multilingual_v2, voice Liam (ElevenLabs premade)",
+  "visuals": "Remotion 4.0.537, Clipcademy stick-figure template",
+  "longest_still_seconds": 2.24,
+  "sha256": "06c5ebe9d9e9c187743091f30d36e45dd69add7d8527d6f7897499707366c79f"
+}

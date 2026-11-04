@@ -1,0 +1,91 @@
+{
+  "topic_id": "translation",
+  "objective_id": "codon_pairing_and_ribosome_sites",
+  "variant_id": "intro_3",
+  "format": "vertical",
+  "teaching_goal": "The peptide bond forms at the P site.",
+  "source_refs": [
+    "L22-p2"
+  ],
+  "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L22-p2: P is the site where peptide bond formation takes place, between the amino acids held by the tRNAs in the P and A sites.",
+    "analogy": "Adding a bead to a necklace.",
+    "new_term": "peptide bond"
+  },
+  "scenes": [
+    {
+      "diagram": "translation",
+      "title": "Where do amino acids link up?",
+      "narration": "Where do amino acids get linked together? At the P site. The tRNA in the P site holds the chain. A new tRNA waits in the A site with its amino acid. Snap. A peptide bond links the two amino acids. That bond forms at the P site. Like adding a bead to a necklace. The peptide bond forms at the P site. Swipe.",
+      "stage": {},
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "pose:think",
+            "pulse:p_site"
+          ]
+        },
+        {
+          "on": "p",
+          "do": [
+            "point:p_site",
+            "pulse:p_site"
+          ]
+        },
+        {
+          "on": "holds",
+          "do": [
+            "pulse:chain"
+          ]
+        },
+        {
+          "on": "waits",
+          "do": [
+            "enter"
+          ]
+        },
+        {
+          "on": "snap",
+          "do": [
+            "bond",
+            "zoom:peptide"
+          ]
+        },
+        {
+          "on": "peptide",
+          "do": [
+            "card:Peptide bond at P"
+          ]
+        },
+        {
+          "on": "forms",
+          "do": [
+            "pulse:p_site"
+          ]
+        },
+        {
+          "on": "necklace",
+          "do": [
+            "zoom_out",
+            "pose:present"
+          ]
+        },
+        {
+          "on": "peptide",
+          "do": [
+            "pulse:p_site"
+          ]
+        },
+        {
+          "on": "swipe",
+          "do": [
+            "pose:thumbs",
+            "pulse:chain"
+          ]
+        }
+      ]
+    }
+  ]
+}

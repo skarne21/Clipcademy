@@ -1,0 +1,106 @@
+{
+  "topic_id": "dna_repair",
+  "objective_id": "error_correction",
+  "variant_id": "uv_followup_2",
+  "format": "vertical",
+  "teaching_goal": "Explain what UV light does to DNA and how it is repaired",
+  "source_refs": [
+    "L20-p1"
+  ],
+  "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L20-p1: the four numbered repair steps (recognize, cut and remove, replace, form phosphodiester linkages).",
+    "analogy": "A repair crew working down a checklist.",
+    "new_term": "none new (follow-up)"
+  },
+  "scenes": [
+    {
+      "diagram": "repair",
+      "title": "Four steps to fix UV damage",
+      "narration": "UV light has bonded a C and a T, making a bulge. Fixing it takes four steps. Let's check them off. One: recognize the damage. Two: cut the backbone on both sides and remove those bases. Three: replace them with the correct bases. Four: reseal the backbone. Damage gone. Like a repair crew working down a checklist. Now try the question again.",
+      "stage": {
+        "bottom": 9,
+        "damaged": true,
+        "section": [
+          4,
+          7
+        ]
+      },
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "pose:present",
+            "pulse:damage"
+          ]
+        },
+        {
+          "on": "four",
+          "do": [
+            "pose:think"
+          ]
+        },
+        {
+          "on": "check",
+          "do": [
+            "pulse:section"
+          ]
+        },
+        {
+          "on": "one",
+          "do": [
+            "step:Recognize",
+            "scan",
+            "point:protein"
+          ]
+        },
+        {
+          "on": "two",
+          "do": [
+            "step:Cut out",
+            "cut"
+          ]
+        },
+        {
+          "on": "remove",
+          "do": [
+            "remove"
+          ]
+        },
+        {
+          "on": "three",
+          "do": [
+            "step:Replace",
+            "replace"
+          ]
+        },
+        {
+          "on": "four",
+          "do": [
+            "step:Reseal",
+            "reseal"
+          ]
+        },
+        {
+          "on": "gone",
+          "do": [
+            "pose:thumbs",
+            "pulse:bottom"
+          ]
+        },
+        {
+          "on": "checklist",
+          "do": [
+            "pose:present"
+          ]
+        },
+        {
+          "on": "again",
+          "do": [
+            "pulse:bottom"
+          ]
+        }
+      ]
+    }
+  ]
+}

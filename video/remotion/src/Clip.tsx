@@ -1,9 +1,14 @@
 import React from 'react';
 import {AbsoluteFill, Audio, staticFile, useCurrentFrame} from 'remotion';
 import {pop} from './anim';
-import {StrandScene} from './Board';
+import {Pulses, Scene, camera} from './scenes/common';
+import {repairScene} from './scenes/Repair';
+import {strandScene} from './scenes/Strand';
+import {timelineScene} from './scenes/Timeline';
+import {transcriptionScene} from './scenes/Transcription';
+import {translationScene} from './scenes/Translation';
 import {Guide, guideEvents} from './Guide';
-import {C, FONT, SAFE} from './theme';
+import {BOARD, C, FONT, SAFE} from './theme';
 import {ClipProps, Point, Word} from './types';
 
 // TikTok-style caption groups: 1-3 words, never across a sentence or clause end.
@@ -35,8 +40,9 @@ const Cards: React.FC<{t: number; cards: {t: number; text: string}[]}> = ({t, ca
   <g>
     {cards.filter((c) => t >= c.t).map((c, i) => {
       const k = pop((t - c.t) / 0.4);
-      const size = c.text.length > 18 ? 25 : 29;
-      const w = Math.min(350, c.text.length * size * 0.56 + 78);
+      // Fredoka 600 averages ~0.53 em per character: shrink the text until it fits a 350 px pill.
+      const size = Math.max(16, Math.min(29, Math.floor((350 - 78) / (c.text.length * 0.53))));
+      const w = Math.min(350, c.text.length * size * 0.53 + 78);
       const x = 720 - SAFE.right - 10 - w, y = 598 + 68 * i;
       return (
         <g key={i} transform={`translate(${x + w} ${y + 27}) scale(${k}) translate(${-(x + w)} ${-(y + 27)})`}>
@@ -51,18 +57,60 @@ const Cards: React.FC<{t: number; cards: {t: number; text: string}[]}> = ({t, ca
   </g>
 );
 
+const SCENES: Record<ClipProps['diagram'], (p: ClipProps) => Scene> = {
+  strand: strandScene, repair: repairScene, transcription: transcriptionScene, translation: translationScene, timeline: timelineScene,
+};
+
+// A numbered checklist that ticks off, two per row, beside the guide.
+const Steps: React.FC<{t: number; steps: {t: number; text: string}[]}> = ({t, steps}) => (
+  <g>
+    {steps.filter((st) => t >= st.t).map((st, i) => {
+      const k = pop((t - st.t) / 0.35);
+      const x = 250 + (i % 2) * 172, y = 600 + Math.floor(i / 2) * 72;
+      return (
+        <g key={i} transform={`translate(${x + 80} ${y + 28}) scale(${k}) translate(${-(x + 80)} ${-(y + 28)})`}>
+          <rect x={x} y={y} width={160} height={56} rx={28} fill="#FFFFFF" stroke={C.ink} strokeWidth={4} />
+          <circle cx={x + 28} cy={y + 28} r={16} fill={C.dna} stroke={C.ink} strokeWidth={3} />
+          <text x={x + 28} y={y + 35} fontSize={19} textAnchor="middle" fill="#FFFFFF" style={{fontFamily: FONT, fontWeight: 700}}>{i + 1}</text>
+          <text x={x + 52} y={y + 36} fontSize={st.text.length > 8 ? 20 : 23} fill={C.ink} style={{fontFamily: FONT, fontWeight: 600}}>{st.text}</text>
+        </g>
+      );
+    })}
+  </g>
+);
+
+const BoardFrame: React.FC<{t: number; scene: Scene; props: ClipProps}> = ({t, scene, props}) => {
+  const {s, f, c} = camera(props.events, t, scene.targets);
+  return (
+    <g transform={`translate(${BOARD.x} ${BOARD.y})`}>
+      <defs><clipPath id="board"><rect width={BOARD.w} height={BOARD.h} rx={28} /></clipPath></defs>
+      <rect x={7} y={9} width={BOARD.w} height={BOARD.h} rx={28} fill={C.boardShadow} />
+      <rect width={BOARD.w} height={BOARD.h} rx={28} fill={C.board} />
+      <g clipPath="url(#board)">
+        <g transform={`translate(${c[0]} ${c[1]}) scale(${s}) translate(${-f[0]} ${-f[1]})`}>
+          {scene.content(t)}
+          <Pulses events={props.events} t={t} targets={scene.targets(t)} />
+        </g>
+      </g>
+      <rect width={BOARD.w} height={BOARD.h} rx={28} fill="none" stroke={C.ink} strokeWidth={6} />
+    </g>
+  );
+};
+
 export const Clip: React.FC<ClipProps> = (props) => {
   const frame = useCurrentFrame();
   const t = frame / props.fps;
-  const scene = new StrandScene(props);
+  const scene = SCENES[props.diagram](props);
   const duration = props.durationInFrames / props.fps;
   const targets = scene.targets(t);
+  const cam = camera(props.events, t, scene.targets);
   const targetAt = (name: string): Point => {
-    const tg = targets[name] ?? {x: 283, y: 147};
-    return scene.toScreen(t, [tg.x, tg.y]);
+    const tg = targets[name] ?? {x: BOARD.w / 2, y: BOARD.h / 2};
+    return [BOARD.x + cam.c[0] + (tg.x - cam.f[0]) * cam.s, BOARD.y + cam.c[1] + (tg.y - cam.f[1]) * cam.s];
   };
   const energy = props.energy[Math.min(frame, props.energy.length - 1)] ?? 0;
   const cards = props.events.filter((e) => e.action === 'card').map((e) => ({t: e.t, text: e.arg}));
+  const steps = props.events.filter((e) => e.action === 'step').map((e) => ({t: e.t, text: e.arg}));
   const chunks = captionChunks(props.words);
   let chunk = chunks[0] ?? [];
   for (const c of chunks) if (c[0].start <= t) chunk = c;
@@ -79,8 +127,9 @@ export const Clip: React.FC<ClipProps> = (props) => {
         {[60, 250, 430, 560].map((x, i) => (
           <path key={i} d={`M ${x} 832 q 6 -14 12 0 q 6 -14 12 0`} fill="none" stroke={C.groundEdge} strokeWidth={4} strokeLinecap="round" />
         ))}
-        {scene.render(t)}
+        <BoardFrame t={t} scene={scene} props={props} />
         <Cards t={t} cards={cards} />
+        <Steps t={t} steps={steps} />
         <Guide t={t} events={guideEvents(props.events, duration)} energy={energy} targetAt={targetAt} />
       </svg>
       <div style={{position: 'absolute', left: 24, top: SAFE.top + 12, width: 720 - SAFE.right - 40, fontSize: titleSize,

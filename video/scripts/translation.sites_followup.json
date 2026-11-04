@@ -1,0 +1,104 @@
+{
+  "topic_id": "translation",
+  "objective_id": "codon_pairing_and_ribosome_sites",
+  "variant_id": "sites_followup",
+  "format": "vertical",
+  "teaching_goal": "Explain the job of each ribosome site",
+  "source_refs": [
+    "L22-p1",
+    "L22-p2"
+  ],
+  "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L22-p1 and L22-p2: tRNAs enter at A, the peptide bond forms at P, uncharged tRNAs exit from E.",
+    "analogy": "Stops on a train line.",
+    "new_term": "none new (follow-up)"
+  },
+  "scenes": [
+    {
+      "diagram": "translation",
+      "title": "Follow one tRNA through the ribosome",
+      "narration": "Follow one tRNA all the way through. It enters at the A site. Its anticodon matches, so it stays. A peptide bond forms at the P site. Then our tRNA moves to the P site. Another tRNA comes in, and the chain is handed over. Now our tRNA moves to the E site, empty. Then it leaves. A, then P, then E, like stops on a train line. Now try the question again.",
+      "stage": {},
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "pose:present",
+            "pulse:a_site"
+          ]
+        },
+        {
+          "on": "enters",
+          "do": [
+            "enter",
+            "point:a_site"
+          ]
+        },
+        {
+          "on": "matches",
+          "do": [
+            "pair"
+          ]
+        },
+        {
+          "on": "peptide",
+          "do": [
+            "bond"
+          ]
+        },
+        {
+          "on": "moves",
+          "do": [
+            "shift",
+            "point:p_site"
+          ]
+        },
+        {
+          "on": "another",
+          "do": [
+            "exit",
+            "enter"
+          ]
+        },
+        {
+          "on": "handed",
+          "do": [
+            "bond"
+          ]
+        },
+        {
+          "on": "now",
+          "do": [
+            "shift",
+            "point:e_site"
+          ]
+        },
+        {
+          "on": "leaves",
+          "do": [
+            "exit"
+          ]
+        },
+        {
+          "on": "a",
+          "do": [
+            "card:A → P → E"
+          ]
+        },
+        {
+          "on": "train",
+          "do": [
+            "pose:present"
+          ]
+        },
+        {
+          "on": "again",
+          "do": [
+            "pose:thumbs"
+          ]
+        }
+      ]
+    }
+  ]
+}

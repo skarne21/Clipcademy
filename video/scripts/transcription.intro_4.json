@@ -1,0 +1,86 @@
+{
+  "topic_id": "transcription",
+  "objective_id": "template_strand_and_promoter",
+  "variant_id": "intro_4",
+  "format": "vertical",
+  "teaching_goal": "RNA polymerase starts at the promoter and reads the template strand.",
+  "source_refs": [
+    "L21-p1"
+  ],
+  "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L21-p1: initial contact at the promoter; proteins open the promoter; RNA polymerase reads the template strand.",
+    "analogy": "A train leaving the station on one track.",
+    "new_term": "none new (recap)"
+  },
+  "scenes": [
+    {
+      "diagram": "transcription",
+      "title": "Recap: how transcription starts",
+      "narration": "Quick recap. Step one: RNA polymerase makes contact at the promoter. Step two: proteins open up the DNA there. Step three: polymerase reads the template strand and builds matching RNA. The coding strand is not read. Like a train leaving the station on one track. RNA polymerase starts at the promoter and reads the template strand. Let's see what you remember.",
+      "stage": {},
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "pose:present",
+            "pulse:promoter"
+          ]
+        },
+        {
+          "on": "one",
+          "do": [
+            "polymerase",
+            "step:Promoter"
+          ]
+        },
+        {
+          "on": "two",
+          "do": [
+            "open",
+            "step:Open"
+          ]
+        },
+        {
+          "on": "three",
+          "do": [
+            "step:Read",
+            "extend",
+            "point:rna_end"
+          ]
+        },
+        {
+          "on": "coding",
+          "do": [
+            "pulse:coding",
+            "pose:wag"
+          ]
+        },
+        {
+          "on": "train",
+          "do": [
+            "pose:present"
+          ]
+        },
+        {
+          "on": "starts",
+          "do": [
+            "pulse:promoter"
+          ]
+        },
+        {
+          "on": "reads",
+          "do": [
+            "pulse:template"
+          ]
+        },
+        {
+          "on": "remember",
+          "do": [
+            "pose:thumbs"
+          ]
+        }
+      ]
+    }
+  ]
+}

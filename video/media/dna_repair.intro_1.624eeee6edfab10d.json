@@ -1,0 +1,18 @@
+{
+  "video_file": "dna_repair.intro_1.624eeee6edfab10d.mp4",
+  "captions_file": "dna_repair.intro_1.624eeee6edfab10d.vtt",
+  "transcript": "DNA polymerase can catch its own typos. Watch it copy. Oops, a wrong base. Polymerase backs up. It snips the wrong base off the 3-prime end. Then it adds the right one. Like hitting backspace while you type. This is called proofreading. Proofreading fixes a wrong base right away, while DNA is being copied. What about mistakes found later? Swipe.",
+  "source_refs": [
+    "L20-p1"
+  ],
+  "duration_seconds": 24.125,
+  "width": 720,
+  "height": 1280,
+  "fps": 24,
+  "fingerprint": "624eeee6edfab10d",
+  "review_status": "pending",
+  "narration": "synthetic: ElevenLabs eleven_multilingual_v2, voice Liam (ElevenLabs premade)",
+  "visuals": "Remotion 4.0.537, Clipcademy stick-figure template",
+  "longest_still_seconds": 2.17,
+  "sha256": "2ceedbcef8249430b8edb703c036eff4d9e361ea14115cf67053048b92530dbb"
+}

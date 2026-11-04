@@ -9,13 +9,15 @@ export type ClipProps = {
   audio: string; // path under public/
   title: string;
   sources: string;
-  diagram: 'strand';
-  stage: {strand: number; slots: number};
+  diagram: 'strand' | 'repair' | 'transcription' | 'translation' | 'timeline';
+  stage: Record<string, number | boolean | number[]>;
   words: Word[];
   events: Beat[];
-  attach: number[]; // times a nucleotide clicks onto the 3' end
+  pieces: Piece[]; // strand pieces with the time each one joins (and leaves, if removed)
   energy: number[]; // narration loudness per frame, 0..1
 };
 
 export type Point = [number, number];
 export type Target = {x: number; y: number; rx: number; ry: number};
+
+export type Piece = {slot: number; kind: string; t: number; until?: number};

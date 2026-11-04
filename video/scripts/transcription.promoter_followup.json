@@ -1,0 +1,84 @@
+{
+  "topic_id": "transcription",
+  "objective_id": "template_strand_and_promoter",
+  "variant_id": "promoter_followup",
+  "format": "vertical",
+  "teaching_goal": "Explain the promoter's role in starting transcription",
+  "source_refs": [
+    "L21-p1"
+  ],
+  "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L21-p1: initial proteins open the promoter and unwind the helix; RNA polymerase makes initial contact there; the promoter sets the direction.",
+    "analogy": "A starting gate that points the race one way.",
+    "new_term": "none new (follow-up)"
+  },
+  "scenes": [
+    {
+      "diagram": "transcription",
+      "title": "What does the promoter do?",
+      "narration": "The promoter is where transcription begins. RNA polymerase makes first contact right here. Then proteins open the promoter and unwind the double helix. Now the strands are apart. The promoter also sets the direction of reading. So the RNA builds this way. Like a starting gate that points the race one way. Now try the question again.",
+      "stage": {},
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "pose:present",
+            "pulse:promoter"
+          ]
+        },
+        {
+          "on": "contact",
+          "do": [
+            "polymerase",
+            "point:promoter"
+          ]
+        },
+        {
+          "on": "open",
+          "do": [
+            "open"
+          ]
+        },
+        {
+          "on": "unwind",
+          "do": [
+            "pulse:template"
+          ]
+        },
+        {
+          "on": "apart",
+          "do": [
+            "pulse:coding"
+          ]
+        },
+        {
+          "on": "direction",
+          "do": [
+            "arrow",
+            "card:Start + direction"
+          ]
+        },
+        {
+          "on": "builds",
+          "do": [
+            "extend"
+          ]
+        },
+        {
+          "on": "gate",
+          "do": [
+            "pose:present"
+          ]
+        },
+        {
+          "on": "again",
+          "do": [
+            "pose:thumbs",
+            "pulse:rna"
+          ]
+        }
+      ]
+    }
+  ]
+}

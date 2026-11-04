@@ -1,1 +1,1 @@
-{"fps":30,"durationInFrames":90,"audio":"silence.wav","title":"Sample","sources":"Sources","diagram":"strand","stage":{"strand":3,"slots":11},"words":[{"text":"Sample","start":0.2,"end":0.8}],"events":[],"attach":[],"energy":[]}
+{"fps": 30, "durationInFrames": 90, "audio": "silence.wav", "title": "Sample", "sources": "Sources", "diagram": "strand", "stage": {"strand": 3, "slots": 11}, "words": [{"text": "Sample", "start": 0.2, "end": 0.8}], "events": [], "energy": [], "pieces": []}

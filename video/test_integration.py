@@ -35,7 +35,7 @@ class MountedVideoTest(unittest.TestCase):
                 if result['next_video_request']:
                     clip=call('POST','/video-jobs',result['next_video_request'])
                     self.assertEqual(clip['variant_id'],'primer_followup');self.assertEqual(clip['status'],'ready')
-                    self.assertIn('Primase',clip['transcript'])
+                    self.assertIn('primase',clip['transcript'].lower())
             self.assertEqual(result['action'],'complete')
 
 if __name__=='__main__':unittest.main()

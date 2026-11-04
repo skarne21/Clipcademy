@@ -2,75 +2,80 @@
   "topic_id": "dna_repair",
   "objective_id": "error_correction",
   "variant_id": "timing_followup",
+  "format": "vertical",
   "teaching_goal": "Explain when proofreading and mismatch repair each happen",
   "source_refs": [
     "L20-p1"
   ],
   "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L20-p1: proofreading by DNA polymerase during copying; mismatch repair after replication is complete.",
+    "analogy": "Checking as you write, then rereading after.",
+    "new_term": "none new (follow-up)"
+  },
   "scenes": [
     {
-      "diagram": "proof",
-      "title": "During copying: proofreading",
-      "narration": "Use timing to distinguish these repair processes. During copying, DNA polymerase can catch a wrong base it just added. Its exonuclease activity removes that incorrect base from the three prime end.",
+      "diagram": "repair",
+      "title": "When does each fix happen?",
+      "narration": "Two fixes, two different times. First, during copying. DNA polymerase adds a wrong base. It catches it and swaps it out right away. That's proofreading. Now copying is finished. Repair proteins scan the new DNA. They find a mismatch, cut it out, and replace it. That's mismatch repair. Like checking as you write, then rereading after. Now try the question again.",
       "stage": {
-        "bottom": 3,
-        "polymerase": true
+        "bottom": 2,
+        "copying": true,
+        "wrong": 6,
+        "section": [
+          5,
+          7
+        ]
       },
       "beats": [
         {
           "on": "^",
           "do": [
-            "pose:present"
+            "pose:present",
+            "polymerase"
           ]
         },
         {
           "on": "during",
           "do": [
             "extend",
-            "point:polymerase"
+            "point:polymerase",
+            "card:During: proofreading"
           ]
         },
         {
           "on": "wrong",
           "do": [
             "misadd",
-            "pulse:damage",
             "pose:surprised"
           ]
         },
         {
-          "on": "removes",
+          "on": "catches",
           "do": [
-            "excise",
-            "card:Wrong base removed from the growing 3′ end"
+            "excise"
           ]
         },
         {
-          "on": "three prime",
+          "on": "swaps",
           "do": [
-            "pulse:three_end",
-            "point:three_end"
-          ]
-        }
-      ]
-    },
-    {
-      "diagram": "mismatch",
-      "title": "After copying: mismatch repair",
-      "narration": "After replication is complete, mismatch repair proteins scan the new double helix. When they find a mismatch, enzymes remove the affected section and replace it with the correct DNA nucleotides.",
-      "stage": {
-        "bottom": 11,
-        "wrong": 5
-      },
-      "beats": [
-        {
-          "on": "after",
-          "do": [
-            "pose:present"
+            "fix"
           ]
         },
         {
-          "on": "proteins",
+          "on": "that's",
+          "do": [
+            "extend"
+          ]
+        },
+        {
+          "on": "finished",
+          "do": [
+            "card:After: mismatch repair"
+          ]
+        },
+        {
+          "on": "scan",
           "do": [
             "scan",
             "point:protein"
@@ -79,75 +84,32 @@
         {
           "on": "find",
           "do": [
-            "found",
-            "pulse:damage"
+            "found"
           ]
         },
         {
-          "on": "remove",
+          "on": "cut",
           "do": [
+            "cut",
             "remove"
           ]
         },
         {
           "on": "replace",
           "do": [
-            "replace",
-            "point:damage"
+            "replace"
           ]
         },
         {
-          "on": "correct",
-          "do": [
-            "card:After replication: find and replace a mismatch"
-          ]
-        }
-      ]
-    },
-    {
-      "diagram": "timing",
-      "title": "Two different times",
-      "narration": "Proofreading is a check during copying by DNA polymerase itself. Mismatch repair is a check after replication. Both correct mistakes, but the timing and the proteins doing the checking distinguish the two processes.",
-      "stage": {},
-      "beats": [
-        {
-          "on": "^",
-          "do": [
-            "timeline"
-          ]
-        },
-        {
-          "on": "proofreading",
-          "do": [
-            "left",
-            "point:left_panel"
-          ]
-        },
-        {
-          "on": "mismatch",
-          "do": [
-            "right",
-            "point:right_panel"
-          ]
-        },
-        {
-          "on": "both",
+          "on": "rereading",
           "do": [
             "pose:present"
           ]
         },
         {
-          "on": "timing",
+          "on": "again",
           "do": [
-            "pulse:left_time",
-            "pulse:right_time"
-          ]
-        },
-        {
-          "on": "proteins",
-          "do": [
-            "pulse:left_protein",
-            "pulse:right_protein"
+            "pose:thumbs"
           ]
         }
       ]

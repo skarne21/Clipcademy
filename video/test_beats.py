@@ -8,7 +8,7 @@ HERE = Path(__file__).resolve().parent
 _spec = importlib.util.spec_from_file_location('clipcademy_beats', HERE / 'beats.py')
 beats = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(beats)
-WPM = 160  # notes.md: 150-170 words a minute
+WPM = 150  # notes.md: 150-170 words a minute; check at the slow end
 
 
 def estimated(text):
@@ -60,7 +60,7 @@ class PacingTest(unittest.TestCase):
 
     def test_sounds_open_with_the_series_sting(self):
         scene = {'diagram': 'strand', 'beats': [{'on': '^', 'do': ['extend']}]}
-        words, duration = estimated('one two three four five six seven')
+        words, duration = estimated('one two three four five six seven eight nine ten')
         cues = beats.sound_cues(beats.plan(scene, words, duration))
         self.assertEqual(cues[0], (0.0, 'sting'))
         self.assertIn('click', {kind for _, kind in cues})

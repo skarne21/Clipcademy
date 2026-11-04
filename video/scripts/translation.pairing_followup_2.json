@@ -1,0 +1,101 @@
+{
+  "topic_id": "translation",
+  "objective_id": "codon_pairing_and_ribosome_sites",
+  "variant_id": "pairing_followup_2",
+  "format": "vertical",
+  "teaching_goal": "Explain how anticodons pair with codons",
+  "source_refs": [
+    "L22-p1"
+  ],
+  "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L22-p1: the anticodon is complementary to a codon; for each amino acid there is a different tRNA with a different anticodon.",
+    "analogy": "A lock that only opens for one key.",
+    "new_term": "none new (follow-up)"
+  },
+  "scenes": [
+    {
+      "diagram": "translation",
+      "title": "Which tRNA fits this codon?",
+      "narration": "This codon needs a partner. Three tRNAs try out. The first one's anticodon doesn't match. It leaves. The second doesn't match either. Gone. The third has the complementary anticodon. It pairs and stays. Each tRNA has its own anticodon. Like a lock that only opens for one key. Now try the question again.",
+      "stage": {},
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "pose:think",
+            "pulse:codon"
+          ]
+        },
+        {
+          "on": "three",
+          "do": [
+            "point:codon"
+          ]
+        },
+        {
+          "on": "first",
+          "do": [
+            "reject:AAA"
+          ]
+        },
+        {
+          "on": "leaves",
+          "do": [
+            "pose:wag"
+          ]
+        },
+        {
+          "on": "second",
+          "do": [
+            "reject:UUA"
+          ]
+        },
+        {
+          "on": "gone",
+          "do": [
+            "pose:shrug"
+          ]
+        },
+        {
+          "on": "third",
+          "do": [
+            "enter"
+          ]
+        },
+        {
+          "on": "pairs",
+          "do": [
+            "pair",
+            "zoom:anticodon"
+          ]
+        },
+        {
+          "on": "stays",
+          "do": [
+            "pose:thumbs"
+          ]
+        },
+        {
+          "on": "each",
+          "do": [
+            "zoom_out",
+            "card:Only the match stays"
+          ]
+        },
+        {
+          "on": "lock",
+          "do": [
+            "pose:present"
+          ]
+        },
+        {
+          "on": "again",
+          "do": [
+            "pulse:a_site"
+          ]
+        }
+      ]
+    }
+  ]
+}

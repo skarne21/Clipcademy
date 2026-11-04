@@ -1,0 +1,96 @@
+{
+  "topic_id": "translation",
+  "objective_id": "codon_pairing_and_ribosome_sites",
+  "variant_id": "pairing_followup",
+  "format": "vertical",
+  "teaching_goal": "Explain how anticodons pair with codons",
+  "source_refs": [
+    "L22-p1"
+  ],
+  "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L22-p1: initiation uses a tRNA with anticodon UAC, complementary to the AUG start codon, carrying methionine.",
+    "analogy": "Matching each letter to its partner.",
+    "new_term": "none new (follow-up)"
+  },
+  "scenes": [
+    {
+      "diagram": "translation",
+      "title": "How do anticodons pair?",
+      "narration": "Let's line them up. Here's the codon A-U-G on the mRNA. Here's a tRNA with the anticodon U-A-C. A pairs with U. U pairs with A. G pairs with C. All three match, so they bind. This tRNA carries methionine. Like matching each letter to its partner. Now try the question again.",
+      "stage": {
+        "p_trna": false
+      },
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "pose:present",
+            "pulse:mrna"
+          ]
+        },
+        {
+          "on": "codon",
+          "do": [
+            "zoom:start"
+          ]
+        },
+        {
+          "on": "a-u-g",
+          "do": [
+            "pulse:start"
+          ]
+        },
+        {
+          "on": "anticodon",
+          "do": [
+            "enter:p"
+          ]
+        },
+        {
+          "on": "u-a-c",
+          "do": [
+            "pulse:anticodon"
+          ]
+        },
+        {
+          "on": "pairs",
+          "do": [
+            "pose:present"
+          ]
+        },
+        {
+          "on": "three",
+          "do": [
+            "card:AUG pairs with UAC"
+          ]
+        },
+        {
+          "on": "bind",
+          "do": [
+            "pose:thumbs"
+          ]
+        },
+        {
+          "on": "methionine",
+          "do": [
+            "zoom_out",
+            "pulse:chain"
+          ]
+        },
+        {
+          "on": "partner",
+          "do": [
+            "pose:present"
+          ]
+        },
+        {
+          "on": "again",
+          "do": [
+            "pulse:trna"
+          ]
+        }
+      ]
+    }
+  ]
+}
