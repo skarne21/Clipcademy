@@ -113,12 +113,22 @@ class SpecCases(unittest.TestCase):
     def test_8c_second_primer_cycle_uses_r4(self):
         r = play("q1=B", "q2=B", "r2=C")[-1]
         self.assertEqual((r["action"], r["next_question_id"]), ("review_again", "rep-r4"))
-        self.assertEqual(r["next_video_request"]["variant_id"], "primer_followup")
+        # wrong again on the same idea: the second, differently explained clip (notes.md)
+        self.assertEqual(r["next_video_request"]["variant_id"], "primer_followup_2")
+        self.assertEqual(r["next_video_request"]["source_refs"], PACKETS[OBJ]["variants"]["primer_followup_2"]["source_refs"])
+
+    def test_8g_v1_and_v2_go_with_the_misconception_not_the_cycle(self):
+        # cycle 2 on a misconception not yet explained gets that misconception's first clip
+        rs = play("q1=A", "r1=A", "q2=B")
+        self.assertEqual([r["next_video_request"]["variant_id"] for r in (rs[0], rs[2])], ["direction_followup", "primer_followup"])
+        self.assertEqual(rs[1]["next_video_request"], None)
+        rs = play("q1=A", "r1=B")
+        self.assertEqual(rs[1]["next_video_request"]["variant_id"], "direction_followup_2")
 
     def test_8f_needs_review_explanation(self):
         r = play("q1=A", "r1=B", "r3=B")[-1]
         self.assertEqual(r["feedback"], KEY["rep-r3"]["choices"]["B"]["feedback"])
-        self.assertEqual(r["review_points"], PACKETS[OBJ]["variants"]["initial"]["key_points"])
+        self.assertEqual(r["review_points"], PACKETS[OBJ]["review_points"])
 
     def test_9_repeated_attempt_is_idempotent(self):
         attempts = {}
@@ -162,7 +172,7 @@ class EveryPath(unittest.TestCase):
     def test_invariants_hold_on_every_path(self):
         endings = []
 
-        def walk(oid, state, shown, depth):
+        def walk(oid, state, shown, depth, videos=frozenset()):
             self.assertLess(depth, 12, "flow did not terminate")
             qid = state.get("expected_question_id") or PACKETS[oid]["required_question_ids"][0]
             for choice in KEY[qid]["choices"]:
@@ -174,7 +184,9 @@ class EveryPath(unittest.TestCase):
                 self.assertEqual(st["expected_question_id"], r["next_question_id"])
                 if r["action"] == "review_again":
                     self.assertNotIn(r["next_question_id"], shown, "a retry was shown twice")
-                    self.assertIn(r["next_video_request"]["variant_id"], PACKETS[oid]["variants"])
+                    video = r["next_video_request"]["variant_id"]
+                    self.assertIn(video, PACKETS[oid]["variants"])
+                    self.assertNotIn(video, videos, "a follow-up clip was shown twice")
                 else:
                     self.assertIsNone(r["next_video_request"])
                 if r["action"] == "complete":
@@ -184,7 +196,8 @@ class EveryPath(unittest.TestCase):
                     with self.assertRaises(GradingError):  # a finished objective refuses more attempts
                         grade({**req, "attempt_id": uid(f"late-{len(endings)}"), "remediation_state": st}, {})
                 else:
-                    walk(oid, st, shown | {r["next_question_id"]}, depth + 1)
+                    seen = videos | {r["next_video_request"]["variant_id"]} if r["next_video_request"] else videos
+                    walk(oid, st, shown | {r["next_question_id"]}, depth + 1, seen)
 
         for oid, packet in PACKETS.items():
             walk(oid, {}, {packet["required_question_ids"][0]}, 0)

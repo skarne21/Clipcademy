@@ -41,15 +41,15 @@ try {
           video.muted = true
           await video.play()
           await new Promise(resolve => setTimeout(resolve, 400))
-          const result = { width: video.videoWidth, duration: video.duration, time: video.currentTime,
+          const result = { width: video.videoWidth, height: video.videoHeight, duration: video.duration, time: video.currentTime,
             captions: video.querySelector('track')?.src }
           video.currentTime = video.duration - .2
           return result
         })
-        assert.equal(metadata.width, 960)
-        assert.ok(metadata.duration >= 30 && metadata.duration <= 60)
+        assert.deepEqual([metadata.width, metadata.height], [720, 1280]) // vertical 9:16 (notes.md)
+        assert.ok(metadata.duration >= 15 && metadata.duration <= 30)
         assert.ok(metadata.time > 0 && metadata.captions?.endsWith('.vtt'))
-        await page.waitForFunction(() => document.querySelector('video').ended)
+        await page.waitForFunction(() => document.querySelector('video').currentTime < 1) // looped back to the start
         const overflows = await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)
         assert.equal(overflows, false, 'lesson fits the viewport')
       }
@@ -60,7 +60,7 @@ try {
       await click('DNA replication\nReady to review')
       await click('Continue')
       await click('Start')
-      await play('initial')
+      await play('intro_1')
       await click('Answer the question')
       await answer('B', 'Correct')
       await click('Next question')
@@ -77,7 +77,7 @@ try {
       await click('Return home')
       await waitText('See summary')
       assert.deepEqual(errors, [])
-      console.log(`PASS ${viewport.width}px real UI: narrated initial, wrong answer, targeted clip, fresh retry, completion and refresh`)
+      console.log(`PASS ${viewport.width}px real UI: narrated intro clip, wrong answer, targeted clip, fresh retry, completion and refresh`)
     } finally {
       await context.close()
     }

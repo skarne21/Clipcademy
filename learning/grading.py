@@ -21,6 +21,11 @@ QUESTIONS = {q["question_id"]: q for q in _load(os.path.join(HERE, "data", "ques
 PACKETS = {p["objective_id"]: p for p in map(_load, glob.glob(os.path.join(HERE, "packets", "*.json")))}
 
 
+def intro_variant_ids(packet):
+    """intro_1, intro_2, … in play order."""
+    return sorted((v for v in packet["variants"] if v.startswith("intro_")), key=lambda v: int(v.split("_")[1]))
+
+
 class GradingError(Exception):
     """status is the HTTP code to return; field names the offending request field."""
 
@@ -118,13 +123,16 @@ def grade(req, attempts):
             result["action"] = "complete"
     else:
         misconception = packet["misconceptions"][choice["misconception_id"]]
-        retry = next((r for r in misconception["retry_question_ids"] if r not in state["asked_retry_ids"]), None)
+        retries = misconception["retry_question_ids"]
+        seen = sum(r in state["asked_retry_ids"] for r in retries)
         # ponytail: out of retries before the cycle limit can't happen with 2 retries per misconception; treat it as the limit
-        if state["remediation_count"] >= MAX_CYCLES or retry is None:
+        if state["remediation_count"] >= MAX_CYCLES or seen == len(retries):
             state["objective_status"] = "needs_review"
-            result.update(action="needs_review", review_points=packet["variants"]["initial"]["key_points"])
+            result.update(action="needs_review", review_points=packet["review_points"])
         else:
-            variant_id = misconception["variant_id"]
+            # first miss on this misconception: v1 clip + first retry; second miss: v2 (explained differently) + second retry
+            retry = retries[seen]
+            variant_id = misconception["variant_ids"][seen]
             variant = packet["variants"][variant_id]
             state["remediation_count"] += 1
             state["asked_retry_ids"].append(retry)

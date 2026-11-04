@@ -37,13 +37,17 @@ Work through these in order. Each task ends with something I can share.
 **Progress:**
 All Member 2 code is built, tested, and **live at https://clipcademy.pythonanywhere.com** (build `study-2`, with DNA repair `available`, verified in a live browser test on 2026-11-03). Time on app is measured with `heartbeat` events. The final freeze waits on content review and Member 1's clips. Full history: [Member2_DEVLOG.md](Member2_DEVLOG.md).
 
+- **Vertical clips (notes.md, 2026-11-03):** done on the Member 2 side. All four packets have ordered intro variants (`intro_1` …, 4–5 per topic), each with a `teaching_goal` that is the one plain sentence the clip ends on. Every misconception also has a `<name>_followup_2` with an `approach` saying how it explains the idea differently. `/topics` returns `intro_video_requests`, `/attempts` picks v1 then v2 per misconception, `POST /events` accepts `clip_swiped`, and content-audit.csv has a row for each of the 35 clips. What's left needs people or hosting: the reviewer, Member 1's clips, and the deploy steps under Hosting.
 - **Tasks 1–9:** built and tested. `/video-jobs` forwards to Member 1's `video/jobs.py` as soon as that file exists, and returns `503` until then.
 - **Task 10:** my half is tested. A wrong answer's `next_video_request` passes through `/video-jobs` unchanged, and its `next_question_id` loads (`test_app.py`, `VideoJobs`). The UI half waits on Member 3.
 - **Task 11:** the automated part is built. `python learning/check_content.py` checks sources, the answer key, and the stopping rules (it passes now). content-audit.csv is pre-filled with one `pending` row for each of the 58 items in the validation build. Instructor permission was received on 2026-11-02. The human part now waits only on a reviewer (see Content review below).
 
 ### Content review (task 11)
 
-1. The reviewer fills in content-audit.csv: `reviewer`, `review_status` (`approved` or `needs_fix`), `overlaps_app_question` for the `test:` rows, and `error_severity` and `correction` when something is wrong. `clip:` rows are checked against Member 1's transcripts once the clips exist.
+1. The reviewer fills in content-audit.csv: `reviewer`, `review_status` (`approved` or `needs_fix`), `overlaps_app_question` for the `test:` rows, and `error_severity` and `correction` when something is wrong. `clip:` rows are checked against Member 1's scripts (sent as text before rendering), then against the rendered clip, with `approved_version` set to the clip's fingerprint. Every `clip:` row also needs:
+   - `analogy_ok`: `yes` if the clip's analogy teaches nothing false. An analogy that bends the biology gets cut, not approved.
+   - `hook_in_sources`: `yes` if the claim in the first 2 seconds is in the packet's `source_excerpts`.
+   `--freeze` fails until both are `yes`.
 2. Fix anything marked `needs_fix` and have it re-reviewed. Each content edit changes the item, so set the row back to `pending` until it's re-approved.
 3. When every row for a lesson is `approved`, set that packet's `review_status` to `"reviewed"`. If you change availability in topics.json, run `python learning/test_app.py --write-samples`.
 4. Before the build freeze, run `python learning/check_content.py --freeze`. It fails while any `available` lesson has an unreviewed packet or an unapproved row. The freeze can only go ahead once it passes.
@@ -89,13 +93,16 @@ During development, `available` means the lesson is built, even while its packet
           "objective_id": "synthesis_direction_and_primer",
           "label": "Synthesis direction and the primer requirement",
           "required_question_ids": ["rep-q1", "rep-q2"],
-          "initial_video_request": {
-            "topic_id": "dna_replication",
-            "objective_id": "synthesis_direction_and_primer",
-            "variant_id": "initial",
-            "teaching_goal": "Explain 5′→3′ synthesis at the 3′ end and why a primer is needed",
-            "source_refs": ["L19-p1", "L19-p2"]
-          }
+          "intro_video_requests": [
+            {
+              "topic_id": "dna_replication",
+              "objective_id": "synthesis_direction_and_primer",
+              "variant_id": "intro_1",
+              "teaching_goal": "DNA polymerase adds new pieces only to the 3′ end.",
+              "source_refs": ["L19-p1"]
+            },
+            "… intro_2 to intro_5, in play order"
+          ]
         }
       ]
     },
@@ -128,14 +135,27 @@ The packet is shared by all three members. Member 1 renders from it and Member 3
     { "ref": "L19-p1", "text": "DNA synthesis occurs only in the 5′ to 3′ direction, meaning new bases are being added to the 3′ end of an existing strand. DNA polymerase can only add new bases to the 3′ end of an existing complementary strand. It can't synthesize a complementary strand of DNA from scratch." },
     { "ref": "L19-p2", "text": "Before this happens, primase synthesizes a short sequence of RNA that is complementary to the DNA on the top strand. The new result is RNA primer because it prepares (primes) the strand for DNA polymerase. Unlike DNA polymerase, primase can start synthesis from scratch on a single stranded template strand. Once the primer is made, DNA polymerase can start adding deoxyribonucleotides." }
   ],
-  "variants": {
-    "initial": { "teaching_goal": "Explain 5′→3′ synthesis at the 3′ end and why a primer is needed", "source_refs": ["L19-p1", "L19-p2"] },
-    "direction_followup": { "teaching_goal": "Explain growth direction and which end grows", "source_refs": ["L19-p1"] },
-    "primer_followup": { "teaching_goal": "Explain why DNA polymerase needs a primer", "source_refs": ["L19-p1", "L19-p2"] }
+  "misconceptions": {
+    "growth_direction": { "variant_ids": ["direction_followup", "direction_followup_2"], "retry_question_ids": ["rep-r1", "rep-r3"] }
   },
+  "variants": {
+    "intro_1": { "teaching_goal": "DNA polymerase adds new pieces only to the 3′ end.", "source_refs": ["L19-p1"] },
+    "intro_2": { "teaching_goal": "New DNA only grows from 5′ to 3′.", "source_refs": ["L19-p1"] },
+    "direction_followup": { "teaching_goal": "Explain growth direction and which end grows", "key_points": ["…"], "source_refs": ["L19-p1"] },
+    "direction_followup_2": { "teaching_goal": "Explain growth direction and which end grows",
+                              "approach": "Start from the wrong idea: try to add a nucleotide at the 5′ end and show it can't join…",
+                              "source_refs": ["L19-p1"] }
+  },
+  "review_points": ["Strands are antiparallel", "…"],
   "review_status": "draft"
 }
 ```
+
+**Packet rules** (`check_content.py` enforces them):
+- **Intro clips:** `intro_1` … `intro_N`, with N from 4 to 5, played in that order. Each `teaching_goal` is one plain sentence of at most 20 words, ending in a period. It's the clip's last line and what the quiz checks, so Member 1 ends the clip on it word for word.
+- **Follow-ups:** each misconception lists `variant_ids: [v1, v1_2]`. The `_2` variant has the same teaching goal and an `approach` that explains it differently: another diagram or angle, not v1 re-cut. Member 1 picks the analogy, and the reviewer checks it.
+- **`review_points`** is what the `needs_review` summary shows (rule 3).
+- **Sources:** every claim a script needs must be in `source_excerpts`. If Member 1 needs a claim the packet doesn't have, it comes to Member 2 first, never straight into a script.
 
 Do not include the Lecture 19 joining/primer-removal sequence until the instructor clarifies it.
 
@@ -157,7 +177,7 @@ Every topic now has one objective with a lesson packet, 2 required questions, 4 
 | Transcription | `template_strand_and_promoter` | `template_vs_coding` → `template_followup`, `promoter_role` → `promoter_followup` | `tx-*` |
 | Translation | `codon_pairing_and_ribosome_sites` (anticodons, A/P/E sites) | `site_roles` → `sites_followup`, `anticodon_pairing` → `pairing_followup` | `tl-*` |
 
-Passages Team_Spec flags as unclear are left out and listed in each packet's `excluded_passages`: L19 ligase/primer-removal order, L20 cancer/senescence claim, L21 upstream/downstream, and L22 "tRNAs consist of two subunits." DNA repair is the second lesson for the validation study. Flip its `availability` to `available` in topics.json once its items pass the content audit and Member 1 has rendered its three clips. Transcription and translation stay `coming_soon` for the study, because their notes have unclear or inconsistent passages.
+Passages Team_Spec flags as unclear are left out and listed in each packet's `excluded_passages`: L19 ligase/primer-removal order, L20 cancer/senescence claim, L21 upstream/downstream, and L22 "tRNAs consist of two subunits." DNA repair is the second lesson for the validation study. Its `availability` is already `available`. Transcription and translation stay `coming_soon` until every one of their audit rows is approved. The unclear passages stay excluded, so nothing in them depends on those passages. The product owner wants all four topics in the study (notes.md), so they get flipped to `available` at the freeze if their review passes in time (Hosting, Deploying, step 8).
 
 The replication lesson is detailed below. The other lessons follow the same pattern.
 
@@ -267,7 +287,7 @@ Member 3 sends one JSON event per action. The fields are the [events.csv](events
 
 - **`event_id` must be a UUID** (`crypto.randomUUID()`), for the same reason as `attempt_id`: a counter would make two students' events look like duplicates, and one would be silently dropped. A retried send reuses its original `event_id`.
 - **Required on every event:** `event_id`, `participant_id`, `session_id`, `event_name`, `client_timestamp_utc` (ISO 8601 UTC, the time of the action on the device). `build_id` is expected but can be missing, in which case the event is still stored with status `missing`.
-- **`event_name`** must be one of the Activity events in Team_Spec, including `heartbeat`, which needs no extra fields and is what time on app is measured from. Each name also requires its extra fields: `topic_id` for `topic_selected`; `variant_id` for `video_started`, `video_completed`, and `followup_requested`; `question_id` and `correct` (a JSON boolean) for `question_answered`; `objective_id` for `objective_completed` and `objective_needs_review`. Include `topic_id` and `objective_id` whenever they're known. For `question_answered`, the server fills both in from `question_id`, and rejects an unknown `question_id` with `400`, so the H3 lesson split never depends on the client.
+- **`event_name`** must be one of the Activity events in Team_Spec, including `heartbeat`, which needs no extra fields and is what time on app is measured from. Each name also requires its extra fields: `topic_id` for `topic_selected`; `variant_id` for `video_started`, `video_completed`, and `followup_requested`; `question_id` and `correct` (a JSON boolean) for `question_answered`; `variant_id`, `direction` (`up` or `down`), and `seconds_watched` (a number, 0 or more) for `clip_swiped`; `objective_id` for `objective_completed` and `objective_needs_review`. Include `topic_id` and `objective_id` whenever they're known. For `question_answered`, the server fills both in from `question_id`, and rejects an unknown `question_id` with `400`, so the H3 lesson split never depends on the client.
 - **Responses:** an invalid event gets `400` naming the field. A new event gets `201`. A repeated `event_id` gets `200` with `{"duplicate": true}`, is not stored again, and is not an error, so Member 3's retries are safe.
 - **Two timestamps:** the server records the receipt time as `timestamp_utc`. Member 3 retries failed sends, so a Day 0 action could arrive on Day 1. The analysis therefore uses `client_timestamp_utc` to assign events to calendar days (see validation-plan.md).
 
@@ -282,8 +302,9 @@ Member 3 sends one JSON event per action. The fields are the [events.csv](events
    - If any required question is still unsatisfied, return `continue_questions` with `next_question_id` set to the first unsatisfied one. A single correct answer must never skip the remaining required questions.
    - If all are satisfied, return `complete`.
 3. **Wrong answer:**
-   - If `remediation_count < 2`, return `review_again`, increment `remediation_count`, and include the mapped `misconception_id`, the `next_video_request` built from the packet variant, and `next_question_id` set to the first retry question for that misconception that is not yet in `asked_retry_ids` (direction: `rep-r1`, then `rep-r3`; primer: `rep-r2`, then `rep-r4`). Add it to `asked_retry_ids`, so every follow-up video is followed by a question the student hasn't seen.
-   - If `remediation_count == 2`, return `needs_review`. Set `feedback` to the chosen choice's feedback and `review_points` to the packet's `variants.initial.key_points`. Both are already reviewed content, so nothing new needs writing. Send no video request and no next question.
+   - If `remediation_count < 2`, return `review_again`, increment `remediation_count`, and include the mapped `misconception_id`, the `next_video_request`, and `next_question_id` set to the first retry question for that misconception that is not yet in `asked_retry_ids` (direction: `rep-r1`, then `rep-r3`; primer: `rep-r2`, then `rep-r4`). Add it to `asked_retry_ids`, so every follow-up video is followed by a question the student hasn't seen.
+   - The video goes with the retry. The first miss on a misconception gets its v1 clip (`direction_followup`) and the first retry. A second miss on the same misconception gets its v2 clip (`direction_followup_2`) and the second retry. A student who misses two *different* ideas gets each one's v1 clip: v2 explains an idea a second way, and they haven't seen the first. No follow-up clip is ever shown twice.
+   - If `remediation_count == 2`, return `needs_review`. Set `feedback` to the chosen choice's feedback and `review_points` to the packet's `review_points`. Both are already reviewed content, so nothing new needs writing. Send no video request and no next question.
 4. **Limit:** at most two follow-up cycles **per objective in total** (team decision). A correct answer does not reset the count. Example: missing q1 (cycle 1), answering the retry correctly, then missing q2 is cycle 2, and the next wrong answer returns `needs_review`.
 5. **Idempotency:** if an `attempt_id` has been seen before with the same body, return the stored result unchanged. Do not create a second attempt, count another cycle, or issue another video request. The same `attempt_id` with a different body gets `409` and changes nothing.
 6. **Errors:** the error must say which field is wrong.
@@ -338,7 +359,8 @@ Each case starts from an empty `remediation_state` unless it says otherwise.
 | 7 | q1=A, r1=A | `continue_questions`, next `rep-q2` |
 | 8 | q1=A, r1=B, r3=B | `review_again` → `review_again` (count 2, next `rep-r3`) → `needs_review` |
 | 8b | q1=A, r1=B, r3=A | `continue_questions`, next `rep-q2` |
-| 8c | q1=B, q2=B, r2=C | `review_again` (count 2, `primer_followup`, next `rep-r4`) |
+| 8c | q1=B, q2=B, r2=C | `review_again` (count 2, `primer_followup_2`, next `rep-r4`) |
+| 8g | q1=A, r1=A, q2=B | The second cycle is a different idea, so it gets `primer_followup` (v1), not v2 |
 | 8d | `POST /events` with a repeated `event_id` | Stored once |
 | 8e | `POST /events` with no `build_id`, then one with a build ID not on the list | Both stored; `build_id_status` is `missing` and `unknown` in the export |
 | 8f | Case 8, last response | `needs_review` with `feedback` from `rep-r3` choice B and `review_points` from the packet |
@@ -385,7 +407,7 @@ Cover these cases with one runnable test file next to the grading code.
 **One origin for everything:** the PythonAnywhere web app runs this WSGI service. Static file mappings serve Member 3's built files at `/` and Member 1's pre-rendered clips at `/media/`. Students get one link and the browser needs no CORS. The API paths (`/topics`, `/questions/…`, `/attempts`, `/events`, `/events.csv`) and Member 1's `/video-jobs` are routed to Python, and every other path is served as a static file.
 
 **Limits and how the plan handles them:**
-- **512 MiB disk:** this holds the code, the SQLite file, the web build, and the clips. Keep the clips to around 30–60 s at 720p or lower, so the 9 validation clips use well under 200 MiB.
+- **512 MiB disk:** this holds the code, the SQLite file, the web build, and the clips. The 32–36 vertical clips at 720×1280 come to about 50 MB, up from 9 MB. Check the disk on the Files tab after the first full video pull.
 - **Restricted outbound internet and limited CPU:** no video is rendered on the host. Member 1 renders the clips ahead of time, and the hosted `/video-jobs` returns the stored clip for the requested variant. That's the "served from a previously rendered version" case in Team_Spec, and presenters say so.
 - **The web app expires one month after it's last extended:** click "Run until 1 month from today" on the Web tab right before Day 0, so it can't lapse during Days 0–2.
 - **One web worker:** requests are handled one at a time, which is fine for 6 participants and short SQLite writes.
@@ -414,7 +436,14 @@ Member 2 owns the PythonAnywhere account. Other members get access through Pytho
    - **How the web build gets there (decided: upload).** `web/dist` is git-ignored, so `git pull` doesn't bring it. Member 3 runs `npm run build` and sends Member 2 the `web/dist` folder. Member 2 uploads it with the **Files** tab to `/home/ClipCademy/Clipcademy/web/dist`, replacing the old copy, then clicks Reload. If uploads get tedious, switch to committing the build on the deploy branch. Nothing else changes.
    - The live account's username is `ClipCademy` (paths are case-sensitive), and the site is `https://clipcademy.pythonanywhere.com`.
 6. Click **Reload**, then open `https://<username>.pythonanywhere.com/topics` and check that it returns JSON. After that, test the full flow from a phone.
-7. Right before Day 0, click **Run until 1 month from today**. After Day 2, download `learning/clipcademy.db` and fetch `/events.csv` with the admin token.
+7. **After each video push from Member 1:** run `git pull` in the Bash console, keep the `/media/` mapping pointed at `video/media`, then Reload. Play one new clip from a phone.
+8. **Before Day 0, in this order:**
+   1. Set transcription and translation to `available` in topics.json only if all their audit rows are approved. Otherwise leave them `coming_soon`. Then run `python learning/test_app.py --write-samples`.
+   2. Run `python learning/check_content.py --freeze`. It must pass.
+   3. In the WSGI file, make sure `CLIPCADEMY_VIDEO_PREVIEW` is **not** set. Without it, `/video-jobs` refuses any clip whose audit row isn't approved with a matching fingerprint, so only approved clips can play.
+   4. Set `CLIPCADEMY_BUILD_IDS` to just the frozen build's ID (`study-4`, or later if the app changes again).
+   5. Run the freeze checklist in [Member2_DEVLOG.md](Member2_DEVLOG.md), next step 4.
+9. Right before Day 0, click **Run until 1 month from today**. After Day 2, download `learning/clipcademy.db` and fetch `/events.csv` with the admin token.
 
 Until Members 1 and 3 have built their parts, steps 1–4 and 6 can be done now, so the API is live for them to try.
 

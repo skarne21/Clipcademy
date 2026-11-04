@@ -58,9 +58,12 @@ The one-line test: **would this screen look the same in any other app?** If yes,
 - **Empty state** (nothing selected): one line saying what's missing, and a button back to the topic picker.
 - The participant code sits small at the bottom for the moderator.
 
-### Lesson (video)
-- `<video controls playsinline>`, so iOS doesn't force full screen and the question button stays reachable. Width 100%, height set by the video's aspect ratio, so nothing jumps when it loads.
-- Transcript below the video, readable at body size, not a scroll box inside a scroll box.
+### Lesson (video feed)
+The one exception to the light, list-based screens. Clips are vertical 9:16, so the lesson is a full-screen, swipeable feed on black (notes.md, 2026-11-03):
+- `<video playsinline>` without native controls, in a 9:16 frame sized to fit the screen (`object-fit: contain`, so burned-in captions are never cropped). Native scroll snapping does the swiping, one clip per swipe.
+- The overlay stays inside the safe zones: progress segments, Back and "Clip 2 of 5" at the top; Replay, Captions and Transcript, each an icon with a word, on the right; the swipe hint, the disclosure and **Answer the question** at the bottom.
+- The clip autoplays muted. "Tap for sound" shows until the student taps, and the sound then stays on. Tapping a clip with sound on pauses or plays it.
+- The transcript opens in a bottom sheet (`<dialog>`) at body size.
 - **Preparing:** a still block the shape of the video with the words "Preparing your explanation…". No fake progress bar.
 - **Failed:** what happened in one sentence ("The clip couldn't load.") and a Retry button. The student's answer is safe, so say so if it's the follow-up clip.
 - The "Answer the question" button is in the bottom bar from the start. Watching the whole clip isn't required.
@@ -72,6 +75,7 @@ The one-line test: **would this screen look the same in any other app?** If yes,
 
 ### Feedback
 - Lead with the result in words: "Correct" or "Not quite", with an icon and colour as support.
+- "Correct" gets one short moment: the check mark scales in and the word slides in (220 ms, ease-out, no overshoot), plus a 30 ms vibration on phones that support it. "Not quite" stays still. There are no points, streaks or confetti, which add scope and don't help recall (notes.md).
 - Show the student's choice, labelled "Your answer", so they don't have to remember what they picked. Don't cover it with a sheet.
 - Then the feedback text from the server, at body size. It explains why, which is the gap reviewers point out in apps that only show the right answer.
 - Don't reveal the correct choice for a wrong answer. The server doesn't send it, and the retry question is where the student recalls it.

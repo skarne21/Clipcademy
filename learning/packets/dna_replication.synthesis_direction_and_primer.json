@@ -18,6 +18,10 @@
     {
       "ref": "L19-p2",
       "text": "Before this happens, primase synthesizes a short sequence of RNA that is complementary to the DNA on the top strand. The new result is RNA primer because it prepares (primes) the strand for DNA polymerase. Unlike DNA polymerase, primase can start synthesis from scratch on a single stranded template strand. Once the primer is made, DNA polymerase can start adding deoxyribonucleotides."
+    },
+    {
+      "ref": "L19-p1",
+      "text": "DNA polymerase can't synthesize a complementary strand of DNA from scratch and the enzyme can only work if the new complementary strand has already been started. The enzyme can add deoxyribonucleotides to the ribonucleotides that are hydrogen bonded to a complementary DNA strand."
     }
   ],
   "excluded_passages": [
@@ -29,14 +33,20 @@
   ],
   "misconceptions": {
     "growth_direction": {
-      "variant_id": "direction_followup",
+      "variant_ids": [
+        "direction_followup",
+        "direction_followup_2"
+      ],
       "retry_question_ids": [
         "rep-r1",
         "rep-r3"
       ]
     },
     "primer_requirement": {
-      "variant_id": "primer_followup",
+      "variant_ids": [
+        "primer_followup",
+        "primer_followup_2"
+      ],
       "retry_question_ids": [
         "rep-r2",
         "rep-r4"
@@ -44,13 +54,33 @@
     }
   },
   "variants": {
-    "initial": {
-      "teaching_goal": "Explain 5′→3′ synthesis at the 3′ end and why a primer is needed",
-      "key_points": [
-        "Strands are antiparallel",
-        "New nucleotides join the 3′ end, so strands grow 5′→3′",
-        "DNA polymerase can't start a strand; primase makes an RNA primer it can extend"
-      ],
+    "intro_1": {
+      "teaching_goal": "DNA polymerase adds new pieces only to the 3′ end.",
+      "source_refs": [
+        "L19-p1"
+      ]
+    },
+    "intro_2": {
+      "teaching_goal": "New DNA only grows from 5′ to 3′.",
+      "source_refs": [
+        "L19-p1"
+      ]
+    },
+    "intro_3": {
+      "teaching_goal": "DNA polymerase can't start a new strand from nothing.",
+      "source_refs": [
+        "L19-p1"
+      ]
+    },
+    "intro_4": {
+      "teaching_goal": "Primase makes a short RNA primer, and DNA polymerase builds onto it.",
+      "source_refs": [
+        "L19-p1",
+        "L19-p2"
+      ]
+    },
+    "intro_5": {
+      "teaching_goal": "New DNA grows 5′ to 3′, and it needs a primer to start.",
       "source_refs": [
         "L19-p1",
         "L19-p2"
@@ -66,6 +96,13 @@
         "L19-p1"
       ]
     },
+    "direction_followup_2": {
+      "teaching_goal": "Explain growth direction and which end grows",
+      "approach": "Start from the wrong idea: try to add a nucleotide at the 5′ end and show it can't join, then show it joining at the 3′ end.",
+      "source_refs": [
+        "L19-p1"
+      ]
+    },
     "primer_followup": {
       "teaching_goal": "Explain why DNA polymerase needs a primer",
       "key_points": [
@@ -77,7 +114,20 @@
         "L19-p1",
         "L19-p2"
       ]
+    },
+    "primer_followup_2": {
+      "teaching_goal": "Explain why DNA polymerase needs a primer",
+      "approach": "Put primase and DNA polymerase side by side on a bare template: primase can start from scratch, DNA polymerase can only extend what is already there.",
+      "source_refs": [
+        "L19-p1",
+        "L19-p2"
+      ]
     }
   },
+  "review_points": [
+    "Strands are antiparallel",
+    "New nucleotides join the 3′ end, so strands grow 5′→3′",
+    "DNA polymerase can't start a strand; primase makes an RNA primer it can extend"
+  ],
   "review_status": "draft"
 }

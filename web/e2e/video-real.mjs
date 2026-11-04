@@ -13,7 +13,7 @@ try {
  const result=await page.evaluate(async()=>{
   async function api(path,body){const r=await fetch(path,body?{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}:undefined);if(!r.ok)throw Error(await r.text());return r.json()}
   const topics=await api('/topics');const o=topics.topics.find(t=>t.topic_id==='dna_replication').objectives[0]
-  const initial=await api('/video-jobs',o.initial_video_request)
+  const initial=await api('/video-jobs',o.intro_video_requests[0])
   let state={};let followup;let action
   for(const [qid,choice] of [['rep-q1','B'],['rep-q2','B'],['rep-r2','B']]){
    const r=await api('/attempts',{attempt_id:crypto.randomUUID(),objective_id:o.objective_id,question_id:qid,selected_choice_id:choice,remediation_state:state})
@@ -33,6 +33,6 @@ try {
   return {action,variant:followup.variant_id,playback}
  })
  assert.equal(result.action,'complete');assert.equal(result.variant,'primer_followup')
- for(const p of result.playback){assert.ok(p.duration>=30&&p.duration<=60);assert.equal(p.width,960);assert.equal(p.height,540);assert.ok(p.time>0&&p.ended&&p.captions)}
- console.log('PASS real backend: initial, wrong answer, primer clip, retry, completion; real browser playback',result)
+ for(const p of result.playback){assert.ok(p.duration>=15&&p.duration<=30);assert.equal(p.width,720);assert.equal(p.height,1280);assert.ok(p.time>0&&p.ended&&p.captions)}
+ console.log('PASS real backend: intro_1, wrong answer, primer clip, retry, completion; real browser playback',result)
 } finally {await browser.close()}

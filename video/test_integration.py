@@ -25,7 +25,9 @@ class MountedVideoTest(unittest.TestCase):
                 return json.loads(data)
             topics=call('GET','/topics')['topics']
             objective=next(t for t in topics if t['topic_id']=='dna_replication')['objectives'][0]
-            first=call('POST','/video-jobs',objective['initial_video_request']);self.assertEqual(first['status'],'ready')
+            # every intro clip in the feed must exist (notes.md); fails until Member 1 renders intro_1 … intro_5
+            for request in objective['intro_video_requests']:
+                self.assertEqual(call('POST','/video-jobs',request)['status'],'ready')
             state={}
             for question,choice in [('rep-q1','B'),('rep-q2','B'),('rep-r2','B')]:
                 result=call('POST','/attempts',{'attempt_id':str(uuid.uuid4()),'objective_id':objective['objective_id'],'question_id':question,'selected_choice_id':choice,'remediation_state':state})

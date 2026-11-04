@@ -4,6 +4,7 @@ import csv
 import io
 import json
 import os
+import sqlite3
 import sys
 import tempfile
 import unittest
@@ -60,12 +61,17 @@ class Content(unittest.TestCase):
         self.assertEqual([t["topic_id"] for t in body["topics"]],
                          ["dna_replication", "dna_repair", "transcription", "translation"])
 
-    def test_topics_give_member3_the_initial_video_request(self):
-        objective = call(new_app(), "GET", "/topics")[2]["topics"][0]["objectives"][0]
-        self.assertEqual(objective["initial_video_request"], {
-            "topic_id": "dna_replication", "objective_id": OBJ, "variant_id": "initial",
-            "teaching_goal": "Explain 5′→3′ synthesis at the 3′ end and why a primer is needed",
-            "source_refs": ["L19-p1", "L19-p2"]})
+    def test_topics_give_member3_the_intro_video_requests_in_order(self):
+        topics = call(new_app(), "GET", "/topics")[2]["topics"]
+        objective = topics[0]["objectives"][0]
+        self.assertNotIn("initial_video_request", objective)  # replaced, one format only (notes.md)
+        requests = objective["intro_video_requests"]
+        self.assertEqual([r["variant_id"] for r in requests], [f"intro_{i}" for i in range(1, 6)])
+        self.assertEqual(requests[1], {
+            "topic_id": "dna_replication", "objective_id": OBJ, "variant_id": "intro_2",
+            "teaching_goal": "New DNA only grows from 5′ to 3′.", "source_refs": ["L19-p1"]})
+        for t in topics:
+            self.assertIn(len(t["objectives"][0]["intro_video_requests"]), (4, 5), t["topic_id"])
 
     def test_11_question_has_no_answer_fields(self):
         status, _, body = call(new_app(), "GET", "/questions/rep-q2")
@@ -183,6 +189,33 @@ class Events(unittest.TestCase):
         app = new_app()
         call(app, "POST", "/events", event(client_timestamp_utc="2026-11-03T10:00:00-05:00"))
         self.assertEqual(self.export(app)[2][0]["client_timestamp_utc"], "2026-11-03T15:00:00Z")
+
+    def test_clip_swiped(self):
+        app = new_app()
+        swipe = dict(event_name="clip_swiped", variant_id="intro_2", direction="up", seconds_watched=7.5,
+                     topic_id="dna_replication", objective_id=OBJ)
+        self.assertEqual(call(app, "POST", "/events", event(**swipe))[0], 201)
+        row = self.export(app)[2][0]
+        self.assertEqual((row["variant_id"], row["direction"], row["seconds_watched"]), ("intro_2", "up", "7.5"))
+        for field, bad in [("direction", "left"), ("seconds_watched", -1), ("seconds_watched", "7"), ("seconds_watched", True)]:
+            status, _, body = call(app, "POST", "/events", event(event_id=f"bad-{field}-{bad}", **{**swipe, field: bad}))
+            self.assertEqual((status, body["error"]["field"]), (400, field))
+        status, _, body = call(app, "POST", "/events", event(event_id="no-dir", **{k: v for k, v in swipe.items() if k != "direction"}))
+        self.assertEqual((status, body["error"]["field"]), (400, "direction"))
+
+    def test_database_from_before_clip_swiped_is_upgraded(self):
+        with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as tmp:  # the app keeps its connection open
+            db = os.path.join(tmp, "old.db")
+            old = sqlite3.connect(db)
+            old.execute("""CREATE TABLE events (event_id TEXT PRIMARY KEY, participant_id TEXT, session_id TEXT,
+                event_name TEXT, topic_id TEXT, objective_id TEXT, question_id TEXT, variant_id TEXT, correct INTEGER,
+                client_timestamp_utc TEXT, timestamp_utc TEXT, build_id TEXT)""")
+            old.commit()
+            old.close()
+            app = new_app(db)
+            self.assertEqual(call(app, "POST", "/events", event(event_name="clip_swiped", variant_id="intro_1",
+                                                               direction="down", seconds_watched=3))[0], 201)
+            self.assertEqual(self.export(app)[2][0]["direction"], "down")
 
 
 class Cors(unittest.TestCase):

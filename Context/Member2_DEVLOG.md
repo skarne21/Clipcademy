@@ -5,7 +5,7 @@ Period covered: 2026-11-02 to 2026-11-03 · Branch: `MVP02` · Tag: `V1` (`bf28f
 
 ## Where things stand
 
-All the code Member 2 owns is built, tested, pushed, and **live**. What's left depends on other people: a content reviewer, and Member 1's clips.
+All the code Member 2 owns is built, tested and pushed, including the vertical-clip changes from notes.md (section 20). **No coding is left.** What's left is the checklist under "Next steps": it needs a content reviewer, Member 1's intro clips, and the PythonAnywhere login, in that order.
 
 | Area | State |
 | --- | --- |
@@ -14,13 +14,14 @@ All the code Member 2 owns is built, tested, pushed, and **live**. What's left d
 | Sample responses for Member 3 (task 7) | Done. `learning/samples/`, 11 files of real app output |
 | API: topics, questions, attempts (task 8) | Done. `learning/app.py` |
 | Events and `events.csv` export (task 9) | Done |
-| Wrong-answer flow with Members 1 and 3 (task 10) | Tested end to end with Member 3's app (17 browser checks). Video part waits on Member 1 |
-| Content check (task 11) | Automated check done. 58 audit rows wait for a human reviewer |
+| Wrong-answer flow with Members 1 and 3 (task 10) | Tested end to end with Member 3's app (19 browser checks), including the v2 follow-up. Video part waits on Member 1 |
+| Content check (task 11) | Automated check done, including the clip rules. 134 audit rows wait for a human reviewer |
+| Vertical clips (notes.md, 2026-11-03) | Done. All 4 packets, `intro_video_requests`, v1/v2 follow-ups, `clip_swiped`, clip audit columns, new metrics |
 | Hosting | **Deployed** on PythonAnywhere (account `ClipCademy`). The API and Member 3's app are served from one site |
 | Time on app | Done. `heartbeat` events, in the server and the app |
-| Validation build | `study-2` is live and verified on a phone-sized browser. DNA repair is `available`. The final freeze waits on content review and clips |
+| Validation build | `study-2` is live. `study-4` (the swipe feed) is built and tested, and goes live once Member 1's intro clips are merged. The final freeze waits on content review and clips |
 
-**Tests:** 3 suites, run with `python learning/test_grading.py`, `python learning/test_app.py`, and `python learning/test_check_content.py`. They include a test that walks all 152 possible answer sequences across the 4 lessons. `python learning/check_content.py` passes.
+**Tests:** 3 suites, run with `python learning/test_grading.py` (23), `python learning/test_app.py` (24), and `python learning/test_check_content.py` (4). They include a test that walks every possible answer sequence across the 4 lessons. `python learning/check_content.py` passes.
 
 ## Timeline
 
@@ -204,6 +205,24 @@ The Chrome extension wasn't connected, so I drove the local Chrome directly, the
 
 Every event was built as `study-2` and stored, with no page errors. The phone test, including the refresh case, is done. Its `TEST` rows will be wiped at the freeze.
 
+### 20. Vertical clips, 4–5 per topic (notes.md, 2026-11-03)
+
+The product owner changed the lesson format: 4–5 short vertical intro clips per topic, then the quiz, and a second, differently explained follow-up when a student misses the same idea twice. My side:
+
+| Task (notes.md) | Done |
+| --- | --- |
+| 1. Packets | All 4 packets have `intro_1` … (5 for replication, repair and translation, 4 for transcription) and a `<name>_followup_2` per misconception. Each `_2` has an `approach` saying how it differs from v1. I added 6 excerpts from the notes the clips will need, e.g. "Exonuclease is an enzyme that can remove a nucleotide…" (L20 p. 1) and the P-site peptide-bond sentence (L22 p. 2). Nothing came from the excluded passages |
+| 2. Transcription and translation | Their banks were already complete (2 required, 4 retries, feedback for every choice). They stay `coming_soon` until their audit rows are approved, then get flipped at the freeze |
+| 3. API | `/topics` returns `intro_video_requests` in place of `initial_video_request`. `/attempts` gives v1 with a misconception's first retry and v2 with its second, so missing two *different* ideas gets each one's v1 (Member2_SPEC, rule 3). Samples are regenerated |
+| 4. Content review | content-audit.csv has 134 rows, including all 35 clips. Two new columns, `analogy_ok` and `hook_in_sources`, must be `yes` for every clip before `--freeze` passes. The rows for the 6 old clips were dropped; none had been reviewed |
+| 5. Teaching goals | Each intro goal is one plain sentence, e.g. "New DNA only grows from 5′ to 3′." `check_content.py` enforces one sentence of at most 20 words |
+| 6. Metrics | validation-plan.md now has clip completion rate, drop-off by position, and first-try accuracy after the feed. The feed-vs-single-clip comparison is reported as "no baseline" unless real single-clip data exists, since the team's `TEST` sessions don't count |
+| `clip_swiped` | The server accepts it (`variant_id`, `direction` `up`/`down`, `seconds_watched`). Two new `events.csv` columns. A database from before this change gets the columns added on start, so the hosted one keeps working |
+
+**Tests:** 23 grading tests, including a new case 8g, and the all-paths test now also checks that no follow-up clip is ever shown twice. 24 app tests and 4 content-check tests pass, and `check_content.py` passes.
+
+**Not done, and why:** booking the reviewer (needs a person), the PythonAnywhere steps (no access from here; written out in Member2_SPEC, Deploying, steps 7–9), and Member 1's clips. `video/test_integration.py` now asks for every intro clip, so it fails with "unknown … variant" until Member 1 renders `intro_1` and the rest.
+
 ## Commits
 
 | Commit | Change |
@@ -227,13 +246,18 @@ Every event was built as `study-2` and stored, with no page errors. The phone te
 | `0a90b93` | Heartbeat carries over a refresh; test; build ID `study-2` |
 | `7b0d1a9` | This log's study-1/study-2 sections. **It also contains work staged by other sessions, committed by mistake under this message:** Member 1's `video/` folder (renderer, `jobs.py`, tests, and all 6 clips with transcripts and captions), Member 3's `web/` changes (captions, disclosure text, `/media` proxy, two e2e files), and a change to `learning/app.py` that also passes `/media/` to Member 1's handler. All Member 2 tests pass on it. Kept as is, by team decision, rather than rewriting shared history |
 
+| *(this commit)* | Vertical clips: packets, API, `clip_swiped`, clip audit, metrics (section 20) |
+
 ## Next steps for Member 2
 
-1. **Find a content reviewer** for the 58 rows in content-audit.csv, including the clip transcripts once the clips exist.
-2. **When Member 1 adds `video/jobs.py` and the clips:** `git pull`, map `/media/` to the clips folder, Reload, and check that the follow-up clips play.
-3. **Team decision:** confirm the plain-JS app as Member 3's study app. Any further change to the app means a new build ID (`study-3`), added to `CLIPCADEMY_BUILD_IDS`.
+None of these is coding. Each is a person, a login, or a wait.
+
+1. **Book the content reviewer now.** This is the riskiest part of the schedule (notes.md). There are 134 rows: the reviewer sees Member 1's scripts as text first, then the 35 rendered clips, and fills in `analogy_ok` and `hook_in_sources` for each clip.
+2. **After each video push from Member 1:** `git pull`, keep `/media/` mapped, Reload, and check the disk (about 50 MB of clips).
+3. **Don't deploy `study-4` until Member 1's intro clips are merged.** Until then, every intro slide would show "The clip couldn't load." Add `study-4` to `CLIPCADEMY_BUILD_IDS` when it goes live.
 4. **Final freeze:**
-   - Mark the approved packets `reviewed`.
+   - Mark the approved packets `reviewed`. Flip transcription and translation to `available` only if all their rows are approved.
+   - Make sure `CLIPCADEMY_VIDEO_PREVIEW` is not set on the host.
    - Run `check_content.py --freeze`, which must pass.
    - Set `CLIPCADEMY_BUILD_IDS` to just the frozen build's ID.
    - Delete `learning/clipcademy.db`, then Reload.

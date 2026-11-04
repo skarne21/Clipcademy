@@ -1,27 +1,27 @@
 # Member 3 development log
 
 Owner: Member 3 (student interface and application integration) · Code: `web/` · Run, test, freeze: [web/README.md](../web/README.md)
-Period covered: 2026-11-03 · Branch: `MVP02` · Build: `study-2` · Live: https://clipcademy.pythonanywhere.com
+Period covered: 2026-11-03 · Branch: `MVP02` · Build: `study-4` (live: `study-2`) · Live: https://clipcademy.pythonanywhere.com
 
 ## Where things stand
 
-The whole student app is built, tested against the real learning service, and live. Member 1's video service and clips are now merged into `MVP02` (`ab39f6c`). What's left is running the app with the real clips, and the content review.
+The whole student app is built and tested against the real learning service, including the vertical swipe feed from notes.md (section 6). **No coding is left.** What's left is the checklist under "Next steps": a phone check and a hand-off, both waiting on Member 1's intro clips.
 
 | Team_Spec task | State |
 | --- | --- |
 | 1. Exam-topic picker, saved selections | Done |
 | 2. Review home: available, coming soon, in progress, complete, needs review | Done |
-| 3. Video screen: controls, transcript, Back, question button | Done. Shows whether a clip was pre-rendered or generated |
+| 3. Video screen: controls, transcript, Back, question button | Done, now a vertical swipe feed of 4–5 clips. Shows whether a clip was pre-rendered or generated |
 | 4. Question screen, no duplicate submissions | Done |
 | 5. Feedback and follow-up screens, preparing and failed states with Retry | Done |
 | 6. Progress saved in browser storage | Done. One `localStorage` key |
 | 7. Reset demo, one replaceable data-access module | Done. `src/api.js` |
-| 8. Participant code and activity events, including `heartbeat` | Done |
+| 8. Participant code and activity events, including `heartbeat` and `clip_swiped` | Done |
 | Hosting | Static build, relative API paths, hash routes. Uploaded and served at `/` |
 
 **Tests:**
 - `npm run check`: sample-data mode answers like the recorded server output.
-- `npm run e2e`: 17 browser checks against the real Python service.
+- `npm run e2e`: 19 browser checks against the real Python service.
 - `node e2e/heartbeat.mjs`: heartbeat time survives a refresh.
 
 The e2e test passes against the production build (`vite build` + `vite preview`) with DNA repair available.
@@ -78,6 +78,27 @@ The React + TS app (`origin/member3`) has 189 unit tests passing, but it isn't u
 - **[web/README.md](../web/README.md):** how to run, test, test on a phone, freeze and hand off.
 - **Push:** `origin/member3` holds the React version and shares no history with this one. I fast-forwarded `MVP02` instead and left `origin/member3` untouched.
 
+### 6. Vertical swipe player, build `study-4` (notes.md, 2026-11-03)
+
+The lesson screen is now a full-screen feed of 9:16 clips.
+
+| Task (notes.md) | Done |
+| --- | --- |
+| 1. Swipe player | Native CSS scroll snapping does the swiping, with no gesture library. The overlay has progress segments that fill as the clip plays, "Clip 2 of 5", side buttons (Replay, Captions, Transcript), and the bottom bar. Everything sits in the contract's safe zones, as percentages of the 9:16 frame |
+| 2. Flow | The intro clips play in order. Swiping past the last one opens the question, and **Answer the question** is always available. Follow-ups use the same player as a one-clip feed, then the retry question |
+| 3. Loading | Each clip's job starts when its slide comes on screen, and the next clip's job and video load straight after. Job IDs are saved per variant, so a refresh polls instead of starting over. Failure and Retry work per slide |
+| 4. Events | `video_started` / `video_completed` once per view (a loop doesn't repeat them), plus `clip_swiped` with variant, direction and seconds watched |
+| 5. Feel | Muted autoplay, one tap for sound for the rest of the feed, loop until swiped, "Swipe up" on clip 1 only, a 220 ms "Correct" animation and a 30 ms vibration. No points or streaks. Reduced motion turns the animation off |
+| 7. Build and tests | e2e cases 17, 17b and 17c (swiping, order, preload, refresh mid-feed, swipe into the quiz, v2 follow-up). Build ID `study-4`. `video-flow.mjs` and `video-real.mjs` now expect the portrait clips: 720×1280, 15–30 s |
+
+**Bugs found while testing:** the overlay first rendered off screen, because `.feed .frame` overrode the overlay's `position: absolute`. I caught it from a screenshot, and fixed it by giving the overlay its own selector. The e2e helper also clicked the first Retry on the page, which could be the preloaded clip 2's, and that scrolled the feed. It now retries clip 1 only.
+
+**Tests:** `npm run e2e` passes all 19 checks against the production build, plus `npm run check` and `e2e/heartbeat.mjs`. They ran on ports 8020 and 5191, because another session's dev server was on 5180.
+
+**Not done, and why:**
+- The real-phone pilot check (task 6) needs Member 1's portrait pilot clip.
+- Sending the build to Member 2 via `deploy-dist` should wait for the intro clips. Deployed now, every intro slide would fail to load.
+
 ## Commits
 
 | Commit | Change |
@@ -88,6 +109,7 @@ The React + TS app (`origin/member3`) has 189 unit tests passing, but it isn't u
 | `b921e62` | Heartbeat in the app, e2e case 16 |
 | `0a90b93` | Heartbeat leftover kept across a refresh, build `study-2` |
 | `abdee85` | Restart on home, playable sample clip, web README |
+| *(this commit)* | Vertical swipe feed, `clip_swiped`, Correct animation, build `study-4` (section 6) |
 
 ## Open question
 
@@ -95,6 +117,9 @@ The React + TS app (`origin/member3`) has 189 unit tests passing, but it isn't u
 
 ## Next steps for Member 3
 
+None of these is coding. Each waits on Member 1's clips or the content review.
+
+0. **Vertical clips:** when Member 1's portrait pilot clip lands, test it on a real iPhone (Safari) and Android phone (Chrome): inline playback, the sound tap, captions, and nothing overlapping the overlay. Once all intro clips are in, run `e2e/video-flow.mjs`, then `npm run build` and push `dist/` to `deploy-dist` for Member 2.
 1. **Run with the real video service:** Member 1's `video/jobs.py` and clips are merged. It also changed `web/src/main.js` and `web/vite.config.js`, and added `web/e2e/video-real.mjs`. Run the e2e with the real `/video-jobs`.
 2. **Check the clips in the app:** the initial clip, both follow-ups, the transcripts, and the pre-rendered disclosure, for both lessons.
 3. **Phone test** of the full walkthrough on the hosted site.

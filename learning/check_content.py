@@ -11,8 +11,11 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 AUDIT = os.path.join(HERE, "..", "Context", "content-audit.csv")
 AUDIT_COLUMNS = ["item_id", "item_type", "source_refs", "reviewer", "review_status", "overlaps_app_question",
-                 "error_severity", "correction", "approved_version"]
+                 "error_severity", "correction", "approved_version", "analogy_ok", "hook_in_sources"]
+# notes.md: the reviewer also confirms, for every clip, that its analogy teaches nothing false and its hook is sourced
+CLIP_CHECKS = ["analogy_ok", "hook_in_sources"]
 MAX_CYCLES = 2
+INTRO_CLIPS = (4, 5)  # notes.md: 4–5 intro clips per topic, then the quiz
 # assessment.md items: every one is audited, including whether it overlaps an app question
 TEST_ITEMS = {"test:A1": "L19-p1;L19-p2", "test:A2": "L19-p1", "test:A3": "L19-p1;L19-p2",
               "test:B1": "L19-p1;L19-p2", "test:B2": "L19-p1", "test:B3": "L19-p1;L19-p2"}
@@ -87,9 +90,13 @@ def check(data, freeze=False):
 
     for oid, packet in packets.items():
         refs = {e["ref"] for e in packet["source_excerpts"]}
+        intros = [v for v in packet["variants"] if v.startswith("intro_")]
+        if not INTRO_CLIPS[0] <= len(intros) <= INTRO_CLIPS[1] or sorted(intros) != [f"intro_{i}" for i in range(1, len(intros) + 1)]:
+            problems.append(f"{oid}: needs intro_1 … intro_N with N from {INTRO_CLIPS[0]} to {INTRO_CLIPS[1]}, has {sorted(intros)}")
         for m_id, m in packet["misconceptions"].items():
-            if m["variant_id"] not in packet["variants"]:
-                problems.append(f"{oid}: misconception {m_id} points to missing variant {m['variant_id']}")
+            v1 = m["variant_ids"][0] if m.get("variant_ids") else None
+            if m.get("variant_ids") != [v1, f"{v1}_2"] or not set(m["variant_ids"]) <= set(packet["variants"]):
+                problems.append(f"{oid}: misconception {m_id} needs variant_ids [<v1>, <v1>_2], both in variants")
             if len(m["retry_question_ids"]) < MAX_CYCLES:
                 problems.append(f"{oid}: misconception {m_id} needs {MAX_CYCLES} retries so a retry never repeats")
             for r in m["retry_question_ids"]:
@@ -98,6 +105,16 @@ def check(data, freeze=False):
         for v_id, v in packet["variants"].items():
             if not v["source_refs"] or not set(v["source_refs"]) <= refs:
                 problems.append(f"{oid}: variant {v_id} source_refs must be non-empty and in the excerpts")
+            if not v.get("teaching_goal", "").strip():
+                problems.append(f"{oid}: variant {v_id} has no teaching_goal")
+            # the intro goal is the clip's last line and what the quiz checks: one plain sentence
+            elif v_id.startswith("intro_") and (not v["teaching_goal"].endswith(".") or ". " in v["teaching_goal"].rstrip(".")
+                                                 or len(v["teaching_goal"].split()) > 20):
+                problems.append(f"{oid}: {v_id} teaching_goal must be one sentence of at most 20 words, ending in a period")
+            if v_id.endswith("_followup_2") and not v.get("approach", "").strip():
+                problems.append(f"{oid}: {v_id} needs an approach saying how it explains the idea differently from v1")
+        if not packet.get("review_points"):
+            problems.append(f"{oid}: review_points (shown on needs_review) is empty")
 
     for topic in data["topics"]:
         for obj in topic["objectives"]:
@@ -117,13 +134,19 @@ def check(data, freeze=False):
                                     f"{packets[oid]['review_status']!r}; set it to 'reviewed' or make the topic coming_soon")
                 problems += [f"{item_id}: not approved in content-audit.csv"
                              for item_id, _, _ in audit_items(data, oid) if item_id not in approved]
+                problems += [f"{item_id}: {check} must be 'yes' in content-audit.csv"
+                             for item_id, item_type, _ in audit_items(data, oid) if item_type == "clip_transcript"
+                             for check in CLIP_CHECKS if data["audit"].get(item_id, {}).get(check) != "yes"]
         problems += [f"{i}: not approved in content-audit.csv" for i in TEST_ITEMS if i not in approved]
     return problems
 
 
 def write_audit(data, objective_ids):
-    rows = list(data["audit"].values())
     wanted = [i for oid in objective_ids for i in audit_items(data, oid)] + [(i, "test_item", r) for i, r in TEST_ITEMS.items()]
+    current = {i for i, _, _ in wanted}
+    # a clip that no longer exists (e.g. the old single "initial" clip) loses its row, unless someone already reviewed it
+    rows = [{**dict.fromkeys(AUDIT_COLUMNS, ""), **row} for i, row in data["audit"].items()
+            if i in current or row["reviewer"] or row["review_status"] != "pending"]
     added = [{**dict.fromkeys(AUDIT_COLUMNS, ""), "item_id": i, "item_type": t, "source_refs": r, "review_status": "pending"}
              for i, t, r in wanted if i not in data["audit"]]
     with open(AUDIT, "w", encoding="utf-8", newline="") as f:
@@ -136,8 +159,8 @@ def write_audit(data, objective_ids):
 if __name__ == "__main__":
     data = load()
     if "--write-audit" in sys.argv:
-        # the validation build's lessons (validation-plan.md); transcription and translation stay coming_soon
-        print(f"added {write_audit(data, ['synthesis_direction_and_primer', 'error_correction'])} rows to {AUDIT}")
+        # all four lessons (notes.md); transcription and translation turn available once their rows are approved
+        print(f"added {write_audit(data, list(data['packets']))} rows to {AUDIT}")
         sys.exit(0)
     found = check(data, freeze="--freeze" in sys.argv)
     print("\n".join(found) or "content check passed")

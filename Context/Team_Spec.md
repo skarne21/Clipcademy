@@ -10,6 +10,8 @@ The product goal is **active recall**. Students pull answers from memory by answ
 
 Build one working browser experience with topic selection, a stick-figure review video, questions, feedback, a targeted follow-up video, and saved progress. Use four topic cards derived from the four lectures. Fully implement one adaptive lesson first, then expand only after that flow works.
 
+**Update 2026-11-03 (product owner, [notes.md](notes.md)):** each lesson now opens with 4–5 vertical 15–30 s intro clips in a swipe feed, then the quiz. A wrong answer plays a follow-up clip and then a retry question; wrong again on the same idea plays a second, differently explained clip. All four topics are built; transcription and translation turn `available` once their content review passes. Where this file still says "initial clip," read "the intro clips."
+
 The validation build has two lessons: DNA replication (Lecture 19) and DNA repair (Lecture 20). One lesson takes about 10 minutes, which leaves students nothing new to come back to. DNA repair follows replication directly in the course and its notes are clear once the flagged passage is left out. Transcription and translation stay "Coming soon" for the study, because Lectures 21 and 22 have unclear or inconsistent passages and each lecture adds three clips and a full content review.
 
 The proposed first lesson is DNA synthesis direction and the need for a primer. It has a clear source in Lecture 19, pp. 1–2, and a concrete wrong-answer branch. The same stick-figure guide should appear in every clip, with biological diagrams used to explain the actual process.
@@ -212,9 +214,9 @@ Agree on these IDs and response shapes before working separately. Member 2's ser
 
 | Endpoint | Owner | Required behavior |
 | --- | --- | --- |
-| `GET /topics` | Member 2 | Return topic IDs, labels, source references, availability, and available objectives. Each objective includes its `initial_video_request`, which Member 3 sends to `POST /video-jobs` to start the lesson |
+| `GET /topics` | Member 2 | Return topic IDs, labels, source references, availability, and available objectives. Each objective includes `intro_video_requests`, the intro clips in play order (`intro_1` …), which Member 3 sends to `POST /video-jobs` as each clip comes on screen |
 | `GET /questions/{question_id}` | Member 2 | Return prompt and choice IDs/text without answer key |
-| `POST /attempts` | Member 2 | Accept attempt ID (a UUID; `event_id` is a UUID too), question ID, selected choice, objective ID, and remediation state. Return feedback, action, and next question/video request |
+| `POST /attempts` | Member 2 | Accept attempt ID (a UUID; `event_id` is a UUID too), question ID, selected choice, objective ID, and remediation state. Return feedback, action, and next question/video request. The video request is the misconception's first follow-up (`<name>_followup`) the first time, and its second version (`<name>_followup_2`) when the student misses that idea again |
 | `POST /video-jobs` | Member 1 | Accept the approved video request. Return job ID and state |
 | `GET /video-jobs/{job_id}` | Member 1 | Return `queued`, `running`, `ready`, or `failed`. Ready includes playable video URL and transcript |
 | `POST /events` | Member 2 (stores), Member 3 (sends) | Accept one activity event and store it with a server timestamp. Ignore a repeated `event_id` (`200`, not an error). Reject an unknown `event_name` or a missing required field with `400`. Field list and the token-protected `GET /events.csv` export: [Member2_SPEC.md](Member2_SPEC.md), Service |
@@ -243,7 +245,8 @@ The validation study needs these events to measure in-app activity. Local storag
 | --- | --- | --- |
 | `app_opened` | App loads (starts a new `session_id`) | none |
 | `topic_selected` | Student selects a topic | `topic_id` |
-| `video_started` / `video_completed` | Clip starts playing / reaches the end | `variant_id` |
+| `video_started` / `video_completed` | Clip starts playing / reaches the end, once per time the clip is on screen (a looping clip doesn't repeat them) | `variant_id` |
+| `clip_swiped` | Student swipes away from a clip in the feed | `variant_id` (the clip left), `direction` (`up` = next, `down` = previous), `seconds_watched` (a number) |
 | `question_answered` | Attempt result comes back | `question_id`, `correct` |
 | `followup_requested` | App requests a follow-up clip | `variant_id` |
 | `objective_completed` / `objective_needs_review` | Objective reaches that status | `objective_id` |

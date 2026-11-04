@@ -26,7 +26,7 @@ page.on('pageerror', (e) => errors.push(e.message))
 page.on('console', (m) => m.type() === 'error' && !/Failed to load resource/.test(m.text()) && errors.push(m.text()))
 
 // ---- network control ----
-const log = { attempts: [], events: [], videoPosts: 0, questionBodies: [] }
+const log = { attempts: [], events: [], videoPosts: 0, videoVariants: [], questionBodies: [] }
 let video = 'broken' // real | broken (clip URL 404s) | playable | slow
 let eventsDown = false
 let attemptHook = null
@@ -48,6 +48,7 @@ page.on('request', async (req) => {
     if (video === 'real') return req.continue()
     if (req.method() === 'POST') {
       const body = JSON.parse(req.postData())
+      log.videoVariants.push(body.variant_id)
       if (video === 'slow') await new Promise((r) => setTimeout(r, 3000))
       return req.respond({ status: 202, contentType: 'application/json', body: JSON.stringify({ job_id: `job-${body.variant_id}`, status: 'queued' }) })
     }
@@ -89,6 +90,18 @@ async function answer(id, expect) {
   await waitText(expect)
 }
 const hash = () => page.evaluate(() => location.hash)
+// Swipe the clip feed to slide i (the slide after the last clip opens the question).
+const swipe = (i) => page.$eval('.feed-scroll', (el, i) => el.scrollTo({ top: el.children[i].offsetTop }), i)
+async function until(fn, timeout = 8000) {
+  for (const t0 = Date.now(); Date.now() - t0 < timeout; await new Promise((r) => setTimeout(r, 50))) {
+    const v = fn()
+    if (v) return v
+  }
+  throw new Error(`timed out waiting for ${fn}`)
+}
+const swipes = () => log.events.filter((e) => e.event_name === 'clip_swiped')
+// Retry on clip 1 only: the preloaded clip 2 has its own Retry further down the feed
+const retryClip1 = async () => (await page.waitForSelector(".slide:first-child .failed button")).click()
 const ok = (name) => console.log('PASS', name)
 
 // 1. first open
@@ -127,26 +140,46 @@ await click('Start')
 await waitText("The clip couldn't load.")
 assert.match(await hash(), /#\/lesson\/synthesis_direction_and_primer/)
 video = 'broken'
-await click('Retry')
-await waitText("The clip couldn't load.")
+await retryClip1()
+await page.waitForSelector(".slide:first-child .failed")
 assert.ok(jobPolls >= 1, 'polled the job')
 ok('9a lesson clip failure + retry')
 
-// playback: transcript, disclosure, video_started / video_completed
+// playback: autoplay, transcript, disclosure, video_started / video_completed, loop
 video = 'playable'
-await click('Retry')
+await retryClip1()
 await page.waitForSelector('video')
+t = await text()
+assert.match(t, /Previously rendered/)
+assert.match(t, /Clip 1 of 5/)
+assert.match(t, /Swipe up/)
+await click('Transcript')
 await waitText('Test transcript.')
-assert.match(await text(), /Previously rendered/)
-await page.$eval('video', (v) => {
-  v.muted = true
-  return v.play()
-})
-await page.waitForFunction(() => document.querySelector('video').ended, { timeout: 10000 })
-await queueEmpty()
+await click('Close')
+await until(() => log.events.some((e) => e.event_name === 'video_completed'), 10000)
 const played = log.events.filter((e) => e.event_name.startsWith('video_'))
-assert.deepEqual(played.map((e) => [e.event_name, e.variant_id]), [['video_started', 'initial'], ['video_completed', 'initial']])
-ok('video plays; transcript, disclosure, video_started and video_completed sent')
+assert.deepEqual(played.map((e) => [e.event_name, e.variant_id]), [['video_started', 'intro_1'], ['video_completed', 'intro_1']])
+await page.waitForFunction(() => !document.querySelector('video').paused, { timeout: 5000 }) // it loops instead of stopping
+ok('clip autoplays and loops; transcript, disclosure, one video_started and video_completed per view')
+
+// 17. feed: intro clips in order, next one preloaded, swipe up/down, refresh mid-feed
+assert.deepEqual(log.videoVariants.slice(0, 2), ['intro_1', 'intro_2'], 'clip 1 loads, clip 2 preloads')
+await swipe(1)
+await waitText('Clip 2 of 5')
+await until(() => log.videoVariants.includes('intro_3')) // the next clip preloads on each swipe
+let swiped = await until(() => swipes()[0])
+assert.deepEqual([swiped.variant_id, swiped.direction], ['intro_1', 'up'])
+assert.ok(swiped.seconds_watched > 0 && swiped.seconds_watched < 60, `seconds_watched ${swiped.seconds_watched}`)
+assert.doesNotMatch(await text(), /Swipe up/) // the hint is for the first clip only
+await page.reload()
+await waitText('Clip 2 of 5')
+assert.match(await hash(), /#\/lesson\//)
+await swipe(0)
+await waitText('Clip 1 of 5')
+swiped = await until(() => swipes()[1])
+assert.deepEqual([swiped.variant_id, swiped.direction], ['intro_2', 'down'])
+assert.equal(swipes().length, 2, 'a refresh sends no swipe')
+ok('17 feed: ordered intro clips, preload, swipe up and down, refresh keeps the clip')
 video = 'broken'
 
 // 3. replication q1=B, q2=A -> complete. 14: nothing before submit; 8: double tap
@@ -186,7 +219,10 @@ await click('Return home')
 await click('Restart')
 assert.match(await hash(), /#\/lesson\/synthesis_direction_and_primer/)
 assert.equal((await store()).objectives.synthesis_direction_and_primer.attempts.length, 0)
-await click('Answer the question')
+await page.waitForSelector('.feed-scroll')
+await swipe(5) // swiping past the last of the 5 clips opens the quiz
+await page.waitForFunction(() => location.hash === '#/question/rep-q1')
+ok('17b swiping past the last clip opens the question')
 await answer('B', 'Correct')
 await click('Next question')
 await answer('B', 'Not quite')
@@ -209,10 +245,12 @@ await click('Restart')
 await click('Answer the question')
 await answer('A', 'Not quite')
 await click('Watch explanation')
+await until(() => log.videoVariants.at(-1) === 'direction_followup')
 await click('Answer the question')
 assert.match(await hash(), /rep-r1/)
 await answer('B', 'Not quite')
 await click('Watch explanation')
+await until(() => log.videoVariants.at(-1) === 'direction_followup_2') // wrong again: the second, different clip
 await click('Answer the question')
 assert.match(await hash(), /rep-r3/)
 await answer('B', 'Not quite')
@@ -221,7 +259,7 @@ await waitText('Go over these')
 t = await text()
 assert.match(t, /Needs review/)
 assert.match(t, /DNA polymerase can't start a strand/)
-ok('5 two follow-ups -> needs_review with review points')
+ok('5 two follow-ups (v1 then v2) -> needs_review with review points')
 
 // a stale link can't reopen an answered question
 await page.goto(APP + '#/question/rep-q1')

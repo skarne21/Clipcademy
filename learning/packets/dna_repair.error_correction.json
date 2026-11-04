@@ -14,6 +14,10 @@
     {
       "ref": "L20-p1",
       "text": "When UV light hits DNA, it causes adjacent C's and T's to form covalent bonds with each other. The new bulge in the sugar-phosphate backbone prevents genes from being copied/transcribed normally. To correct this damage, enzymes and proteins: 1. Recognize the site of damage 2. Break the sugar-phosphate backbone on either side of the problem, open the double helix and remove the bases on the damaged strand 3. Replace the excised bases with the correct deoxyribonucleotides 4. Catalyze formation of phosphodiester linkages between the next section of bases and the adjacent DNA."
+    },
+    {
+      "ref": "L20-p1",
+      "text": "Exonuclease is an enzyme that can remove a nucleotide from the end of a nucleic acid strand."
     }
   ],
   "excluded_passages": [
@@ -26,14 +30,20 @@
   ],
   "misconceptions": {
     "repair_timing": {
-      "variant_id": "timing_followup",
+      "variant_ids": [
+        "timing_followup",
+        "timing_followup_2"
+      ],
       "retry_question_ids": [
         "dr-r1",
         "dr-r3"
       ]
     },
     "uv_damage": {
-      "variant_id": "uv_followup",
+      "variant_ids": [
+        "uv_followup",
+        "uv_followup_2"
+      ],
       "retry_question_ids": [
         "dr-r2",
         "dr-r4"
@@ -41,13 +51,32 @@
     }
   },
   "variants": {
-    "initial": {
-      "teaching_goal": "Compare proofreading, mismatch repair, and UV-damage repair",
-      "key_points": [
-        "Proofreading: polymerase's exonuclease fixes a wrong base right away, from the 3′ end",
-        "Mismatch repair: after replication, proteins find and replace mismatched bases",
-        "UV damage: adjacent C's and T's bond; enzymes cut out and replace the damaged section"
-      ],
+    "intro_1": {
+      "teaching_goal": "Proofreading fixes a wrong base right away, while DNA is being copied.",
+      "source_refs": [
+        "L20-p1"
+      ]
+    },
+    "intro_2": {
+      "teaching_goal": "Mismatch repair fixes wrong bases after copying is finished.",
+      "source_refs": [
+        "L20-p1"
+      ]
+    },
+    "intro_3": {
+      "teaching_goal": "UV light bonds neighboring C's and T's together, which makes a bulge.",
+      "source_refs": [
+        "L20-p1"
+      ]
+    },
+    "intro_4": {
+      "teaching_goal": "Repair enzymes cut out the damaged piece, fill in new bases, and reseal the backbone.",
+      "source_refs": [
+        "L20-p1"
+      ]
+    },
+    "intro_5": {
+      "teaching_goal": "Proofreading fixes errors during copying, mismatch repair fixes them after, and UV damage is cut out and replaced.",
       "source_refs": [
         "L20-p1"
       ]
@@ -62,6 +91,13 @@
         "L20-p1"
       ]
     },
+    "timing_followup_2": {
+      "teaching_goal": "Explain when proofreading and mismatch repair each happen",
+      "approach": "Draw one round of copying as a timeline, and place each fix on it: proofreading during, mismatch repair after.",
+      "source_refs": [
+        "L20-p1"
+      ]
+    },
     "uv_followup": {
       "teaching_goal": "Explain what UV light does to DNA and how it is repaired",
       "key_points": [
@@ -71,7 +107,19 @@
       "source_refs": [
         "L20-p1"
       ]
+    },
+    "uv_followup_2": {
+      "teaching_goal": "Explain what UV light does to DNA and how it is repaired",
+      "approach": "Show the four repair steps as a numbered checklist that ticks off on screen: recognize, cut out, replace, reseal.",
+      "source_refs": [
+        "L20-p1"
+      ]
     }
   },
+  "review_points": [
+    "Proofreading: polymerase's exonuclease fixes a wrong base right away, from the 3′ end",
+    "Mismatch repair: after replication, proteins find and replace mismatched bases",
+    "UV damage: adjacent C's and T's bond; enzymes cut out and replace the damaged section"
+  ],
   "review_status": "draft"
 }

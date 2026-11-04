@@ -25,8 +25,12 @@ class CheckContent(unittest.TestCase):
             p["review_status"] = "reviewed"
         released = [o["objective_id"] for t in data["topics"] if t["availability"] == "available" for o in t["objectives"]]
         item_ids = [i for oid in released for i, _, _ in audit_items(data, oid)] + list(TEST_ITEMS)
-        data["audit"] = {i: {"item_id": i, "review_status": "approved"} for i in item_ids}
+        data["audit"] = {i: {"item_id": i, "review_status": "approved", "analogy_ok": "yes", "hook_in_sources": "yes"}
+                         for i in item_ids}
         self.assertEqual(check(data, freeze=True), [])
+        clip = next(i for i in item_ids if i.startswith("clip:"))
+        data["audit"][clip]["analogy_ok"] = ""
+        self.assertEqual(check(data, freeze=True), [f"{clip}: analogy_ok must be 'yes' in content-audit.csv"])
 
     def test_catches_broken_content(self):
         breakages = {
@@ -41,6 +45,16 @@ class CheckContent(unittest.TestCase):
             "topics and packet disagree": lambda d: d["topics"][0]["objectives"][0]["required_question_ids"].pop(),
             "counts_for outside objective": lambda d: d["key"]["rep-r1"].update(counts_for="dr-q1"),
             "variant missing": lambda d: d["packets"]["synthesis_direction_and_primer"]["variants"].pop("primer_followup"),
+            "second follow-up missing": lambda d: d["packets"]["synthesis_direction_and_primer"]["variants"].pop("primer_followup_2"),
+            "second follow-up not listed": lambda d: d["packets"]["synthesis_direction_and_primer"]["misconceptions"]
+                                                     ["primer_requirement"]["variant_ids"].pop(),
+            "v2 says nothing about how it differs": lambda d: d["packets"]["synthesis_direction_and_primer"]["variants"]
+                                                              ["primer_followup_2"].pop("approach"),
+            "too few intro clips": lambda d: [d["packets"]["template_strand_and_promoter"]["variants"].pop(f"intro_{i}") for i in (3, 4)],
+            "intro numbering gap": lambda d: d["packets"]["synthesis_direction_and_primer"]["variants"].pop("intro_2"),
+            "intro goal is two sentences": lambda d: d["packets"]["error_correction"]["variants"]["intro_1"].update(
+                teaching_goal="Proofreading fixes errors. It happens during copying."),
+            "no review points": lambda d: d["packets"]["error_correction"].update(review_points=[]),
             "correct answer is the giveaway longest": lambda d: d["questions"]["rep-q1"]["choices"][1].update(
                 text="The 3′ end, where DNA polymerase adds each new nucleotide"),
         }

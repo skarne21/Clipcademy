@@ -89,7 +89,8 @@ function routeFor(ctx) {
 
 function setStep(ctx, step) {
   ctx.o.step = step
-  ctx.o.video_job_id = null
+  ctx.o.video_jobs = {}
+  ctx.o.clip_index = 0
   save()
   go(routeFor(ctx))
 }
@@ -122,10 +123,10 @@ async function route() {
     // The saved step is the truth: a stale link or the Back button can't reopen an answered question.
     const want = routeFor(ctx)
     if (location.hash !== want) return location.replace(want)
-    if (o.step === 'lesson') return clipScreen(n, ctx, ctx.objective.initial_video_request, false)
+    if (o.step === 'lesson') return feedScreen(n, ctx, ctx.objective.intro_video_requests, false)
     if (o.step === 'question') return questionScreen(n, ctx)
     if (o.step === 'feedback') return feedbackScreen(ctx)
-    if (o.step === 'followup') return clipScreen(n, ctx, o.last_result.next_video_request, true)
+    if (o.step === 'followup') return feedScreen(n, ctx, [o.last_result.next_video_request], true)
     return summaryScreen(ctx)
   }
   if (name !== 'home' && !state.selected_topic_ids.length) return location.replace('#/topics')
@@ -271,77 +272,271 @@ function homeScreen(topics) {
   )
 }
 
-function clipScreen(n, ctx, request, followup) {
-  const slot = h('div', { class: 'clip' })
-  const transcript = h('div', { class: 'transcript' })
-  show(
-    back(),
-    h('h1', {}, ctx.objective.label),
-    h('p', { class: 'lede' }, request.teaching_goal),
-    slot,
-    transcript,
-    bar(primary('Answer the question', () => setStep(ctx, 'question'))),
-  )
-  loadClip(n, ctx, request, slot, transcript, followup)
-}
+// ---------- clip feed ----------
+// Full-screen 9:16 clips, swiped up and down like a short-video feed (notes.md). Native scroll
+// snapping does the swiping; an IntersectionObserver says which slide is on screen. Swiping
+// past the last clip opens the question.
 
-async function loadClip(n, ctx, request, slot, transcript, followup) {
+let soundOn = false // one tap turns the sound on for the rest of the feed
+
+const SVG = {
+  replay: 'M4 12a8 8 0 1 0 2.4-5.7M4 4v4.5h4.5',
+  captions: 'M3 6h18v12H3zM7 11h4M7 14h3M13 11h4M13 14h3',
+  transcript: 'M6 4h12v16H6zM9 8h6M9 11h6M9 14h4',
+  muted: 'M4 10v4h4l5 4V6L8 10zM16 10l4 4M20 10l-4 4',
+  up: 'M6 15l6-6 6 6',
+}
+function glyph(name) {
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+  svg.setAttribute('viewBox', '0 0 24 24')
+  svg.setAttribute('aria-hidden', 'true')
+  svg.innerHTML = `<path d="${SVG[name]}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`
+  return svg
+}
+const sideButton = (name, label, onclick) => h('button', { type: 'button', class: 'side', onclick }, glyph(name), h('span', {}, label))
+
+const disclosure = (job) =>
+  job.review_status === 'preview'
+    ? 'Team review copy: content approval pending. Synthetic narration.'
+    : job.source === 'generated'
+      ? 'Rendered just now from a fixed reviewed script. Synthetic narration.'
+      : 'Previously rendered from a fixed reviewed script. Synthetic narration.'
+
+function feedScreen(n, ctx, requests, followup) {
   const { o } = ctx
-  const failed = () => {
-    o.video_job_id = null
+  o.video_jobs ??= {}
+  const total = requests.length
+  const ids = { topic_id: o.topic_id, objective_id: ctx.id }
+
+  const slides = requests.map((request, i) =>
+    h('section', { class: 'slide', 'aria-label': followup ? 'Explanation' : `Clip ${i + 1} of ${total}` }, h('div', { class: 'frame' })),
+  )
+  const end = h(
+    'section',
+    { class: 'slide', 'aria-label': 'Question' },
+    h('div', { class: 'frame end' }, h('p', {}, followup ? 'Now a new question' : "Let's see what you remember")),
+  )
+  const scroller = h('div', { class: 'feed-scroll', tabindex: '0', 'aria-label': 'Clips. Swipe up for the next one.' }, slides, end)
+
+  const fills = requests.map(() => h('span', { class: 'fill' }))
+  const count = h('span', { class: 'count' })
+  const note = h('p', { class: 'disclosure' })
+  const hint = h('p', { class: 'swipe-hint', hidden: true }, glyph('up'), 'Swipe up')
+  const soundPill = h('button', { type: 'button', class: 'sound-pill', onclick: () => unmute() }, glyph('muted'), 'Tap for sound')
+  const ccButton = sideButton('captions', 'Captions', () => {
+    state.captions_on = !state.captions_on
     save()
-    slot.replaceChildren(
+    applyCaptions()
+  })
+  const transcriptText = h('p', {})
+  const sheet = h(
+    'dialog',
+    { class: 'sheet', 'aria-label': 'Transcript' },
+    h('h2', {}, 'Transcript'),
+    transcriptText,
+    h('form', { method: 'dialog' }, h('button', { class: 'secondary' }, 'Close')),
+  )
+  const hud = h(
+    'div',
+    { class: 'hud frame' },
+    h(
+      'div',
+      { class: 'hud-top' },
+      h('div', { class: 'segments' }, fills.map((f) => h('span', { class: 'segment' }, f))),
+      h('div', { class: 'hud-row' }, h('a', { href: '#/home', class: 'back' }, 'Back'), count),
+      soundPill,
+    ),
+    h(
+      'div',
+      { class: 'hud-side' },
+      sideButton('replay', 'Replay', () => {
+        const v = current()?.video
+        if (v) {
+          v.currentTime = 0
+          play(v)
+        }
+      }),
+      ccButton,
+      sideButton('transcript', 'Transcript', () => {
+        transcriptText.textContent = current()?.job?.transcript || 'No transcript for this clip yet.'
+        current()?.video?.pause()
+        sheet.showModal()
+      }),
+    ),
+    h('div', { class: 'hud-bottom' }, hint, note, primary('Answer the question', () => setStep(ctx, 'question'))),
+  )
+  sheet.addEventListener('close', () => {
+    const v = current()?.video
+    if (v && !stale(n)) play(v)
+  })
+  show(h('div', { class: 'feed' }, scroller, hud, sheet))
+
+  const slots = requests.map(() => ({})) // per slide: { job, video, loading }
+  let active = null
+  let view = null // this viewing of the active slide: what the study events report
+  const current = () => (active == null ? null : slots[active])
+
+  function play(v) {
+    v.muted = !soundOn
+    soundPill.hidden = soundOn
+    v.play().catch(() => {
+      if (v.muted) return // no autoplay at all here; a tap on the clip starts it
+      soundOn = false // sound was refused without a tap: play muted and offer the button
+      soundPill.hidden = false
+      v.muted = true
+      v.play().catch(() => {})
+    })
+  }
+
+  function unmute() {
+    soundOn = true
+    const v = current()?.video
+    if (v) play(v)
+    soundPill.hidden = true
+  }
+
+  function applyCaptions() {
+    ccButton.setAttribute('aria-pressed', String(!!state.captions_on))
+    for (const slot of slots) {
+      const t = slot.video?.textTracks[0]
+      if (t) t.mode = state.captions_on ? 'showing' : 'hidden'
+    }
+  }
+
+  function setProgress(i, fraction) {
+    fills.forEach((f, j) => (f.style.transform = `scaleX(${j < i ? 1 : j > i ? 0 : fraction})`))
+  }
+
+  async function load(i, retry = false) {
+    const slot = slots[i]
+    if (!slot || slot.loading || (slot.job && !retry)) return
+    const request = requests[i]
+    const frame = slides[i].firstChild
+    Object.assign(slot, { loading: true, job: null, video: null })
+    frame.replaceChildren(h('div', { class: 'video-box' }, h('p', {}, 'Preparing your explanation…')))
+    let job
+    try {
+      // After a refresh, keep polling the saved job instead of starting a new one.
+      const saved = !retry && o.video_jobs[request.variant_id]
+      job = saved ? await getVideo(saved) : await startVideo(request)
+      if (stale(n)) return
+      if (job.job_id) {
+        o.video_jobs[request.variant_id] = job.job_id
+        save()
+      }
+      while (job.status === 'queued' || job.status === 'running') {
+        await new Promise((r) => setTimeout(r, 2000))
+        if (stale(n)) return
+        job = await getVideo(job.job_id)
+      }
+    } catch {
+      job = { status: 'failed' }
+    }
+    slot.loading = false
+    if (stale(n)) return
+    if (job.status !== 'ready') return failed(i)
+    slot.job = job
+
+    const v = h('video', {
+      src: job.video_url,
+      playsinline: true,
+      muted: true,
+      preload: 'auto', // the next clip buffers before the swipe, so there's no spinner between clips
+      onplay: () => {
+        if (view?.i !== i || view.started) return
+        view.started = true
+        track('video_started', { ...ids, variant_id: request.variant_id })
+      },
+      onended: () => {
+        if (view?.i !== i) return
+        if (!view.completed) track('video_completed', { ...ids, variant_id: request.variant_id })
+        view.completed = true
+        view.last = 0
+        play(v) // a clip loops until the student swipes
+      },
+      ontimeupdate: () => {
+        if (view?.i !== i) return
+        const step = v.currentTime - view.last
+        if (step > 0 && step < 1.5) view.seconds += step // seeks and loop restarts aren't watching time
+        view.last = v.currentTime
+        if (v.duration) setProgress(i, v.currentTime / v.duration)
+      },
+      onerror: () => failed(i),
+      onclick: () => (v.muted ? unmute() : v.paused ? play(v) : v.pause()),
+    })
+    if (job.captions_url) v.append(h('track', { kind: 'captions', src: job.captions_url, srclang: 'en', label: 'English' }))
+    slot.video = v
+    frame.replaceChildren(v)
+    applyCaptions()
+    if (i === active) activate(i)
+  }
+
+  function failed(i) {
+    o.video_jobs[requests[i].variant_id] = null
+    save()
+    Object.assign(slots[i], { job: null, video: null, loading: false })
+    slides[i].firstChild.replaceChildren(
       h(
         'div',
         { class: 'video-box failed', role: 'alert' },
         h('p', {}, "The clip couldn't load.", followup ? ' Your answer is saved.' : ''),
-        secondary('Retry', () => loadClip(n, ctx, request, slot, transcript, followup)),
+        secondary('Retry', () => load(i, true)),
       ),
     )
+    if (i === active) note.textContent = ''
   }
-  slot.replaceChildren(h('div', { class: 'video-box' }, h('p', {}, 'Preparing your explanation…')))
-  transcript.replaceChildren()
 
-  let job
-  try {
-    // After a refresh, keep polling the saved job instead of starting a new one.
-    job = o.video_job_id ? await getVideo(o.video_job_id) : await startVideo(request)
-    if (stale(n)) return
-    if (job.job_id) {
-      o.video_job_id = job.job_id
+  // A slide came on screen: report the swipe away from the old one, then start the new one.
+  function activate(i) {
+    if (i !== active) {
+      if (active != null) {
+        slots[active].video?.pause()
+        track('clip_swiped', {
+          ...ids,
+          variant_id: requests[active].variant_id,
+          direction: i > active ? 'up' : 'down',
+          seconds_watched: Math.round((view?.seconds ?? 0) * 10) / 10,
+        })
+        hint.hidden = true
+      }
+      active = i
+      if (i === total) return setStep(ctx, 'question') // swiped past the last clip
+      o.clip_index = i
       save()
+      view = { i, started: false, completed: false, seconds: 0, last: 0 }
+      count.textContent = followup ? 'Explanation' : `Clip ${i + 1} of ${total}`
+      hint.hidden = !(i === 0 && !followup && total > 1)
+      setProgress(i, 0)
+      load(i)
+      load(i + 1) // preload the next clip
     }
-    while (job.status === 'queued' || job.status === 'running') {
-      await new Promise((r) => setTimeout(r, 2000))
-      if (stale(n)) return
-      job = await getVideo(job.job_id)
+    const { video, job } = slots[i]
+    note.textContent = job ? disclosure(job) : ''
+    if (video) {
+      video.currentTime = 0
+      play(video)
     }
-  } catch {
-    job = { status: 'failed' }
   }
-  if (stale(n)) return
-  if (job.status !== 'ready') return failed()
 
-  const ids = { topic_id: o.topic_id, objective_id: ctx.id, variant_id: request.variant_id }
-  let started = false
-  const video = h('video', {
-    src: job.video_url,
-    controls: true,
-    playsinline: true,
-    preload: 'metadata',
-    onplay: () => {
-      if (!started) track('video_started', ids)
-      started = true
+  const io = new IntersectionObserver(
+    (entries) => {
+      if (stale(n)) return io.disconnect()
+      const seen = entries.find((e) => e.isIntersecting)
+      if (seen) activate([...scroller.children].indexOf(seen.target))
     },
-    onended: () => track('video_completed', ids),
-    onerror: failed,
-  })
-  if (job.captions_url) video.append(h('track', { kind: 'captions', src: job.captions_url, srclang: 'en', label: 'English' }))
-  slot.replaceChildren(
-    video,
-    h('p', { class: 'note' }, job.review_status === 'preview' ? 'Team review copy: content approval pending. Synthetic narration.' : job.source === 'generated' ? 'Rendered just now from a fixed reviewed script. Synthetic narration.' : 'Previously rendered from a fixed reviewed script. Synthetic narration.'),
+    { root: scroller, threshold: 0.6 },
   )
-  if (job.transcript) transcript.replaceChildren(h('h2', {}, 'Transcript'), h('p', {}, job.transcript))
+  const onVisibility = () => {
+    if (stale(n)) return document.removeEventListener('visibilitychange', onVisibility)
+    const v = current()?.video
+    if (v) document.hidden ? v.pause() : play(v)
+  }
+  document.addEventListener('visibilitychange', onVisibility)
+
+  // A refresh mid-feed comes back to the same clip.
+  scroller.scrollTop = slides[Math.min(o.clip_index ?? 0, total - 1)].offsetTop
+  for (const slide of scroller.children) io.observe(slide)
+  scroller.focus({ preventScroll: true }) // arrow keys and Page Down move between clips
 }
 
 async function questionScreen(n, ctx) {
@@ -410,6 +605,7 @@ async function questionScreen(n, ctx) {
     o.pending_attempt = null
     o.step = 'feedback'
     save()
+    if (r.correct) navigator.vibrate?.(30) // a small tap of feedback on phones that support it
     const ids = { topic_id: o.topic_id, objective_id: ctx.id }
     track('question_answered', { ...ids, question_id: r.question_id, correct: r.correct })
     if (r.action === 'complete') track('objective_completed', ids)

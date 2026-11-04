@@ -45,7 +45,7 @@ async function fromSamples(method, path, body) {
   if (path === '/events') return { event_id: body.event_id, duplicate: false }
   if (path.startsWith('/video-jobs')) {
     // ponytail: fake ready job playing the e2e test clip until Member 1 ships clips and /video-jobs.
-    const variant_id = body?.variant_id ?? 'initial'
+    const variant_id = body?.variant_id ?? 'intro_1'
     const video_url = new URL('../e2e/clip.mp4', import.meta.url).href
     return { job_id: `sample-${variant_id}`, status: 'ready', variant_id, video_url, transcript: 'Sample transcript.', source_refs: [] }
   }

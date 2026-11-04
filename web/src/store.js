@@ -31,7 +31,8 @@ export const newObjective = (topic_id) => ({
   topic_id,
   remediation_state: {}, // stored exactly as the server returns it, never edited here
   step: 'lesson', // lesson | question | feedback | followup | summary
-  video_job_id: null,
+  video_jobs: {}, // variant_id -> job_id, so a refresh polls the same job
+  clip_index: 0, // which clip of the feed is on screen
   last_result: null,
   pending_attempt: null,
   attempts: [],

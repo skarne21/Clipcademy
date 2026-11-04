@@ -38,6 +38,8 @@ Work through these in order. Each task ends with something I can share.
 | 13 | Reset demo, failure, persistence, and late-response checks; build for the host | checklist below is ticked, static build in `web/dist` | Team | Demo readiness |
 
 **Progress:**
+**Vertical swipe player (notes.md, 2026-11-03): built, build `study-4`.** It covers the full-screen 9:16 feed of intro clips, swipe up and down, the progress bar, side buttons, muted autoplay with tap-for-sound, looping, the first-clip swipe hint, preloading, follow-ups in the same player, `clip_swiped`, and a short "Correct" animation (no points or streaks). The e2e suite covers swiping, clip order, a refresh mid-feed, and swiping into the quiz (cases 17–17c). Waiting on Member 1's portrait clips for the real-phone pilot check (iOS Safari, Android Chrome), and on the review before the build goes to `deploy-dist`.
+
 Tasks 2–11 and 13 are built in `web/` (Vite vanilla JS; the earlier React + TypeScript scaffold was dropped to match this spec). `web/src/api.js` runs in `live` or `samples` mode (`VITE_DATA_MODE=samples npm run dev`; `npm run check` tests samples mode). To develop against the hosted API, run `API_TARGET=https://clipcademy.pythonanywhere.com npm run dev`.
 
 Test cases 1–14 pass with `npm run e2e` (headless Chrome, production build, local service; how to run it is at the top of `web/e2e/run.mjs`). `/video-jobs` is faked per case with a 2-second test clip, so playback, the transcript, and `video_started` / `video_completed` are tested too. Screens were also checked at 320 px wide with 200% text and reduced motion. Still open, all waiting on someone else:
@@ -98,8 +100,8 @@ Visual and interaction rules for every screen are in [UI_Guidelines.md](UI_Guide
 
 ## Lesson flow
 
-1. **Start.** The student opens an available topic's objective. Send `topic_selected`. Call `startVideo(objective.initial_video_request)`, save the `job_id`, and poll `getVideo` every 2 s until `ready` or `failed`.
-2. **Watch.** Play `video_url` with native `<video controls>`, and show the transcript below it. Send `video_started` on first play and `video_completed` on `ended`. The question button is always available. Watching the whole clip isn't required.
+1. **Start.** The student opens an available topic's objective. Send `topic_selected`. The lesson is a full-screen vertical feed of `objective.intro_video_requests`, in order (notes.md, 2026-11-03). Each clip's job starts when its slide comes on screen (`startVideo`, poll `getVideo` every 2 s until `ready` or `failed`), and the next clip's job and video load straight after, so a swipe never shows a spinner. Each `job_id` is saved under its `variant_id`, and a refresh polls the saved job instead of starting a new one. A failed clip shows "The clip couldn't load." with Retry, on that slide only.
+2. **Watch.** The clip plays as soon as its slide is on screen: muted, since phones allow muted autoplay. A tap turns the sound on for the rest of the feed. The clip loops until the student swipes. Swipe up for the next clip, down for the previous one. Swiping up past the last clip opens the question. The top of the frame shows a progress bar and "Clip 2 of 5". The right side has Replay, Captions (on or off, remembered), and Transcript (a sheet). The bottom has "Swipe up" on the first clip only, the pre-rendered disclosure, and **Answer the question**, which is always there, because watching isn't required. All of this stays inside the shared contract's safe zones (top 120, right 120, bottom 200 px of 720×1280). Send `video_started` and `video_completed` once each per time a clip is on screen, and `clip_swiped` when the student swipes away. A refresh mid-feed returns to the same clip. Follow-up clips play in the same player as a one-clip feed.
 3. **Answer.** Load the question with `getQuestion`. On a fresh start (state `{}`), that's `objective.required_question_ids[0]` from `GET /topics`. After that, it's always the last result's `next_question_id`. Submit is disabled until a choice is picked, and stays disabled while the request is in flight. Show no feedback, hint, or correctness before the answer is submitted (active recall).
 4. **Result.** Save the returned `remediation_state` before showing anything, then send `question_answered`. Branch on `action`:
 
@@ -144,7 +146,8 @@ One `localStorage` key, `clipcademy`, holding one JSON object. Wrap every read a
       "topic_id": "dna_replication",
       "remediation_state": { "objective_status": "in_progress", "expected_question_id": "rep-r2", "remediation_count": 1, "satisfied_question_ids": ["rep-q1"], "asked_retry_ids": ["rep-r2"] },
       "step": "followup",
-      "video_job_id": "video-001",
+      "video_jobs": { "primer_followup": "video-001" },
+      "clip_index": 0,
       "last_result": { "action": "review_again", "feedback": "…", "next_video_request": { "variant_id": "primer_followup" } },
       "pending_attempt": null,
       "attempts": [{ "attempt_id": "0b7e3c52-…", "question_id": "rep-q2", "selected_choice_id": "B", "correct": false }]
@@ -166,7 +169,8 @@ The study's numbers come from these events (see [validation-plan.md](validation-
 | --- | --- | --- |
 | `app_opened` | App loads, with a new `session_id` | none |
 | `topic_selected` | Student starts a topic from the picker or home | `topic_id` |
-| `video_started` / `video_completed` | Clip first plays / fires `ended` | `variant_id` |
+| `video_started` / `video_completed` | Clip first plays / first reaches its end, once each per time the clip is on screen (loops don't repeat them) | `variant_id` |
+| `clip_swiped` | Student swipes away from a clip (not for the Answer button) | `variant_id` of the clip left, `direction` (`up` = next, `down` = previous), `seconds_watched` (played time this view, 0.1 s) |
 | `question_answered` | Attempt result comes back (once per `attempt_id`, even if it was resent) | `question_id`, `correct` |
 | `followup_requested` | App calls `startVideo` for a follow-up (not for the initial clip, not for Retry) | `variant_id` |
 | `objective_completed` / `objective_needs_review` | Result action is `complete` / `needs_review` | `objective_id` |
@@ -206,6 +210,9 @@ Run against the live local service unless a case says samples.
 | 13 | Start the server with `CLIPCADEMY_BUILD_IDS=<the app's build_id>`, run cases 3–5, export `events.csv` | One row per action, all with the participant code and `build_id_status` `ok` |
 | 14 | Inspect the question screen before submitting | No feedback, correct answer, or misconception visible, including in the network response |
 | 15 | Open the hosted build on a phone, refresh mid-lesson | Works, and the refresh keeps the step (hash routes) |
+| 17 | Start a lesson, swipe up, refresh, swipe down | `intro_1` loads and `intro_2` preloads; each swipe preloads the next clip. "Clip 2 of 5" survives the refresh. `clip_swiped` arrives for `intro_1` (`up`) and `intro_2` (`down`), none for the refresh. The "Swipe up" hint shows on clip 1 only |
+| 17b | Swipe past the last intro clip | The question opens (`rep-q1`) |
+| 17c | q1=A, r1=B | The follow-ups are `direction_followup`, then `direction_followup_2` |
 | 16 | Keep the app on screen for 60 s with a 36 s hidden gap in the middle | One heartbeat per 30 s on screen, none while hidden (`e2e/run.mjs` case 16 runs the page clock at 4×) |
 
 ## Done when

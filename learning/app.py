@@ -14,24 +14,27 @@ import grading
 
 TOPICS = grading._load(os.path.join(grading.HERE, "data", "topics.json"))
 for _objective in (o for t in TOPICS["topics"] for o in t["objectives"]):
-    # Team_Spec flow step 3: Member 3 sends this to /video-jobs to start a lesson
+    # notes.md shared contract: the intro clips, in order. Member 3 sends each to /video-jobs as its slide comes up
     _packet = grading.PACKETS[_objective["objective_id"]]
-    _objective["initial_video_request"] = {
-        "topic_id": _packet["topic_id"], "objective_id": _packet["objective_id"], "variant_id": "initial",
-        "teaching_goal": _packet["variants"]["initial"]["teaching_goal"],
-        "source_refs": _packet["variants"]["initial"]["source_refs"]}
+    _objective["intro_video_requests"] = [
+        {"topic_id": _packet["topic_id"], "objective_id": _packet["objective_id"], "variant_id": v,
+         "teaching_goal": _packet["variants"][v]["teaching_goal"], "source_refs": _packet["variants"][v]["source_refs"]}
+        for v in grading.intro_variant_ids(_packet)]
 MAX_BODY = 64 * 1024
 EVENT_COLUMNS = ["event_id", "participant_id", "session_id", "event_name", "topic_id", "objective_id", "question_id",
-                 "variant_id", "correct", "client_timestamp_utc", "timestamp_utc", "build_id", "build_id_status"]
+                 "variant_id", "correct", "direction", "seconds_watched", "client_timestamp_utc", "timestamp_utc",
+                 "build_id", "build_id_status"]
 EVENT_REQUIRED = ["event_id", "participant_id", "session_id", "event_name", "client_timestamp_utc"]
-EVENT_OPTIONAL = ["topic_id", "objective_id", "question_id", "variant_id", "build_id"]
+EVENT_OPTIONAL = ["topic_id", "objective_id", "question_id", "variant_id", "direction", "build_id"]
 EVENT_EXTRAS = {  # Team_Spec "Activity events": the extra fields each event must carry
     "app_opened": [], "topic_selected": ["topic_id"], "video_started": ["variant_id"],
     "video_completed": ["variant_id"], "question_answered": ["question_id", "correct"],
     "followup_requested": ["variant_id"], "objective_completed": ["objective_id"],
     "objective_needs_review": ["objective_id"], "demo_reset": [],
     "heartbeat": [],  # every 30 s while the app is visible, for time on app (validation-plan.md)
+    "clip_swiped": ["variant_id", "direction", "seconds_watched"],  # drop-off per clip and position (notes.md)
 }
+SWIPE_DIRECTIONS = ("up", "down")
 
 
 class HttpError(Exception):
@@ -80,6 +83,11 @@ def _validate_event(ev):
             raise HttpError(400, field, f"is required for {ev['event_name']}")
     if ev.get("correct") is not None and not isinstance(ev["correct"], bool):
         raise HttpError(400, "correct", "must be true or false")
+    if ev.get("direction") is not None and ev["direction"] not in SWIPE_DIRECTIONS:
+        raise HttpError(400, "direction", f"must be one of {', '.join(SWIPE_DIRECTIONS)}")
+    seconds = ev.get("seconds_watched")
+    if seconds is not None and (isinstance(seconds, bool) or not isinstance(seconds, (int, float)) or seconds < 0):
+        raise HttpError(400, "seconds_watched", "must be a number of seconds, 0 or more")
     try:
         client_time = datetime.fromisoformat(ev["client_timestamp_utc"])
     except ValueError:
@@ -102,6 +110,10 @@ def make_app(db_path, allowed_origins, build_ids, admin_token, video_app=None):
             event_name TEXT, topic_id TEXT, objective_id TEXT, question_id TEXT, variant_id TEXT, correct INTEGER,
             client_timestamp_utc TEXT, timestamp_utc TEXT, build_id TEXT);
     """)
+    have = {row[1] for row in db.execute("PRAGMA table_info(events)")}
+    for column, kind in (("direction", "TEXT"), ("seconds_watched", "REAL")):
+        if column not in have:  # a database made before clip_swiped existed (the hosted one)
+            db.execute(f"ALTER TABLE events ADD COLUMN {column} {kind}")
     attempts = AttemptStore(db)
 
     def read_json(environ):
@@ -128,7 +140,8 @@ def make_app(db_path, allowed_origins, build_ids, admin_token, video_app=None):
             row["topic_id"] = grading.PACKETS[row["objective_id"]]["topic_id"]
         row.update(client_timestamp_utc=client_time, timestamp_utc=_utc_iso(datetime.now(timezone.utc)))
         with db:
-            cur = db.execute(f"INSERT OR IGNORE INTO events VALUES ({', '.join('?' * len(row))})", list(row.values()))
+            cur = db.execute(f"INSERT OR IGNORE INTO events ({', '.join(row)}) VALUES ({', '.join('?' * len(row))})",
+                             list(row.values()))
         return (201, {"event_id": ev["event_id"], "duplicate": False}) if cur.rowcount else (200, {"duplicate": True})
 
     def export_events(environ):
