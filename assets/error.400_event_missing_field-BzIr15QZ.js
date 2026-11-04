@@ -1,0 +1,1 @@
+var e={request:{method:`POST`,path:`/events`,body:{event_id:`82ea12f1-77b6-59d5-9ae8-c73a34bebdaf`,participant_id:`P01`,session_id:`s1`,event_name:`topic_selected`,client_timestamp_utc:`2026-11-03T15:00:00Z`,build_id:`build-1`}},status:400,response:{error:{field:`topic_id`,message:`is required for topic_selected`}}};export{e as default};
