@@ -1,15 +1,15 @@
-# Notes for Member 1: vertical clips, 4–5 per topic
+# Vertical clips, 4–5 per topic: work split
 
-From the lead, 2026-11-03. These decisions came from the product owner. The **Contract changes** section needs Members 2 and 3 to agree before you rely on it.
+From the lead, 2026-11-03. These decisions came from the product owner. Shared decisions first, then each member's tasks.
 
-## What changes
+## Decisions (everyone)
 
 | | Today | Wanted |
 | --- | --- | --- |
 | Clips per topic before the quiz | 1 intro clip | **4–5 intro clips**, watched in order, then the quiz (same quiz flow as the MVP) |
 | Length | 45–55 s | **15–30 s**, one idea per clip |
 | Format | 960×540 landscape | **Vertical 9:16**, full-screen on a phone |
-| Look | Captions in a track only | **TikTok style**: large burned-in captions, plus room for the app's side buttons and progress bar |
+| Look | Captions in a track only | **TikTok style**: full-screen swipe, large burned-in captions, side buttons, progress bar |
 | Wrong answer | 1 follow-up clip per misconception, reused on the second cycle | **1 clip, then a retry question. Wrong again → a second, differently explained clip** (max 2 cycles, as today) |
 | Topics | Replication and repair | **All 4**: replication, repair, transcription, translation |
 | Old clips | 6 landscape clips | **Replace** them all; one format only |
@@ -17,69 +17,73 @@ From the lead, 2026-11-03. These decisions came from the product owner. The **Co
 
 Still fixed: every clip comes from a fixed, reviewed script. Wrong answers **select** a pre-made clip; nothing is generated live and no LLM writes anything (Team_Spec, line 9). Hosted mode stays `prerendered`.
 
-## Clip count
+**Clip count:** per topic, 4–5 intro clips + 2 misconceptions × 2 follow-up versions = 8–9. Across 4 topics: **32–36 clips** (today: 6), about 50 MB at 720×1280.
 
-Per topic: 4–5 intro clips, plus 2 misconceptions × 2 follow-up versions = **8–9 clips**. Across 4 topics: **32–36 clips** (today: 6).
+### Shared contract (agree first; blocks everyone)
 
-Disk: at 720×1280, 15–30 s, roughly 1–1.5 MB each, that's about 50 MB. That's well inside PythonAnywhere's 512 MiB, but check after the first render.
+- **Variant IDs:** intro clips `intro_1` … `intro_5`; follow-ups `<misconception>_followup` (v1) and `<misconception>_followup_2` (v2).
+- **`/topics`** returns an ordered list of intro video requests per objective, `intro_video_requests: [...]`, in place of the single `initial_video_request`.
+- **`/attempts`** returns the v1 follow-up request on the first wrong cycle and the v2 one on the second.
+- **Ready job response:** unchanged, plus `width` and `height`.
+- **Screen safe zones at 720×1280.** The UI draws here and clips keep it clear:
+  - top 120 px: progress bar
+  - right 120 px: side buttons
+  - bottom 200 px: controls and swipe hint
+  - Captions go in roughly y = 760–1000.
 
-### Proposed intro sequences
+---
 
-Each topic's sub-ideas, one per clip. **These are suggestions only.** Every claim must come from that packet's `source_excerpts` (`learning/packets/*.json`); anything not covered there goes to Member 2 first, not into a script.
+## Member 1: video (scripts, renderer, clips)
 
-| Topic (packet) | Intro clips | Follow-ups (v1 and v2 each) |
-| --- | --- | --- |
-| Replication (`synthesis_direction_and_primer`, L19-p1/p2) | 1 polymerase adds to the 3′ end · 2 so synthesis runs 5′→3′ · 3 it can't start on a bare template · 4 primase lays an RNA primer · 5 recap | `growth_direction`, `primer_requirement` |
-| Repair (`error_correction`, L20-p1) | 1 proofreading during synthesis · 2 mismatch repair after synthesis · 3 UV bonds adjacent bases · 4 the damage is cut out and refilled · 5 recap | `repair_timing`, `uv_damage` |
-| Transcription (`template_strand_and_promoter`, L21-p1) | 1 RNA polymerase reads the template strand · 2 template vs coding strand · 3 the promoter marks where to start · 4 recap | `template_vs_coding`, `promoter_role` |
-| Translation (`codon_pairing_and_ribosome_sites`, L22-p1/p2) | 1 codon–anticodon pairing · 2 A site · 3 P site · 4 E site · 5 recap | `site_roles`, `anticodon_pairing` |
+1. **Portrait template.** Change `template.json` and `animation.py` to 720×1280: the guide and diagram stack vertically, and everything stays out of the safe zones above. Same guide, colors and voice.
+2. **Burned-in captions.** Large, centered, word-by-word highlight, 2 lines max. Keep writing `.vtt` and `.txt` (accessibility and the transcript button).
+3. **One pilot clip first.** Render replication `intro_1` and send it to Member 3 to check in the swipe player on a real phone before scripting the rest.
+4. **Write the scripts.** 15–30 s each, one idea each, and each clip must make sense alone (students swipe back and forth). Every claim comes from that packet's `source_excerpts`. Anything missing goes to Member 2, never straight into a script. Proposed sequences:
 
-The v2 follow-up must explain the same misconception **a different way** (another diagram or analogy, not the same narration re-cut). Its source refs stay inside the packet.
+   | Topic (packet) | Intro clips | Follow-ups (v1 and v2 each) |
+   | --- | --- | --- |
+   | Replication (`synthesis_direction_and_primer`) | 1 polymerase adds to the 3′ end · 2 so synthesis runs 5′→3′ · 3 it can't start on a bare template · 4 primase lays an RNA primer · 5 recap | `growth_direction`, `primer_requirement` |
+   | Repair (`error_correction`) | 1 proofreading during synthesis · 2 mismatch repair after · 3 UV bonds adjacent bases · 4 the damage is cut out and refilled · 5 recap | `repair_timing`, `uv_damage` |
+   | Transcription (`template_strand_and_promoter`) | 1 RNA polymerase reads the template strand · 2 template vs coding strand · 3 the promoter marks the start · 4 recap | `template_vs_coding`, `promoter_role` |
+   | Translation (`codon_pairing_and_ribosome_sites`) | 1 codon–anticodon pairing · 2 A site · 3 P site · 4 E site · 5 recap | `site_roles`, `anticodon_pairing` |
 
-## Video spec
+   The v2 follow-up explains the same misconception **a different way**, with another diagram or analogy, not the same narration re-cut.
+5. **Send the scripts to the reviewer as text, before rendering**, so content fixes don't cost re-renders.
+6. **Render all 32–36 clips.** Delete the old landscape files in the same commit. Update `check_assets.py` and the tests.
+7. **`jobs.py`:** add `width`/`height` to the ready response. The catalog picks up the new scripts on its own.
+8. **Housekeeping:** in `render.py`, change `read_text()`/`write_text()` to `encoding='utf-8'`. It was left unchanged on merge because the fingerprint includes `render.py`. Since everything is being re-rendered, now is the time.
+9. **Answer for the team:** how long one 30 s clip takes to render; whether eSpeak holds up at this pace; whether the v2 clips need new diagram types.
 
-- **720×1280, 9:16**, H.264 yuv420p + AAC, 24 fps as now. 1080×1920 only if file sizes stay small.
-- **15–30 s.** One idea, one guide action, one summary card at most.
-- **Same guide and template** (green bow-tie stick figure, colors, voice). Update `template.json` for portrait: the guide and diagram stack vertically instead of side by side.
-- **Burned-in captions:** large, centered, word-by-word highlight like you already do, 2 lines max. **Keep the `.vtt` and `.txt`** too: screen readers and the transcript button use them.
-- **Safe zones** (Member 3's UI draws over these, so keep diagrams and captions out of them). At 720×1280:
-  - top 120 px: progress bar ("Clip 2 of 5")
-  - right 120 px: side buttons (replay, captions, transcript)
-  - bottom 200 px: swipe hint and the app's controls
-  - Put captions in roughly y = 760–1000.
-- **Each clip must make sense alone.** Students can swipe back and forth, so a clip can't depend on "as we just saw".
+## Member 2: content, API, hosting
 
-## Contract changes (to agree with Members 2 and 3)
+1. **Packets.** For all 4 packets, add the ordered intro variants (`intro_1` …) with teaching goals and `source_refs`, and a second follow-up variant (`_followup_2`) per misconception. Add source excerpts wherever Member 1's scripts need a claim the packet doesn't cover yet.
+2. **Transcription and translation.** Finish their draft packets and question banks so they can go from `coming_soon` to `available` after review.
+3. **API.** `/topics` returns `intro_video_requests`. `/attempts` picks the v1 follow-up on the first wrong cycle and the v2 on the second. Update the samples, `check_content.py` and the tests.
+4. **Content review.** Add a `content-audit.csv` row for each new clip (32–36) and get the reviewer booked now: this is the riskiest part of the schedule. `approved_version` = the clip's fingerprint, as today.
+5. **Hosting.** After each video push: `git pull` on PythonAnywhere, keep `/media/` mapped, then Reload. The clips grow from 9 MB to about 50 MB; check the disk. Before Day 0:
+   - turn `CLIPCADEMY_VIDEO_PREVIEW` off
+   - make sure only approved clips are deployed
+   - set the frozen build ID
+   - run the freeze checklist in Member2_DEVLOG
 
-The existing ones (POST `/video-jobs` → job, poll, `video_url`, `captions_url`, `transcript`) stay. What's new:
+## Member 3: web app (player and flow)
 
-1. **Variant IDs.** Proposed: intro clips `intro_1` … `intro_5`, follow-ups `<misconception>_followup` (v1) and `<misconception>_followup_2` (v2).
-2. **Member 2:** the packets list the intro sequence (e.g. `"intro_variant_ids": [...]`) and a second follow-up variant per misconception. `/topics` returns the ordered intro requests instead of the single `initial_video_request`. `/attempts` returns the v2 variant on the second cycle.
-3. **Member 3:** a vertical swipe player (full screen, swipe up/down between intro clips, side buttons, progress). After the last intro clip, the quiz opens. Follow-up clips use the same player.
-4. **You (`jobs.py`):** nothing structural. The catalog grows from the new script files. Add `width`/`height` (and optionally `orientation`) to the ready response so the UI can check the format.
+1. **Vertical swipe player.**
+   - Full-screen 9:16 video.
+   - Swipe up for the next intro clip, swipe down for the previous one.
+   - A progress bar at the top ("Clip 2 of 5").
+   - Side buttons on the right: replay, captions on/off, transcript.
+   - Stay inside the safe zones in the shared contract.
+2. **Flow.** The lesson plays the `intro_video_requests` in order, and after the last clip the quiz opens (same quiz screens as now). Follow-up clips for wrong answers open in the same player, then the retry question.
+3. **Loading.** Request each clip's job when its slide comes up, and preload the next one. Keep the existing "couldn't load" + Retry state for each clip.
+4. **Events.** Send `video_started`/`video_completed` per clip with its `variant_id`. Check `events.csv` still gives one row per clip view.
+5. **Pilot check.** Test Member 1's first portrait clip on a real phone (iOS Safari and Android Chrome): inline playback, captions, nothing overlapping.
+6. **Build and tests.** Extend the e2e suite (`web/e2e/`) for swiping, ordering, and a refresh mid-feed. Then a new build ID (`study-4`), and send the build to Member 2 via the `deploy-dist` branch.
 
-## Review and release
+## Order and dependencies
 
-- Each new clip gets a row in `Context/content-audit.csv`. Its `approved_version` must equal the clip's fingerprint, exactly as today (see `video/CONTENT_REVIEW.md`). 32–36 clips means a lot of reviewer time, so get scripts to the reviewer **before** rendering, as text, to catch content problems early.
-- The live site currently runs with `CLIPCADEMY_VIDEO_PREVIEW=1` and `/media/` mapped, for team testing only. Before Day 0, the flag goes off and only approved clips are deployed.
-- Transcription and translation are `coming_soon` and their packets are `draft`. Member 2 has to make them `available` once their content is reviewed.
-
-## Housekeeping while you re-render
-
-- `render.py` reads scripts with `read_text()`, which uses cp1252 on Windows. Please change it to `read_text(encoding='utf-8')` (and `write_text(..., encoding='utf-8')`). I didn't change it on merge, because the fingerprint includes `render.py` itself and an edit would have marked all six clips stale. Since everything is being re-rendered anyway, now is the time. `jobs.py` already has this fix.
-- `.gitattributes` now keeps `video/*.py` and `video/**/*.json` LF, so Windows checkouts don't change fingerprints.
-- Delete the old landscape files in `video/media/` in the same commit that adds the vertical ones, so `check_assets.py` stays green.
-
-## Suggested order
-
-1. Agree on the variant IDs above with Members 2 and 3 (one message).
-2. Change the portrait template and render **one** replication intro clip. Member 3 checks it in the swipe player on a real phone.
-3. Write all scripts, then send them to the content reviewer as text.
-4. Render all of them, update `check_assets.py` and the tests, commit, and push.
-5. Member 2 deploys (`git pull` on PythonAnywhere, then Reload); then a phone check on the live site.
-
-## Open questions for you
-
-- How long does one 30 s portrait clip take to render? That decides whether 36 clips can be redone easily after review edits.
-- Does eSpeak's voice hold up at TikTok pace, or does narration need to be faster or trimmed?
-- Can the v2 follow-ups reuse the v1 diagrams with different beats, or do they need new diagram types in `animation.py`?
+1. **Everyone:** agree on the shared contract (one message).
+2. **Member 1:** pilot clip → **Member 3:** phone check in the swipe player. (Member 2 starts the packets and books the reviewer in parallel.)
+3. **Member 2:** packets → **Member 1:** scripts → reviewer (as text).
+4. **Member 1:** render everything. **Member 2:** API. **Member 3:** finish the player and flow.
+5. **Member 2:** deploy → **all:** phone check on the live site → freeze before Day 0.
