@@ -47,6 +47,7 @@ function App({ deps }: AppProps) {
           isStartable={controller.isStartable}
           canResume={false}
           onOpenObjective={controller.onOpenObjective}
+          onReviewObjectiveAgain={controller.onReviewObjectiveAgain}
           onResume={controller.onResume}
           onChangeTopics={controller.onChangeTopics}
         />
@@ -128,20 +129,33 @@ function App({ deps }: AppProps) {
       break;
     }
     default:
-      screen = <p>Screen not implemented yet: {controller.nav.screen}</p>;
+      screen = (
+        <main className="app-screen">
+          <p>Screen not implemented yet: {controller.nav.screen}</p>
+        </main>
+      );
       break;
   }
 
   return (
-    <>
-      <header>
-        <h1>Clipcademy</h1>
-        <button type="button" onClick={controller.onResetDemo}>
+    <div className="app-shell">
+      <header className="app-header">
+        <h1>
+          <span className="app-logo" aria-hidden="true">
+            CA
+          </span>
+          Clipcademy
+        </h1>
+        <button
+          type="button"
+          className="btn btn-ghost btn-sm"
+          onClick={controller.onResetDemo}
+        >
           Reset demo
         </button>
       </header>
-      {screen}
-    </>
+      <div className="app-body">{screen}</div>
+    </div>
   );
 }
 

@@ -899,9 +899,7 @@ describe("App follow-up and summary flow (Part 3)", () => {
     await waitFor(() => {
       expect(screen.getByRole("heading", { name: "Review home" })).toBeInTheDocument();
       expect(
-        screen.getByText(
-          "Objective complete: Synthesis direction and primer requirement",
-        ),
+        screen.getByText("Objective complete."),
       ).toBeInTheDocument();
     });
   });

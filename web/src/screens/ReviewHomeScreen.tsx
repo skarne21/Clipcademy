@@ -7,12 +7,12 @@ type ReviewHomeScreenProps = {
   isStartable(objectiveId: string): boolean;
   canResume: boolean;
   onOpenObjective(topicId: string, objectiveId: string): void;
+  onReviewObjectiveAgain(topicId: string, objectiveId: string): void;
   onResume(): void;
   onChangeTopics(): void;
 };
 
 function statusText(
-  objectiveLabel: string,
   remediation: RemediationState | undefined,
 ): string {
   if (!remediation) {
@@ -24,7 +24,7 @@ function statusText(
     case "in_progress":
       return "In progress";
     case "complete":
-      return `Objective complete: ${objectiveLabel}`;
+      return "Objective complete.";
     case "needs_review":
       return "Needs review";
     default:
@@ -39,6 +39,7 @@ export function ReviewHomeScreen({
   isStartable,
   canResume,
   onOpenObjective,
+  onReviewObjectiveAgain,
   onResume,
   onChangeTopics,
 }: ReviewHomeScreenProps) {
@@ -47,46 +48,71 @@ export function ReviewHomeScreen({
   );
 
   return (
-    <main>
+    <main className="app-screen">
       <h1>Review home</h1>
-      {canResume ? (
-        <button type="button" onClick={onResume}>
-          Resume
+      <p className="screen-lead">
+        Pick an objective to watch a lesson and answer practice questions.
+      </p>
+      <div className="toolbar-row">
+        {canResume ? (
+          <button type="button" className="btn btn-primary" onClick={onResume}>
+            Resume
+          </button>
+        ) : null}
+        <button type="button" className="btn btn-secondary" onClick={onChangeTopics}>
+          Change topics
         </button>
-      ) : null}
-      <button type="button" onClick={onChangeTopics}>
-        Change topics
-      </button>
+      </div>
 
       {selectedTopics.map((topic) => (
-        <section key={topic.topic_id} aria-labelledby={`topic-${topic.topic_id}`}>
+        <section
+          key={topic.topic_id}
+          className="card-section"
+          aria-labelledby={`topic-${topic.topic_id}`}
+        >
           <h2 id={`topic-${topic.topic_id}`}>{topic.label}</h2>
 
           {topic.availability === "coming_soon" ? (
-            <p>Coming soon</p>
+            <p className="badge badge-muted">Coming soon</p>
           ) : (
-            <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+            <ul className="card-grid">
               {topic.objectives.map((objective) => {
                 const remediation = remediationStates[objective.objective_id];
                 const startable = isStartable(objective.objective_id);
+                const status = statusText(remediation);
+                const isComplete = remediation?.objective_status === "complete";
                 return (
                   <li key={objective.objective_id}>
-                    <section aria-label={objective.label}>
+                    <section
+                      className="card objective-card"
+                      aria-label={objective.label}
+                    >
                       <h3>{objective.label}</h3>
                       {startable ? (
                         <>
-                          <p>{statusText(objective.label, remediation)}</p>
+                          <p className="status-line">{status}</p>
                           <button
                             type="button"
+                            className="btn btn-primary"
                             onClick={() =>
-                              onOpenObjective(topic.topic_id, objective.objective_id)
+                              isComplete
+                                ? onReviewObjectiveAgain(
+                                    topic.topic_id,
+                                    objective.objective_id,
+                                  )
+                                : onOpenObjective(
+                                    topic.topic_id,
+                                    objective.objective_id,
+                                  )
                             }
                           >
-                            Start, {objective.label}
+                            {isComplete
+                              ? "Review again"
+                              : `Start, ${objective.label}`}
                           </button>
                         </>
                       ) : (
-                        <p>Coming soon</p>
+                        <span className="badge badge-muted">Coming soon</span>
                       )}
                     </section>
                   </li>

@@ -28,6 +28,7 @@ function renderReviewHome(
     isStartable: () => true,
     canResume: false,
     onOpenObjective: vi.fn(),
+    onReviewObjectiveAgain: vi.fn(),
     onResume: vi.fn(),
     onChangeTopics: vi.fn(),
     ...overrides,
@@ -63,17 +64,16 @@ describe("ReviewHomeScreen", () => {
     expect(within(section).getByText("In progress")).toBeInTheDocument();
   });
 
-  it("shows objective complete wording that names the objective", () => {
+  it("shows Objective complete from remediation state", () => {
     renderReviewHome({
       remediationStates: {
         synthesis_direction_and_primer: baseRemediation("complete"),
       },
     });
-    expect(
-      screen.getByText(
-        "Objective complete: Synthesis direction and primer requirement",
-      ),
-    ).toBeInTheDocument();
+    const section = screen.getByRole("region", {
+      name: "Synthesis direction and primer requirement",
+    });
+    expect(within(section).getByText("Objective complete.")).toBeInTheDocument();
   });
 
   it("shows Needs review from remediation state", () => {
@@ -96,6 +96,22 @@ describe("ReviewHomeScreen", () => {
     });
     expect(screen.queryByText(/DNA Replication.*complete/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/topic.*mastered/i)).not.toBeInTheDocument();
+  });
+
+  it("calls onReviewObjectiveAgain when Review again is clicked on a complete objective", async () => {
+    const user = userEvent.setup();
+    const { onReviewObjectiveAgain, onOpenObjective } = renderReviewHome({
+      remediationStates: {
+        synthesis_direction_and_primer: baseRemediation("complete"),
+      },
+    });
+    await user.click(screen.getByRole("button", { name: "Review again" }));
+    expect(onReviewObjectiveAgain).toHaveBeenCalledTimes(1);
+    expect(onReviewObjectiveAgain).toHaveBeenCalledWith(
+      "dna_replication",
+      "synthesis_direction_and_primer",
+    );
+    expect(onOpenObjective).not.toHaveBeenCalled();
   });
 
   it("calls onOpenObjective with topic and objective ids when Start is clicked", async () => {

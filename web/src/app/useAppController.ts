@@ -419,6 +419,25 @@ export function useAppController(deps: AppDeps) {
     [deps.storage, dispatchNav],
   );
 
+  const onReviewObjectiveAgain = useCallback(
+    (topicId: string, objectiveId: string) => {
+      const start = getObjectiveStart(objectiveId);
+      if (!start) {
+        return;
+      }
+      saveRemediationState(objectiveId, DEFAULT_REMEDIATION_STATE, deps.storage);
+      refreshProgressSnapshot();
+      dispatchNav({
+        type: "OPEN_LESSON",
+        topic_id: topicId,
+        objective_id: objectiveId,
+        video_request: start.initial_video_request,
+        first_question_id: start.first_question_id,
+      });
+    },
+    [deps.storage, dispatchNav, refreshProgressSnapshot],
+  );
+
   const onResume = useCallback(() => {
     // Part 4 restore uses reducer; home keeps canResume false in Part 1
   }, []);
@@ -602,6 +621,7 @@ export function useAppController(deps: AppDeps) {
     onChangeTopics,
     onResetDemo,
     onOpenObjective,
+    onReviewObjectiveAgain,
     onResume,
     onRetryVideo,
     onOpenQuestion,
