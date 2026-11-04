@@ -67,12 +67,19 @@ const waitText = (s, timeout = 8000) => page.waitForFunction((s) => document.bod
 const store = () => page.evaluate(() => JSON.parse(localStorage.getItem('clipcademy')))
 const queueEmpty = () => page.waitForFunction(() => JSON.parse(localStorage.getItem('clipcademy')).event_queue.length === 0, { timeout: 8000 })
 async function click(label) {
-  const el = await page.waitForFunction(
-    (label) => [...document.querySelectorAll('button, a, label')].find((e) => e.innerText.trim() === label && !e.disabled),
-    { timeout: 8000 },
-    label,
-  )
-  await el.click()
+  // Home re-renders when /topics arrives; a found button can be replaced before the click lands.
+  for (let tries = 3; ; tries--) {
+    const el = await page.waitForFunction(
+      (label) => [...document.querySelectorAll('button, a, label')].find((e) => e.innerText.trim() === label && !e.disabled),
+      { timeout: 8000 },
+      label,
+    )
+    try {
+      return await el.click()
+    } catch (err) {
+      if (tries === 1 || !/detached/.test(err.message)) throw err
+    }
+  }
 }
 const pickChoice = (id) => page.click(`input[value="${id}"]`)
 async function answer(id, expect) {

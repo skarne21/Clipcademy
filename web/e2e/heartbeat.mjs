@@ -1,5 +1,5 @@
 // Heartbeat carry-over across a reload, in headless Chrome. Same setup as run.mjs:
-//   CLIPCADEMY_BUILD_IDS=study-2 CLIPCADEMY_ADMIN_TOKEN=t CLIPCADEMY_DB=/tmp/e2e.db python learning/app.py
+//   CLIPCADEMY_BUILD_IDS=study-3 CLIPCADEMY_ADMIN_TOKEN=t CLIPCADEMY_DB=/tmp/e2e.db python learning/app.py
 //   npm run dev
 // Then: node e2e/heartbeat.mjs. The page clock runs at 4x, so 30 s of page time takes 7.5 s.
 import assert from 'node:assert/strict'
