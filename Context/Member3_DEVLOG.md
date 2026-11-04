@@ -5,7 +5,7 @@ Period covered: 2026-11-03 · Branch: `MVP02` · Build: `study-4` (live: `study-
 
 ## Where things stand
 
-The whole student app is built and tested against the real learning service, including the vertical swipe feed from notes.md (section 6). **No coding is left.** What's left is the checklist under "Next steps": a phone check and a hand-off, both waiting on Member 1's intro clips.
+The whole student app is built and tested against the real learning service, including the vertical swipe feed from notes.md (section 6). **No coding is left.** What's left is the checklist under "Next steps": a real-phone check, which can start now with the stand-in clip (section 7), and the hand-off, which waits on Member 1's intro clips.
 
 | Team_Spec task | State |
 | --- | --- |
@@ -99,6 +99,12 @@ The lesson screen is now a full-screen feed of 9:16 clips.
 - The real-phone pilot check (task 6) needs Member 1's portrait pilot clip.
 - Sending the build to Member 2 via `deploy-dist` should wait for the intro clips. Deployed now, every intro slide would fail to load.
 
+### 7. Work done before Member 1's clips
+
+- **Portrait stand-in clip:** `e2e/clip.mp4` is now 720×1280 (it was 320×180), with the contract's safe zones in red: top 120 px, right 120 px, bottom 200 px. Samples mode and the e2e test use it, so the 9:16 layout can be checked on a phone today. The e2e test passes all 19 checks with it, and `npm run check` passes.
+- **Layout check in an emulated phone** (Chrome, 390×844 and 320×568): the top row, the side buttons and the bottom bar sit inside the safe zones. "Tap for sound" sits just below the top zone, over the clip, until the student taps it. On a 320 px phone the "Swipe up" hint overlaps the bottom edge of the caption band (y 760–1000 in notes.md) by about 7 px. That only happens on clip 1, before the first swipe, so I left it.
+- **Still needs a real phone:** iPhone Safari's inline autoplay, scroll snapping and notch insets can't be emulated in Chrome. Run the samples-mode phone check in [web/README.md](../web/README.md) on one iPhone and one Android phone.
+
 ## Commits
 
 | Commit | Change |
@@ -117,7 +123,9 @@ The lesson screen is now a full-screen feed of 9:16 clips.
 
 ## Next steps for Member 3
 
-None of these is coding. Each waits on Member 1's clips or the content review.
+None of these is coding. Each waits on Member 1's clips or the content review, except step 0a.
+
+0a. **Now:** the samples-mode phone check on a real iPhone and Android phone (section 7), and agree with the team on when `topic_selected` fires (open question above).
 
 0. **Vertical clips:** when Member 1's portrait pilot clip lands, test it on a real iPhone (Safari) and Android phone (Chrome): inline playback, the sound tap, captions, and nothing overlapping the overlay. Once all intro clips are in, run `e2e/video-flow.mjs`, then `npm run build` and push `dist/` to `deploy-dist` for Member 2.
 1. **Run with the real video service:** Member 1's `video/jobs.py` and clips are merged. It also changed `web/src/main.js` and `web/vite.config.js`, and added `web/e2e/video-real.mjs`. Run the e2e with the real `/video-jobs`.

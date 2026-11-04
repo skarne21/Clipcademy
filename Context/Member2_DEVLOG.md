@@ -252,7 +252,8 @@ The product owner changed the lesson format: 4–5 short vertical intro clips pe
 
 None of these is coding. Each is a person, a login, or a wait.
 
-1. **Book the content reviewer now.** This is the riskiest part of the schedule (notes.md). There are 134 rows: the reviewer sees Member 1's scripts as text first, then the 35 rendered clips, and fills in `analogy_ok` and `hook_in_sources` for each clip.
+1. **Book the content reviewer now.** This is the riskiest part of the schedule (notes.md). There are 134 rows. Ninety-nine of them don't need the clips: 24 questions, 65 feedback lines, 4 packets (including the intro teaching goals) and 6 tests. Start those now, with transcription and translation first, so those two topics can be switched on at the freeze. The reviewer sees Member 1's scripts as text as soon as they're written, then the 35 rendered clips, and fills in `analogy_ok` and `hook_in_sources` for each clip.
+   - **Also now:** check the PythonAnywhere disk quota (Files tab) has about 50 MB free for the clips. **Don't** upload the new `learning/` code yet: the live `study-2` app reads `initial_video_request`, which the new `/topics` no longer sends. The server and `study-4` go up together.
 2. **After each video push from Member 1:** `git pull`, keep `/media/` mapped, Reload, and check the disk (about 50 MB of clips).
 3. **Don't deploy `study-4` until Member 1's intro clips are merged.** Until then, every intro slide would show "The clip couldn't load." Add `study-4` to `CLIPCADEMY_BUILD_IDS` when it goes live.
 4. **Final freeze:**

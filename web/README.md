@@ -13,6 +13,7 @@ npm run dev                      # app on :5173, API paths proxied to :8000
 - Without the Python service: `VITE_DATA_MODE=samples npm run dev` answers from `learning/samples/`.
 - Against the hosted API: `API_TARGET=https://clipcademy.pythonanywhere.com npm run dev`.
 - On a phone on the same Wi-Fi: `npm run dev -- --host`, then open the Network URL it prints.
+- Phone check before the real clips exist: `VITE_DATA_MODE=samples npm run dev -- --host`. Every clip is `e2e/clip.mp4`, a 2 s 720×1280 stand-in with the overlay's safe zones in red. The Back/count row, the side buttons and the bottom bar should sit on red, and nothing should cover the middle.
 
 ## Test
 
