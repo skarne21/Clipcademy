@@ -32,60 +32,78 @@ export function TopicPickerScreen({
   const canContinue = selectedIds.length > 0;
 
   return (
-    <main>
+    <main className="app-screen">
       <h1>Which topics are on your exam?</h1>
-      <p>
+      <p className="screen-lead">
         Select the topics you want to review. This app does not know your exam
         schedule or coverage—you choose what to practice.
       </p>
 
       {error ? (
-        <section aria-live="polite">
+        <section className="alert" aria-live="polite">
           <p role="alert">{error}</p>
-          <button type="button" onClick={onRetry}>
-            Retry
-          </button>
+          <div className="screen-actions">
+            <button type="button" className="btn btn-secondary" onClick={onRetry}>
+              Retry
+            </button>
+          </div>
         </section>
       ) : null}
 
       {!error && topics === null ? (
-        <p role="status" aria-label="Loading topics">
+        <p className="status-message" role="status" aria-label="Loading topics">
           Loading topics…
         </p>
       ) : null}
 
       {!error && topics !== null ? (
         <>
-          <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+          <ul className="card-grid">
             {topics.map((topic) => {
               const isComingSoon = topic.availability === "coming_soon";
               const checkboxId = `topic-${topic.topic_id}`;
+              const lectureLabel = lectureLabelFromSourceRefs(topic.source_refs);
               return (
                 <li key={topic.topic_id}>
-                  <article aria-label={topic.label}>
-                    <h2>{topic.label}</h2>
-                    <p>{lectureLabelFromSourceRefs(topic.source_refs)}</p>
-                    {isComingSoon ? <p>Coming soon</p> : null}
-                    <label htmlFor={checkboxId}>{topic.label}</label>
-                    <input
-                      id={checkboxId}
-                      type="checkbox"
-                      checked={selectedIds.includes(topic.topic_id)}
-                      disabled={isComingSoon}
-                      onChange={() => {
-                        if (!isComingSoon) {
-                          onToggle(topic.topic_id);
-                        }
-                      }}
-                    />
+                  <article className="card topic-card" aria-label={topic.label}>
+                    <label htmlFor={checkboxId}>
+                      <input
+                        id={checkboxId}
+                        type="checkbox"
+                        aria-label={topic.label}
+                        checked={selectedIds.includes(topic.topic_id)}
+                        disabled={isComingSoon}
+                        onChange={() => {
+                          if (!isComingSoon) {
+                            onToggle(topic.topic_id);
+                          }
+                        }}
+                      />
+                      <span className="topic-card__content">
+                        <h2>{topic.label}</h2>
+                        {lectureLabel ? (
+                          <p className="topic-card__meta">{lectureLabel}</p>
+                        ) : null}
+                        {isComingSoon ? (
+                          <span className="badge badge-muted">Coming soon</span>
+                        ) : null}
+                      </span>
+                    </label>
                   </article>
                 </li>
               );
             })}
           </ul>
-          <button type="button" disabled={!canContinue} onClick={onConfirm}>
-            Continue
-          </button>
+          <div className="screen-actions">
+            <button
+              type="button"
+              className="btn btn-primary"
+              disabled={!canContinue}
+              onClick={onConfirm}
+            >
+              Continue
+            </button>
+          </div>
         </>
       ) : null}
     </main>

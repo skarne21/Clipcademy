@@ -34,17 +34,21 @@ export function SummaryScreen({
   }, []);
 
   return (
-    <main>
-      <h1 ref={headingRef} tabIndex={-1}>
-        {heading}
-      </h1>
-      <p>{objectiveLabel}</p>
+    <main className="app-screen">
+      <div
+        className={`panel-hero ${status === "complete" ? "panel-hero--success" : "panel-hero--neutral"}`}
+      >
+        <h1 ref={headingRef} tabIndex={-1}>
+          {heading}
+        </h1>
+        <p>{objectiveLabel}</p>
+      </div>
 
       {status === "needs_review" ? (
         <>
-          {feedback ? <p>{feedback}</p> : null}
+          {feedback ? <p className="screen-lead">{feedback}</p> : null}
           {showKeyPoints ? (
-            <section>
+            <section className="card key-points">
               <h2>Key points</h2>
               <ul>
                 {keyPoints!.map((point) => (
@@ -53,16 +57,18 @@ export function SummaryScreen({
               </ul>
             </section>
           ) : null}
-          {sourceLabel ? <p>{sourceLabel}</p> : null}
+          {sourceLabel ? <p className="source-ref">{sourceLabel}</p> : null}
         </>
       ) : null}
 
-      <button type="button" onClick={onGoHome}>
-        Back to home
-      </button>
-      <button type="button" onClick={onRestart}>
-        Restart this objective
-      </button>
+      <div className="screen-actions">
+        <button type="button" className="btn btn-secondary" onClick={onGoHome}>
+          Back to home
+        </button>
+        <button type="button" className="btn btn-primary" onClick={onRestart}>
+          Restart this objective
+        </button>
+      </div>
     </main>
   );
 }

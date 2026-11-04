@@ -47,56 +47,66 @@ export function QuestionScreen({
   }
 
   return (
-    <main>
+    <main className="app-screen">
       {loadError ? (
-        <section aria-live="polite">
+        <section className="alert" aria-live="polite">
           <p role="alert">{loadError}</p>
-          <button type="button" onClick={onRetryLoad}>
-            Try again
-          </button>
+          <div className="screen-actions">
+            <button type="button" className="btn btn-secondary" onClick={onRetryLoad}>
+              Try again
+            </button>
+          </div>
         </section>
       ) : null}
 
       {!loadError && question === null ? (
-        <p role="status" aria-label="Loading question">
+        <p className="status-message" role="status" aria-label="Loading question">
           Loading question…
         </p>
       ) : null}
 
       {!loadError && question !== null ? (
         <form onSubmit={handleSubmit}>
-          <fieldset>
+          <fieldset className="choice-list">
             <legend>{question.prompt}</legend>
             {question.choices.map((choice) => {
               const inputId = `choice-${question.question_id}-${choice.choice_id}`;
               return (
-                <div key={choice.choice_id}>
-                  <label htmlFor={inputId}>{choice.text}</label>
-                  <input
-                    id={inputId}
-                    type="radio"
-                    name={`question-${question.question_id}`}
-                    value={choice.choice_id}
-                    checked={selectedChoiceId === choice.choice_id}
-                    disabled={submitting}
-                    onChange={() => setSelectedChoiceId(choice.choice_id)}
-                  />
+                <div key={choice.choice_id} className="choice-option">
+                  <label htmlFor={inputId}>
+                    <input
+                      id={inputId}
+                      type="radio"
+                      name={`question-${question.question_id}`}
+                      value={choice.choice_id}
+                      checked={selectedChoiceId === choice.choice_id}
+                      disabled={submitting}
+                      onChange={() => setSelectedChoiceId(choice.choice_id)}
+                    />
+                    {choice.text}
+                  </label>
                 </div>
               );
             })}
           </fieldset>
 
-          {submitError ? <p role="alert">{submitError}</p> : null}
+          {submitError ? (
+            <div className="alert">
+              <p role="alert">{submitError}</p>
+            </div>
+          ) : null}
 
-          <button type="submit" disabled={!canSubmit}>
+          <button type="submit" className="btn btn-primary" disabled={!canSubmit}>
             Submit
           </button>
         </form>
       ) : null}
 
-      <button type="button" onClick={onBack}>
-        Back
-      </button>
+      <div className="screen-actions">
+        <button type="button" className="btn btn-ghost" onClick={onBack}>
+          Back
+        </button>
+      </div>
     </main>
   );
 }

@@ -59,52 +59,67 @@ export function LessonScreen({
   }
 
   return (
-    <main>
+    <main className="app-screen">
       <h1>{title}</h1>
       {videoKind === "followup" ? (
-        <p>This short clip focuses on the idea from the last question.</p>
+        <p className="screen-lead">
+          This short clip focuses on the idea from the last question.
+        </p>
       ) : null}
 
-      {clipOriginLabel ? <p>{clipOriginLabel}</p> : null}
+      {clipOriginLabel ? <p className="source-ref">{clipOriginLabel}</p> : null}
 
       {videoStatus === "preparing" ? (
-        <p role="status">Preparing your video...</p>
+        <p className="status-message" role="status">
+          Preparing your video...
+        </p>
       ) : null}
 
       {videoStatus === "failed" ? (
-        <section aria-live="polite">
+        <section className="alert" aria-live="polite">
           <p role="alert">Your video could not be loaded.</p>
-          <button type="button" onClick={onRetryVideo}>
-            Try again
-          </button>
+          <div className="screen-actions">
+            <button type="button" className="btn btn-secondary" onClick={onRetryVideo}>
+              Try again
+            </button>
+          </div>
         </section>
       ) : null}
 
       {videoStatus === "ready" && videoUrl ? (
         <>
-          <video
-            controls
-            src={videoUrl}
-            aria-label="Lesson video"
-            onPlay={handlePlay}
-            onEnded={handleEnded}
-          />
+          <div className="video-panel">
+            <video
+              controls
+              src={videoUrl}
+              aria-label="Lesson video"
+              onPlay={handlePlay}
+              onEnded={handleEnded}
+            />
+          </div>
           {transcript ? (
-            <details aria-label="Transcript">
+            <details className="transcript-details" aria-label="Transcript">
               <summary>Transcript</summary>
               <p>{transcript}</p>
             </details>
           ) : null}
-          {sourceLabel ? <p>{sourceLabel}</p> : null}
+          {sourceLabel ? <p className="source-ref">{sourceLabel}</p> : null}
         </>
       ) : null}
 
-      <button type="button" disabled={!answerEnabled} onClick={onOpenQuestion}>
-        Answer question
-      </button>
-      <button type="button" onClick={onBack}>
-        Back
-      </button>
+      <div className="screen-actions">
+        <button
+          type="button"
+          className="btn btn-primary"
+          disabled={!answerEnabled}
+          onClick={onOpenQuestion}
+        >
+          Answer question
+        </button>
+        <button type="button" className="btn btn-ghost" onClick={onBack}>
+          Back
+        </button>
+      </div>
     </main>
   );
 }

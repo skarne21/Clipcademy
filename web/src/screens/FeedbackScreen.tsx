@@ -57,24 +57,34 @@ export function FeedbackScreen({
   }, []);
 
   return (
-    <main>
-      <h1 ref={headingRef} tabIndex={-1}>
-        {heading}
-      </h1>
-      <p>{result.feedback}</p>
-      {sourceLabel ? <p>{sourceLabel}</p> : null}
+    <main className="app-screen">
+      <div
+        className={`panel-hero ${result.correct ? "panel-hero--success" : "panel-hero--neutral"}`}
+      >
+        <h1 ref={headingRef} tabIndex={-1}>
+          {heading}
+        </h1>
+        <p>{result.feedback}</p>
+        {sourceLabel ? <p className="source-ref">{sourceLabel}</p> : null}
+      </div>
 
       {showRoutingError ? (
         <>
-          <p role="alert">Something went wrong loading the next step.</p>
-          <button type="button" onClick={onGoHome}>
-            Back to home
-          </button>
+          <div className="alert">
+            <p role="alert">Something went wrong loading the next step.</p>
+          </div>
+          <div className="screen-actions">
+            <button type="button" className="btn btn-secondary" onClick={onGoHome}>
+              Back to home
+            </button>
+          </div>
         </>
       ) : (
-        <button type="button" onClick={onContinue}>
-          {continueButtonLabel(result.action)}
-        </button>
+        <div className="screen-actions">
+          <button type="button" className="btn btn-primary" onClick={onContinue}>
+            {continueButtonLabel(result.action)}
+          </button>
+        </div>
       )}
     </main>
   );

@@ -21,25 +21,33 @@ export function ParticipantCodeScreen({ onSubmit }: ParticipantCodeScreenProps) 
   }
 
   return (
-    <main>
-      <p>
+    <main className="app-screen">
+      <h1>Welcome</h1>
+      <p className="screen-lead">
         Enter the participant code provided by the study team. It links your
         activity in this app to your participation in the study.
       </p>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="participant-code">Participant code</label>
-        <input
-          id="participant-code"
-          name="participant-code"
-          type="text"
-          autoComplete="off"
-          maxLength={32}
-          value={value}
-          onChange={(event) => setValue(event.target.value)}
-        />
-        <button type="submit" disabled={!canContinue}>
-          Continue
-        </button>
+      <form className="form-stack" onSubmit={handleSubmit}>
+        <div>
+          <label className="field-label" htmlFor="participant-code">
+            Participant code
+          </label>
+          <input
+            id="participant-code"
+            className="text-input"
+            name="participant-code"
+            type="text"
+            autoComplete="off"
+            maxLength={32}
+            value={value}
+            onChange={(event) => setValue(event.target.value)}
+          />
+        </div>
+        <div className="screen-actions">
+          <button type="submit" className="btn btn-primary" disabled={!canContinue}>
+            Continue
+          </button>
+        </div>
       </form>
     </main>
   );
