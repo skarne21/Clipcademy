@@ -46,10 +46,6 @@ Goal: each clip should feel like a short TikTok explainer, made to be watched, a
 - **Short sound effects** (pop when a label appears, click when a base joins, whoosh on a zoom) and an optional very quiet music bed. Only sounds we make ourselves (e.g. with FFmpeg's tone generators) or CC0-licensed ones; record the source of each in `video/README.md`.
 - The same 1-second sound starts every clip, so the series feels like one show.
 
-### Recommended addition (needs product owner OK): a 1-tap prediction
-
-TikTok explainers often put a poll on screen ("Which end grows? A or B"). Doing this in the hook, **before** the clip explains the idea, gets the student guessing from memory first. That's the active-recall goal, and it holds attention. The clip then shows the answer. Tapping is optional, the answer isn't graded, and nothing is shown before they tap. The 4–5-clips-then-quiz flow stays the same. Cost: one reviewed prediction prompt per intro clip (Member 2), one overlay (Member 3), one `prediction_answered` event. **Not in the task lists below until approved.**
-
 ### How we'll know it works
 
 These come from events we already send (`video_started`, `video_completed`) plus the swipe events Member 3 adds:
