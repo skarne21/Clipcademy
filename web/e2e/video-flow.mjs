@@ -31,7 +31,7 @@ try {
         await click('Submit')
         await waitText(feedback)
       }
-      async function play(variant) {
+      async function play(variant, after) {
         await page.waitForFunction(variant => {
           const video = document.querySelector('video')
           return video?.src.includes(`.${variant}.`) && video.readyState >= 1
@@ -49,7 +49,7 @@ try {
         assert.deepEqual([metadata.width, metadata.height], [720, 1280]) // vertical 9:16 (notes.md)
         assert.ok(metadata.duration >= 15 && metadata.duration <= 30)
         assert.ok(metadata.time > 0 && metadata.captions?.endsWith('.vtt'))
-        await page.waitForFunction(() => document.querySelector('video').currentTime < 1) // looped back to the start
+        await after() // the finished clip moves on by itself
         const overflows = await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)
         assert.equal(overflows, false, 'lesson fits the viewport')
       }
@@ -60,15 +60,13 @@ try {
       await click('DNA replication\nReady to review')
       await click('Continue')
       await click('Start')
-      await play('intro_1')
+      await play('intro_1', () => waitText('Clip 2 of 5'))
       await click('Answer the question')
       await answer('B', 'Correct')
       await click('Next question')
       await answer('B', 'Not quite')
       await click('Watch explanation')
-      await play('primer_followup')
-      await click('Answer the question')
-      await page.waitForFunction(() => location.hash.includes('rep-r2'))
+      await play('primer_followup', () => page.waitForFunction(() => location.hash.includes('rep-r2'))) // its only clip ends: the retry opens
       await answer('B', 'Correct')
       await click('See summary')
       await waitText('Complete')
@@ -77,7 +75,7 @@ try {
       await click('Return home')
       await waitText('See summary')
       assert.deepEqual(errors, [])
-      console.log(`PASS ${viewport.width}px real UI: narrated intro clip, wrong answer, targeted clip, fresh retry, completion and refresh`)
+      console.log(`PASS ${viewport.width}px real UI: narrated intro clip auto-advances, wrong answer, targeted clip opens the retry by itself, completion and refresh`)
     } finally {
       await context.close()
     }

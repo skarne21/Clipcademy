@@ -200,6 +200,9 @@ class Events(unittest.TestCase):
         for field, bad in [("direction", "left"), ("seconds_watched", -1), ("seconds_watched", "7"), ("seconds_watched", True)]:
             status, _, body = call(app, "POST", "/events", event(event_id=f"bad-{field}-{bad}", **{**swipe, field: bad}))
             self.assertEqual((status, body["error"]["field"]), (400, field))
+        auto = event(event_id="auto-advance", **{**swipe, "direction": "auto", "seconds_watched": 21.0})
+        self.assertEqual(call(app, "POST", "/events", auto)[0], 201)  # the feed moved on by itself
+        self.assertEqual(self.export(app)[2][-1]["direction"], "auto")
         status, _, body = call(app, "POST", "/events", event(event_id="no-dir", **{k: v for k, v in swipe.items() if k != "direction"}))
         self.assertEqual((status, body["error"]["field"]), (400, "direction"))
 

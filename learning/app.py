@@ -34,7 +34,7 @@ EVENT_EXTRAS = {  # Team_Spec "Activity events": the extra fields each event mus
     "heartbeat": [],  # every 30 s while the app is visible, for time on app (validation-plan.md)
     "clip_swiped": ["variant_id", "direction", "seconds_watched"],  # drop-off per clip and position (notes.md)
 }
-SWIPE_DIRECTIONS = ("up", "down")
+SWIPE_DIRECTIONS = ("up", "down", "auto")  # auto: the feed moved on after a clip ended
 
 
 class HttpError(Exception):

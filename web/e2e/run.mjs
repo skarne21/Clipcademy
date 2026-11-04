@@ -145,7 +145,7 @@ await page.waitForSelector(".slide:first-child .failed")
 assert.ok(jobPolls >= 1, 'polled the job')
 ok('9a lesson clip failure + retry')
 
-// playback: autoplay, transcript, disclosure, video_started / video_completed, loop
+// playback: autoplay, transcript, disclosure, video_started / video_completed, auto-advance
 video = 'playable'
 await retryClip1()
 await page.waitForSelector('video')
@@ -157,29 +157,32 @@ await click('Transcript')
 await waitText('Test transcript.')
 await click('Close')
 await until(() => log.events.some((e) => e.event_name === 'video_completed'), 10000)
+video = 'broken' // clips loaded from here on fail, so the feed stops after this one auto-advance
 const played = log.events.filter((e) => e.event_name.startsWith('video_'))
 assert.deepEqual(played.map((e) => [e.event_name, e.variant_id]), [['video_started', 'intro_1'], ['video_completed', 'intro_1']])
-await page.waitForFunction(() => !document.querySelector('video').paused, { timeout: 5000 }) // it loops instead of stopping
-ok('clip autoplays and loops; transcript, disclosure, one video_started and video_completed per view')
-
-// 17. feed: intro clips in order, next one preloaded, swipe up/down, refresh mid-feed
-assert.deepEqual(log.videoVariants.slice(0, 2), ['intro_1', 'intro_2'], 'clip 1 loads, clip 2 preloads')
-await swipe(1)
-await waitText('Clip 2 of 5')
-await until(() => log.videoVariants.includes('intro_3')) // the next clip preloads on each swipe
+await waitText('Clip 2 of 5') // a finished clip moves on to the next one by itself
 let swiped = await until(() => swipes()[0])
-assert.deepEqual([swiped.variant_id, swiped.direction], ['intro_1', 'up'])
+assert.deepEqual([swiped.variant_id, swiped.direction], ['intro_1', 'auto'])
 assert.ok(swiped.seconds_watched > 0 && swiped.seconds_watched < 60, `seconds_watched ${swiped.seconds_watched}`)
+ok('clip autoplays, then advances by itself; transcript, disclosure, one video_started and video_completed per view')
+
+// 17. feed: intro clips in order, next one preloaded, manual swipe up/down still works, refresh mid-feed
+assert.deepEqual(log.videoVariants.slice(0, 2), ['intro_1', 'intro_2'], 'clip 1 loads, clip 2 preloads')
+await until(() => log.videoVariants.includes('intro_3')) // the next clip preloads on each slide change
+await swipe(2)
+await waitText('Clip 3 of 5')
+swiped = await until(() => swipes()[1])
+assert.deepEqual([swiped.variant_id, swiped.direction], ['intro_2', 'up'])
 assert.doesNotMatch(await text(), /Swipe up/) // the hint is for the first clip only
 await page.reload()
-await waitText('Clip 2 of 5')
+await waitText('Clip 3 of 5')
 assert.match(await hash(), /#\/lesson\//)
-await swipe(0)
-await waitText('Clip 1 of 5')
-swiped = await until(() => swipes()[1])
-assert.deepEqual([swiped.variant_id, swiped.direction], ['intro_2', 'down'])
-assert.equal(swipes().length, 2, 'a refresh sends no swipe')
-ok('17 feed: ordered intro clips, preload, swipe up and down, refresh keeps the clip')
+await swipe(1)
+await waitText('Clip 2 of 5')
+swiped = await until(() => swipes()[2])
+assert.deepEqual([swiped.variant_id, swiped.direction], ['intro_3', 'down'])
+assert.equal(swipes().length, 3, 'a refresh sends no swipe')
+ok('17 feed: ordered intro clips, preload, manual swipe up and down, refresh keeps the clip')
 video = 'broken'
 
 // 3. replication q1=B, q2=A -> complete. 14: nothing before submit; 8: double tap

@@ -274,8 +274,9 @@ function homeScreen(topics) {
 
 // ---------- clip feed ----------
 // Full-screen 9:16 clips, swiped up and down like a short-video feed (notes.md). Native scroll
-// snapping does the swiping; an IntersectionObserver says which slide is on screen. Swiping
-// past the last clip opens the question.
+// snapping does the swiping; an IntersectionObserver says which slide is on screen. When a clip
+// finishes, the feed scrolls to the next one by itself; the student can still swipe either way at
+// any time. Reaching the slide after the last clip (by swiping or by itself) opens the question.
 
 let soundOn = false // one tap turns the sound on for the rest of the feed
 
@@ -374,7 +375,18 @@ function feedScreen(n, ctx, requests, followup) {
   const slots = requests.map(() => ({})) // per slide: { job, video, loading }
   let active = null
   let view = null // this viewing of the active slide: what the study events report
+  let autoSwipe = false // the next slide change comes from a clip ending, not from the student
   const current = () => (active == null ? null : slots[active])
+
+  // A clip finished: after a short beat, move to the next slide unless the student already has.
+  function advance(i) {
+    setTimeout(() => {
+      if (stale(n) || active !== i || sheet.open) return
+      autoSwipe = true
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
+      scroller.scrollTo({ top: scroller.children[i + 1].offsetTop, behavior: reduce ? 'auto' : 'smooth' })
+    }, 600)
+  }
 
   function play(v) {
     v.muted = !soundOn
@@ -452,7 +464,7 @@ function feedScreen(n, ctx, requests, followup) {
         if (!view.completed) track('video_completed', { ...ids, variant_id: request.variant_id })
         view.completed = true
         view.last = 0
-        play(v) // a clip loops until the student swipes
+        advance(i) // move on to the next clip by itself
       },
       ontimeupdate: () => {
         if (view?.i !== i) return
@@ -494,11 +506,13 @@ function feedScreen(n, ctx, requests, followup) {
         track('clip_swiped', {
           ...ids,
           variant_id: requests[active].variant_id,
-          direction: i > active ? 'up' : 'down',
+          // 'auto' = the feed moved on after the clip ended, so drop-off counts only real swipes
+          direction: autoSwipe && i === active + 1 ? 'auto' : i > active ? 'up' : 'down',
           seconds_watched: Math.round((view?.seconds ?? 0) * 10) / 10,
         })
         hint.hidden = true
       }
+      autoSwipe = false
       active = i
       if (i === total) return setStep(ctx, 'question') // swiped past the last clip
       o.clip_index = i
