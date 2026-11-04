@@ -409,7 +409,7 @@ Cover these cases with one runnable test file next to the grading code.
 **Limits and how the plan handles them:**
 - **512 MiB disk:** this holds the code, the SQLite file, the web build, and the clips. The 32–36 vertical clips at 720×1280 come to about 50 MB, up from 9 MB. Check the disk on the Files tab after the first full video pull.
 - **Restricted outbound internet and limited CPU:** no video is rendered on the host. Member 1 renders the clips ahead of time, and the hosted `/video-jobs` returns the stored clip for the requested variant. That's the "served from a previously rendered version" case in Team_Spec, and presenters say so.
-- **The web app expires one month after it's last extended:** click "Run until 1 month from today" on the Web tab right before Day 0, so it can't lapse during Days 0–2.
+- **The web app expires one month after it's last extended:** click "Run until 1 month from today" on the Web tab right before the study day, so it can't lapse during the study.
 - **One web worker:** requests are handled one at a time, which is fine for 6 participants and short SQLite writes.
 - **Configuration:** set the environment variables (see Service) at the top of the PythonAnywhere WSGI file before importing `application`:
 
@@ -420,7 +420,7 @@ Cover these cases with one runnable test file next to the grading code.
   sys.path.insert(0, "/home/<username>/Clipcademy/learning")
   from app import application
   ```
-- **Backups:** download `clipcademy.db` and the `events.csv` export at the end of Day 2. Free accounts can be cleaned up after long inactivity.
+- **Backups:** download `clipcademy.db` and the `events.csv` export after the last evening session. Free accounts can be cleaned up after long inactivity.
 
 Verify these limits on PythonAnywhere's [free account page](https://help.pythonanywhere.com/pages/FreeAccountsFeatures/) before deploying, because free tiers change.
 
@@ -437,13 +437,13 @@ Member 2 owns the PythonAnywhere account. Other members get access through Pytho
    - The live account's username is `ClipCademy` (paths are case-sensitive), and the site is `https://clipcademy.pythonanywhere.com`.
 6. Click **Reload**, then open `https://<username>.pythonanywhere.com/topics` and check that it returns JSON. After that, test the full flow from a phone.
 7. **After each video push from Member 1:** run `git pull` in the Bash console, keep the `/media/` mapping pointed at `video/media`, then Reload. Play one new clip from a phone.
-8. **Before Day 0, in this order:**
-   1. Set transcription and translation to `available` in topics.json only if all their audit rows are approved. Otherwise leave them `coming_soon`. Then run `python learning/test_app.py --write-samples`.
+8. **Before the study day, in this order:**
+   1. Leave transcription and translation `coming_soon` in topics.json: the study uses them as comparison topics ([validation-plan.md](validation-plan.md)). Run `python learning/test_app.py --write-samples`.
    2. Run `python learning/check_content.py --freeze`. It must pass.
    3. In the WSGI file, make sure `CLIPCADEMY_VIDEO_PREVIEW` is **not** set. Without it, `/video-jobs` refuses any clip whose audit row isn't approved with a matching fingerprint, so only approved clips can play.
    4. Set `CLIPCADEMY_BUILD_IDS` to just the frozen build's ID (`study-4`, or later if the app changes again).
    5. Run the freeze checklist in [Member2_DEVLOG.md](Member2_DEVLOG.md), next step 4.
-9. Right before Day 0, click **Run until 1 month from today**. After Day 2, download `learning/clipcademy.db` and fetch `/events.csv` with the admin token.
+9. Right before the study day, click **Run until 1 month from today**. After the last evening session, download `learning/clipcademy.db` and fetch `/events.csv` with the admin token.
 
 Until Members 1 and 3 have built their parts, steps 1–4 and 6 can be done now, so the API is live for them to try.
 

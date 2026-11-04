@@ -1,18 +1,21 @@
 # Validation findings (complete after testing)
 
 Build ID tested —
-Dates and recruitment method —
-Participants: enrolled, completed post-test, withdrawn, missing —
+Study date, session times and recruitment method —
+Participants: enrolled, completed both sessions, withdrawn, missing —
 Protocol deviations (including any mid-study build change or reminders sent) —
 
-| Hypothesis | Rule | Result (numerator/denominator or mean) | Decision | Limitation |
+| Check | Rule | Result (numerator/denominator or mean) | Decision | Limitation |
 | --- | --- | --- | --- | --- |
-| H1 usability (natural) | ≥ 5/6 finish core flow on Day 0 with no help and no script | Pending | Not tested | Pending |
-| H1 with script (reported only) | none | Pending | Not judged | Script forces the follow-up path |
-| H2 recall gain | Mean gain ≥ 2 scored questions (topics open in the build) and ≥ 4/6 improve | Pending | Not tested | No control group; 2-day gap only; multiple choice allows recognition and guessing |
-| H2 untaught topics (reported only) | none | Pending (pre → post on questions about topics left "Coming soon") | Not judged | Rough comparison, not a control |
-| H3 voluntary use | ≥ 3/6 answer a question on a later day (either lesson), unreminded | Pending | Not tested | Only two lessons to return to |
-| H3 lesson split (reported only) | none | Pending (replication vs. repair per returner) | Not judged | Pending |
-| Original three-week and exam-timing KPIs | none | Not measured | Not tested | Alpha study can't assess these |
+| Gate usability | Each step (open lesson, clips, answer, return home) unaided by ≥ 5/6; any step with 2+ needing help must be fixed | Pending | Not tested | Moderator judgment of what counts as help |
+| Follow-up clips (reported only) | none | Pending (students who reached one, help needed) | Not judged | Only students who answer wrong see one |
+| H1 Learning | Mean app effect (taught gain % − untaught gain %) ≥ 15 points and ≥ 4/6 positive | Pending | Not tested | Comparison topics are different material; 8-hour gap only |
+| H1 without outside studying on taught topics | Same rule | Pending | Not tested | Outside studying is self-reported |
+| H1 written answers (reported only) | none | Pending (taught vs. untaught) | Not judged | One written question per topic |
+| H2 Return | ≥ 3/6 answer a question between sessions (1 h after the morning session to 1 h before the evening one) | Pending | Not tested | Students know an evening test is coming |
+| H2 details (reported only) | none | Pending (from memory, accuracy, last-hour use) | Not judged | Pending |
+| H3 Demand | ≥ 3/6 "very disappointed" | Pending | Not tested | Stated interest, not willingness to pay |
+| Semester sign-ups (reported only) | none | Pending | Not judged | Not linked to codes |
+| Original three-week and exam-timing KPIs | none | Not measured | Not tested | One-day study can't assess these |
 
-Show the raw scores and every metric calculation, using events.csv and participant-results.csv. Report how many events were excluded for a `build_id_status` of `missing` or `unknown`. Report later-day recall accuracy. Summarize interview themes with anonymous excerpts, including whether students said they recalled answers or recognized them. Report the content audit results from content-audit.csv: items reviewed, errors found by severity, and corrections made before Day 0. State whether each hypothesis was supported under its rule, and whether to continue, revise, or pivot, with the data that motivates that choice. List the assumptions that remain untested.
+Show the raw scores per topic and every calculation, using test-responses.csv, participant-results.csv and events.csv. Report how many events were excluded for a `build_id_status` of `missing` or `unknown` or for the team's `TEST` code. Report time on app, clip completion and first-try accuracy. Summarize interview themes with anonymous excerpts, including whether students said they recalled answers or recognized them. Report the content audit results from content-audit.csv: items reviewed, errors found by severity, and corrections made before the study day. State whether each hypothesis was supported under its rule, apply the decision table in [hypothesis-tests.md](hypothesis-tests.md), and give the data behind the decision. List the assumptions that remain untested, including whether the learning lasts beyond one day.

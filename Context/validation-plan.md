@@ -2,140 +2,106 @@
 
 ## Scope
 
-This is an alpha study of Clipcademy with **6 students** who are studying the biology content in Lectures 19–22. The app has two lessons for the study, plus transcription and translation if their content review passes before Day 0 (product owner decision, 2026-11-03, [notes.md](notes.md)):
+A one-day alpha study of ClipCademy with 6 students who are studying the biology content in Lectures 19–22. Each student takes a pre-test in the morning, goes through the app's two lessons once, and takes a post-test in the evening, about 8 hours later. The app is used as-is: no app or server changes are needed for this study.
 
-- **DNA replication** (Lecture 19 pp. 1–2): synthesis direction and the primer requirement.
-- **DNA repair** (Lecture 20 p. 1): proofreading, mismatch repair, and UV-damage repair.
-- **Transcription** (Lecture 21 p. 1) and **translation** (Lecture 22 pp. 1–2): open only if every one of their audit rows is approved before the freeze. Otherwise they stay "Coming soon."
+- **Taught in the app:** DNA replication (Lecture 19 pp. 1–2) and DNA repair (Lecture 20 p. 1).
+- **Comparison topics:** transcription (Lecture 21 p. 1) and translation (Lecture 22 pp. 1–2). They're on both tests and covered in lectures, but stay "Coming soon" in the app for the whole study. Each student's gain on them shows how much they improve without the app.
 
-The pre-test and post-test are multiple choice and cover all four topics: 3 questions each on replication and repair, 2 each on transcription and translation ([assessment.md](assessment.md), product owner decision, 2026-11-03).
-
-**Lesson format.** Each lesson opens with 4–5 vertical clips of 15–30 s, one idea each, in a swipe feed. Swiping past the last clip opens the questions. A wrong answer plays a follow-up clip and then a fresh question. Missing the same idea again plays a second follow-up that explains it a different way.
-
-**Why two lessons.** One lesson takes about 10 minutes on Day 0. With nothing new left, a low return rate (H3) couldn't tell "didn't value the app" apart from "had nothing left to do." All four lectures would delay the study for more clips and review, and Lectures 21 and 22 have unclear or inconsistent passages that could put wrong content in front of students. DNA repair follows replication directly in the course and adds only three clips and one lesson's review.
-
-The product aims to improve **active recall**: students retrieve answers from memory instead of rereading notes. The pre-test and post-test are 10 multiple-choice questions each. Each question gives a new situation, not a fact to recognize, and the two forms test the same ideas with different questions and different correct answers, so remembering a first-test answer doesn't help. Answer choices still allow recognition and guessing (1 in 4 per question), so a gain is weaker evidence of recall than a free-response gain would be. The interview asks whether students recalled answers or recognized them, and H3 checks whether students come back on a later day to practice retrieval again.
-
-**Design:** every participant gets the same thing, with no control group.
-
-1. **Day 0:** pre-test, then a first observed session in the app
-2. **Days 0–2:** voluntary use of the app on their own, with no reminders
-3. **Day 2** (about 48 hours after Day 0): post-test and short interview
+The product aims to improve **active recall**: students retrieve answers from memory instead of rereading notes. The tests mix multiple choice with written answers, so recall without answer choices is measured too.
 
 Participation is voluntary and has nothing to do with grades. Participants are identified only by an anonymous code (P01–P06). Ask them not to type personal information into free-text answers.
 
-## Base thresholds
+## What changed from the previous plan
 
-These are the base thresholds for the study. They're team decision rules, not published benchmarks. Lock them before recruiting, and report any later change as a deviation.
-
-| Hypothesis | Base threshold | Why this number |
+| Area | Previous plan | Now |
 | --- | --- | --- |
-| H1 Usability | **≥ 5 of 6 (83%)** finish the core flow on Day 0 with no moderator help | Allows one participant to struggle, and matches the common ~80% task-completion bar for usability tests |
-| H2 Recall gain | **Mean gain ≥ 2 scored questions** (of 10, or of 6 if only replication and repair were open) and **≥ 4 of 6** improve | With four choices, one extra correct answer can be a lucky guess, so a gain of one question isn't enough. Requiring a majority to improve keeps one big gain from carrying the mean |
-| H3 Voluntary use | **≥ 3 of 6 (50%)** answer a question on a later calendar day, with no reminder | Half the group returning on their own is a meaningful signal for a 2-day window |
+| Length | Day 0 and Day 2, 48 hours apart | One day: morning session, free time, evening session |
+| Lessons | Replication only on Day 0; repair optional | Both lessons, once each, replication first |
+| Comparison | None | Transcription and translation: tested but not taught in the app |
+| Morning app use | Free use, plus a scripted follow-up task for students who never answered wrong | Each student goes through both lessons (clips, then questions) and stops. A follow-up clip plays only after a wrong answer |
+| Tests | 10 multiple choice; only replication and repair scored | Same Forms A and B, all 10 scored, plus a written sheet with 1 question per topic |
+| Outside studying | One free-text question | Yes or no per topic, plus what |
+| H1 | Usability: 5 of 6 finish the flow with no help | Usability becomes a gate checked before the hypotheses |
+| H2 | Score gain of at least 2 questions | H1 Learning: gain on taught topics minus gain on untaught topics |
+| H3 | Answering on a later day | H2 Return: answering between sessions, not in the last hour before the test |
+| Demand | Not measured | H3 Demand: "How would you feel if you could no longer use ClipCademy?" |
 
-If a participant gets every scored pre-test question right, they can't show a gain. Report them separately and judge H2 on the rest, stating the new denominator.
+## What research says about a one-day test
 
-**Scored questions.** H2 is judged only on questions about topics that were open in the frozen build. If transcription and translation stay "Coming soon", that's the 4 replication and repair questions per form. Report the scores on the other questions too: they show how much students changed on topics the app didn't teach, which is a rough comparison, not a control.
+- **Forgetting is smaller over hours than days.** In Ebbinghaus's forgetting curve and its 2015 replication by Murre and Dros, forgetting continues for days and weeks. An evening test catches less of it than a later one, so evening scores will be higher than they would be after a longer gap.
+- **Retrieval practice pays off after a delay.** In Roediger and Karpicke (2006), restudying did as well or better on a test minutes later, while practising recall did better 2 days and 1 week later. A one-day test understates what recall practice adds.
+- **There's no good benchmark for same-day returns.** Education apps keep roughly 15–26% of users the next day. Any return before an evening test is partly test preparation, so the last hour before the post-test doesn't count.
+
+A learning pass in this study shows the app works within a day. Claiming lasting recall needs a test at least 2 days later.
 
 ## Hypotheses
 
-**H1 Usability.** Students can complete the core flow without help: select a topic, watch the intro clips, answer a question, watch a follow-up, and return home.
-Supported if at least **5 of 6** complete it in the Day 0 session without moderator help.
-Report H1 two ways:
-- **H1 natural:** the participant reached the follow-up through their own wrong answer and finished with no help. Only this count is judged against the ≥ 5 of 6 rule.
-- **H1 with script:** the participant needed the scripted follow-up task but did every other step alone. Report this count alongside the natural one, not as part of the rule.
+The full tests (data sources, calculations, pass rules and the decision table) are in [hypothesis-tests.md](hypothesis-tests.md).
 
-The scripted task is an instruction, not help. Anything beyond the script (explaining a button, pointing at the screen) counts as help.
+| | Question | Supported if |
+| --- | --- | --- |
+| Gate | Can students use the app without help? | Each step done unaided by at least 5 of 6 |
+| H1 Learning | Do students learn more on the topics the app teaches? | Mean app effect (taught gain % − untaught gain %) at least 15 points, and at least 4 of 6 positive |
+| H2 Return | Do students come back on their own? | At least 3 of 6 answer a question between sessions, not in the last hour before the test |
+| H3 Demand | Would they miss it? | At least 3 of 6 say "very disappointed" |
 
-**H2 Recall gain.** Test scores on the topics the app taught improve from pre-test to post-test.
-Supported if the **mean gain is at least 2 scored questions** and **at least 4 of 6** participants improve.
-With no control group, a gain shows that learning happened during the study period. It does not prove the app caused it, because class, other studying, or the pre-test itself could contribute.
-
-**H3 Voluntary use.** Students choose to use the app on their own.
-Supported if at least **3 of 6** open the app and answer at least one question on a **later calendar day than Day 0**, with no individual reminder. A question from either lesson counts. Also report which lesson each returning participant worked on: returns to DNA repair suggest students came for new content, and returns to replication suggest they came to practice recall again.
-
-The original pitch KPIs (about 60 students over three weeks, weekly topic completion, sessions more than three days before an exam) are not tested by this alpha study and stay marked untested.
+These are team decision rules, not published benchmarks. Lock them before recruiting, and report any later change as a deviation. The original pitch KPIs (about 60 students over three weeks, weekly topic completion, sessions more than three days before an exam) are not tested by this study.
 
 ## Procedure
 
 ### Before recruiting
 
-1. ~~Get written permission from the instructor to use the lecture-note excerpts.~~ **Done 2026-11-02** (received by Member 2). Keep the written permission with the study records.
-2. **Content audit.** A course-knowledgeable reviewer checks every app question, feedback line, lesson packet, clip transcript, and test item against the lecture notes. content-audit.csv is pre-filled with one `pending` row per item (148 rows: the four lessons, their 35 clips, and both test forms), so the reviewer only fills in the review columns, including whether a test item overlaps an app question. For every clip the reviewer also records `analogy_ok` (the analogy teaches nothing false) and `hook_in_sources` (the opening claim is in the lecture excerpts), each `yes` or `no`. Nothing reaches participants unless its `review_status` is approved. Fix and re-review anything with an error. Then set each approved lesson packet to `review_status: "reviewed"`. Any lesson that isn't fully approved goes back to `coming_soon` in the frozen build. `python learning/check_content.py --freeze` must pass before the build is frozen (steps in [Member2_SPEC.md](Member2_SPEC.md), Content review).
+1. ~~Get written permission from the instructor to use the lecture-note excerpts.~~ **Done 2026-11-02** (received by Member 2). Keep it with the study records.
+2. **Content audit.** A course-knowledgeable reviewer approves every app question, feedback line, lesson packet and clip transcript for DNA replication and DNA repair, plus every test item, including the 8 written questions in [assessment.md](assessment.md). Fix and re-review anything with an error, then set both lesson packets to `review_status: "reviewed"`. `python learning/check_content.py --freeze` must pass. Transcription and translation stay `coming_soon` whatever their review status.
 3. Freeze the build and set its `build_id` in the app, so every event carries it. Add the same ID to the server's list of valid build IDs.
-4. Deploy the frozen build to the PythonAnywhere web app, and open it from a phone to check it works. Right before Day 0, extend the web app's expiry ("Run until 1 month from today"), so it can't lapse during the study. After Day 2, download the database and the `events.csv` export.
+4. Deploy the frozen build to PythonAnywhere and open it from a phone to check it works. Right before the study day, extend the web app's expiry ("Run until 1 month from today").
 
-### Day 0 (moderated, about 20 minutes)
+### Morning session (moderated, about 30 minutes)
 
-1. Explain the study, the data collected, and that participants can stop at any time. Assign a participant code and record prior exposure to the lecture content.
-2. Give the **pre-test** without feedback and record the score. P01, P03 and P05 take Form A, and P02, P04 and P06 take Form B (printable PDFs and the procedure in [assessment.md](assessment.md)). Record which in `pre_form`. Collect the paper, and don't share scores or answers until after Day 2.
-3. Open the app and have the participant enter their code. Read the session-guide script and observe a natural first use. Record any help given.
-4. If the participant never answered a question wrong, run the scripted follow-up task from [session-guide.md](session-guide.md) so the follow-up flow is still tested for H1.
-5. Tell them the app is available for the next two days, and that using it is entirely up to them.
+Morning slots are staggered (for example P01 at 8:30, then one every 40 minutes). Evening slots follow in the same order, about 8 hours later.
 
-### Days 0–2 (unmoderated)
+1. Explain the study, the data collected, and that participants can stop at any time. Assign a code and record prior exposure to each topic.
+2. Give the pre-test without feedback ([assessment.md](assessment.md)). Record the start and end times.
+3. The participant enters their code and goes through both lessons: clips, then that lesson's questions, until the summary. Read the [session-guide.md](session-guide.md) script and record every step where you helped.
+4. When both summaries are reached, read the closing line and end the session.
 
-Don't remind or prompt anyone individually. Record any contact in `reminders_sent`. The app logs activity automatically (see Measuring activity).
+### Between sessions (unmoderated)
 
-### Day 2 (moderated, about 15 minutes)
+From here on the team only tracks. Don't contact or remind anyone, and record any contact in `reminders_sent`. The app logs everything students do.
 
-1. Ask what else they used to study these topics since Day 0.
-2. Give the **post-test**, the form the participant didn't take on Day 0, without feedback, and record the score.
-3. Ask the interview questions from the session guide.
+### Evening session (moderated, about 25 minutes)
 
-If a blocker has to be fixed mid-study, give the fix a new `build_id` and record which participants saw which build.
+1. Ask about outside studying per topic since the morning.
+2. Give the post-test on the other form, without feedback.
+3. Run the interview, then the demand question, then offer the semester sign-up sheet ([session-guide.md](session-guide.md)).
+4. After the last session, download `learning/clipcademy.db` and the `events.csv` export.
 
-## Measuring activity
+If a blocker has to be fixed during the day, give the fix a new `build_id` and record which participants saw which build.
 
-The app sends an event for every action to `POST /events` (defined in [Team_Spec.md](Team_Spec.md), Activity events). Each event carries the participant code, session ID, and timestamp. Export it as [events.csv](events.csv). Local browser storage alone can't measure activity, because it never leaves the participant's device.
+## Recording
 
-| Metric | Calculation (from events.csv unless noted) |
-| --- | --- |
-| Unassisted completion (H1 natural) | Participants who finished the core flow on Day 0 without help or the script / 6. From `day0_flow_completed`, `assistance_count`, and `scripted_followup_used` in participant-results.csv |
-| Completion with script (H1 with script) | Participants who used only the scripted task and no other help / 6 |
-| Score percent | Points / 3 × 100, from participant-results.csv |
-| Individual gain (H2) | Post points − pre points |
-| Mean gain (H2) | Mean of individual gains; also report every individual gain |
-| Later-day use (H3) | Participants with a `question_answered` event on a calendar day after Day 0 / 6 |
-| Later-day lesson split | For each returning participant, later-day `question_answered` events by `topic_id` (replication vs. repair) |
-| Day 0 repair use | Participants who opened DNA repair on Day 0 despite the script. Reported as a deviation |
-| Days active | Distinct calendar days with an `app_opened` event, per participant |
-| Sessions | Distinct `session_id` values per participant |
-| Time on app (minutes) | `heartbeat` events × 0.5, per participant, per calendar day (by `client_timestamp_utc`), and in total. Heartbeats only count while the app is visible, so idle time in a hidden tab and the time after the last action are both handled. Accurate to about 30 seconds per session |
-| When they used it | Local time of day and calendar day of each session (`client_timestamp_utc` of its first and last event, converted to the study's time zone) |
-| Active minutes (fallback) | Sum over sessions of (last event time − first event time). Use this only for sessions with no heartbeats, for example from a build without them, and report which method each number used |
-| Questions answered / correct | Count of `question_answered` events, split by `correct` |
-| Follow-ups watched | `video_completed` events for follow-up variants |
-| Later-day recall accuracy | Share of `question_answered` events after Day 0 with `correct` true. Reported only, not a hypothesis |
-| Clip completion rate | Per `variant_id`: `video_completed` / `video_started`. Each is sent once per time a clip is on screen, so a loop doesn't inflate it. A clip most students leave before the end gets rewritten. Reported only |
-| Drop-off by position | Per intro position (`intro_1` … `intro_5`): share of lesson starts (`topic_selected`) that reached that clip (`video_started`). Also the median `seconds_watched` from `clip_swiped` with `direction` `up`. Shows whether students quit at, say, clip 3 of 5. Reported only |
-| First-try accuracy after the feed | Share of each participant's first answers to the required questions (`rep-q1`, `rep-q2`, `dr-q1`, …) that are correct, in the feed build. Compare with the single-clip build only if single-clip data from real students exists: the team's own `TEST` sessions don't count, and with no such data, report "no baseline." The feed is meant to keep recall the same or better. A clear drop is a reason to revisit the clips, not a hypothesis result |
+| File | What goes in it | Who fills it |
+| --- | --- | --- |
+| [events.csv](events.csv) | Every app event, exported from the server with the admin token | The app |
+| [test-responses.csv](test-responses.csv) | Every test answer, morning and evening, with its score | Moderator; a blind scorer for written answers |
+| [participant-results.csv](participant-results.csv) | Session times, score totals per topic, help given, outside studying, demand answer | Moderator |
+| Interview notes | Answers to the interview questions | Moderator |
 
-Events carry two UTC times: `client_timestamp_utc` (when the action happened on the device) and `timestamp_utc` (when the server received it). Use `client_timestamp_utc`, converted to the study's local time zone, to decide which calendar day an event falls on. A send retried the next day must not count as a later-day return. Report any event whose two times are more than 10 minutes apart, since that points to a retried send or a wrong device clock. Leave out events whose `build_id_status` is `missing` or `unknown`, and report how many there were.
+Events carry two UTC times: `client_timestamp_utc` (when the action happened on the device) and `timestamp_utc` (when the server received it). Use `client_timestamp_utc`, converted to the study's local time zone, for the between-sessions window. Leave out events whose `build_id_status` is `missing` or `unknown`, and events from the team's own `TEST` code, and report how many there were.
 
-At n = 6, 5/6 = 83%, 4/6 = 67%, and 3/6 = 50%. These are threshold examples, not results.
+Also report, without a pass rule: time on app (`heartbeat` events × 0.5 min), clip completion per clip (`video_completed` / `video_started`), follow-ups watched, first-try accuracy on the required questions, and how many students reached a follow-up clip.
 
-Keep every participant in the report, including those who struggled, never returned, or withdrew. Record missing post-tests as missing, never as zero.
+Keep every participant in the report, including those who struggled or withdrew. Record missing post-tests as missing, never as zero.
 
 ## Limitations to report
 
-- No control group: gains can't be attributed to the app alone.
-- Six participants is a convenience sample, not a power-based size.
-- A 3-point test is short and not a standardized measure. Forms A and B are written to be parallel, but their difficulty hasn't been checked for equality.
-- Only two lessons are available, so there's still limited new content to return to. A student who finishes both may have nothing left.
-- The tests cover replication only. Use of the DNA repair lesson adds no learning evidence.
-- Participants know they're in a study, which may increase their use.
-- A 2-day gap is a short test of recall. Whether students still remember a week later is untested.
+- No true control group. The comparison topics are different material, so part of a difference could come from those topics being harder to improve on.
+- Six participants is a convenience sample. One student changes any count by 17 percentage points.
+- An 8-hour gap measures learning within a day, not lasting recall.
+- Outside studying is self-reported.
+- Participants know they're in a study and that an evening test is coming, which may raise effort and returns.
+- The demand question shows interest, not willingness to pay.
 
 ## Decision and submission
 
-Report each hypothesis separately as **supported**, **not supported**, or **insufficient evidence** under the rules above. If the rubric uses Validated/Invalidated/Pivot, map these to "Validated for this alpha sample," "Invalidated under this test," and "insufficient evidence" disclosed as such.
-
-What to do next depends on the findings:
-- Usability failures → fix the interface.
-- Use without score gains → revisit the lesson and question design.
-- Little voluntary use → revisit when and why students would open it.
-- Content errors → block release until the content is reviewed.
-
-Submit the build ID, participant counts, raw anonymized results, metric calculations, interview themes, limitations, and the decision, using [decision-report-template.md](decision-report-template.md).
+Report each hypothesis separately as **supported**, **not supported**, or **insufficient evidence**, then apply the decision table in [hypothesis-tests.md](hypothesis-tests.md). Submit the build ID, participant counts, raw anonymized data, every calculation, interview themes, limitations and the decision, using [decision-report-template.md](decision-report-template.md).

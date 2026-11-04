@@ -1,15 +1,15 @@
 # Pre-test and post-test
 
-Two multiple-choice forms of 10 questions each, covering the four topics the clips teach: DNA replication (L19 pp. 1–2) and DNA repair (L20 p. 1) with 3 questions each, and transcription (L21 p. 1) and translation (L22 pp. 1–2) with 2 each. Every question and correct answer comes from the lecture excerpts in the lesson packets (`learning/packets/`). Have a course-knowledgeable reviewer check the questions and the answer key before testing.
+Two forms, each with 10 multiple-choice questions and a written sheet of 4 short questions, covering four topics: DNA replication (L19 pp. 1–2) and DNA repair (L20 p. 1) with 3 multiple-choice questions each, and transcription (L21 p. 1) and translation (L22 pp. 1–2) with 2 each, plus one written question per topic. The app teaches replication and repair; transcription and translation are the comparison topics ([validation-plan.md](validation-plan.md)). Every question and correct answer comes from the lecture excerpts in the lesson packets (`learning/packets/`). Have a course-knowledgeable reviewer check the questions and the answer key before testing.
 
 **Same ideas, different questions.** Question A*n* and question B*n* test the same idea, but in a different situation with a different correct answer, usually in a different position. A student who remembers what they picked on the first test gains nothing: that answer is wrong on the other form. Only knowing the idea helps. Their difficulty hasn't been checked for equality, so the forms are counterbalanced (below).
 
 **No overlap with the app.** None of these questions reuse or reword the app's 24 practice questions (`learning/data/questions.json`). The app asks for a fact directly ("Which enzyme makes the RNA primer?"). These questions give a situation and ask what follows from it. If either file changes, recheck both and log the check in content-audit.csv.
 
 **Giving the tests.**
-- **Counterbalancing:** P01, P03 and P05 take Form A on Day 0 and Form B on Day 2. P02, P04 and P06 take Form B on Day 0 and Form A on Day 2. Record it in the `pre_form` column of participant-results.csv. If one form is easier, this keeps it from looking like a gain.
-- Use the printable PDFs in [tests/](tests/): `form-A.pdf`, `form-B.pdf`, and `answer-key.pdf` for the moderator only. Rebuild them after any change here with `python learning/make_test_pdfs.py`.
-- No notes, phone or feedback. Collect the paper when they finish, and don't tell anyone their score or the answers until after Day 2, so there's nothing to look up between tests.
+- **Counterbalancing:** P01, P03 and P05 take Form A in the morning and Form B in the evening. P02, P04 and P06 take Form B in the morning and Form A in the evening. Record it in the `pre_form` column of participant-results.csv. If one form is easier, this keeps it from looking like a gain.
+- Use the printable PDFs in [tests/](tests/): `form-A.pdf`, `form-B.pdf`, and `answer-key.pdf` for the moderator only. Rebuild them after any change here with `python learning/make_test_pdfs.py`. The PDFs don't include the written sheets yet: print the [written questions](#written-questions) for each form on a separate page and staple it after the multiple choice.
+- No notes, phone or feedback. Collect the paper when they finish, and don't tell anyone their score or the answers until after the evening session, so there's nothing to look up between tests.
 
 ## Form A
 
@@ -135,6 +135,37 @@ Two multiple-choice forms of 10 questions each, covering the four topics the cli
 - C. E, then A, then P
 - D. A, then E, then P
 
+## Written questions
+
+One per topic on each form, answered in a sentence or two without answer choices. They measure recall rather than recognition. The reviewer checks them against the app questions and the multiple choice on the same form, and adds a `test:` row for each in content-audit.csv.
+
+**Form A**
+- **WA1 (replication).** A new strand ends in …G-C-3′. Where does the next nucleotide go, and which way does the strand grow?
+- **WA2 (repair).** A wrong base is added while DNA is copied. Name the two ways it can be fixed and when each acts.
+- **WA3 (transcription).** How does RNA polymerase decide which nucleotide to add next?
+- **WA4 (translation).** What happens in the A, P and E sites as one amino acid is added?
+
+**Form B**
+- **WB1 (replication).** Why can a new DNA strand only grow 5′ → 3′?
+- **WB2 (repair).** Mismatch repair proteins stop working. Which errors can still be fixed, and by what?
+- **WB3 (transcription).** A gene's coding strand reads 5′-ATG-3′. What does its RNA read, and why?
+- **WB4 (translation).** An mRNA codon reads GGC. Which anticodon pairs with it, and why must it match?
+
+**Rubric (moderator only)**
+
+| Item | 2 points | 1 point |
+| --- | --- | --- |
+| WA1 | 3′ end and 5′→3′ | One of the two |
+| WA2 | Proofreading by polymerase during copying and mismatch repair after | One process with its timing |
+| WA3 | Pairs with the next template-strand base (U for A) | "It matches the DNA" without the strand |
+| WA4 | A: charged tRNA enters; P: peptide bond; E: empty tRNA leaves | Two sites right |
+| WB1 | Nucleotides join only at the 3′ end, so growth runs 5′→3′ | Direction without the reason |
+| WB2 | Errors caught during copying, by polymerase proofreading | "Proofreading" without the timing |
+| WB3 | 5′-AUG-3′: same as the coding strand with U for T, because RNA pairs with the template | The sequence without the reason |
+| WB4 | CCG, and pairing picks the right amino acid | The anticodon only |
+
+Anything else scores 0. The scorer works from copies with the participant code covered and the morning and evening sheets shuffled together.
+
 ## Answer key (moderator only)
 
 | Item | Answer | Idea tested | Source | Closest app question, and why it isn't a reword |
@@ -164,4 +195,13 @@ Two multiple-choice forms of 10 questions each, covering the four topics the cli
 
 ## Scoring
 
-Score each question 1 if correct and 0 otherwise, using the key, for a total of 0–10. Record the totals as `pre_points` and `post_points` in participant-results.csv, whichever form was taken. If transcription or translation stay "Coming soon" in the frozen build, also record the score on just the topics that were open (see validation-plan.md, H2). Don't give feedback on either test.
+Score each multiple-choice question 1 if correct and 0 otherwise, using the key. Score each written question 0–2 using the rubric. Enter every answer and its score in test-responses.csv. Then record the totals per topic in participant-results.csv: `<topic>_pre_mc`, `<topic>_pre_wr`, `<topic>_post_mc` and `<topic>_post_wr` for `rep`, `dr`, `tx` and `tl`, whichever form was taken.
+
+| Topic | Multiple choice | Written | Total |
+| --- | --- | --- | --- |
+| Replication (taught) | 0–3 | 0–2 | 5 |
+| Repair (taught) | 0–3 | 0–2 | 5 |
+| Transcription (comparison) | 0–2 | 0–2 | 4 |
+| Translation (comparison) | 0–2 | 0–2 | 4 |
+
+H1 compares the taught total (of 10) with the comparison total (of 8) as percentage gains ([hypothesis-tests.md](hypothesis-tests.md)). Don't give feedback on either test.
