@@ -5,6 +5,39 @@ This branch is based on `MVP02`; it does not merge the separate React app on
 `member3`. Six fixed-script, narrated review clips are included. No LLM writes
 student-facing content and no paid service or API key is needed.
 
+## Vertical clips (v2, Context/notes.md): pilot stage
+
+**Status:** one pilot clip, `dna_replication.intro_2` (19.0 s, 720×1280, ElevenLabs voice Liam). Per notes.md the other
+31–35 clips are not scripted until the pilot passes Member 3's phone check and the product owner's
+"does this feel like TikTok, and is it clear?" check. The landscape clips below are legacy and will be replaced.
+
+Pipeline (`python video/render.py --topic dna_replication --variant intro_2`):
+
+1. **Voice:** `tts.py` sends the fixed narration to ElevenLabs (`/v1/text-to-speech/{voice}/with-timestamps`,
+   model and voice in `template.json` → `tts`) and gets audio plus when each character is spoken. Results are
+   cached in `video/.cache/tts/`, so re-rendering never re-spends credits. The key is read from `video/.env`
+   (`ELEVENLABS_API_KEY=...`, git-ignored; needs only *Text to Speech* and *Voices: read*).
+   `CLIPCADEMY_VOICE=espeak` renders an offline draft instead; drafts get a different fingerprint.
+2. **Beats:** each script scene lists `beats` (spoken cue → actions such as `label:5`, `extend`, `zoom:new_3`,
+   `pose:thumbs`, `card:…`). `beats.py` resolves them to the spoken times, schedules the nucleotides clicking on,
+   and refuses a clip that is outside 15–30 s or has more than 3 s with no on-screen change.
+3. **Sound:** `sfx.py` mixes sound effects under the narration.
+4. **Frames:** Remotion (`video/remotion`, pinned to 4.0.537, React 18.3.1) draws the stick-figure guide (SVG),
+   the DNA board, the cards and TikTok-style burned-in captions (1–3 words, spoken word in yellow), keeping
+   the app's safe zones clear (top 120 px, right 120 px, bottom 200 px; captions in y 760–1000). Run
+   `cd video/remotion && npm ci` once. Rendering needs Node 18+ on the laptop only; the host serves MP4s.
+
+Outputs per clip: MP4, `.vtt` (sentence-sized cues), `.txt` transcript and a `.json` manifest with
+`width`, `height`, duration, voice, visuals, longest still stretch and the fingerprint for review.
+`python video/tts.py --voices` lists the voices the key can use. A 19 s clip renders in about 10 s.
+
+**Sound sources:** every sound is synthesized by `video/sfx.py` from sine waves and seeded noise. No third-party or
+sampled audio is used: the 1-second series sting (two rising notes, every clip), pop (labels, highlights, cards),
+click (a piece joining the strand), whoosh (zoom, arrow) and boing (a piece that can't join). No music bed yet.
+
+**Review notes:** each vertical script carries `review_notes` with the hook's source claim and the analogy, so the
+reviewer can check both items notes.md adds for every clip.
+
 ## Run the team preview
 
 From the repository root (Python 3.10+):

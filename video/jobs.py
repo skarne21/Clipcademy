@@ -89,7 +89,8 @@ class VideoService:
     def ready(self, base, record, source):
         return {**base,'status':'ready','source':source,'video_url':self.media_url+record['video_file'],
                 'captions_url':self.media_url+record['captions_file'],'transcript':record['transcript'],
-                'duration_seconds':record['duration_seconds'],'review_status':'preview' if self.preview else 'approved'}
+                'duration_seconds':record['duration_seconds'],'width':record.get('width'),'height':record.get('height'),
+                'review_status':'preview' if self.preview else 'approved'}
 
     def save(self, job, key):
         with self.db() as db:

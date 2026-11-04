@@ -15,7 +15,7 @@ class JobsTest(unittest.TestCase):
     def setUp(self):
         self.tmp=tempfile.TemporaryDirectory();self.root=Path(self.tmp.name)
         self.service=jobs.VideoService(db_path=self.root/'jobs.db',preview=True)
-        self.script=next(s for s in self.service.catalog.values() if s['topic_id']=='dna_replication' and s['variant_id']=='primer_followup')
+        self.script=next(s for s in self.service.catalog.values() if s['topic_id']=='dna_replication' and s['variant_id']=='intro_2')  # the one vertical clip so far
         self.request={k:self.script[k] for k in ['topic_id','objective_id','variant_id','teaching_goal','source_refs']}
     def tearDown(self):self.tmp.cleanup()
     def call(self,method,path,body=None,raw=None):

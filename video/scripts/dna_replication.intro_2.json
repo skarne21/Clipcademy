@@ -1,0 +1,143 @@
+{
+  "topic_id": "dna_replication",
+  "objective_id": "synthesis_direction_and_primer",
+  "variant_id": "intro_2",
+  "format": "vertical",
+  "teaching_goal": "New DNA only grows from 5′ to 3′.",
+  "source_refs": [
+    "L19-p1"
+  ],
+  "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "\"DNA only gets built one way\": L19-p1, DNA synthesis occurs only in the 5′ to 3′ direction.",
+    "analogy": "New pieces \"snap onto\" the 3′ end like blocks clicking together. Check it does not imply pieces can join anywhere else.",
+    "new_term": "3′ end (the end new pieces join), introduced with 5′ as the strand's two ends."
+  },
+  "scenes": [
+    {
+      "diagram": "strand",
+      "title": "DNA only gets built ONE way. Why?",
+      "narration": "DNA only gets built one way. Here's why. Every strand has two different ends. The 5-prime end. And the 3-prime end. New pieces can only snap onto the 3-prime end. So new DNA always grows 5-prime to 3-prime. One way. Every time. But it can't start from nothing. Swipe.",
+      "stage": {
+        "strand": 3,
+        "slots": 10
+      },
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "pose:think",
+            "pulse:strand"
+          ]
+        },
+        {
+          "on": "built",
+          "do": [
+            "pulse:template"
+          ]
+        },
+        {
+          "on": "here's",
+          "do": [
+            "point:strand"
+          ]
+        },
+        {
+          "on": "every strand",
+          "do": [
+            "pulse:strand"
+          ]
+        },
+        {
+          "on": "ends",
+          "do": [
+            "pulse:template",
+            "pose:present"
+          ]
+        },
+        {
+          "on": "5-prime",
+          "do": [
+            "label:5",
+            "pulse:new_5",
+            "point:new_5"
+          ]
+        },
+        {
+          "on": "3-prime",
+          "do": [
+            "label:3",
+            "pulse:new_3",
+            "point:new_3"
+          ]
+        },
+        {
+          "on": "only",
+          "do": [
+            "bounce",
+            "pose:wag"
+          ]
+        },
+        {
+          "on": "snap",
+          "do": [
+            "zoom:new_3",
+            "extend",
+            "point:new_3"
+          ]
+        },
+        {
+          "on": "so",
+          "do": [
+            "zoom_out",
+            "arrow"
+          ]
+        },
+        {
+          "on": "always",
+          "do": [
+            "card:New DNA grows 5′ → 3′",
+            "pulse:arrow"
+          ]
+        },
+        {
+          "on": "grows",
+          "do": [
+            "pulse:new_3"
+          ]
+        },
+        {
+          "on": "one way",
+          "do": [
+            "pose:thumbs"
+          ]
+        },
+        {
+          "on": "every time",
+          "do": [
+            "pulse:strand"
+          ]
+        },
+        {
+          "on": "can't",
+          "do": [
+            "pose:think"
+          ]
+        },
+        {
+          "on": "nothing",
+          "do": [
+            "ghost",
+            "pose:shrug"
+          ]
+        },
+        {
+          "on": "swipe",
+          "do": [
+            "pulse:ghost"
+          ]
+        }
+      ]
+    }
+  ]
+}

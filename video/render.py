@@ -1,8 +1,12 @@
-"""Offline fixed-script renderer. No network, model, or runtime script generation.
+"""Fixed-script renderer for Clipcademy's vertical clips. No LLM, no runtime script generation.
 
-Pipeline: narrate each scene with eSpeak (recording when each word is spoken),
-then draw every frame with ``animation.py`` so on-screen actions, the guide's
-mouth and the highlighted caption word follow the narration.
+Pipeline (Context/notes.md, Member 1):
+1. Narrate the reviewed script with ElevenLabs, which also returns when each word is spoken.
+   (``CLIPCADEMY_VOICE=espeak`` makes an offline draft instead; drafts get their own fingerprint.)
+2. ``beats.py`` turns the script's beats (spoken cue -> actions) into a timed plan and checks pacing.
+3. ``sfx.py`` mixes our own sound effects and the series sting under the narration.
+4. Remotion (``video/remotion``) draws every frame of the 720x1280 clip from that plan.
+The MP4, captions (.vtt), transcript (.txt) and manifest (.json) land in video/media.
 """
 import argparse
 import array
@@ -11,37 +15,51 @@ import hashlib
 import importlib.util
 import json
 import math
+import os
 import re
 import shutil
 import subprocess
+import sys
 import tempfile
 import wave
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-TEMPLATE = json.loads((HERE / 'template.json').read_text())
-SOURCES = ('render.py', 'animation.py')
-LEAD, TAIL = 0.35, 0.65   # silence before and after each scene's narration
+REMOTION = HERE / 'remotion'
+TEMPLATE = json.loads((HERE / 'template.json').read_text(encoding='utf-8'))
+LEAD, TAIL = 0.15, 0.45     # silence before and after the narration
+MIN_S, MAX_S = 15, 30       # notes.md: 15-30 s, one idea per clip
+
+
+def _code_files():
+    files = [HERE / n for n in ('render.py', 'beats.py', 'sfx.py', 'tts.py')]
+    files += sorted((REMOTION / 'src').rglob('*.ts*')) + [REMOTION / 'package.json']
+    return files
 
 
 def load_script(topic, variant):
     # Select by catalog values, never by a caller-controlled filesystem path.
     for path in sorted((HERE / 'scripts').glob('*.json')):
-        script = json.loads(path.read_text())
+        script = json.loads(path.read_text(encoding='utf-8'))
         if (script['topic_id'], script['variant_id']) == (topic, variant):
             return script
     raise ValueError('Unknown lesson variant')
 
 
-def fingerprint(script):
-    payload = json.dumps([script, TEMPLATE], sort_keys=True, ensure_ascii=False).encode()
-    code = b''.join((HERE / name).read_bytes() for name in SOURCES)
+def voice_engine():
+    return os.environ.get('CLIPCADEMY_VOICE') or TEMPLATE['tts']['engine']
+
+
+def fingerprint(script, voice=None):
+    voice = voice or TEMPLATE['tts']['engine']
+    payload = json.dumps([script, TEMPLATE, voice], sort_keys=True, ensure_ascii=False).encode()
+    code = b''.join(p.read_bytes() for p in _code_files())
     return hashlib.sha256(code + payload).hexdigest()[:16]
 
 
-def animation():
+def _module(name):
     # Loaded by path: jobs.py imports this file without putting video/ on sys.path.
-    spec = importlib.util.spec_from_file_location('clipcademy_animation', HERE / 'animation.py')
+    spec = importlib.util.spec_from_file_location(f'clipcademy_{name}', HERE / f'{name}.py')
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
@@ -76,9 +94,9 @@ def narrate(text):
             i += 1
         return 0
     lib.espeak_SetSynthCallback(collect)
-    if lib.espeak_SetVoiceByName(TEMPLATE['voice'].encode()) != 0:
+    if lib.espeak_SetVoiceByName(b'en-us') != 0:
         raise RuntimeError('Narration voice unavailable')
-    lib.espeak_SetParameter(1, TEMPLATE['words_per_minute'], 0)
+    lib.espeak_SetParameter(1, 160, 0)
     data = text.encode('utf-8') + b'\0'
     lib.espeak_Synth.argtypes = [ctypes.c_void_p, ctypes.c_size_t, ctypes.c_uint, ctypes.c_int,
                                  ctypes.c_uint, ctypes.c_uint, ctypes.c_void_p, ctypes.c_void_p]
@@ -143,105 +161,105 @@ def stamp(seconds):
     return f'{h:02}:{m:02}:{s:02}.{ms:03}'
 
 
+def vtt_chunks(words, size=7):
+    """Readable caption cues for the .vtt track: up to ~7 words, split at sentence ends."""
+    out, cur = [], []
+    for w in words:
+        cur.append(w)
+        if len(cur) >= size or w[0][-1] in '.?!':
+            out.append(cur)
+            cur = []
+    return out + ([cur] if cur else [])
+
+
+def narration_label(voice):
+    tts = TEMPLATE['tts']
+    if voice == 'elevenlabs':
+        return f"synthetic: ElevenLabs {tts['model']}, voice {tts.get('voice_name', tts['voice_id'])}"
+    return 'synthetic: eSpeak NG en-us (draft)'
+
+
 def render(script, output_dir):
-    art = animation()
+    beats, sfx = _module('beats'), _module('sfx')
+    voice = voice_engine()
+    if len(script['scenes']) != 1:
+        raise ValueError('Vertical clips are one continuous scene')
+    scene = script['scenes'][0]
+    if voice == 'elevenlabs':
+        pcm, rate, words = _module('tts').synthesize(scene['narration'], TEMPLATE['tts'])
+    else:
+        pcm, rate, words = narrate(scene['narration'])
+    fps = TEMPLATE['fps']
+    speech = len(pcm) / 2 / rate
+    frames = math.ceil((LEAD + speech + TAIL) * fps)
+    duration = frames / fps
+    if not MIN_S <= duration <= MAX_S:
+        raise ValueError(f'Clip is {duration:.2f}s; vertical clips must be {MIN_S}-{MAX_S}s')
+    words = [(w, s + LEAD, e + LEAD) for w, s, e in words]
+    p = beats.plan(scene, words, duration)
+    still = beats.longest_still(p, duration)
+    if still > beats.MAX_STILL:
+        raise ValueError(f'{still:.1f}s with no on-screen change (max {beats.MAX_STILL}s): add a beat')
+    total = int(duration * rate)
+    narration = array.array('h', (bytes(int(LEAD * rate) * 2) + pcm + bytes(total * 2))[:total * 2])
+    energy = loudness(narration, rate, fps, frames)
+    mixed = sfx.mix(array.array('h', narration), rate, beats.sound_cues(p))
+    stem = f'{script["topic_id"]}.{script["variant_id"]}.{fingerprint(script, voice)}'
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
-    stem = f'{script["topic_id"]}.{script["variant_id"]}.{fingerprint(script)}'
     destination = output_dir / f'{stem}.mp4'
-    fps = TEMPLATE['fps']
-    # 1. Narrate every scene first so the whole clip's timing is known.
-    scenes, pcm, rate = [], bytearray(), None
-    for scene in script['scenes']:
-        audio, rate, words = narrate(scene['narration'])
-        speech = len(audio) / 2 / rate
-        frames = math.ceil((LEAD + speech + TAIL) * fps)
-        duration = frames / fps
-        words = [(w, s + LEAD, e + LEAD) for w, s, e in words]
-        silence_before = int(LEAD * rate) * 2
-        padded = bytes(silence_before) + audio
-        padded += bytes(max(0, int(duration * rate) * 2 - len(padded)))
-        padded = padded[:int(duration * rate) * 2]
-        samples = array.array('h', padded)
-        scenes.append((scene, words, duration, frames, loudness(samples, rate, fps, frames)))
-        pcm += padded
-    total = sum(s[2] for s in scenes)
-    if not 30 <= total <= 60:
-        raise ValueError(f'Clip duration {total:.2f}s is outside 30–60s')
-    # 2. Captions and transcript use exactly the narrated words, with measured timing.
-    cues, offset = [], 0.0
-    for scene, words, duration, _, _ in scenes:
-        for chunk in art.caption_chunks(words):
-            start, end = chunk[0][1], chunk[-1][2]
-            cues.append(f'{stamp(offset + start)} --> {stamp(offset + min(end, duration))}\n'
-                        + ' '.join(w for w, _, _ in chunk) + '\n')
-        offset += duration
-    with tempfile.TemporaryDirectory(prefix='clipcademy-render-') as tmp:
-        tmp = Path(tmp)
-        wav = tmp / 'narration.wav'
-        with wave.open(str(wav), 'wb') as out:
+    job = REMOTION / 'public' / 'job' / stem
+    job.mkdir(parents=True, exist_ok=True)
+    try:
+        with wave.open(str(job / 'audio.wav'), 'wb') as out:
             out.setnchannels(1)
             out.setsampwidth(2)
             out.setframerate(rate)
-            out.writeframes(bytes(pcm))
-        assembled = tmp / 'final.mp4'
-        args = ['ffmpeg', '-v', 'error', '-y', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-s',
-                f'{TEMPLATE["width"]}x{TEMPLATE["height"]}', '-r', str(fps), '-i', 'pipe:0', '-i', str(wav),
-                '-c:v', 'libx264', '-threads', '2', '-preset', 'veryfast', '-tune', 'animation', '-crf', '26',
-                '-g', str(fps * 2), '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '64k', '-shortest',
-                '-movflags', '+faststart', str(assembled)]
-        # 3. Draw every frame and stream it to FFmpeg.
-        process = subprocess.Popen(args, stdin=subprocess.PIPE)
-        try:
-            done = 0
-            total_frames = sum(s[3] for s in scenes)
-            for index, (scene, words, duration, frames, energy) in enumerate(scenes):
-                drawer = art.SceneArt(TEMPLATE, script, index, words, duration)
-                for n in range(frames):
-                    image = drawer.frame(n / fps, energy[n], (done + n) / total_frames)
-                    process.stdin.write(image.tobytes())
-                done += frames
-        finally:
-            process.stdin.close()
-        if process.wait() != 0:
-            raise RuntimeError('FFmpeg failed')
-        # Copy into the destination filesystem then rename, so publication is atomic.
-        staging = output_dir / f'.{stem}.tmp'
-        shutil.copyfile(assembled, staging)
-        staging.replace(destination)
-    (output_dir / f'{stem}.vtt').write_text('WEBVTT\n\n' + '\n'.join(cues))
-    transcript = '\n\n'.join(s['narration'] for s in script['scenes'])
-    (output_dir / f'{stem}.txt').write_text(transcript + '\n')
+            out.writeframes(mixed.tobytes())
+        props = {'fps': fps, 'durationInFrames': frames, 'audio': f'job/{stem}/audio.wav',
+                 'title': scene['title'], 'diagram': scene['diagram'],
+                 'sources': 'Sources: ' + ', '.join(script['source_refs']) + ' · Review copy',
+                 'stage': p['stage'], 'events': p['events'], 'attach': p['attach'],
+                 'words': [{'text': w, 'start': round(s, 3), 'end': round(e, 3)} for w, s, e in words],
+                 'energy': [round(v, 3) for v in energy]}
+        with tempfile.TemporaryDirectory(prefix='clipcademy-render-') as tmp:
+            tmp = Path(tmp)
+            (tmp / 'props.json').write_text(json.dumps(props), encoding='utf-8')
+            npx = shutil.which('npx') or 'npx'
+            subprocess.run([npx, 'remotion', 'render', 'src/index.ts', 'Clip', str(tmp / 'out.mp4'),
+                            f'--props={tmp / "props.json"}', '--codec=h264', '--crf=23', '--audio-codec=aac',
+                            '--audio-bitrate=96k', '--pixel-format=yuv420p', '--log=error'],
+                           cwd=REMOTION, check=True)
+            # Copy into the destination filesystem then rename, so publication is atomic.
+            staging = output_dir / f'.{stem}.tmp'
+            shutil.copyfile(tmp / 'out.mp4', staging)
+            staging.replace(destination)
+    finally:
+        shutil.rmtree(job, ignore_errors=True)
+    cues = [f'{stamp(c[0][1])} --> {stamp(min(c[-1][2], duration))}\n' + ' '.join(w for w, _, _ in c) + '\n'
+            for c in vtt_chunks(words)]
+    (output_dir / f'{stem}.vtt').write_text('WEBVTT\n\n' + '\n'.join(cues), encoding='utf-8')
+    transcript = scene['narration']
+    (output_dir / f'{stem}.txt').write_text(transcript + '\n', encoding='utf-8')
     record = {'video_file': destination.name, 'captions_file': f'{stem}.vtt', 'transcript': transcript,
-              'source_refs': script['source_refs'], 'duration_seconds': round(total, 3),
-              'fingerprint': fingerprint(script), 'review_status': script['review_status'],
-              'narration': 'synthetic: eSpeak NG en-us',
+              'source_refs': script['source_refs'], 'duration_seconds': round(duration, 3),
+              'width': TEMPLATE['width'], 'height': TEMPLATE['height'], 'fps': fps,
+              'fingerprint': fingerprint(script, voice), 'review_status': script['review_status'],
+              'narration': narration_label(voice), 'visuals': 'Remotion 4.0.537, Clipcademy stick-figure template',
+              'longest_still_seconds': round(still, 2),
               'sha256': hashlib.sha256(destination.read_bytes()).hexdigest()}
-    (output_dir / f'{stem}.json').write_text(json.dumps(record, ensure_ascii=False, indent=2) + '\n')
+    (output_dir / f'{stem}.json').write_text(json.dumps(record, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     return record
 
 
-def preview(script, scene_index, seconds, path):
-    """Write one still frame (for review) without narration audio; word timing is estimated."""
-    art = animation()
-    scene = script['scenes'][scene_index]
-    words, at = [], LEAD
-    for word in scene['narration'].split():
-        length = 0.08 + 0.055 * len(word)
-        words.append((word, at, at + length))
-        at += length + 0.04
-    drawer = art.SceneArt(TEMPLATE, script, scene_index, words, at + TAIL)
-    drawer.frame(seconds, 0.5, 0.5).save(path)
-
-
 if __name__ == '__main__':
-    p = argparse.ArgumentParser()
-    p.add_argument('--all', action='store_true')
-    p.add_argument('--topic')
-    p.add_argument('--variant')
-    p.add_argument('--output', default=str(HERE / 'media'))
-    args = p.parse_args()
-    scripts = ([json.loads(f.read_text()) for f in sorted((HERE / 'scripts').glob('*.json'))]
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--all', action='store_true')
+    parser.add_argument('--topic')
+    parser.add_argument('--variant')
+    parser.add_argument('--output', default=str(HERE / 'media'))
+    args = parser.parse_args()
+    scripts = ([json.loads(f.read_text(encoding='utf-8')) for f in sorted((HERE / 'scripts').glob('*.json'))]
                if args.all else [load_script(args.topic, args.variant)])
     for script in scripts:
         print(json.dumps(render(script, args.output)), flush=True)

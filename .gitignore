@@ -1,3 +1,6 @@
 __pycache__/
 *.db
 secrets.txt
+
+# ElevenLabs API key and cached narration audio: never commit
+video/.env
