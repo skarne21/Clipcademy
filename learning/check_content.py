@@ -17,8 +17,10 @@ CLIP_CHECKS = ["analogy_ok", "hook_in_sources"]
 MAX_CYCLES = 2
 INTRO_CLIPS = (4, 5)  # notes.md: 4–5 intro clips per topic, then the quiz
 # assessment.md items: every one is audited, including whether it overlaps an app question
-TEST_ITEMS = {"test:A1": "L19-p1;L19-p2", "test:A2": "L19-p1", "test:A3": "L19-p1;L19-p2",
-              "test:B1": "L19-p1;L19-p2", "test:B2": "L19-p1", "test:B3": "L19-p1;L19-p2"}
+TEST_ITEMS = {f"test:{form}{n}": ref for form, refs in {
+    "A": ["L19-p1", "L19-p1;L19-p2", "L20-p1", "L20-p1", "L21-p1", "L21-p1", "L22-p1", "L22-p2"],
+    "B": ["L19-p1", "L19-p2", "L20-p1", "L20-p1", "L21-p1", "L21-p1", "L22-p1", "L22-p1;L22-p2"],
+}.items() for n, ref in enumerate(refs, 1)}
 
 
 def _json(*parts):

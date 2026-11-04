@@ -4,15 +4,17 @@
 
 This is an alpha study of Clipcademy with **6 students** who are studying the biology content in Lectures 19–22. The app has two lessons for the study, plus transcription and translation if their content review passes before Day 0 (product owner decision, 2026-11-03, [notes.md](notes.md)):
 
-- **DNA replication** (Lecture 19 pp. 1–2): synthesis direction and the primer requirement. This is the measured lesson. The pre-test and post-test cover only this one.
-- **DNA repair** (Lecture 20 p. 1): proofreading, mismatch repair, and UV-damage repair. This lesson isn't tested. It's there so students have something new to come back to.
-- **Transcription** (Lecture 21 p. 1) and **translation** (Lecture 22 pp. 1–2): open only if every one of their audit rows is approved before the freeze. Otherwise they stay "Coming soon." Not tested either.
+- **DNA replication** (Lecture 19 pp. 1–2): synthesis direction and the primer requirement.
+- **DNA repair** (Lecture 20 p. 1): proofreading, mismatch repair, and UV-damage repair.
+- **Transcription** (Lecture 21 p. 1) and **translation** (Lecture 22 pp. 1–2): open only if every one of their audit rows is approved before the freeze. Otherwise they stay "Coming soon."
+
+The pre-test and post-test cover all four topics, with 2 multiple-choice questions on each ([assessment.md](assessment.md), product owner decision, 2026-11-03).
 
 **Lesson format.** Each lesson opens with 4–5 vertical clips of 15–30 s, one idea each, in a swipe feed. Swiping past the last clip opens the questions. A wrong answer plays a follow-up clip and then a fresh question. Missing the same idea again plays a second follow-up that explains it a different way.
 
 **Why two lessons.** One lesson takes about 10 minutes on Day 0. With nothing new left, a low return rate (H3) couldn't tell "didn't value the app" apart from "had nothing left to do." All four lectures would delay the study for more clips and review, and Lectures 21 and 22 have unclear or inconsistent passages that could put wrong content in front of students. DNA repair follows replication directly in the course and adds only three clips and one lesson's review.
 
-The product aims to improve **active recall**: students retrieve answers from memory instead of rereading notes. The study therefore measures recall, not recognition. The pre-test and post-test are free response with no answer choices, and H3 checks whether students come back on a later day to practice retrieval again.
+The product aims to improve **active recall**: students retrieve answers from memory instead of rereading notes. The pre-test and post-test are 8 multiple-choice questions each. Each question gives a new situation, not a fact to recognize, but answer choices still allow recognition and guessing (1 in 4 per question), so a gain is weaker evidence of recall than a free-response gain would be. The interview asks whether students recalled answers or recognized them, and H3 checks whether students come back on a later day to practice retrieval again.
 
 **Design:** every participant gets the same thing, with no control group.
 
@@ -29,10 +31,12 @@ These are the base thresholds for the study. They're team decision rules, not pu
 | Hypothesis | Base threshold | Why this number |
 | --- | --- | --- |
 | H1 Usability | **≥ 5 of 6 (83%)** finish the core flow on Day 0 with no moderator help | Allows one participant to struggle, and matches the common ~80% task-completion bar for usability tests |
-| H2 Recall gain | **Mean gain ≥ 1 point out of 3 (+33 percentage points)** and **≥ 4 of 6** improve | One more correct item is the smallest change a 3-item test can show. Requiring a majority to improve keeps one big gain from carrying the mean |
+| H2 Recall gain | **Mean gain ≥ 25 percentage points** of the scored questions (2 of 8, or 1 of 4 if only two topics were open) and **≥ 4 of 6** improve | With four choices, one extra correct answer can be a lucky guess, so one point out of 8 isn't enough. Requiring a majority to improve keeps one big gain from carrying the mean |
 | H3 Voluntary use | **≥ 3 of 6 (50%)** answer a question on a later calendar day, with no reminder | Half the group returning on their own is a meaningful signal for a 2-day window |
 
-If a participant scores 3/3 on the pre-test, they can't show a gain. Report them separately and judge H2 on the rest, stating the new denominator.
+If a participant gets every scored pre-test question right, they can't show a gain. Report them separately and judge H2 on the rest, stating the new denominator.
+
+**Scored questions.** H2 is judged only on questions about topics that were open in the frozen build. If transcription and translation stay "Coming soon", that's the 4 replication and repair questions per form. Report the scores on the other questions too: they show how much students changed on topics the app didn't teach, which is a rough comparison, not a control.
 
 ## Hypotheses
 
@@ -44,8 +48,8 @@ Report H1 two ways:
 
 The scripted task is an instruction, not help. Anything beyond the script (explaining a button, pointing at the screen) counts as help.
 
-**H2 Recall gain.** Free-recall scores improve from pre-test to post-test.
-Supported if the **mean gain is at least 1 point (out of 3)** and **at least 4 of 6** participants improve.
+**H2 Recall gain.** Test scores on the topics the app taught improve from pre-test to post-test.
+Supported if the **mean gain is at least 25 percentage points of the scored questions** and **at least 4 of 6** participants improve.
 With no control group, a gain shows that learning happened during the study period. It does not prove the app caused it, because class, other studying, or the pre-test itself could contribute.
 
 **H3 Voluntary use.** Students choose to use the app on their own.
@@ -58,7 +62,7 @@ The original pitch KPIs (about 60 students over three weeks, weekly topic comple
 ### Before recruiting
 
 1. ~~Get written permission from the instructor to use the lecture-note excerpts.~~ **Done 2026-11-02** (received by Member 2). Keep the written permission with the study records.
-2. **Content audit.** A course-knowledgeable reviewer checks every app question, feedback line, lesson packet, clip transcript, and test item against the lecture notes. content-audit.csv is pre-filled with one `pending` row per item (134 rows: the four lessons, their 35 clips, and both test forms), so the reviewer only fills in the review columns, including whether a test item overlaps an app question. For every clip the reviewer also records `analogy_ok` (the analogy teaches nothing false) and `hook_in_sources` (the opening claim is in the lecture excerpts), each `yes` or `no`. Nothing reaches participants unless its `review_status` is approved. Fix and re-review anything with an error. Then set each approved lesson packet to `review_status: "reviewed"`. Any lesson that isn't fully approved goes back to `coming_soon` in the frozen build. `python learning/check_content.py --freeze` must pass before the build is frozen (steps in [Member2_SPEC.md](Member2_SPEC.md), Content review).
+2. **Content audit.** A course-knowledgeable reviewer checks every app question, feedback line, lesson packet, clip transcript, and test item against the lecture notes. content-audit.csv is pre-filled with one `pending` row per item (144 rows: the four lessons, their 35 clips, and both test forms), so the reviewer only fills in the review columns, including whether a test item overlaps an app question. For every clip the reviewer also records `analogy_ok` (the analogy teaches nothing false) and `hook_in_sources` (the opening claim is in the lecture excerpts), each `yes` or `no`. Nothing reaches participants unless its `review_status` is approved. Fix and re-review anything with an error. Then set each approved lesson packet to `review_status: "reviewed"`. Any lesson that isn't fully approved goes back to `coming_soon` in the frozen build. `python learning/check_content.py --freeze` must pass before the build is frozen (steps in [Member2_SPEC.md](Member2_SPEC.md), Content review).
 3. Freeze the build and set its `build_id` in the app, so every event carries it. Add the same ID to the server's list of valid build IDs.
 4. Deploy the frozen build to the PythonAnywhere web app, and open it from a phone to check it works. Right before Day 0, extend the web app's expiry ("Run until 1 month from today"), so it can't lapse during the study. After Day 2, download the database and the `events.csv` export.
 
