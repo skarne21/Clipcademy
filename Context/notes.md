@@ -25,7 +25,7 @@ Goal: each clip should feel like a short TikTok explainer, made to be watched, a
 
 ### Script rules (every clip)
 
-1. **Hook in the first 2 seconds.** Open on a question or a surprising claim, with on-screen text from frame 1. No walk-in or wave intro, because those first seconds are when people swipe away. Examples: "DNA can only be built in one direction. Here's why." / "Your cells fix about a thousand DNA mistakes a day. How?" (Use a number only if the packet's sources state it.)
+1. **Hook in the first 2 seconds.** Open on a question or a surprising claim, with on-screen text from frame 1. No walk-in or wave intro, because those first seconds are when people swipe away. Examples: "DNA can only be built in one direction. Here's why." / "Your DNA gets damaged by sunlight. So why are you fine?" (Any fact or number in a hook must be in the packet's sources.)
 2. **One idea, paid off by the end.** The hook's question is answered in the clip, and the last line is that answer in one sentence.
 3. **Simple words.** Short sentences (aim for under 12 words) at a middle-school reading level. Explain a term in plain words the first time it appears ("the 3′ end, the end new pieces snap onto"), then use it the same way every time. One new term per clip at most.
 4. **One analogy per clip, reviewed.** Something everyday (a zipper, a train only boarding at the back, a spell-checker). The reviewer checks that it doesn't teach anything false; an analogy that bends the biology gets cut.
