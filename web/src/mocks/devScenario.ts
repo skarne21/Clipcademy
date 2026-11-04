@@ -15,20 +15,25 @@ import {
 const repQ2: Question = {
   question_id: "rep-q2",
   objective_id: "synthesis_direction_and_primer",
-  prompt: "Which enzyme synthesizes the RNA primer?",
+  prompt: "Why is a primer needed?",
   choices: [
-    { choice_id: "A", text: "Primase" },
-    { choice_id: "B", text: "Helicase" },
+    {
+      choice_id: "A",
+      text: "DNA polymerase needs an existing complementary strand to extend",
+    },
+    { choice_id: "B", text: "Ligase adds all new bases" },
+    { choice_id: "C", text: "DNA is synthesized only 3′ to 5′" },
   ],
 };
 
 const repR2: Question = {
   question_id: "rep-r2",
   objective_id: "synthesis_direction_and_primer",
-  prompt: "Which enzyme extends the primer?",
+  prompt: "Which enzyme makes the RNA primer?",
   choices: [
-    { choice_id: "A", text: "DNA polymerase" },
+    { choice_id: "A", text: "Ligase" },
     { choice_id: "B", text: "Primase" },
+    { choice_id: "C", text: "DNA polymerase" },
   ],
 };
 
