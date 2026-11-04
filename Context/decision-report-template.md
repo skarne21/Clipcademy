@@ -9,7 +9,7 @@ Protocol deviations (including any mid-study build change or reminders sent) —
 | --- | --- | --- | --- | --- |
 | H1 usability (natural) | ≥ 5/6 finish core flow on Day 0 with no help and no script | Pending | Not tested | Pending |
 | H1 with script (reported only) | none | Pending | Not judged | Script forces the follow-up path |
-| H2 recall gain | Mean gain ≥ 25 points of the scored questions (topics open in the build) and ≥ 4/6 improve | Pending | Not tested | No control group; 2-day gap only; multiple choice allows recognition and guessing |
+| H2 recall gain | Mean gain ≥ 2 scored questions (topics open in the build) and ≥ 4/6 improve | Pending | Not tested | No control group; 2-day gap only; multiple choice allows recognition and guessing |
 | H2 untaught topics (reported only) | none | Pending (pre → post on questions about topics left "Coming soon") | Not judged | Rough comparison, not a control |
 | H3 voluntary use | ≥ 3/6 answer a question on a later day (either lesson), unreminded | Pending | Not tested | Only two lessons to return to |
 | H3 lesson split (reported only) | none | Pending (replication vs. repair per returner) | Not judged | Pending |

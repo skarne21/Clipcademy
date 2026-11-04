@@ -15,7 +15,7 @@ All the code Member 2 owns is built, tested and pushed, including the vertical-c
 | API: topics, questions, attempts (task 8) | Done. `learning/app.py` |
 | Events and `events.csv` export (task 9) | Done |
 | Wrong-answer flow with Members 1 and 3 (task 10) | Tested end to end with Member 3's app (19 browser checks), including the v2 follow-up. Video part waits on Member 1 |
-| Content check (task 11) | Automated check done, including the clip rules. 144 audit rows wait for a human reviewer |
+| Content check (task 11) | Automated check done, including the clip rules. 148 audit rows wait for a human reviewer |
 | Vertical clips (notes.md, 2026-11-03) | Done. All 4 packets, `intro_video_requests`, v1/v2 follow-ups, `clip_swiped`, clip audit columns, new metrics |
 | Hosting | **Deployed** on PythonAnywhere (account `ClipCademy`). The API and Member 3's app are served from one site |
 | Time on app | Done. `heartbeat` events, in the server and the app |
@@ -252,7 +252,7 @@ The product owner changed the lesson format: 4–5 short vertical intro clips pe
 
 None of these is coding. Each is a person, a login, or a wait.
 
-1. **Book the content reviewer now.** This is the riskiest part of the schedule (notes.md). There are 144 rows. 109 of them don't need the clips: 24 questions, 65 feedback lines, 4 packets (including the intro teaching goals) and 16 test questions. Start those now, with transcription and translation first, so those two topics can be switched on at the freeze. The reviewer sees Member 1's scripts as text as soon as they're written, then the 35 rendered clips, and fills in `analogy_ok` and `hook_in_sources` for each clip.
+1. **Book the content reviewer now.** This is the riskiest part of the schedule (notes.md). There are 148 rows. 113 of them don't need the clips: 24 questions, 65 feedback lines, 4 packets (including the intro teaching goals) and 20 test questions. Start those now, with transcription and translation first, so those two topics can be switched on at the freeze. The reviewer sees Member 1's scripts as text as soon as they're written, then the 35 rendered clips, and fills in `analogy_ok` and `hook_in_sources` for each clip.
    - **Also now:** check the PythonAnywhere disk quota (Files tab) has about 50 MB free for the clips. **Don't** upload the new `learning/` code yet: the live `study-2` app reads `initial_video_request`, which the new `/topics` no longer sends. The server and `study-4` go up together.
 2. **After each video push from Member 1:** `git pull`, keep `/media/` mapped, Reload, and check the disk (about 50 MB of clips).
 3. **Don't deploy `study-4` until Member 1's intro clips are merged.** Until then, every intro slide would show "The clip couldn't load." Add `study-4` to `CLIPCADEMY_BUILD_IDS` when it goes live.
