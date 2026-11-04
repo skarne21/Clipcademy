@@ -23,6 +23,7 @@ import {
 } from "../storage/progress";
 import {
   createMemoryStorage,
+  createSharedGenerateId,
   eventsNamed,
   refreshApp,
   renderApp,
@@ -336,8 +337,12 @@ describe("App refresh restore", () => {
   it("starts a new session_id on app_opened after a refresh", async () => {
     const user = userEvent.setup();
     const storage = createMemoryStorage();
+    const generateId = createSharedGenerateId();
 
-    const { send: sendFirst } = renderApp({ storage });
+    const {
+      send: sendFirst,
+      tracker,
+    } = renderApp({ storage, generateId });
     await user.type(screen.getByLabelText("Participant code"), "P001");
     await user.click(screen.getByRole("button", { name: "Continue" }));
 
@@ -350,11 +355,14 @@ describe("App refresh restore", () => {
       storage,
       participantCode: "P001",
       selectedTopicIds: [TOPIC_ID],
+      generateId,
+      tracker,
+      send: sendFirst,
     });
     await waitFor(() => {
-      expect(eventsNamed(sendSecond, "app_opened").length).toBeGreaterThanOrEqual(1);
+      expect(eventsNamed(sendSecond, "app_opened").length).toBeGreaterThanOrEqual(2);
     });
-    const secondSessionId = eventsNamed(sendSecond, "app_opened")[0]!.session_id;
+    const secondSessionId = eventsNamed(sendSecond, "app_opened").at(-1)!.session_id;
 
     expect(secondSessionId).not.toBe(firstSessionId);
   });

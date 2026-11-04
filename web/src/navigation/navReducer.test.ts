@@ -738,7 +738,21 @@ describe("persistence", () => {
     summary = navReducer(summary, { type: "CONTINUE" });
     const step = toStoredStep(summary);
     const restored = restoreNavState(
-      defaultProgress({ current_step: step }),
+      defaultProgress({
+        current_step: step,
+        attempts: {
+          [step.attempt_id!]: {
+            request: {
+              attempt_id: step.attempt_id!,
+              question_id: attemptComplete.question_id,
+              selected_choice_id: "A",
+              objective_id: "synthesis_direction_and_primer",
+              remediation_state: attemptComplete.remediation_state,
+            },
+            result: { ...attemptComplete, attempt_id: step.attempt_id! },
+          },
+        },
+      }),
       { hasParticipantCode: true },
     );
     expect(restored.screen).toBe("summary");
@@ -749,6 +763,52 @@ describe("persistence", () => {
     expect(restarted.video_status).toBe("preparing");
     expect(restarted.video_request).toEqual(initialVideoRequest);
     expect(restarted.pending_question_id).toBe("rep-q1");
+  });
+
+  it("restores summary with last_result from progress.attempts when attempt_id is on the step", () => {
+    let summary = feedbackState(attemptComplete);
+    summary = navReducer(summary, { type: "CONTINUE" });
+    const step = toStoredStep(summary);
+    expect(step.attempt_id).toBeDefined();
+
+    const restored = restoreNavState(
+      defaultProgress({
+        current_step: step,
+        attempts: {
+          [step.attempt_id!]: {
+            request: {
+              attempt_id: step.attempt_id!,
+              question_id: attemptComplete.question_id,
+              selected_choice_id: "A",
+              objective_id: "synthesis_direction_and_primer",
+              remediation_state: attemptComplete.remediation_state,
+            },
+            result: { ...attemptComplete, attempt_id: step.attempt_id! },
+          },
+        },
+      }),
+      { hasParticipantCode: true },
+    );
+
+    expect(restored.screen).toBe("summary");
+    expect(restored.last_result).toEqual({
+      ...attemptComplete,
+      attempt_id: step.attempt_id!,
+    });
+  });
+
+  it("restores to home when summary step has no stored attempt result", () => {
+    let summary = feedbackState(attemptComplete);
+    summary = navReducer(summary, { type: "CONTINUE" });
+    const step = toStoredStep(summary);
+
+    const restored = restoreNavState(
+      defaultProgress({ current_step: step }),
+      { hasParticipantCode: true },
+    );
+
+    expect(restored.screen).toBe("home");
+    expect(restored.last_result).toBeUndefined();
   });
 
   it("question restored from storage without a pending attempt has attempt_id undefined", () => {

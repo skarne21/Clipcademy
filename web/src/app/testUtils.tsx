@@ -1,8 +1,8 @@
-import { render, type RenderOptions } from "@testing-library/react";
+import { cleanup, render, type RenderOptions } from "@testing-library/react";
 import { vi } from "vitest";
 import type { ActivityEvent } from "../api/types";
 import App from "../App";
-import { createEventTracker } from "../events/tracker";
+import { createEventTracker, type EventTracker } from "../events/tracker";
 import {
   loadParticipantCode,
   loadProgress,
@@ -42,11 +42,22 @@ export function createMemoryStorage(): Storage {
   };
 }
 
+export function createSharedGenerateId(prefix = "gen"): () => string {
+  let counter = 0;
+  return () => {
+    counter += 1;
+    return `${prefix}-${counter}`;
+  };
+}
+
 export type RenderAppOptions = {
   storage?: Storage;
   participantCode?: string;
   selectedTopicIds?: string[];
   renderOptions?: RenderOptions;
+  generateId?: () => string;
+  tracker?: EventTracker;
+  send?: SendMock;
 };
 
 export function renderApp(options: RenderAppOptions = {}) {
@@ -67,28 +78,34 @@ export function renderApp(options: RenderAppOptions = {}) {
   }
 
   let idCounter = 0;
-  const send: SendMock = vi.fn<ActivityEventSendFn>().mockResolvedValue(undefined);
-
-  const tracker = createEventTracker({
-    storage,
-    send,
-    buildId: "test-build",
-    now: () => "2026-01-01T00:00:00.000Z",
-    generateId: () => {
-      idCounter += 1;
-      return `evt-${idCounter}`;
-    },
-    getParticipantCode: () => loadParticipantCode(storage),
-    retryDelaysMs: [1000, 2000, 4000],
+  const nextId = options.generateId ?? (() => {
+    idCounter += 1;
+    return `gen-${idCounter}`;
   });
+
+  const send: SendMock =
+    options.send ?? vi.fn<ActivityEventSendFn>().mockResolvedValue(undefined);
+
+  let eventCounter = 0;
+  const tracker =
+    options.tracker ??
+    createEventTracker({
+      storage,
+      send,
+      buildId: "test-build",
+      now: () => "2026-01-01T00:00:00.000Z",
+      generateId: () => {
+        eventCounter += 1;
+        return `evt-${eventCounter}`;
+      },
+      getParticipantCode: () => loadParticipantCode(storage),
+      retryDelaysMs: [1000, 2000, 4000],
+    });
 
   const deps: AppDeps = {
     tracker,
     storage,
-    generateId: () => {
-      idCounter += 1;
-      return `gen-${idCounter}`;
-    },
+    generateId: nextId,
     pollIntervalMs: 1,
     pollTimeoutMs: 120_000,
   };
@@ -102,6 +119,11 @@ export function renderApp(options: RenderAppOptions = {}) {
     send,
     tracker,
   };
+}
+
+export function refreshApp(options: RenderAppOptions & { storage: Storage }) {
+  cleanup();
+  return renderApp(options);
 }
 
 export function sentEvents(send: SendMock): ActivityEvent[] {
