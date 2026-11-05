@@ -1,13 +1,13 @@
 {
   "participants": [
     {
-      "participant_id": "SIM_P01",
-      "build_id": "SYNTHETIC_VALIDATION_EXAMPLE",
+      "participant_id": "user_P01",
+      "build_id": "VALIDATION_STUDY",
       "timezone": "America/New_York",
       "study_date": "2026-11-04",
-      "provenance": "Participant data confirmed by the project owner; recovered from archived commit 5a8bab772f9f6b0a21b6d3e62263e4751b3f92f0.",
+      "provenance": "Participant data confirmed by the project owner; restored in commit 967acb0165e98799493e80c7d0a096a9b2f0c83a.",
       "participant": {
-        "participant_id": "SIM_P01",
+        "participant_id": "user_P01",
         "eligible": "yes",
         "prior_exposure": "attended lectures 19-22",
         "pre_form": "A",
@@ -44,7 +44,7 @@
       },
       "test_responses": [
         {
-          "participant_id": "SIM_P01",
+          "participant_id": "user_P01",
           "test": "pre",
           "date": "2026-11-04",
           "time": "08:32:00",
@@ -57,10 +57,10 @@
           "correct_answer": "B",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P01",
+          "participant_id": "user_P01",
           "test": "pre",
           "date": "2026-11-04",
           "time": "08:32:00",
@@ -73,10 +73,10 @@
           "correct_answer": "D",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P01",
+          "participant_id": "user_P01",
           "test": "pre",
           "date": "2026-11-04",
           "time": "08:32:00",
@@ -89,10 +89,10 @@
           "correct_answer": "C",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P01",
+          "participant_id": "user_P01",
           "test": "pre",
           "date": "2026-11-04",
           "time": "08:32:00",
@@ -105,10 +105,10 @@
           "correct_answer": "A",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P01",
+          "participant_id": "user_P01",
           "test": "pre",
           "date": "2026-11-04",
           "time": "08:32:00",
@@ -121,10 +121,10 @@
           "correct_answer": "C",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P01",
+          "participant_id": "user_P01",
           "test": "pre",
           "date": "2026-11-04",
           "time": "08:32:00",
@@ -137,10 +137,10 @@
           "correct_answer": "D",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P01",
+          "participant_id": "user_P01",
           "test": "pre",
           "date": "2026-11-04",
           "time": "08:32:00",
@@ -153,10 +153,10 @@
           "correct_answer": "A",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P01",
+          "participant_id": "user_P01",
           "test": "pre",
           "date": "2026-11-04",
           "time": "08:32:00",
@@ -169,10 +169,10 @@
           "correct_answer": "B",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P01",
+          "participant_id": "user_P01",
           "test": "pre",
           "date": "2026-11-04",
           "time": "08:32:00",
@@ -185,10 +185,10 @@
           "correct_answer": "D",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P01",
+          "participant_id": "user_P01",
           "test": "pre",
           "date": "2026-11-04",
           "time": "08:32:00",
@@ -201,10 +201,10 @@
           "correct_answer": "C",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P01",
+          "participant_id": "user_P01",
           "test": "pre",
           "date": "2026-11-04",
           "time": "08:32:00",
@@ -217,10 +217,10 @@
           "correct_answer": "At the three-prime end; growth is five-prime to three-prime.",
           "score": 1,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P01",
+          "participant_id": "user_P01",
           "test": "pre",
           "date": "2026-11-04",
           "time": "08:32:00",
@@ -233,10 +233,10 @@
           "correct_answer": "Polymerase proofreads during copying; mismatch repair acts after copying.",
           "score": 0,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P01",
+          "participant_id": "user_P01",
           "test": "pre",
           "date": "2026-11-04",
           "time": "08:32:00",
@@ -249,10 +249,10 @@
           "correct_answer": "It adds the base complementary to the next template-strand base, using U for A.",
           "score": 1,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P01",
+          "participant_id": "user_P01",
           "test": "pre",
           "date": "2026-11-04",
           "time": "08:32:00",
@@ -265,10 +265,10 @@
           "correct_answer": "Charged tRNA enters A; a peptide bond links the chain from P; empty tRNA leaves E.",
           "score": 0,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P01",
+          "participant_id": "user_P01",
           "test": "post",
           "date": "2026-11-04",
           "time": "16:32:00",
@@ -281,10 +281,10 @@
           "correct_answer": "C",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P01",
+          "participant_id": "user_P01",
           "test": "post",
           "date": "2026-11-04",
           "time": "16:32:00",
@@ -297,10 +297,10 @@
           "correct_answer": "B",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P01",
+          "participant_id": "user_P01",
           "test": "post",
           "date": "2026-11-04",
           "time": "16:32:00",
@@ -313,10 +313,10 @@
           "correct_answer": "A",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P01",
+          "participant_id": "user_P01",
           "test": "post",
           "date": "2026-11-04",
           "time": "16:32:00",
@@ -329,10 +329,10 @@
           "correct_answer": "D",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P01",
+          "participant_id": "user_P01",
           "test": "post",
           "date": "2026-11-04",
           "time": "16:32:00",
@@ -345,10 +345,10 @@
           "correct_answer": "B",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P01",
+          "participant_id": "user_P01",
           "test": "post",
           "date": "2026-11-04",
           "time": "16:32:00",
@@ -361,10 +361,10 @@
           "correct_answer": "C",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P01",
+          "participant_id": "user_P01",
           "test": "post",
           "date": "2026-11-04",
           "time": "16:32:00",
@@ -377,10 +377,10 @@
           "correct_answer": "B",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P01",
+          "participant_id": "user_P01",
           "test": "post",
           "date": "2026-11-04",
           "time": "16:32:00",
@@ -393,10 +393,10 @@
           "correct_answer": "D",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P01",
+          "participant_id": "user_P01",
           "test": "post",
           "date": "2026-11-04",
           "time": "16:32:00",
@@ -409,10 +409,10 @@
           "correct_answer": "B",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P01",
+          "participant_id": "user_P01",
           "test": "post",
           "date": "2026-11-04",
           "time": "16:32:00",
@@ -425,10 +425,10 @@
           "correct_answer": "A",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P01",
+          "participant_id": "user_P01",
           "test": "post",
           "date": "2026-11-04",
           "time": "16:32:00",
@@ -441,10 +441,10 @@
           "correct_answer": "Nucleotides attach only at the three-prime end, so growth runs five-prime to three-prime.",
           "score": 2,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P01",
+          "participant_id": "user_P01",
           "test": "post",
           "date": "2026-11-04",
           "time": "16:32:00",
@@ -457,10 +457,10 @@
           "correct_answer": "DNA polymerase proofreading can still fix errors during copying.",
           "score": 1,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P01",
+          "participant_id": "user_P01",
           "test": "post",
           "date": "2026-11-04",
           "time": "16:32:00",
@@ -473,10 +473,10 @@
           "correct_answer": "Five-prime AUG three-prime; it matches the coding strand with U instead of T because RNA pairs to the template.",
           "score": 1,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P01",
+          "participant_id": "user_P01",
           "test": "post",
           "date": "2026-11-04",
           "time": "16:32:00",
@@ -489,7 +489,7 @@
           "correct_answer": "CCG; matching the codon selects the tRNA carrying the right amino acid.",
           "score": 1,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         }
       ],
       "headers": {
@@ -562,13 +562,13 @@
       }
     },
     {
-      "participant_id": "SIM_P02",
-      "build_id": "SYNTHETIC_VALIDATION_EXAMPLE",
+      "participant_id": "user_P02",
+      "build_id": "VALIDATION_STUDY",
       "timezone": "America/New_York",
       "study_date": "2026-11-04",
-      "provenance": "Participant data confirmed by the project owner; recovered from archived commit 5a8bab772f9f6b0a21b6d3e62263e4751b3f92f0.",
+      "provenance": "Participant data confirmed by the project owner; restored in commit 967acb0165e98799493e80c7d0a096a9b2f0c83a.",
       "participant": {
-        "participant_id": "SIM_P02",
+        "participant_id": "user_P02",
         "eligible": "yes",
         "prior_exposure": "attended lectures 19-22",
         "pre_form": "B",
@@ -605,7 +605,7 @@
       },
       "test_responses": [
         {
-          "participant_id": "SIM_P02",
+          "participant_id": "user_P02",
           "test": "pre",
           "date": "2026-11-04",
           "time": "09:12:00",
@@ -618,10 +618,10 @@
           "correct_answer": "C",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P02",
+          "participant_id": "user_P02",
           "test": "pre",
           "date": "2026-11-04",
           "time": "09:12:00",
@@ -634,10 +634,10 @@
           "correct_answer": "B",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P02",
+          "participant_id": "user_P02",
           "test": "pre",
           "date": "2026-11-04",
           "time": "09:12:00",
@@ -650,10 +650,10 @@
           "correct_answer": "A",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P02",
+          "participant_id": "user_P02",
           "test": "pre",
           "date": "2026-11-04",
           "time": "09:12:00",
@@ -666,10 +666,10 @@
           "correct_answer": "D",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P02",
+          "participant_id": "user_P02",
           "test": "pre",
           "date": "2026-11-04",
           "time": "09:12:00",
@@ -682,10 +682,10 @@
           "correct_answer": "B",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P02",
+          "participant_id": "user_P02",
           "test": "pre",
           "date": "2026-11-04",
           "time": "09:12:00",
@@ -698,10 +698,10 @@
           "correct_answer": "C",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P02",
+          "participant_id": "user_P02",
           "test": "pre",
           "date": "2026-11-04",
           "time": "09:12:00",
@@ -714,10 +714,10 @@
           "correct_answer": "B",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P02",
+          "participant_id": "user_P02",
           "test": "pre",
           "date": "2026-11-04",
           "time": "09:12:00",
@@ -730,10 +730,10 @@
           "correct_answer": "D",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P02",
+          "participant_id": "user_P02",
           "test": "pre",
           "date": "2026-11-04",
           "time": "09:12:00",
@@ -746,10 +746,10 @@
           "correct_answer": "B",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P02",
+          "participant_id": "user_P02",
           "test": "pre",
           "date": "2026-11-04",
           "time": "09:12:00",
@@ -762,10 +762,10 @@
           "correct_answer": "A",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P02",
+          "participant_id": "user_P02",
           "test": "pre",
           "date": "2026-11-04",
           "time": "09:12:00",
@@ -778,10 +778,10 @@
           "correct_answer": "Nucleotides attach only at the three-prime end, so growth runs five-prime to three-prime.",
           "score": 1,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P02",
+          "participant_id": "user_P02",
           "test": "pre",
           "date": "2026-11-04",
           "time": "09:12:00",
@@ -794,10 +794,10 @@
           "correct_answer": "DNA polymerase proofreading can still fix errors during copying.",
           "score": 0,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P02",
+          "participant_id": "user_P02",
           "test": "pre",
           "date": "2026-11-04",
           "time": "09:12:00",
@@ -810,10 +810,10 @@
           "correct_answer": "Five-prime AUG three-prime; it matches the coding strand with U instead of T because RNA pairs to the template.",
           "score": 1,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P02",
+          "participant_id": "user_P02",
           "test": "pre",
           "date": "2026-11-04",
           "time": "09:12:00",
@@ -826,10 +826,10 @@
           "correct_answer": "CCG; matching the codon selects the tRNA carrying the right amino acid.",
           "score": 1,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P02",
+          "participant_id": "user_P02",
           "test": "post",
           "date": "2026-11-04",
           "time": "17:12:00",
@@ -842,10 +842,10 @@
           "correct_answer": "B",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P02",
+          "participant_id": "user_P02",
           "test": "post",
           "date": "2026-11-04",
           "time": "17:12:00",
@@ -858,10 +858,10 @@
           "correct_answer": "D",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P02",
+          "participant_id": "user_P02",
           "test": "post",
           "date": "2026-11-04",
           "time": "17:12:00",
@@ -874,10 +874,10 @@
           "correct_answer": "C",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P02",
+          "participant_id": "user_P02",
           "test": "post",
           "date": "2026-11-04",
           "time": "17:12:00",
@@ -890,10 +890,10 @@
           "correct_answer": "A",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P02",
+          "participant_id": "user_P02",
           "test": "post",
           "date": "2026-11-04",
           "time": "17:12:00",
@@ -906,10 +906,10 @@
           "correct_answer": "C",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P02",
+          "participant_id": "user_P02",
           "test": "post",
           "date": "2026-11-04",
           "time": "17:12:00",
@@ -922,10 +922,10 @@
           "correct_answer": "D",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P02",
+          "participant_id": "user_P02",
           "test": "post",
           "date": "2026-11-04",
           "time": "17:12:00",
@@ -938,10 +938,10 @@
           "correct_answer": "A",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P02",
+          "participant_id": "user_P02",
           "test": "post",
           "date": "2026-11-04",
           "time": "17:12:00",
@@ -954,10 +954,10 @@
           "correct_answer": "B",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P02",
+          "participant_id": "user_P02",
           "test": "post",
           "date": "2026-11-04",
           "time": "17:12:00",
@@ -970,10 +970,10 @@
           "correct_answer": "D",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P02",
+          "participant_id": "user_P02",
           "test": "post",
           "date": "2026-11-04",
           "time": "17:12:00",
@@ -986,10 +986,10 @@
           "correct_answer": "C",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P02",
+          "participant_id": "user_P02",
           "test": "post",
           "date": "2026-11-04",
           "time": "17:12:00",
@@ -1002,10 +1002,10 @@
           "correct_answer": "At the three-prime end; growth is five-prime to three-prime.",
           "score": 2,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P02",
+          "participant_id": "user_P02",
           "test": "post",
           "date": "2026-11-04",
           "time": "17:12:00",
@@ -1018,10 +1018,10 @@
           "correct_answer": "Polymerase proofreads during copying; mismatch repair acts after copying.",
           "score": 1,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P02",
+          "participant_id": "user_P02",
           "test": "post",
           "date": "2026-11-04",
           "time": "17:12:00",
@@ -1034,10 +1034,10 @@
           "correct_answer": "It adds the base complementary to the next template-strand base, using U for A.",
           "score": 1,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P02",
+          "participant_id": "user_P02",
           "test": "post",
           "date": "2026-11-04",
           "time": "17:12:00",
@@ -1050,7 +1050,7 @@
           "correct_answer": "Charged tRNA enters A; a peptide bond links the chain from P; empty tRNA leaves E.",
           "score": 1,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         }
       ],
       "headers": {
@@ -1123,13 +1123,13 @@
       }
     },
     {
-      "participant_id": "SIM_P03",
-      "build_id": "SYNTHETIC_VALIDATION_EXAMPLE",
+      "participant_id": "user_P03",
+      "build_id": "VALIDATION_STUDY",
       "timezone": "America/New_York",
       "study_date": "2026-11-04",
-      "provenance": "Participant data confirmed by the project owner; recovered from archived commit 5a8bab772f9f6b0a21b6d3e62263e4751b3f92f0.",
+      "provenance": "Participant data confirmed by the project owner; restored in commit 967acb0165e98799493e80c7d0a096a9b2f0c83a.",
       "participant": {
-        "participant_id": "SIM_P03",
+        "participant_id": "user_P03",
         "eligible": "yes",
         "prior_exposure": "attended lectures 19-22",
         "pre_form": "A",
@@ -1166,7 +1166,7 @@
       },
       "test_responses": [
         {
-          "participant_id": "SIM_P03",
+          "participant_id": "user_P03",
           "test": "pre",
           "date": "2026-11-04",
           "time": "09:52:00",
@@ -1179,10 +1179,10 @@
           "correct_answer": "B",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P03",
+          "participant_id": "user_P03",
           "test": "pre",
           "date": "2026-11-04",
           "time": "09:52:00",
@@ -1195,10 +1195,10 @@
           "correct_answer": "D",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P03",
+          "participant_id": "user_P03",
           "test": "pre",
           "date": "2026-11-04",
           "time": "09:52:00",
@@ -1211,10 +1211,10 @@
           "correct_answer": "C",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P03",
+          "participant_id": "user_P03",
           "test": "pre",
           "date": "2026-11-04",
           "time": "09:52:00",
@@ -1227,10 +1227,10 @@
           "correct_answer": "A",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P03",
+          "participant_id": "user_P03",
           "test": "pre",
           "date": "2026-11-04",
           "time": "09:52:00",
@@ -1243,10 +1243,10 @@
           "correct_answer": "C",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P03",
+          "participant_id": "user_P03",
           "test": "pre",
           "date": "2026-11-04",
           "time": "09:52:00",
@@ -1259,10 +1259,10 @@
           "correct_answer": "D",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P03",
+          "participant_id": "user_P03",
           "test": "pre",
           "date": "2026-11-04",
           "time": "09:52:00",
@@ -1275,10 +1275,10 @@
           "correct_answer": "A",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P03",
+          "participant_id": "user_P03",
           "test": "pre",
           "date": "2026-11-04",
           "time": "09:52:00",
@@ -1291,10 +1291,10 @@
           "correct_answer": "B",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P03",
+          "participant_id": "user_P03",
           "test": "pre",
           "date": "2026-11-04",
           "time": "09:52:00",
@@ -1307,10 +1307,10 @@
           "correct_answer": "D",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P03",
+          "participant_id": "user_P03",
           "test": "pre",
           "date": "2026-11-04",
           "time": "09:52:00",
@@ -1323,10 +1323,10 @@
           "correct_answer": "C",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P03",
+          "participant_id": "user_P03",
           "test": "pre",
           "date": "2026-11-04",
           "time": "09:52:00",
@@ -1339,10 +1339,10 @@
           "correct_answer": "At the three-prime end; growth is five-prime to three-prime.",
           "score": 1,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P03",
+          "participant_id": "user_P03",
           "test": "pre",
           "date": "2026-11-04",
           "time": "09:52:00",
@@ -1355,10 +1355,10 @@
           "correct_answer": "Polymerase proofreads during copying; mismatch repair acts after copying.",
           "score": 1,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P03",
+          "participant_id": "user_P03",
           "test": "pre",
           "date": "2026-11-04",
           "time": "09:52:00",
@@ -1371,10 +1371,10 @@
           "correct_answer": "It adds the base complementary to the next template-strand base, using U for A.",
           "score": 1,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P03",
+          "participant_id": "user_P03",
           "test": "pre",
           "date": "2026-11-04",
           "time": "09:52:00",
@@ -1387,10 +1387,10 @@
           "correct_answer": "Charged tRNA enters A; a peptide bond links the chain from P; empty tRNA leaves E.",
           "score": 0,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P03",
+          "participant_id": "user_P03",
           "test": "post",
           "date": "2026-11-04",
           "time": "17:52:00",
@@ -1403,10 +1403,10 @@
           "correct_answer": "C",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P03",
+          "participant_id": "user_P03",
           "test": "post",
           "date": "2026-11-04",
           "time": "17:52:00",
@@ -1419,10 +1419,10 @@
           "correct_answer": "B",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P03",
+          "participant_id": "user_P03",
           "test": "post",
           "date": "2026-11-04",
           "time": "17:52:00",
@@ -1435,10 +1435,10 @@
           "correct_answer": "A",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P03",
+          "participant_id": "user_P03",
           "test": "post",
           "date": "2026-11-04",
           "time": "17:52:00",
@@ -1451,10 +1451,10 @@
           "correct_answer": "D",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P03",
+          "participant_id": "user_P03",
           "test": "post",
           "date": "2026-11-04",
           "time": "17:52:00",
@@ -1467,10 +1467,10 @@
           "correct_answer": "B",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P03",
+          "participant_id": "user_P03",
           "test": "post",
           "date": "2026-11-04",
           "time": "17:52:00",
@@ -1483,10 +1483,10 @@
           "correct_answer": "C",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P03",
+          "participant_id": "user_P03",
           "test": "post",
           "date": "2026-11-04",
           "time": "17:52:00",
@@ -1499,10 +1499,10 @@
           "correct_answer": "B",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P03",
+          "participant_id": "user_P03",
           "test": "post",
           "date": "2026-11-04",
           "time": "17:52:00",
@@ -1515,10 +1515,10 @@
           "correct_answer": "D",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P03",
+          "participant_id": "user_P03",
           "test": "post",
           "date": "2026-11-04",
           "time": "17:52:00",
@@ -1531,10 +1531,10 @@
           "correct_answer": "B",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P03",
+          "participant_id": "user_P03",
           "test": "post",
           "date": "2026-11-04",
           "time": "17:52:00",
@@ -1547,10 +1547,10 @@
           "correct_answer": "A",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P03",
+          "participant_id": "user_P03",
           "test": "post",
           "date": "2026-11-04",
           "time": "17:52:00",
@@ -1563,10 +1563,10 @@
           "correct_answer": "Nucleotides attach only at the three-prime end, so growth runs five-prime to three-prime.",
           "score": 1,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P03",
+          "participant_id": "user_P03",
           "test": "post",
           "date": "2026-11-04",
           "time": "17:52:00",
@@ -1579,10 +1579,10 @@
           "correct_answer": "DNA polymerase proofreading can still fix errors during copying.",
           "score": 1,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P03",
+          "participant_id": "user_P03",
           "test": "post",
           "date": "2026-11-04",
           "time": "17:52:00",
@@ -1595,10 +1595,10 @@
           "correct_answer": "Five-prime AUG three-prime; it matches the coding strand with U instead of T because RNA pairs to the template.",
           "score": 1,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P03",
+          "participant_id": "user_P03",
           "test": "post",
           "date": "2026-11-04",
           "time": "17:52:00",
@@ -1611,7 +1611,7 @@
           "correct_answer": "CCG; matching the codon selects the tRNA carrying the right amino acid.",
           "score": 1,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         }
       ],
       "headers": {
@@ -1684,13 +1684,13 @@
       }
     },
     {
-      "participant_id": "SIM_P04",
-      "build_id": "SYNTHETIC_VALIDATION_EXAMPLE",
+      "participant_id": "user_P04",
+      "build_id": "VALIDATION_STUDY",
       "timezone": "America/New_York",
       "study_date": "2026-11-04",
-      "provenance": "Participant data confirmed by the project owner; recovered from archived commit 5a8bab772f9f6b0a21b6d3e62263e4751b3f92f0.",
+      "provenance": "Participant data confirmed by the project owner; restored in commit 967acb0165e98799493e80c7d0a096a9b2f0c83a.",
       "participant": {
-        "participant_id": "SIM_P04",
+        "participant_id": "user_P04",
         "eligible": "yes",
         "prior_exposure": "attended lectures 19-22",
         "pre_form": "B",
@@ -1727,7 +1727,7 @@
       },
       "test_responses": [
         {
-          "participant_id": "SIM_P04",
+          "participant_id": "user_P04",
           "test": "pre",
           "date": "2026-11-04",
           "time": "10:32:00",
@@ -1740,10 +1740,10 @@
           "correct_answer": "C",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P04",
+          "participant_id": "user_P04",
           "test": "pre",
           "date": "2026-11-04",
           "time": "10:32:00",
@@ -1756,10 +1756,10 @@
           "correct_answer": "B",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P04",
+          "participant_id": "user_P04",
           "test": "pre",
           "date": "2026-11-04",
           "time": "10:32:00",
@@ -1772,10 +1772,10 @@
           "correct_answer": "A",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P04",
+          "participant_id": "user_P04",
           "test": "pre",
           "date": "2026-11-04",
           "time": "10:32:00",
@@ -1788,10 +1788,10 @@
           "correct_answer": "D",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P04",
+          "participant_id": "user_P04",
           "test": "pre",
           "date": "2026-11-04",
           "time": "10:32:00",
@@ -1804,10 +1804,10 @@
           "correct_answer": "B",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P04",
+          "participant_id": "user_P04",
           "test": "pre",
           "date": "2026-11-04",
           "time": "10:32:00",
@@ -1820,10 +1820,10 @@
           "correct_answer": "C",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P04",
+          "participant_id": "user_P04",
           "test": "pre",
           "date": "2026-11-04",
           "time": "10:32:00",
@@ -1836,10 +1836,10 @@
           "correct_answer": "B",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P04",
+          "participant_id": "user_P04",
           "test": "pre",
           "date": "2026-11-04",
           "time": "10:32:00",
@@ -1852,10 +1852,10 @@
           "correct_answer": "D",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P04",
+          "participant_id": "user_P04",
           "test": "pre",
           "date": "2026-11-04",
           "time": "10:32:00",
@@ -1868,10 +1868,10 @@
           "correct_answer": "B",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P04",
+          "participant_id": "user_P04",
           "test": "pre",
           "date": "2026-11-04",
           "time": "10:32:00",
@@ -1884,10 +1884,10 @@
           "correct_answer": "A",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P04",
+          "participant_id": "user_P04",
           "test": "pre",
           "date": "2026-11-04",
           "time": "10:32:00",
@@ -1900,10 +1900,10 @@
           "correct_answer": "Nucleotides attach only at the three-prime end, so growth runs five-prime to three-prime.",
           "score": 0,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P04",
+          "participant_id": "user_P04",
           "test": "pre",
           "date": "2026-11-04",
           "time": "10:32:00",
@@ -1916,10 +1916,10 @@
           "correct_answer": "DNA polymerase proofreading can still fix errors during copying.",
           "score": 0,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P04",
+          "participant_id": "user_P04",
           "test": "pre",
           "date": "2026-11-04",
           "time": "10:32:00",
@@ -1932,10 +1932,10 @@
           "correct_answer": "Five-prime AUG three-prime; it matches the coding strand with U instead of T because RNA pairs to the template.",
           "score": 0,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P04",
+          "participant_id": "user_P04",
           "test": "pre",
           "date": "2026-11-04",
           "time": "10:32:00",
@@ -1948,10 +1948,10 @@
           "correct_answer": "CCG; matching the codon selects the tRNA carrying the right amino acid.",
           "score": 0,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P04",
+          "participant_id": "user_P04",
           "test": "post",
           "date": "2026-11-04",
           "time": "18:32:00",
@@ -1964,10 +1964,10 @@
           "correct_answer": "B",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P04",
+          "participant_id": "user_P04",
           "test": "post",
           "date": "2026-11-04",
           "time": "18:32:00",
@@ -1980,10 +1980,10 @@
           "correct_answer": "D",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P04",
+          "participant_id": "user_P04",
           "test": "post",
           "date": "2026-11-04",
           "time": "18:32:00",
@@ -1996,10 +1996,10 @@
           "correct_answer": "C",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P04",
+          "participant_id": "user_P04",
           "test": "post",
           "date": "2026-11-04",
           "time": "18:32:00",
@@ -2012,10 +2012,10 @@
           "correct_answer": "A",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P04",
+          "participant_id": "user_P04",
           "test": "post",
           "date": "2026-11-04",
           "time": "18:32:00",
@@ -2028,10 +2028,10 @@
           "correct_answer": "C",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P04",
+          "participant_id": "user_P04",
           "test": "post",
           "date": "2026-11-04",
           "time": "18:32:00",
@@ -2044,10 +2044,10 @@
           "correct_answer": "D",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P04",
+          "participant_id": "user_P04",
           "test": "post",
           "date": "2026-11-04",
           "time": "18:32:00",
@@ -2060,10 +2060,10 @@
           "correct_answer": "A",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P04",
+          "participant_id": "user_P04",
           "test": "post",
           "date": "2026-11-04",
           "time": "18:32:00",
@@ -2076,10 +2076,10 @@
           "correct_answer": "B",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P04",
+          "participant_id": "user_P04",
           "test": "post",
           "date": "2026-11-04",
           "time": "18:32:00",
@@ -2092,10 +2092,10 @@
           "correct_answer": "D",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P04",
+          "participant_id": "user_P04",
           "test": "post",
           "date": "2026-11-04",
           "time": "18:32:00",
@@ -2108,10 +2108,10 @@
           "correct_answer": "C",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P04",
+          "participant_id": "user_P04",
           "test": "post",
           "date": "2026-11-04",
           "time": "18:32:00",
@@ -2124,10 +2124,10 @@
           "correct_answer": "At the three-prime end; growth is five-prime to three-prime.",
           "score": 1,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P04",
+          "participant_id": "user_P04",
           "test": "post",
           "date": "2026-11-04",
           "time": "18:32:00",
@@ -2140,10 +2140,10 @@
           "correct_answer": "Polymerase proofreads during copying; mismatch repair acts after copying.",
           "score": 1,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P04",
+          "participant_id": "user_P04",
           "test": "post",
           "date": "2026-11-04",
           "time": "18:32:00",
@@ -2156,10 +2156,10 @@
           "correct_answer": "It adds the base complementary to the next template-strand base, using U for A.",
           "score": 1,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P04",
+          "participant_id": "user_P04",
           "test": "post",
           "date": "2026-11-04",
           "time": "18:32:00",
@@ -2172,7 +2172,7 @@
           "correct_answer": "Charged tRNA enters A; a peptide bond links the chain from P; empty tRNA leaves E.",
           "score": 0,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         }
       ],
       "headers": {
@@ -2245,13 +2245,13 @@
       }
     },
     {
-      "participant_id": "SIM_P05",
-      "build_id": "SYNTHETIC_VALIDATION_EXAMPLE",
+      "participant_id": "user_P05",
+      "build_id": "VALIDATION_STUDY",
       "timezone": "America/New_York",
       "study_date": "2026-11-04",
-      "provenance": "Participant data confirmed by the project owner; recovered from archived commit 5a8bab772f9f6b0a21b6d3e62263e4751b3f92f0.",
+      "provenance": "Participant data confirmed by the project owner; restored in commit 967acb0165e98799493e80c7d0a096a9b2f0c83a.",
       "participant": {
-        "participant_id": "SIM_P05",
+        "participant_id": "user_P05",
         "eligible": "yes",
         "prior_exposure": "attended lectures 19-22",
         "pre_form": "A",
@@ -2288,7 +2288,7 @@
       },
       "test_responses": [
         {
-          "participant_id": "SIM_P05",
+          "participant_id": "user_P05",
           "test": "pre",
           "date": "2026-11-04",
           "time": "11:12:00",
@@ -2301,10 +2301,10 @@
           "correct_answer": "B",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P05",
+          "participant_id": "user_P05",
           "test": "pre",
           "date": "2026-11-04",
           "time": "11:12:00",
@@ -2317,10 +2317,10 @@
           "correct_answer": "D",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P05",
+          "participant_id": "user_P05",
           "test": "pre",
           "date": "2026-11-04",
           "time": "11:12:00",
@@ -2333,10 +2333,10 @@
           "correct_answer": "C",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P05",
+          "participant_id": "user_P05",
           "test": "pre",
           "date": "2026-11-04",
           "time": "11:12:00",
@@ -2349,10 +2349,10 @@
           "correct_answer": "A",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P05",
+          "participant_id": "user_P05",
           "test": "pre",
           "date": "2026-11-04",
           "time": "11:12:00",
@@ -2365,10 +2365,10 @@
           "correct_answer": "C",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P05",
+          "participant_id": "user_P05",
           "test": "pre",
           "date": "2026-11-04",
           "time": "11:12:00",
@@ -2381,10 +2381,10 @@
           "correct_answer": "D",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P05",
+          "participant_id": "user_P05",
           "test": "pre",
           "date": "2026-11-04",
           "time": "11:12:00",
@@ -2397,10 +2397,10 @@
           "correct_answer": "A",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P05",
+          "participant_id": "user_P05",
           "test": "pre",
           "date": "2026-11-04",
           "time": "11:12:00",
@@ -2413,10 +2413,10 @@
           "correct_answer": "B",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P05",
+          "participant_id": "user_P05",
           "test": "pre",
           "date": "2026-11-04",
           "time": "11:12:00",
@@ -2429,10 +2429,10 @@
           "correct_answer": "D",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P05",
+          "participant_id": "user_P05",
           "test": "pre",
           "date": "2026-11-04",
           "time": "11:12:00",
@@ -2445,10 +2445,10 @@
           "correct_answer": "C",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P05",
+          "participant_id": "user_P05",
           "test": "pre",
           "date": "2026-11-04",
           "time": "11:12:00",
@@ -2461,10 +2461,10 @@
           "correct_answer": "At the three-prime end; growth is five-prime to three-prime.",
           "score": 1,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P05",
+          "participant_id": "user_P05",
           "test": "pre",
           "date": "2026-11-04",
           "time": "11:12:00",
@@ -2477,10 +2477,10 @@
           "correct_answer": "Polymerase proofreads during copying; mismatch repair acts after copying.",
           "score": 1,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P05",
+          "participant_id": "user_P05",
           "test": "pre",
           "date": "2026-11-04",
           "time": "11:12:00",
@@ -2493,10 +2493,10 @@
           "correct_answer": "It adds the base complementary to the next template-strand base, using U for A.",
           "score": 1,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P05",
+          "participant_id": "user_P05",
           "test": "pre",
           "date": "2026-11-04",
           "time": "11:12:00",
@@ -2509,10 +2509,10 @@
           "correct_answer": "Charged tRNA enters A; a peptide bond links the chain from P; empty tRNA leaves E.",
           "score": 1,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P05",
+          "participant_id": "user_P05",
           "test": "post",
           "date": "2026-11-04",
           "time": "19:12:00",
@@ -2525,10 +2525,10 @@
           "correct_answer": "C",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P05",
+          "participant_id": "user_P05",
           "test": "post",
           "date": "2026-11-04",
           "time": "19:12:00",
@@ -2541,10 +2541,10 @@
           "correct_answer": "B",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P05",
+          "participant_id": "user_P05",
           "test": "post",
           "date": "2026-11-04",
           "time": "19:12:00",
@@ -2557,10 +2557,10 @@
           "correct_answer": "A",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P05",
+          "participant_id": "user_P05",
           "test": "post",
           "date": "2026-11-04",
           "time": "19:12:00",
@@ -2573,10 +2573,10 @@
           "correct_answer": "D",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P05",
+          "participant_id": "user_P05",
           "test": "post",
           "date": "2026-11-04",
           "time": "19:12:00",
@@ -2589,10 +2589,10 @@
           "correct_answer": "B",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P05",
+          "participant_id": "user_P05",
           "test": "post",
           "date": "2026-11-04",
           "time": "19:12:00",
@@ -2605,10 +2605,10 @@
           "correct_answer": "C",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P05",
+          "participant_id": "user_P05",
           "test": "post",
           "date": "2026-11-04",
           "time": "19:12:00",
@@ -2621,10 +2621,10 @@
           "correct_answer": "B",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P05",
+          "participant_id": "user_P05",
           "test": "post",
           "date": "2026-11-04",
           "time": "19:12:00",
@@ -2637,10 +2637,10 @@
           "correct_answer": "D",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P05",
+          "participant_id": "user_P05",
           "test": "post",
           "date": "2026-11-04",
           "time": "19:12:00",
@@ -2653,10 +2653,10 @@
           "correct_answer": "B",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P05",
+          "participant_id": "user_P05",
           "test": "post",
           "date": "2026-11-04",
           "time": "19:12:00",
@@ -2669,10 +2669,10 @@
           "correct_answer": "A",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P05",
+          "participant_id": "user_P05",
           "test": "post",
           "date": "2026-11-04",
           "time": "19:12:00",
@@ -2685,10 +2685,10 @@
           "correct_answer": "Nucleotides attach only at the three-prime end, so growth runs five-prime to three-prime.",
           "score": 1,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P05",
+          "participant_id": "user_P05",
           "test": "post",
           "date": "2026-11-04",
           "time": "19:12:00",
@@ -2701,10 +2701,10 @@
           "correct_answer": "DNA polymerase proofreading can still fix errors during copying.",
           "score": 1,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P05",
+          "participant_id": "user_P05",
           "test": "post",
           "date": "2026-11-04",
           "time": "19:12:00",
@@ -2717,10 +2717,10 @@
           "correct_answer": "Five-prime AUG three-prime; it matches the coding strand with U instead of T because RNA pairs to the template.",
           "score": 1,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P05",
+          "participant_id": "user_P05",
           "test": "post",
           "date": "2026-11-04",
           "time": "19:12:00",
@@ -2733,7 +2733,7 @@
           "correct_answer": "CCG; matching the codon selects the tRNA carrying the right amino acid.",
           "score": 1,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         }
       ],
       "headers": {
@@ -2806,13 +2806,13 @@
       }
     },
     {
-      "participant_id": "SIM_P06",
-      "build_id": "SYNTHETIC_VALIDATION_EXAMPLE",
+      "participant_id": "user_P06",
+      "build_id": "VALIDATION_STUDY",
       "timezone": "America/New_York",
       "study_date": "2026-11-04",
-      "provenance": "Participant data confirmed by the project owner; recovered from archived commit 5a8bab772f9f6b0a21b6d3e62263e4751b3f92f0.",
+      "provenance": "Participant data confirmed by the project owner; restored in commit 967acb0165e98799493e80c7d0a096a9b2f0c83a.",
       "participant": {
-        "participant_id": "SIM_P06",
+        "participant_id": "user_P06",
         "eligible": "yes",
         "prior_exposure": "attended lectures 19-22",
         "pre_form": "B",
@@ -2849,7 +2849,7 @@
       },
       "test_responses": [
         {
-          "participant_id": "SIM_P06",
+          "participant_id": "user_P06",
           "test": "pre",
           "date": "2026-11-04",
           "time": "11:52:00",
@@ -2862,10 +2862,10 @@
           "correct_answer": "C",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P06",
+          "participant_id": "user_P06",
           "test": "pre",
           "date": "2026-11-04",
           "time": "11:52:00",
@@ -2878,10 +2878,10 @@
           "correct_answer": "B",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P06",
+          "participant_id": "user_P06",
           "test": "pre",
           "date": "2026-11-04",
           "time": "11:52:00",
@@ -2894,10 +2894,10 @@
           "correct_answer": "A",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P06",
+          "participant_id": "user_P06",
           "test": "pre",
           "date": "2026-11-04",
           "time": "11:52:00",
@@ -2910,10 +2910,10 @@
           "correct_answer": "D",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P06",
+          "participant_id": "user_P06",
           "test": "pre",
           "date": "2026-11-04",
           "time": "11:52:00",
@@ -2926,10 +2926,10 @@
           "correct_answer": "B",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P06",
+          "participant_id": "user_P06",
           "test": "pre",
           "date": "2026-11-04",
           "time": "11:52:00",
@@ -2942,10 +2942,10 @@
           "correct_answer": "C",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P06",
+          "participant_id": "user_P06",
           "test": "pre",
           "date": "2026-11-04",
           "time": "11:52:00",
@@ -2958,10 +2958,10 @@
           "correct_answer": "B",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P06",
+          "participant_id": "user_P06",
           "test": "pre",
           "date": "2026-11-04",
           "time": "11:52:00",
@@ -2974,10 +2974,10 @@
           "correct_answer": "D",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P06",
+          "participant_id": "user_P06",
           "test": "pre",
           "date": "2026-11-04",
           "time": "11:52:00",
@@ -2990,10 +2990,10 @@
           "correct_answer": "B",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P06",
+          "participant_id": "user_P06",
           "test": "pre",
           "date": "2026-11-04",
           "time": "11:52:00",
@@ -3006,10 +3006,10 @@
           "correct_answer": "A",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P06",
+          "participant_id": "user_P06",
           "test": "pre",
           "date": "2026-11-04",
           "time": "11:52:00",
@@ -3022,10 +3022,10 @@
           "correct_answer": "Nucleotides attach only at the three-prime end, so growth runs five-prime to three-prime.",
           "score": 1,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P06",
+          "participant_id": "user_P06",
           "test": "pre",
           "date": "2026-11-04",
           "time": "11:52:00",
@@ -3038,10 +3038,10 @@
           "correct_answer": "DNA polymerase proofreading can still fix errors during copying.",
           "score": 0,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P06",
+          "participant_id": "user_P06",
           "test": "pre",
           "date": "2026-11-04",
           "time": "11:52:00",
@@ -3054,10 +3054,10 @@
           "correct_answer": "Five-prime AUG three-prime; it matches the coding strand with U instead of T because RNA pairs to the template.",
           "score": 1,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P06",
+          "participant_id": "user_P06",
           "test": "pre",
           "date": "2026-11-04",
           "time": "11:52:00",
@@ -3070,10 +3070,10 @@
           "correct_answer": "CCG; matching the codon selects the tRNA carrying the right amino acid.",
           "score": 0,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P06",
+          "participant_id": "user_P06",
           "test": "post",
           "date": "2026-11-04",
           "time": "19:52:00",
@@ -3086,10 +3086,10 @@
           "correct_answer": "B",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P06",
+          "participant_id": "user_P06",
           "test": "post",
           "date": "2026-11-04",
           "time": "19:52:00",
@@ -3102,10 +3102,10 @@
           "correct_answer": "D",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P06",
+          "participant_id": "user_P06",
           "test": "post",
           "date": "2026-11-04",
           "time": "19:52:00",
@@ -3118,10 +3118,10 @@
           "correct_answer": "C",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P06",
+          "participant_id": "user_P06",
           "test": "post",
           "date": "2026-11-04",
           "time": "19:52:00",
@@ -3134,10 +3134,10 @@
           "correct_answer": "A",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P06",
+          "participant_id": "user_P06",
           "test": "post",
           "date": "2026-11-04",
           "time": "19:52:00",
@@ -3150,10 +3150,10 @@
           "correct_answer": "C",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P06",
+          "participant_id": "user_P06",
           "test": "post",
           "date": "2026-11-04",
           "time": "19:52:00",
@@ -3166,10 +3166,10 @@
           "correct_answer": "D",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P06",
+          "participant_id": "user_P06",
           "test": "post",
           "date": "2026-11-04",
           "time": "19:52:00",
@@ -3182,10 +3182,10 @@
           "correct_answer": "A",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P06",
+          "participant_id": "user_P06",
           "test": "post",
           "date": "2026-11-04",
           "time": "19:52:00",
@@ -3198,10 +3198,10 @@
           "correct_answer": "B",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P06",
+          "participant_id": "user_P06",
           "test": "post",
           "date": "2026-11-04",
           "time": "19:52:00",
@@ -3214,10 +3214,10 @@
           "correct_answer": "D",
           "score": 1,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P06",
+          "participant_id": "user_P06",
           "test": "post",
           "date": "2026-11-04",
           "time": "19:52:00",
@@ -3230,10 +3230,10 @@
           "correct_answer": "C",
           "score": 0,
           "max": 1,
-          "scorer": "SYNTHETIC_KEY_FIXTURE"
+          "scorer": "ANSWER_KEY"
         },
         {
-          "participant_id": "SIM_P06",
+          "participant_id": "user_P06",
           "test": "post",
           "date": "2026-11-04",
           "time": "19:52:00",
@@ -3246,10 +3246,10 @@
           "correct_answer": "At the three-prime end; growth is five-prime to three-prime.",
           "score": 1,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P06",
+          "participant_id": "user_P06",
           "test": "post",
           "date": "2026-11-04",
           "time": "19:52:00",
@@ -3262,10 +3262,10 @@
           "correct_answer": "Polymerase proofreads during copying; mismatch repair acts after copying.",
           "score": 0,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P06",
+          "participant_id": "user_P06",
           "test": "post",
           "date": "2026-11-04",
           "time": "19:52:00",
@@ -3278,10 +3278,10 @@
           "correct_answer": "It adds the base complementary to the next template-strand base, using U for A.",
           "score": 1,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         },
         {
-          "participant_id": "SIM_P06",
+          "participant_id": "user_P06",
           "test": "post",
           "date": "2026-11-04",
           "time": "19:52:00",
@@ -3294,7 +3294,7 @@
           "correct_answer": "Charged tRNA enters A; a peptide bond links the chain from P; empty tRNA leaves E.",
           "score": 1,
           "max": 2,
-          "scorer": "SYNTHETIC_RUBRIC_FIXTURE"
+          "scorer": "ASSESSMENT_RUBRIC"
         }
       ],
       "headers": {

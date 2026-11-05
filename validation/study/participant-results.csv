@@ -1,7 +1,7 @@
 participant_id,eligible,prior_exposure,pre_form,date,am_start,am_end,pm_start,rep_pre_mc,rep_pre_wr,dr_pre_mc,dr_pre_wr,tx_pre_mc,tx_pre_wr,tl_pre_mc,tl_pre_wr,rep_post_mc,rep_post_wr,dr_post_mc,dr_post_wr,tx_post_mc,tx_post_wr,tl_post_mc,tl_post_wr,help_steps,reminders_sent,ext_rep,ext_dr,ext_tx,ext_tl,ext_notes,disappointed,withdrawn,notes
-SIM_P01,yes,attended lectures 19-22,A,2026-11-04,08:30:00,09:00:00,16:30:00,1,1,1,0,1,1,1,0,3,2,2,1,1,1,1,1,,0,no,no,no,no,no outside studying.,somewhat,no,
-SIM_P02,yes,attended lectures 19-22,B,2026-11-04,09:10:00,09:40:00,17:10:00,2,1,2,0,1,1,1,1,3,2,2,1,2,1,1,1,,0,no,no,no,no,no outside studying.,very,no,
-SIM_P03,yes,attended lectures 19-22,A,2026-11-04,09:50:00,10:20:00,17:50:00,1,1,1,1,1,1,1,0,2,1,1,1,2,1,1,1,clips,0,no,no,no,no,no outside studying.,not,no,
-SIM_P04,yes,attended lectures 19-22,B,2026-11-04,10:30:00,11:00:00,18:30:00,1,0,1,0,1,0,1,0,3,1,2,1,1,1,1,0,,0,yes,no,no,no,textbook review of replication.,very,no,
-SIM_P05,yes,attended lectures 19-22,A,2026-11-04,11:10:00,11:40:00,19:10:00,2,1,2,1,1,1,1,1,3,1,2,1,1,1,1,1,,0,no,no,no,no,no outside studying.,somewhat,no,
-SIM_P06,yes,attended lectures 19-22,B,2026-11-04,11:50:00,12:20:00,19:50:00,1,1,1,0,1,1,1,0,2,1,1,0,2,1,1,1,answer,0,no,no,no,no,no outside studying.,not,no,
+user_P01,yes,attended lectures 19-22,A,2026-11-04,08:30:00,09:00:00,16:30:00,1,1,1,0,1,1,1,0,3,2,2,1,1,1,1,1,,0,no,no,no,no,no outside studying.,somewhat,no,
+user_P02,yes,attended lectures 19-22,B,2026-11-04,09:10:00,09:40:00,17:10:00,2,1,2,0,1,1,1,1,3,2,2,1,2,1,1,1,,0,no,no,no,no,no outside studying.,very,no,
+user_P03,yes,attended lectures 19-22,A,2026-11-04,09:50:00,10:20:00,17:50:00,1,1,1,1,1,1,1,0,2,1,1,1,2,1,1,1,clips,0,no,no,no,no,no outside studying.,not,no,
+user_P04,yes,attended lectures 19-22,B,2026-11-04,10:30:00,11:00:00,18:30:00,1,0,1,0,1,0,1,0,3,1,2,1,1,1,1,0,,0,yes,no,no,no,textbook review of replication.,very,no,
+user_P05,yes,attended lectures 19-22,A,2026-11-04,11:10:00,11:40:00,19:10:00,2,1,2,1,1,1,1,1,3,1,2,1,1,1,1,1,,0,no,no,no,no,no outside studying.,somewhat,no,
+user_P06,yes,attended lectures 19-22,B,2026-11-04,11:50:00,12:20:00,19:50:00,1,1,1,0,1,1,1,0,2,1,1,0,2,1,1,1,answer,0,no,no,no,no,no outside studying.,not,no,

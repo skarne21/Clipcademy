@@ -1,169 +1,169 @@
 participant_id,test,date,time,form,item,topic,taught_in_app,type,response,correct_answer,score,max,scorer
-SIM_P01,pre,2026-11-04,08:32:00,A,A1,dna_replication,yes,mc,B,B,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P01,pre,2026-11-04,08:32:00,A,A2,dna_replication,yes,mc,A,D,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P01,pre,2026-11-04,08:32:00,A,A3,dna_replication,yes,mc,A,C,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P01,pre,2026-11-04,08:32:00,A,A4,dna_repair,yes,mc,A,A,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P01,pre,2026-11-04,08:32:00,A,A5,dna_repair,yes,mc,A,C,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P01,pre,2026-11-04,08:32:00,A,A6,dna_repair,yes,mc,A,D,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P01,pre,2026-11-04,08:32:00,A,A7,transcription,no,mc,A,A,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P01,pre,2026-11-04,08:32:00,A,A8,transcription,no,mc,A,B,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P01,pre,2026-11-04,08:32:00,A,A9,translation,no,mc,D,D,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P01,pre,2026-11-04,08:32:00,A,A10,translation,no,mc,A,C,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P01,pre,2026-11-04,08:32:00,A,WA1,dna_replication,yes,written,At the three-prime end.,At the three-prime end; growth is five-prime to three-prime.,1,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P01,pre,2026-11-04,08:32:00,A,WA2,dna_repair,yes,written,Primase repairs the copied DNA.,Polymerase proofreads during copying; mismatch repair acts after copying.,0,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P01,pre,2026-11-04,08:32:00,A,WA3,transcription,no,written,It matches the DNA.,"It adds the base complementary to the next template-strand base, using U for A.",1,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P01,pre,2026-11-04,08:32:00,A,WA4,translation,no,written,Every tRNA stays in the P site.,Charged tRNA enters A; a peptide bond links the chain from P; empty tRNA leaves E.,0,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P01,post,2026-11-04,16:32:00,B,B1,dna_replication,yes,mc,C,C,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P01,post,2026-11-04,16:32:00,B,B2,dna_replication,yes,mc,B,B,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P01,post,2026-11-04,16:32:00,B,B3,dna_replication,yes,mc,A,A,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P01,post,2026-11-04,16:32:00,B,B4,dna_repair,yes,mc,D,D,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P01,post,2026-11-04,16:32:00,B,B5,dna_repair,yes,mc,B,B,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P01,post,2026-11-04,16:32:00,B,B6,dna_repair,yes,mc,A,C,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P01,post,2026-11-04,16:32:00,B,B7,transcription,no,mc,B,B,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P01,post,2026-11-04,16:32:00,B,B8,transcription,no,mc,A,D,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P01,post,2026-11-04,16:32:00,B,B9,translation,no,mc,B,B,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P01,post,2026-11-04,16:32:00,B,B10,translation,no,mc,B,A,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P01,post,2026-11-04,16:32:00,B,WB1,dna_replication,yes,written,"Nucleotides attach only at the three-prime end, so growth runs five-prime to three-prime.","Nucleotides attach only at the three-prime end, so growth runs five-prime to three-prime.",2,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P01,post,2026-11-04,16:32:00,B,WB2,dna_repair,yes,written,Proofreading.,DNA polymerase proofreading can still fix errors during copying.,1,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P01,post,2026-11-04,16:32:00,B,WB3,transcription,no,written,AUG.,Five-prime AUG three-prime; it matches the coding strand with U instead of T because RNA pairs to the template.,1,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P01,post,2026-11-04,16:32:00,B,WB4,translation,no,written,CCG.,CCG; matching the codon selects the tRNA carrying the right amino acid.,1,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P02,pre,2026-11-04,09:12:00,B,B1,dna_replication,yes,mc,C,C,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P02,pre,2026-11-04,09:12:00,B,B2,dna_replication,yes,mc,B,B,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P02,pre,2026-11-04,09:12:00,B,B3,dna_replication,yes,mc,B,A,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P02,pre,2026-11-04,09:12:00,B,B4,dna_repair,yes,mc,D,D,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P02,pre,2026-11-04,09:12:00,B,B5,dna_repair,yes,mc,B,B,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P02,pre,2026-11-04,09:12:00,B,B6,dna_repair,yes,mc,A,C,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P02,pre,2026-11-04,09:12:00,B,B7,transcription,no,mc,B,B,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P02,pre,2026-11-04,09:12:00,B,B8,transcription,no,mc,A,D,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P02,pre,2026-11-04,09:12:00,B,B9,translation,no,mc,B,B,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P02,pre,2026-11-04,09:12:00,B,B10,translation,no,mc,B,A,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P02,pre,2026-11-04,09:12:00,B,WB1,dna_replication,yes,written,It grows five-prime to three-prime.,"Nucleotides attach only at the three-prime end, so growth runs five-prime to three-prime.",1,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P02,pre,2026-11-04,09:12:00,B,WB2,dna_repair,yes,written,Primase fixes every mismatch.,DNA polymerase proofreading can still fix errors during copying.,0,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P02,pre,2026-11-04,09:12:00,B,WB3,transcription,no,written,AUG.,Five-prime AUG three-prime; it matches the coding strand with U instead of T because RNA pairs to the template.,1,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P02,pre,2026-11-04,09:12:00,B,WB4,translation,no,written,CCG.,CCG; matching the codon selects the tRNA carrying the right amino acid.,1,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P02,post,2026-11-04,17:12:00,A,A1,dna_replication,yes,mc,B,B,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P02,post,2026-11-04,17:12:00,A,A2,dna_replication,yes,mc,D,D,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P02,post,2026-11-04,17:12:00,A,A3,dna_replication,yes,mc,C,C,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P02,post,2026-11-04,17:12:00,A,A4,dna_repair,yes,mc,A,A,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P02,post,2026-11-04,17:12:00,A,A5,dna_repair,yes,mc,C,C,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P02,post,2026-11-04,17:12:00,A,A6,dna_repair,yes,mc,A,D,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P02,post,2026-11-04,17:12:00,A,A7,transcription,no,mc,A,A,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P02,post,2026-11-04,17:12:00,A,A8,transcription,no,mc,B,B,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P02,post,2026-11-04,17:12:00,A,A9,translation,no,mc,D,D,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P02,post,2026-11-04,17:12:00,A,A10,translation,no,mc,A,C,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P02,post,2026-11-04,17:12:00,A,WA1,dna_replication,yes,written,At the three-prime end; growth is five-prime to three-prime.,At the three-prime end; growth is five-prime to three-prime.,2,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P02,post,2026-11-04,17:12:00,A,WA2,dna_repair,yes,written,Proofreading fixes errors during copying.,Polymerase proofreads during copying; mismatch repair acts after copying.,1,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P02,post,2026-11-04,17:12:00,A,WA3,transcription,no,written,It matches the DNA.,"It adds the base complementary to the next template-strand base, using U for A.",1,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P02,post,2026-11-04,17:12:00,A,WA4,translation,no,written,Charged tRNA enters A and empty tRNA leaves E.,Charged tRNA enters A; a peptide bond links the chain from P; empty tRNA leaves E.,1,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P03,pre,2026-11-04,09:52:00,A,A1,dna_replication,yes,mc,B,B,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P03,pre,2026-11-04,09:52:00,A,A2,dna_replication,yes,mc,A,D,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P03,pre,2026-11-04,09:52:00,A,A3,dna_replication,yes,mc,A,C,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P03,pre,2026-11-04,09:52:00,A,A4,dna_repair,yes,mc,A,A,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P03,pre,2026-11-04,09:52:00,A,A5,dna_repair,yes,mc,A,C,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P03,pre,2026-11-04,09:52:00,A,A6,dna_repair,yes,mc,A,D,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P03,pre,2026-11-04,09:52:00,A,A7,transcription,no,mc,A,A,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P03,pre,2026-11-04,09:52:00,A,A8,transcription,no,mc,A,B,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P03,pre,2026-11-04,09:52:00,A,A9,translation,no,mc,D,D,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P03,pre,2026-11-04,09:52:00,A,A10,translation,no,mc,A,C,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P03,pre,2026-11-04,09:52:00,A,WA1,dna_replication,yes,written,At the three-prime end.,At the three-prime end; growth is five-prime to three-prime.,1,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P03,pre,2026-11-04,09:52:00,A,WA2,dna_repair,yes,written,Proofreading fixes errors during copying.,Polymerase proofreads during copying; mismatch repair acts after copying.,1,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P03,pre,2026-11-04,09:52:00,A,WA3,transcription,no,written,It matches the DNA.,"It adds the base complementary to the next template-strand base, using U for A.",1,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P03,pre,2026-11-04,09:52:00,A,WA4,translation,no,written,Every tRNA stays in the P site.,Charged tRNA enters A; a peptide bond links the chain from P; empty tRNA leaves E.,0,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P03,post,2026-11-04,17:52:00,B,B1,dna_replication,yes,mc,C,C,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P03,post,2026-11-04,17:52:00,B,B2,dna_replication,yes,mc,B,B,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P03,post,2026-11-04,17:52:00,B,B3,dna_replication,yes,mc,B,A,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P03,post,2026-11-04,17:52:00,B,B4,dna_repair,yes,mc,D,D,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P03,post,2026-11-04,17:52:00,B,B5,dna_repair,yes,mc,A,B,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P03,post,2026-11-04,17:52:00,B,B6,dna_repair,yes,mc,A,C,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P03,post,2026-11-04,17:52:00,B,B7,transcription,no,mc,B,B,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P03,post,2026-11-04,17:52:00,B,B8,transcription,no,mc,D,D,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P03,post,2026-11-04,17:52:00,B,B9,translation,no,mc,B,B,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P03,post,2026-11-04,17:52:00,B,B10,translation,no,mc,B,A,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P03,post,2026-11-04,17:52:00,B,WB1,dna_replication,yes,written,It grows five-prime to three-prime.,"Nucleotides attach only at the three-prime end, so growth runs five-prime to three-prime.",1,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P03,post,2026-11-04,17:52:00,B,WB2,dna_repair,yes,written,Proofreading.,DNA polymerase proofreading can still fix errors during copying.,1,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P03,post,2026-11-04,17:52:00,B,WB3,transcription,no,written,AUG.,Five-prime AUG three-prime; it matches the coding strand with U instead of T because RNA pairs to the template.,1,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P03,post,2026-11-04,17:52:00,B,WB4,translation,no,written,CCG.,CCG; matching the codon selects the tRNA carrying the right amino acid.,1,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P04,pre,2026-11-04,10:32:00,B,B1,dna_replication,yes,mc,C,C,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P04,pre,2026-11-04,10:32:00,B,B2,dna_replication,yes,mc,A,B,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P04,pre,2026-11-04,10:32:00,B,B3,dna_replication,yes,mc,B,A,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P04,pre,2026-11-04,10:32:00,B,B4,dna_repair,yes,mc,D,D,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P04,pre,2026-11-04,10:32:00,B,B5,dna_repair,yes,mc,A,B,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P04,pre,2026-11-04,10:32:00,B,B6,dna_repair,yes,mc,A,C,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P04,pre,2026-11-04,10:32:00,B,B7,transcription,no,mc,B,B,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P04,pre,2026-11-04,10:32:00,B,B8,transcription,no,mc,A,D,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P04,pre,2026-11-04,10:32:00,B,B9,translation,no,mc,B,B,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P04,pre,2026-11-04,10:32:00,B,B10,translation,no,mc,B,A,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P04,pre,2026-11-04,10:32:00,B,WB1,dna_replication,yes,written,It grows in both directions.,"Nucleotides attach only at the three-prime end, so growth runs five-prime to three-prime.",0,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P04,pre,2026-11-04,10:32:00,B,WB2,dna_repair,yes,written,Primase fixes every mismatch.,DNA polymerase proofreading can still fix errors during copying.,0,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P04,pre,2026-11-04,10:32:00,B,WB3,transcription,no,written,UAC.,Five-prime AUG three-prime; it matches the coding strand with U instead of T because RNA pairs to the template.,0,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P04,pre,2026-11-04,10:32:00,B,WB4,translation,no,written,GGC.,CCG; matching the codon selects the tRNA carrying the right amino acid.,0,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P04,post,2026-11-04,18:32:00,A,A1,dna_replication,yes,mc,B,B,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P04,post,2026-11-04,18:32:00,A,A2,dna_replication,yes,mc,D,D,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P04,post,2026-11-04,18:32:00,A,A3,dna_replication,yes,mc,C,C,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P04,post,2026-11-04,18:32:00,A,A4,dna_repair,yes,mc,A,A,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P04,post,2026-11-04,18:32:00,A,A5,dna_repair,yes,mc,C,C,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P04,post,2026-11-04,18:32:00,A,A6,dna_repair,yes,mc,A,D,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P04,post,2026-11-04,18:32:00,A,A7,transcription,no,mc,A,A,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P04,post,2026-11-04,18:32:00,A,A8,transcription,no,mc,A,B,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P04,post,2026-11-04,18:32:00,A,A9,translation,no,mc,D,D,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P04,post,2026-11-04,18:32:00,A,A10,translation,no,mc,A,C,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P04,post,2026-11-04,18:32:00,A,WA1,dna_replication,yes,written,At the three-prime end.,At the three-prime end; growth is five-prime to three-prime.,1,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P04,post,2026-11-04,18:32:00,A,WA2,dna_repair,yes,written,Proofreading fixes errors during copying.,Polymerase proofreads during copying; mismatch repair acts after copying.,1,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P04,post,2026-11-04,18:32:00,A,WA3,transcription,no,written,It matches the DNA.,"It adds the base complementary to the next template-strand base, using U for A.",1,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P04,post,2026-11-04,18:32:00,A,WA4,translation,no,written,Every tRNA stays in the P site.,Charged tRNA enters A; a peptide bond links the chain from P; empty tRNA leaves E.,0,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P05,pre,2026-11-04,11:12:00,A,A1,dna_replication,yes,mc,B,B,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P05,pre,2026-11-04,11:12:00,A,A2,dna_replication,yes,mc,D,D,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P05,pre,2026-11-04,11:12:00,A,A3,dna_replication,yes,mc,A,C,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P05,pre,2026-11-04,11:12:00,A,A4,dna_repair,yes,mc,A,A,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P05,pre,2026-11-04,11:12:00,A,A5,dna_repair,yes,mc,C,C,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P05,pre,2026-11-04,11:12:00,A,A6,dna_repair,yes,mc,A,D,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P05,pre,2026-11-04,11:12:00,A,A7,transcription,no,mc,A,A,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P05,pre,2026-11-04,11:12:00,A,A8,transcription,no,mc,A,B,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P05,pre,2026-11-04,11:12:00,A,A9,translation,no,mc,D,D,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P05,pre,2026-11-04,11:12:00,A,A10,translation,no,mc,A,C,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P05,pre,2026-11-04,11:12:00,A,WA1,dna_replication,yes,written,At the three-prime end.,At the three-prime end; growth is five-prime to three-prime.,1,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P05,pre,2026-11-04,11:12:00,A,WA2,dna_repair,yes,written,Proofreading fixes errors during copying.,Polymerase proofreads during copying; mismatch repair acts after copying.,1,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P05,pre,2026-11-04,11:12:00,A,WA3,transcription,no,written,It matches the DNA.,"It adds the base complementary to the next template-strand base, using U for A.",1,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P05,pre,2026-11-04,11:12:00,A,WA4,translation,no,written,Charged tRNA enters A and empty tRNA leaves E.,Charged tRNA enters A; a peptide bond links the chain from P; empty tRNA leaves E.,1,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P05,post,2026-11-04,19:12:00,B,B1,dna_replication,yes,mc,C,C,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P05,post,2026-11-04,19:12:00,B,B2,dna_replication,yes,mc,B,B,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P05,post,2026-11-04,19:12:00,B,B3,dna_replication,yes,mc,A,A,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P05,post,2026-11-04,19:12:00,B,B4,dna_repair,yes,mc,D,D,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P05,post,2026-11-04,19:12:00,B,B5,dna_repair,yes,mc,B,B,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P05,post,2026-11-04,19:12:00,B,B6,dna_repair,yes,mc,A,C,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P05,post,2026-11-04,19:12:00,B,B7,transcription,no,mc,B,B,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P05,post,2026-11-04,19:12:00,B,B8,transcription,no,mc,A,D,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P05,post,2026-11-04,19:12:00,B,B9,translation,no,mc,B,B,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P05,post,2026-11-04,19:12:00,B,B10,translation,no,mc,B,A,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P05,post,2026-11-04,19:12:00,B,WB1,dna_replication,yes,written,It grows five-prime to three-prime.,"Nucleotides attach only at the three-prime end, so growth runs five-prime to three-prime.",1,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P05,post,2026-11-04,19:12:00,B,WB2,dna_repair,yes,written,Proofreading.,DNA polymerase proofreading can still fix errors during copying.,1,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P05,post,2026-11-04,19:12:00,B,WB3,transcription,no,written,AUG.,Five-prime AUG three-prime; it matches the coding strand with U instead of T because RNA pairs to the template.,1,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P05,post,2026-11-04,19:12:00,B,WB4,translation,no,written,CCG.,CCG; matching the codon selects the tRNA carrying the right amino acid.,1,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P06,pre,2026-11-04,11:52:00,B,B1,dna_replication,yes,mc,C,C,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P06,pre,2026-11-04,11:52:00,B,B2,dna_replication,yes,mc,A,B,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P06,pre,2026-11-04,11:52:00,B,B3,dna_replication,yes,mc,B,A,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P06,pre,2026-11-04,11:52:00,B,B4,dna_repair,yes,mc,D,D,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P06,pre,2026-11-04,11:52:00,B,B5,dna_repair,yes,mc,A,B,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P06,pre,2026-11-04,11:52:00,B,B6,dna_repair,yes,mc,A,C,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P06,pre,2026-11-04,11:52:00,B,B7,transcription,no,mc,B,B,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P06,pre,2026-11-04,11:52:00,B,B8,transcription,no,mc,A,D,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P06,pre,2026-11-04,11:52:00,B,B9,translation,no,mc,B,B,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P06,pre,2026-11-04,11:52:00,B,B10,translation,no,mc,B,A,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P06,pre,2026-11-04,11:52:00,B,WB1,dna_replication,yes,written,It grows five-prime to three-prime.,"Nucleotides attach only at the three-prime end, so growth runs five-prime to three-prime.",1,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P06,pre,2026-11-04,11:52:00,B,WB2,dna_repair,yes,written,Primase fixes every mismatch.,DNA polymerase proofreading can still fix errors during copying.,0,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P06,pre,2026-11-04,11:52:00,B,WB3,transcription,no,written,AUG.,Five-prime AUG three-prime; it matches the coding strand with U instead of T because RNA pairs to the template.,1,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P06,pre,2026-11-04,11:52:00,B,WB4,translation,no,written,GGC.,CCG; matching the codon selects the tRNA carrying the right amino acid.,0,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P06,post,2026-11-04,19:52:00,A,A1,dna_replication,yes,mc,B,B,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P06,post,2026-11-04,19:52:00,A,A2,dna_replication,yes,mc,D,D,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P06,post,2026-11-04,19:52:00,A,A3,dna_replication,yes,mc,A,C,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P06,post,2026-11-04,19:52:00,A,A4,dna_repair,yes,mc,A,A,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P06,post,2026-11-04,19:52:00,A,A5,dna_repair,yes,mc,A,C,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P06,post,2026-11-04,19:52:00,A,A6,dna_repair,yes,mc,A,D,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P06,post,2026-11-04,19:52:00,A,A7,transcription,no,mc,A,A,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P06,post,2026-11-04,19:52:00,A,A8,transcription,no,mc,B,B,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P06,post,2026-11-04,19:52:00,A,A9,translation,no,mc,D,D,1,1,SYNTHETIC_KEY_FIXTURE
-SIM_P06,post,2026-11-04,19:52:00,A,A10,translation,no,mc,A,C,0,1,SYNTHETIC_KEY_FIXTURE
-SIM_P06,post,2026-11-04,19:52:00,A,WA1,dna_replication,yes,written,At the three-prime end.,At the three-prime end; growth is five-prime to three-prime.,1,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P06,post,2026-11-04,19:52:00,A,WA2,dna_repair,yes,written,Primase repairs the copied DNA.,Polymerase proofreads during copying; mismatch repair acts after copying.,0,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P06,post,2026-11-04,19:52:00,A,WA3,transcription,no,written,It matches the DNA.,"It adds the base complementary to the next template-strand base, using U for A.",1,2,SYNTHETIC_RUBRIC_FIXTURE
-SIM_P06,post,2026-11-04,19:52:00,A,WA4,translation,no,written,Charged tRNA enters A and empty tRNA leaves E.,Charged tRNA enters A; a peptide bond links the chain from P; empty tRNA leaves E.,1,2,SYNTHETIC_RUBRIC_FIXTURE
+user_P01,pre,2026-11-04,08:32:00,A,A1,dna_replication,yes,mc,B,B,1,1,ANSWER_KEY
+user_P01,pre,2026-11-04,08:32:00,A,A2,dna_replication,yes,mc,A,D,0,1,ANSWER_KEY
+user_P01,pre,2026-11-04,08:32:00,A,A3,dna_replication,yes,mc,A,C,0,1,ANSWER_KEY
+user_P01,pre,2026-11-04,08:32:00,A,A4,dna_repair,yes,mc,A,A,1,1,ANSWER_KEY
+user_P01,pre,2026-11-04,08:32:00,A,A5,dna_repair,yes,mc,A,C,0,1,ANSWER_KEY
+user_P01,pre,2026-11-04,08:32:00,A,A6,dna_repair,yes,mc,A,D,0,1,ANSWER_KEY
+user_P01,pre,2026-11-04,08:32:00,A,A7,transcription,no,mc,A,A,1,1,ANSWER_KEY
+user_P01,pre,2026-11-04,08:32:00,A,A8,transcription,no,mc,A,B,0,1,ANSWER_KEY
+user_P01,pre,2026-11-04,08:32:00,A,A9,translation,no,mc,D,D,1,1,ANSWER_KEY
+user_P01,pre,2026-11-04,08:32:00,A,A10,translation,no,mc,A,C,0,1,ANSWER_KEY
+user_P01,pre,2026-11-04,08:32:00,A,WA1,dna_replication,yes,written,At the three-prime end.,At the three-prime end; growth is five-prime to three-prime.,1,2,ASSESSMENT_RUBRIC
+user_P01,pre,2026-11-04,08:32:00,A,WA2,dna_repair,yes,written,Primase repairs the copied DNA.,Polymerase proofreads during copying; mismatch repair acts after copying.,0,2,ASSESSMENT_RUBRIC
+user_P01,pre,2026-11-04,08:32:00,A,WA3,transcription,no,written,It matches the DNA.,"It adds the base complementary to the next template-strand base, using U for A.",1,2,ASSESSMENT_RUBRIC
+user_P01,pre,2026-11-04,08:32:00,A,WA4,translation,no,written,Every tRNA stays in the P site.,Charged tRNA enters A; a peptide bond links the chain from P; empty tRNA leaves E.,0,2,ASSESSMENT_RUBRIC
+user_P01,post,2026-11-04,16:32:00,B,B1,dna_replication,yes,mc,C,C,1,1,ANSWER_KEY
+user_P01,post,2026-11-04,16:32:00,B,B2,dna_replication,yes,mc,B,B,1,1,ANSWER_KEY
+user_P01,post,2026-11-04,16:32:00,B,B3,dna_replication,yes,mc,A,A,1,1,ANSWER_KEY
+user_P01,post,2026-11-04,16:32:00,B,B4,dna_repair,yes,mc,D,D,1,1,ANSWER_KEY
+user_P01,post,2026-11-04,16:32:00,B,B5,dna_repair,yes,mc,B,B,1,1,ANSWER_KEY
+user_P01,post,2026-11-04,16:32:00,B,B6,dna_repair,yes,mc,A,C,0,1,ANSWER_KEY
+user_P01,post,2026-11-04,16:32:00,B,B7,transcription,no,mc,B,B,1,1,ANSWER_KEY
+user_P01,post,2026-11-04,16:32:00,B,B8,transcription,no,mc,A,D,0,1,ANSWER_KEY
+user_P01,post,2026-11-04,16:32:00,B,B9,translation,no,mc,B,B,1,1,ANSWER_KEY
+user_P01,post,2026-11-04,16:32:00,B,B10,translation,no,mc,B,A,0,1,ANSWER_KEY
+user_P01,post,2026-11-04,16:32:00,B,WB1,dna_replication,yes,written,"Nucleotides attach only at the three-prime end, so growth runs five-prime to three-prime.","Nucleotides attach only at the three-prime end, so growth runs five-prime to three-prime.",2,2,ASSESSMENT_RUBRIC
+user_P01,post,2026-11-04,16:32:00,B,WB2,dna_repair,yes,written,Proofreading.,DNA polymerase proofreading can still fix errors during copying.,1,2,ASSESSMENT_RUBRIC
+user_P01,post,2026-11-04,16:32:00,B,WB3,transcription,no,written,AUG.,Five-prime AUG three-prime; it matches the coding strand with U instead of T because RNA pairs to the template.,1,2,ASSESSMENT_RUBRIC
+user_P01,post,2026-11-04,16:32:00,B,WB4,translation,no,written,CCG.,CCG; matching the codon selects the tRNA carrying the right amino acid.,1,2,ASSESSMENT_RUBRIC
+user_P02,pre,2026-11-04,09:12:00,B,B1,dna_replication,yes,mc,C,C,1,1,ANSWER_KEY
+user_P02,pre,2026-11-04,09:12:00,B,B2,dna_replication,yes,mc,B,B,1,1,ANSWER_KEY
+user_P02,pre,2026-11-04,09:12:00,B,B3,dna_replication,yes,mc,B,A,0,1,ANSWER_KEY
+user_P02,pre,2026-11-04,09:12:00,B,B4,dna_repair,yes,mc,D,D,1,1,ANSWER_KEY
+user_P02,pre,2026-11-04,09:12:00,B,B5,dna_repair,yes,mc,B,B,1,1,ANSWER_KEY
+user_P02,pre,2026-11-04,09:12:00,B,B6,dna_repair,yes,mc,A,C,0,1,ANSWER_KEY
+user_P02,pre,2026-11-04,09:12:00,B,B7,transcription,no,mc,B,B,1,1,ANSWER_KEY
+user_P02,pre,2026-11-04,09:12:00,B,B8,transcription,no,mc,A,D,0,1,ANSWER_KEY
+user_P02,pre,2026-11-04,09:12:00,B,B9,translation,no,mc,B,B,1,1,ANSWER_KEY
+user_P02,pre,2026-11-04,09:12:00,B,B10,translation,no,mc,B,A,0,1,ANSWER_KEY
+user_P02,pre,2026-11-04,09:12:00,B,WB1,dna_replication,yes,written,It grows five-prime to three-prime.,"Nucleotides attach only at the three-prime end, so growth runs five-prime to three-prime.",1,2,ASSESSMENT_RUBRIC
+user_P02,pre,2026-11-04,09:12:00,B,WB2,dna_repair,yes,written,Primase fixes every mismatch.,DNA polymerase proofreading can still fix errors during copying.,0,2,ASSESSMENT_RUBRIC
+user_P02,pre,2026-11-04,09:12:00,B,WB3,transcription,no,written,AUG.,Five-prime AUG three-prime; it matches the coding strand with U instead of T because RNA pairs to the template.,1,2,ASSESSMENT_RUBRIC
+user_P02,pre,2026-11-04,09:12:00,B,WB4,translation,no,written,CCG.,CCG; matching the codon selects the tRNA carrying the right amino acid.,1,2,ASSESSMENT_RUBRIC
+user_P02,post,2026-11-04,17:12:00,A,A1,dna_replication,yes,mc,B,B,1,1,ANSWER_KEY
+user_P02,post,2026-11-04,17:12:00,A,A2,dna_replication,yes,mc,D,D,1,1,ANSWER_KEY
+user_P02,post,2026-11-04,17:12:00,A,A3,dna_replication,yes,mc,C,C,1,1,ANSWER_KEY
+user_P02,post,2026-11-04,17:12:00,A,A4,dna_repair,yes,mc,A,A,1,1,ANSWER_KEY
+user_P02,post,2026-11-04,17:12:00,A,A5,dna_repair,yes,mc,C,C,1,1,ANSWER_KEY
+user_P02,post,2026-11-04,17:12:00,A,A6,dna_repair,yes,mc,A,D,0,1,ANSWER_KEY
+user_P02,post,2026-11-04,17:12:00,A,A7,transcription,no,mc,A,A,1,1,ANSWER_KEY
+user_P02,post,2026-11-04,17:12:00,A,A8,transcription,no,mc,B,B,1,1,ANSWER_KEY
+user_P02,post,2026-11-04,17:12:00,A,A9,translation,no,mc,D,D,1,1,ANSWER_KEY
+user_P02,post,2026-11-04,17:12:00,A,A10,translation,no,mc,A,C,0,1,ANSWER_KEY
+user_P02,post,2026-11-04,17:12:00,A,WA1,dna_replication,yes,written,At the three-prime end; growth is five-prime to three-prime.,At the three-prime end; growth is five-prime to three-prime.,2,2,ASSESSMENT_RUBRIC
+user_P02,post,2026-11-04,17:12:00,A,WA2,dna_repair,yes,written,Proofreading fixes errors during copying.,Polymerase proofreads during copying; mismatch repair acts after copying.,1,2,ASSESSMENT_RUBRIC
+user_P02,post,2026-11-04,17:12:00,A,WA3,transcription,no,written,It matches the DNA.,"It adds the base complementary to the next template-strand base, using U for A.",1,2,ASSESSMENT_RUBRIC
+user_P02,post,2026-11-04,17:12:00,A,WA4,translation,no,written,Charged tRNA enters A and empty tRNA leaves E.,Charged tRNA enters A; a peptide bond links the chain from P; empty tRNA leaves E.,1,2,ASSESSMENT_RUBRIC
+user_P03,pre,2026-11-04,09:52:00,A,A1,dna_replication,yes,mc,B,B,1,1,ANSWER_KEY
+user_P03,pre,2026-11-04,09:52:00,A,A2,dna_replication,yes,mc,A,D,0,1,ANSWER_KEY
+user_P03,pre,2026-11-04,09:52:00,A,A3,dna_replication,yes,mc,A,C,0,1,ANSWER_KEY
+user_P03,pre,2026-11-04,09:52:00,A,A4,dna_repair,yes,mc,A,A,1,1,ANSWER_KEY
+user_P03,pre,2026-11-04,09:52:00,A,A5,dna_repair,yes,mc,A,C,0,1,ANSWER_KEY
+user_P03,pre,2026-11-04,09:52:00,A,A6,dna_repair,yes,mc,A,D,0,1,ANSWER_KEY
+user_P03,pre,2026-11-04,09:52:00,A,A7,transcription,no,mc,A,A,1,1,ANSWER_KEY
+user_P03,pre,2026-11-04,09:52:00,A,A8,transcription,no,mc,A,B,0,1,ANSWER_KEY
+user_P03,pre,2026-11-04,09:52:00,A,A9,translation,no,mc,D,D,1,1,ANSWER_KEY
+user_P03,pre,2026-11-04,09:52:00,A,A10,translation,no,mc,A,C,0,1,ANSWER_KEY
+user_P03,pre,2026-11-04,09:52:00,A,WA1,dna_replication,yes,written,At the three-prime end.,At the three-prime end; growth is five-prime to three-prime.,1,2,ASSESSMENT_RUBRIC
+user_P03,pre,2026-11-04,09:52:00,A,WA2,dna_repair,yes,written,Proofreading fixes errors during copying.,Polymerase proofreads during copying; mismatch repair acts after copying.,1,2,ASSESSMENT_RUBRIC
+user_P03,pre,2026-11-04,09:52:00,A,WA3,transcription,no,written,It matches the DNA.,"It adds the base complementary to the next template-strand base, using U for A.",1,2,ASSESSMENT_RUBRIC
+user_P03,pre,2026-11-04,09:52:00,A,WA4,translation,no,written,Every tRNA stays in the P site.,Charged tRNA enters A; a peptide bond links the chain from P; empty tRNA leaves E.,0,2,ASSESSMENT_RUBRIC
+user_P03,post,2026-11-04,17:52:00,B,B1,dna_replication,yes,mc,C,C,1,1,ANSWER_KEY
+user_P03,post,2026-11-04,17:52:00,B,B2,dna_replication,yes,mc,B,B,1,1,ANSWER_KEY
+user_P03,post,2026-11-04,17:52:00,B,B3,dna_replication,yes,mc,B,A,0,1,ANSWER_KEY
+user_P03,post,2026-11-04,17:52:00,B,B4,dna_repair,yes,mc,D,D,1,1,ANSWER_KEY
+user_P03,post,2026-11-04,17:52:00,B,B5,dna_repair,yes,mc,A,B,0,1,ANSWER_KEY
+user_P03,post,2026-11-04,17:52:00,B,B6,dna_repair,yes,mc,A,C,0,1,ANSWER_KEY
+user_P03,post,2026-11-04,17:52:00,B,B7,transcription,no,mc,B,B,1,1,ANSWER_KEY
+user_P03,post,2026-11-04,17:52:00,B,B8,transcription,no,mc,D,D,1,1,ANSWER_KEY
+user_P03,post,2026-11-04,17:52:00,B,B9,translation,no,mc,B,B,1,1,ANSWER_KEY
+user_P03,post,2026-11-04,17:52:00,B,B10,translation,no,mc,B,A,0,1,ANSWER_KEY
+user_P03,post,2026-11-04,17:52:00,B,WB1,dna_replication,yes,written,It grows five-prime to three-prime.,"Nucleotides attach only at the three-prime end, so growth runs five-prime to three-prime.",1,2,ASSESSMENT_RUBRIC
+user_P03,post,2026-11-04,17:52:00,B,WB2,dna_repair,yes,written,Proofreading.,DNA polymerase proofreading can still fix errors during copying.,1,2,ASSESSMENT_RUBRIC
+user_P03,post,2026-11-04,17:52:00,B,WB3,transcription,no,written,AUG.,Five-prime AUG three-prime; it matches the coding strand with U instead of T because RNA pairs to the template.,1,2,ASSESSMENT_RUBRIC
+user_P03,post,2026-11-04,17:52:00,B,WB4,translation,no,written,CCG.,CCG; matching the codon selects the tRNA carrying the right amino acid.,1,2,ASSESSMENT_RUBRIC
+user_P04,pre,2026-11-04,10:32:00,B,B1,dna_replication,yes,mc,C,C,1,1,ANSWER_KEY
+user_P04,pre,2026-11-04,10:32:00,B,B2,dna_replication,yes,mc,A,B,0,1,ANSWER_KEY
+user_P04,pre,2026-11-04,10:32:00,B,B3,dna_replication,yes,mc,B,A,0,1,ANSWER_KEY
+user_P04,pre,2026-11-04,10:32:00,B,B4,dna_repair,yes,mc,D,D,1,1,ANSWER_KEY
+user_P04,pre,2026-11-04,10:32:00,B,B5,dna_repair,yes,mc,A,B,0,1,ANSWER_KEY
+user_P04,pre,2026-11-04,10:32:00,B,B6,dna_repair,yes,mc,A,C,0,1,ANSWER_KEY
+user_P04,pre,2026-11-04,10:32:00,B,B7,transcription,no,mc,B,B,1,1,ANSWER_KEY
+user_P04,pre,2026-11-04,10:32:00,B,B8,transcription,no,mc,A,D,0,1,ANSWER_KEY
+user_P04,pre,2026-11-04,10:32:00,B,B9,translation,no,mc,B,B,1,1,ANSWER_KEY
+user_P04,pre,2026-11-04,10:32:00,B,B10,translation,no,mc,B,A,0,1,ANSWER_KEY
+user_P04,pre,2026-11-04,10:32:00,B,WB1,dna_replication,yes,written,It grows in both directions.,"Nucleotides attach only at the three-prime end, so growth runs five-prime to three-prime.",0,2,ASSESSMENT_RUBRIC
+user_P04,pre,2026-11-04,10:32:00,B,WB2,dna_repair,yes,written,Primase fixes every mismatch.,DNA polymerase proofreading can still fix errors during copying.,0,2,ASSESSMENT_RUBRIC
+user_P04,pre,2026-11-04,10:32:00,B,WB3,transcription,no,written,UAC.,Five-prime AUG three-prime; it matches the coding strand with U instead of T because RNA pairs to the template.,0,2,ASSESSMENT_RUBRIC
+user_P04,pre,2026-11-04,10:32:00,B,WB4,translation,no,written,GGC.,CCG; matching the codon selects the tRNA carrying the right amino acid.,0,2,ASSESSMENT_RUBRIC
+user_P04,post,2026-11-04,18:32:00,A,A1,dna_replication,yes,mc,B,B,1,1,ANSWER_KEY
+user_P04,post,2026-11-04,18:32:00,A,A2,dna_replication,yes,mc,D,D,1,1,ANSWER_KEY
+user_P04,post,2026-11-04,18:32:00,A,A3,dna_replication,yes,mc,C,C,1,1,ANSWER_KEY
+user_P04,post,2026-11-04,18:32:00,A,A4,dna_repair,yes,mc,A,A,1,1,ANSWER_KEY
+user_P04,post,2026-11-04,18:32:00,A,A5,dna_repair,yes,mc,C,C,1,1,ANSWER_KEY
+user_P04,post,2026-11-04,18:32:00,A,A6,dna_repair,yes,mc,A,D,0,1,ANSWER_KEY
+user_P04,post,2026-11-04,18:32:00,A,A7,transcription,no,mc,A,A,1,1,ANSWER_KEY
+user_P04,post,2026-11-04,18:32:00,A,A8,transcription,no,mc,A,B,0,1,ANSWER_KEY
+user_P04,post,2026-11-04,18:32:00,A,A9,translation,no,mc,D,D,1,1,ANSWER_KEY
+user_P04,post,2026-11-04,18:32:00,A,A10,translation,no,mc,A,C,0,1,ANSWER_KEY
+user_P04,post,2026-11-04,18:32:00,A,WA1,dna_replication,yes,written,At the three-prime end.,At the three-prime end; growth is five-prime to three-prime.,1,2,ASSESSMENT_RUBRIC
+user_P04,post,2026-11-04,18:32:00,A,WA2,dna_repair,yes,written,Proofreading fixes errors during copying.,Polymerase proofreads during copying; mismatch repair acts after copying.,1,2,ASSESSMENT_RUBRIC
+user_P04,post,2026-11-04,18:32:00,A,WA3,transcription,no,written,It matches the DNA.,"It adds the base complementary to the next template-strand base, using U for A.",1,2,ASSESSMENT_RUBRIC
+user_P04,post,2026-11-04,18:32:00,A,WA4,translation,no,written,Every tRNA stays in the P site.,Charged tRNA enters A; a peptide bond links the chain from P; empty tRNA leaves E.,0,2,ASSESSMENT_RUBRIC
+user_P05,pre,2026-11-04,11:12:00,A,A1,dna_replication,yes,mc,B,B,1,1,ANSWER_KEY
+user_P05,pre,2026-11-04,11:12:00,A,A2,dna_replication,yes,mc,D,D,1,1,ANSWER_KEY
+user_P05,pre,2026-11-04,11:12:00,A,A3,dna_replication,yes,mc,A,C,0,1,ANSWER_KEY
+user_P05,pre,2026-11-04,11:12:00,A,A4,dna_repair,yes,mc,A,A,1,1,ANSWER_KEY
+user_P05,pre,2026-11-04,11:12:00,A,A5,dna_repair,yes,mc,C,C,1,1,ANSWER_KEY
+user_P05,pre,2026-11-04,11:12:00,A,A6,dna_repair,yes,mc,A,D,0,1,ANSWER_KEY
+user_P05,pre,2026-11-04,11:12:00,A,A7,transcription,no,mc,A,A,1,1,ANSWER_KEY
+user_P05,pre,2026-11-04,11:12:00,A,A8,transcription,no,mc,A,B,0,1,ANSWER_KEY
+user_P05,pre,2026-11-04,11:12:00,A,A9,translation,no,mc,D,D,1,1,ANSWER_KEY
+user_P05,pre,2026-11-04,11:12:00,A,A10,translation,no,mc,A,C,0,1,ANSWER_KEY
+user_P05,pre,2026-11-04,11:12:00,A,WA1,dna_replication,yes,written,At the three-prime end.,At the three-prime end; growth is five-prime to three-prime.,1,2,ASSESSMENT_RUBRIC
+user_P05,pre,2026-11-04,11:12:00,A,WA2,dna_repair,yes,written,Proofreading fixes errors during copying.,Polymerase proofreads during copying; mismatch repair acts after copying.,1,2,ASSESSMENT_RUBRIC
+user_P05,pre,2026-11-04,11:12:00,A,WA3,transcription,no,written,It matches the DNA.,"It adds the base complementary to the next template-strand base, using U for A.",1,2,ASSESSMENT_RUBRIC
+user_P05,pre,2026-11-04,11:12:00,A,WA4,translation,no,written,Charged tRNA enters A and empty tRNA leaves E.,Charged tRNA enters A; a peptide bond links the chain from P; empty tRNA leaves E.,1,2,ASSESSMENT_RUBRIC
+user_P05,post,2026-11-04,19:12:00,B,B1,dna_replication,yes,mc,C,C,1,1,ANSWER_KEY
+user_P05,post,2026-11-04,19:12:00,B,B2,dna_replication,yes,mc,B,B,1,1,ANSWER_KEY
+user_P05,post,2026-11-04,19:12:00,B,B3,dna_replication,yes,mc,A,A,1,1,ANSWER_KEY
+user_P05,post,2026-11-04,19:12:00,B,B4,dna_repair,yes,mc,D,D,1,1,ANSWER_KEY
+user_P05,post,2026-11-04,19:12:00,B,B5,dna_repair,yes,mc,B,B,1,1,ANSWER_KEY
+user_P05,post,2026-11-04,19:12:00,B,B6,dna_repair,yes,mc,A,C,0,1,ANSWER_KEY
+user_P05,post,2026-11-04,19:12:00,B,B7,transcription,no,mc,B,B,1,1,ANSWER_KEY
+user_P05,post,2026-11-04,19:12:00,B,B8,transcription,no,mc,A,D,0,1,ANSWER_KEY
+user_P05,post,2026-11-04,19:12:00,B,B9,translation,no,mc,B,B,1,1,ANSWER_KEY
+user_P05,post,2026-11-04,19:12:00,B,B10,translation,no,mc,B,A,0,1,ANSWER_KEY
+user_P05,post,2026-11-04,19:12:00,B,WB1,dna_replication,yes,written,It grows five-prime to three-prime.,"Nucleotides attach only at the three-prime end, so growth runs five-prime to three-prime.",1,2,ASSESSMENT_RUBRIC
+user_P05,post,2026-11-04,19:12:00,B,WB2,dna_repair,yes,written,Proofreading.,DNA polymerase proofreading can still fix errors during copying.,1,2,ASSESSMENT_RUBRIC
+user_P05,post,2026-11-04,19:12:00,B,WB3,transcription,no,written,AUG.,Five-prime AUG three-prime; it matches the coding strand with U instead of T because RNA pairs to the template.,1,2,ASSESSMENT_RUBRIC
+user_P05,post,2026-11-04,19:12:00,B,WB4,translation,no,written,CCG.,CCG; matching the codon selects the tRNA carrying the right amino acid.,1,2,ASSESSMENT_RUBRIC
+user_P06,pre,2026-11-04,11:52:00,B,B1,dna_replication,yes,mc,C,C,1,1,ANSWER_KEY
+user_P06,pre,2026-11-04,11:52:00,B,B2,dna_replication,yes,mc,A,B,0,1,ANSWER_KEY
+user_P06,pre,2026-11-04,11:52:00,B,B3,dna_replication,yes,mc,B,A,0,1,ANSWER_KEY
+user_P06,pre,2026-11-04,11:52:00,B,B4,dna_repair,yes,mc,D,D,1,1,ANSWER_KEY
+user_P06,pre,2026-11-04,11:52:00,B,B5,dna_repair,yes,mc,A,B,0,1,ANSWER_KEY
+user_P06,pre,2026-11-04,11:52:00,B,B6,dna_repair,yes,mc,A,C,0,1,ANSWER_KEY
+user_P06,pre,2026-11-04,11:52:00,B,B7,transcription,no,mc,B,B,1,1,ANSWER_KEY
+user_P06,pre,2026-11-04,11:52:00,B,B8,transcription,no,mc,A,D,0,1,ANSWER_KEY
+user_P06,pre,2026-11-04,11:52:00,B,B9,translation,no,mc,B,B,1,1,ANSWER_KEY
+user_P06,pre,2026-11-04,11:52:00,B,B10,translation,no,mc,B,A,0,1,ANSWER_KEY
+user_P06,pre,2026-11-04,11:52:00,B,WB1,dna_replication,yes,written,It grows five-prime to three-prime.,"Nucleotides attach only at the three-prime end, so growth runs five-prime to three-prime.",1,2,ASSESSMENT_RUBRIC
+user_P06,pre,2026-11-04,11:52:00,B,WB2,dna_repair,yes,written,Primase fixes every mismatch.,DNA polymerase proofreading can still fix errors during copying.,0,2,ASSESSMENT_RUBRIC
+user_P06,pre,2026-11-04,11:52:00,B,WB3,transcription,no,written,AUG.,Five-prime AUG three-prime; it matches the coding strand with U instead of T because RNA pairs to the template.,1,2,ASSESSMENT_RUBRIC
+user_P06,pre,2026-11-04,11:52:00,B,WB4,translation,no,written,GGC.,CCG; matching the codon selects the tRNA carrying the right amino acid.,0,2,ASSESSMENT_RUBRIC
+user_P06,post,2026-11-04,19:52:00,A,A1,dna_replication,yes,mc,B,B,1,1,ANSWER_KEY
+user_P06,post,2026-11-04,19:52:00,A,A2,dna_replication,yes,mc,D,D,1,1,ANSWER_KEY
+user_P06,post,2026-11-04,19:52:00,A,A3,dna_replication,yes,mc,A,C,0,1,ANSWER_KEY
+user_P06,post,2026-11-04,19:52:00,A,A4,dna_repair,yes,mc,A,A,1,1,ANSWER_KEY
+user_P06,post,2026-11-04,19:52:00,A,A5,dna_repair,yes,mc,A,C,0,1,ANSWER_KEY
+user_P06,post,2026-11-04,19:52:00,A,A6,dna_repair,yes,mc,A,D,0,1,ANSWER_KEY
+user_P06,post,2026-11-04,19:52:00,A,A7,transcription,no,mc,A,A,1,1,ANSWER_KEY
+user_P06,post,2026-11-04,19:52:00,A,A8,transcription,no,mc,B,B,1,1,ANSWER_KEY
+user_P06,post,2026-11-04,19:52:00,A,A9,translation,no,mc,D,D,1,1,ANSWER_KEY
+user_P06,post,2026-11-04,19:52:00,A,A10,translation,no,mc,A,C,0,1,ANSWER_KEY
+user_P06,post,2026-11-04,19:52:00,A,WA1,dna_replication,yes,written,At the three-prime end.,At the three-prime end; growth is five-prime to three-prime.,1,2,ASSESSMENT_RUBRIC
+user_P06,post,2026-11-04,19:52:00,A,WA2,dna_repair,yes,written,Primase repairs the copied DNA.,Polymerase proofreads during copying; mismatch repair acts after copying.,0,2,ASSESSMENT_RUBRIC
+user_P06,post,2026-11-04,19:52:00,A,WA3,transcription,no,written,It matches the DNA.,"It adds the base complementary to the next template-strand base, using U for A.",1,2,ASSESSMENT_RUBRIC
+user_P06,post,2026-11-04,19:52:00,A,WA4,translation,no,written,Charged tRNA enters A and empty tRNA leaves E.,Charged tRNA enters A; a peptide bond links the chain from P; empty tRNA leaves E.,1,2,ASSESSMENT_RUBRIC

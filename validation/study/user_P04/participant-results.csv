@@ -1,0 +1,2 @@
+participant_id,eligible,prior_exposure,pre_form,date,am_start,am_end,pm_start,rep_pre_mc,rep_pre_wr,dr_pre_mc,dr_pre_wr,tx_pre_mc,tx_pre_wr,tl_pre_mc,tl_pre_wr,rep_post_mc,rep_post_wr,dr_post_mc,dr_post_wr,tx_post_mc,tx_post_wr,tl_post_mc,tl_post_wr,help_steps,reminders_sent,ext_rep,ext_dr,ext_tx,ext_tl,ext_notes,disappointed,withdrawn,notes
+user_P04,yes,attended lectures 19-22,B,2026-11-04,10:30:00,11:00:00,18:30:00,1,0,1,0,1,0,1,0,3,1,2,1,1,1,1,0,,0,yes,no,no,no,textbook review of replication.,very,no,

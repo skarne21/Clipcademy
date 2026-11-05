@@ -9,13 +9,21 @@
     "answer": 5,
     "return_home": 6
   },
-  "mean_app_effect_pp": 12.083333333333334,
-  "positive_effects": 4,
+  "mean_app_effect_pp": 2.0833333333333335,
+  "positive_effects": 3,
   "qualifying_returns": 3,
   "very_disappointed": 2,
   "outside_study_exclusion_n": 5,
-  "mean_effect_without_outside_study_pp": 7.0,
+  "mean_effect_without_outside_study_pp": -3.0,
   "h1_threshold_met": false,
   "h2_threshold_met": true,
-  "h3_threshold_met": false
+  "h3_threshold_met": false,
+  "median_app_effect_pp": 3.75,
+  "sample_standard_deviation_app_effect_pp": 23.633486130206578,
+  "minimum_app_effect_pp": -25.0,
+  "maximum_app_effect_pp": 27.5,
+  "correct_app_attempts": 31,
+  "usability_gate_met": true,
+  "score_adjusted_users": 6,
+  "recorded_mean_app_effect_pp": 12.083333333333334
 }
