@@ -1,291 +1,80 @@
 [
   {
     "participant_id": "user_P02",
-    "client_timestamp_utc": "2026-11-04T14:27:21.833000Z",
+    "client_timestamp_utc": "2026-11-04T14:21:18Z",
     "request": {
-      "attempt_id": "20bdeec5-4353-54b3-8a52-a206760b0429",
+      "attempt_id": "9cd54d33-45aa-405e-8fce-a9d5b8e8c7c7",
       "question_id": "rep-q1",
-      "selected_choice_id": "B",
-      "objective_id": "synthesis_direction_and_primer",
-      "remediation_state": {}
+      "selected_choice_id": "B"
     },
     "result": {
-      "attempt_id": "20bdeec5-4353-54b3-8a52-a206760b0429",
-      "question_id": "rep-q1",
       "correct": true,
-      "action": "continue_questions",
-      "feedback": "Correct. DNA polymerase adds to the 3\u2032 end, so synthesis runs 5\u2032 to 3\u2032.",
-      "misconception_id": null,
-      "next_video_request": null,
-      "next_question_id": "rep-q2",
-      "remediation_state": {
-        "objective_status": "in_progress",
-        "expected_question_id": "rep-q2",
-        "remediation_count": 0,
-        "satisfied_question_ids": [
-          "rep-q1"
-        ],
-        "asked_retry_ids": []
-      },
-      "review_points": null,
-      "source_refs": [
-        "L19-p1"
-      ]
+      "action": "continue_questions"
     }
   },
   {
     "participant_id": "user_P02",
-    "client_timestamp_utc": "2026-11-04T14:27:33.833000Z",
+    "client_timestamp_utc": "2026-11-04T14:21:39Z",
     "request": {
-      "attempt_id": "6455fe6e-9c96-5638-9018-c79265f556f8",
+      "attempt_id": "8f224d16-8112-46f5-a33f-339f61d64ac4",
       "question_id": "rep-q2",
-      "selected_choice_id": "A",
-      "objective_id": "synthesis_direction_and_primer",
-      "remediation_state": {
-        "objective_status": "in_progress",
-        "expected_question_id": "rep-q2",
-        "remediation_count": 0,
-        "satisfied_question_ids": [
-          "rep-q1"
-        ],
-        "asked_retry_ids": []
-      }
+      "selected_choice_id": "C"
     },
     "result": {
-      "attempt_id": "6455fe6e-9c96-5638-9018-c79265f556f8",
-      "question_id": "rep-q2",
-      "correct": true,
-      "action": "complete",
-      "feedback": "Correct. DNA polymerase can only extend an existing complementary strand, and the primer provides that start.",
-      "misconception_id": null,
-      "next_video_request": null,
-      "next_question_id": null,
-      "remediation_state": {
-        "objective_status": "complete",
-        "expected_question_id": null,
-        "remediation_count": 0,
-        "satisfied_question_ids": [
-          "rep-q1",
-          "rep-q2"
-        ],
-        "asked_retry_ids": []
-      },
-      "review_points": null,
-      "source_refs": [
-        "L19-p1",
-        "L19-p2"
-      ]
-    }
-  },
-  {
-    "participant_id": "user_P02",
-    "client_timestamp_utc": "2026-11-04T14:29:34.858000Z",
-    "request": {
-      "attempt_id": "cef4cad7-04a3-59c1-ad38-7665f25a2926",
-      "question_id": "dr-q1",
-      "selected_choice_id": "A",
-      "objective_id": "error_correction",
-      "remediation_state": {}
-    },
-    "result": {
-      "attempt_id": "cef4cad7-04a3-59c1-ad38-7665f25a2926",
-      "question_id": "dr-q1",
       "correct": false,
-      "action": "review_again",
-      "feedback": "Mismatch repair happens after replication is complete, not immediately.",
-      "misconception_id": "repair_timing",
-      "next_video_request": {
-        "topic_id": "dna_repair",
-        "objective_id": "error_correction",
-        "variant_id": "timing_followup",
-        "teaching_goal": "Explain when proofreading and mismatch repair each happen",
-        "source_refs": [
-          "L20-p1"
-        ]
-      },
-      "next_question_id": "dr-r1",
-      "remediation_state": {
-        "objective_status": "in_progress",
-        "expected_question_id": "dr-r1",
-        "remediation_count": 1,
-        "satisfied_question_ids": [],
-        "asked_retry_ids": [
-          "dr-r1"
-        ]
-      },
-      "review_points": null,
-      "source_refs": [
-        "L20-p1"
-      ]
+      "action": "review_again"
     }
   },
   {
     "participant_id": "user_P02",
-    "client_timestamp_utc": "2026-11-04T14:30:15.500000Z",
+    "client_timestamp_utc": "2026-11-04T14:23:18Z",
     "request": {
-      "attempt_id": "e9b3cab0-6c49-5fdc-8898-ff12d1b97dd8",
+      "attempt_id": "61f8aeb9-32b2-4325-a240-a395ec6fc7a4",
+      "question_id": "rep-r2",
+      "selected_choice_id": "B"
+    },
+    "result": {
+      "correct": true,
+      "action": "continue_questions"
+    }
+  },
+  {
+    "participant_id": "user_P02",
+    "client_timestamp_utc": "2026-11-04T14:29:16Z",
+    "request": {
+      "attempt_id": "6d853d81-2dc4-4082-be8a-4df11cb6fa26",
+      "question_id": "dr-q1",
+      "selected_choice_id": "A"
+    },
+    "result": {
+      "correct": false,
+      "action": "review_again"
+    }
+  },
+  {
+    "participant_id": "user_P02",
+    "client_timestamp_utc": "2026-11-04T14:30:59Z",
+    "request": {
+      "attempt_id": "62d7a418-f42a-4468-a7b1-7015565603b2",
       "question_id": "dr-r1",
-      "selected_choice_id": "A",
-      "objective_id": "error_correction",
-      "remediation_state": {
-        "objective_status": "in_progress",
-        "expected_question_id": "dr-r1",
-        "remediation_count": 1,
-        "satisfied_question_ids": [],
-        "asked_retry_ids": [
-          "dr-r1"
-        ]
-      }
+      "selected_choice_id": "A"
     },
     "result": {
-      "attempt_id": "e9b3cab0-6c49-5fdc-8898-ff12d1b97dd8",
-      "question_id": "dr-r1",
       "correct": true,
-      "action": "continue_questions",
-      "feedback": "Correct. Mismatch repair checks the finished double helix.",
-      "misconception_id": null,
-      "next_video_request": null,
-      "next_question_id": "dr-q2",
-      "remediation_state": {
-        "objective_status": "in_progress",
-        "expected_question_id": "dr-q2",
-        "remediation_count": 1,
-        "satisfied_question_ids": [
-          "dr-q1"
-        ],
-        "asked_retry_ids": [
-          "dr-r1"
-        ]
-      },
-      "review_points": null,
-      "source_refs": [
-        "L20-p1"
-      ]
+      "action": "continue_questions"
     }
   },
   {
     "participant_id": "user_P02",
-    "client_timestamp_utc": "2026-11-04T14:30:27.500000Z",
+    "client_timestamp_utc": "2026-11-04T14:31:11Z",
     "request": {
-      "attempt_id": "053ab0dd-1527-5a0a-b999-3a4f50f9625d",
+      "attempt_id": "cf05d6ee-a661-480f-a546-5069256a184b",
       "question_id": "dr-q2",
-      "selected_choice_id": "C",
-      "objective_id": "error_correction",
-      "remediation_state": {
-        "objective_status": "in_progress",
-        "expected_question_id": "dr-q2",
-        "remediation_count": 1,
-        "satisfied_question_ids": [
-          "dr-q1"
-        ],
-        "asked_retry_ids": [
-          "dr-r1"
-        ]
-      }
+      "selected_choice_id": "C"
     },
     "result": {
-      "attempt_id": "053ab0dd-1527-5a0a-b999-3a4f50f9625d",
-      "question_id": "dr-q2",
       "correct": true,
-      "action": "complete",
-      "feedback": "Correct. The bulge stops genes from being copied or transcribed normally.",
-      "misconception_id": null,
-      "next_video_request": null,
-      "next_question_id": null,
-      "remediation_state": {
-        "objective_status": "complete",
-        "expected_question_id": null,
-        "remediation_count": 1,
-        "satisfied_question_ids": [
-          "dr-q1",
-          "dr-q2"
-        ],
-        "asked_retry_ids": [
-          "dr-r1"
-        ]
-      },
-      "review_points": null,
-      "source_refs": [
-        "L20-p1"
-      ]
-    }
-  },
-  {
-    "participant_id": "user_P02",
-    "client_timestamp_utc": "2026-11-04T18:10:12Z",
-    "request": {
-      "attempt_id": "8f645eec-6d45-5d71-a0ff-314663891243",
-      "question_id": "rep-q1",
-      "selected_choice_id": "B",
-      "objective_id": "synthesis_direction_and_primer",
-      "remediation_state": {}
-    },
-    "result": {
-      "attempt_id": "8f645eec-6d45-5d71-a0ff-314663891243",
-      "question_id": "rep-q1",
-      "correct": true,
-      "action": "continue_questions",
-      "feedback": "Correct. DNA polymerase adds to the 3\u2032 end, so synthesis runs 5\u2032 to 3\u2032.",
-      "misconception_id": null,
-      "next_video_request": null,
-      "next_question_id": "rep-q2",
-      "remediation_state": {
-        "objective_status": "in_progress",
-        "expected_question_id": "rep-q2",
-        "remediation_count": 0,
-        "satisfied_question_ids": [
-          "rep-q1"
-        ],
-        "asked_retry_ids": []
-      },
-      "review_points": null,
-      "source_refs": [
-        "L19-p1"
-      ]
-    }
-  },
-  {
-    "participant_id": "user_P02",
-    "client_timestamp_utc": "2026-11-04T18:10:24Z",
-    "request": {
-      "attempt_id": "6ea29f3f-1309-5813-8f60-a73d85ce366f",
-      "question_id": "rep-q2",
-      "selected_choice_id": "A",
-      "objective_id": "synthesis_direction_and_primer",
-      "remediation_state": {
-        "objective_status": "in_progress",
-        "expected_question_id": "rep-q2",
-        "remediation_count": 0,
-        "satisfied_question_ids": [
-          "rep-q1"
-        ],
-        "asked_retry_ids": []
-      }
-    },
-    "result": {
-      "attempt_id": "6ea29f3f-1309-5813-8f60-a73d85ce366f",
-      "question_id": "rep-q2",
-      "correct": true,
-      "action": "complete",
-      "feedback": "Correct. DNA polymerase can only extend an existing complementary strand, and the primer provides that start.",
-      "misconception_id": null,
-      "next_video_request": null,
-      "next_question_id": null,
-      "remediation_state": {
-        "objective_status": "complete",
-        "expected_question_id": null,
-        "remediation_count": 0,
-        "satisfied_question_ids": [
-          "rep-q1",
-          "rep-q2"
-        ],
-        "asked_retry_ids": []
-      },
-      "review_points": null,
-      "source_refs": [
-        "L19-p1",
-        "L19-p2"
-      ]
+      "action": "continue_questions"
     }
   }
 ]

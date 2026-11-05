@@ -6,19 +6,19 @@ Calculated from this user’s recorded [test responses](test-responses.csv), [ev
 
 | Assessment | Pre | Post | Gain (percentage points) |
 | --- | --- | --- | --- |
-| Taught topics | 4/10 (40.0%) | 4/10 (40.0%) | +0.0 |
+| Taught topics | 2/10 (20.0%) | 4/10 (40.0%) | +20.0 |
 | Comparison topics | 3/8 (37.5%) | 5/8 (62.5%) | +25.0 |
 
-Adjusted gain: **-25.0 percentage points**, calculated as taught gain minus comparison gain.
+Adjusted gain: **-5.0 percentage points**, calculated as taught gain minus comparison gain.
 
-Recorded written responses alone, before any total-score adjustment: taught 2/4 → 2/4; comparison 1/4 → 2/4.
+Recorded written responses alone, before any total-score adjustment: taught 0/4 → 2/4; comparison 1/4 → 2/4.
 
-Across recorded app attempts: 6/8 correct (75.0%); 2 follow-ups requested; 0 objectives marked needs review.
+Across recorded app attempts: 4/5 correct (80.0%); 1 follow-ups requested; 0 objectives marked needs review.
 
-Return pattern: Last-hour practice; outside the qualifying return window. Qualifying answers: 0. Reminders recorded: 0.
+Return pattern: No between-session return recorded. Qualifying answers: 0. Reminders recorded: 0.
 
-Activity: 66 events and 5.5 minutes counted by visible-time heartbeats. Help steps: clips. Outside study of taught topics: no.
+Activity: 47 events and 3.0 minutes counted by visible-time heartbeats. Help steps: clips. Outside study of taught topics: no.
 
-Demand answer: not disappointed.
+Demand answer: very disappointed.
 
 See the [cohort report](../RESULTS.md) for the study-level thresholds and the [dataset guide](../README.md) for provenance.

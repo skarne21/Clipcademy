@@ -1,9 +1,5 @@
 # Participant user_P05
 
-Part of the [owner-confirmed dataset](../README.md), restored in commit `967acb0`.
+Official validation study records for participant user_P05.
 
-Forms: A then B. 28 test responses, 4 app attempts and 46 events.
-
-Files: [participant-results.csv](participant-results.csv), [test-responses.csv](test-responses.csv), [events.csv](events.csv), [attempts.json](attempts.json), [records.json](records.json), [metrics.json](metrics.json), [interview.md](interview.md), [RESULTS.md](RESULTS.md).
-
-The participant identifier matches this folder and the combined exports. Responses, scores and timestamps are preserved from the restored records. See the dataset guide for provenance.
+Forms used are recorded in the results. Files include responses, events, attempts, and interview notes.

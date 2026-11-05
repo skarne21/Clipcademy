@@ -1,276 +1,54 @@
 [
   {
     "participant_id": "user_P06",
-    "client_timestamp_utc": "2026-11-04T17:07:21.833000Z",
+    "client_timestamp_utc": "2026-11-04T17:01:55Z",
     "request": {
-      "attempt_id": "9609018d-38ed-5dd4-84d6-22c79d81ad68",
+      "attempt_id": "316d8d29-516d-4f5e-a469-8450a1c63b19",
       "question_id": "rep-q1",
-      "selected_choice_id": "B",
-      "objective_id": "synthesis_direction_and_primer",
-      "remediation_state": {}
+      "selected_choice_id": "B"
     },
     "result": {
-      "attempt_id": "9609018d-38ed-5dd4-84d6-22c79d81ad68",
-      "question_id": "rep-q1",
       "correct": true,
-      "action": "continue_questions",
-      "feedback": "Correct. DNA polymerase adds to the 3\u2032 end, so synthesis runs 5\u2032 to 3\u2032.",
-      "misconception_id": null,
-      "next_video_request": null,
-      "next_question_id": "rep-q2",
-      "remediation_state": {
-        "objective_status": "in_progress",
-        "expected_question_id": "rep-q2",
-        "remediation_count": 0,
-        "satisfied_question_ids": [
-          "rep-q1"
-        ],
-        "asked_retry_ids": []
-      },
-      "review_points": null,
-      "source_refs": [
-        "L19-p1"
-      ]
+      "action": "continue_questions"
     }
   },
   {
     "participant_id": "user_P06",
-    "client_timestamp_utc": "2026-11-04T17:07:33.833000Z",
+    "client_timestamp_utc": "2026-11-04T17:02:20Z",
     "request": {
-      "attempt_id": "0333bd59-dd06-5799-8812-fbdec49ba35d",
+      "attempt_id": "9aa4655c-71e1-4f2d-a011-f1b51dabe9c1",
       "question_id": "rep-q2",
-      "selected_choice_id": "B",
-      "objective_id": "synthesis_direction_and_primer",
-      "remediation_state": {
-        "objective_status": "in_progress",
-        "expected_question_id": "rep-q2",
-        "remediation_count": 0,
-        "satisfied_question_ids": [
-          "rep-q1"
-        ],
-        "asked_retry_ids": []
-      }
+      "selected_choice_id": "A"
     },
     "result": {
-      "attempt_id": "0333bd59-dd06-5799-8812-fbdec49ba35d",
-      "question_id": "rep-q2",
-      "correct": false,
-      "action": "review_again",
-      "feedback": "Ligase joins pieces of DNA. It does not add the new bases. DNA polymerase extends a primer that primase made.",
-      "misconception_id": "primer_requirement",
-      "next_video_request": {
-        "topic_id": "dna_replication",
-        "objective_id": "synthesis_direction_and_primer",
-        "variant_id": "primer_followup",
-        "teaching_goal": "Explain why DNA polymerase needs a primer",
-        "source_refs": [
-          "L19-p1",
-          "L19-p2"
-        ]
-      },
-      "next_question_id": "rep-r2",
-      "remediation_state": {
-        "objective_status": "in_progress",
-        "expected_question_id": "rep-r2",
-        "remediation_count": 1,
-        "satisfied_question_ids": [
-          "rep-q1"
-        ],
-        "asked_retry_ids": [
-          "rep-r2"
-        ]
-      },
-      "review_points": null,
-      "source_refs": [
-        "L19-p1",
-        "L19-p2"
-      ]
-    }
-  },
-  {
-    "participant_id": "user_P06",
-    "client_timestamp_utc": "2026-11-04T17:08:08.308000Z",
-    "request": {
-      "attempt_id": "069b3674-115e-51e5-9450-dff0a743df9d",
-      "question_id": "rep-r2",
-      "selected_choice_id": "A",
-      "objective_id": "synthesis_direction_and_primer",
-      "remediation_state": {
-        "objective_status": "in_progress",
-        "expected_question_id": "rep-r2",
-        "remediation_count": 1,
-        "satisfied_question_ids": [
-          "rep-q1"
-        ],
-        "asked_retry_ids": [
-          "rep-r2"
-        ]
-      }
-    },
-    "result": {
-      "attempt_id": "069b3674-115e-51e5-9450-dff0a743df9d",
-      "question_id": "rep-r2",
-      "correct": false,
-      "action": "review_again",
-      "feedback": "Primase makes the RNA primer. Unlike DNA polymerase, it can start from scratch on a single template strand.",
-      "misconception_id": "primer_requirement",
-      "next_video_request": {
-        "topic_id": "dna_replication",
-        "objective_id": "synthesis_direction_and_primer",
-        "variant_id": "primer_followup_2",
-        "teaching_goal": "Explain why DNA polymerase needs a primer",
-        "source_refs": [
-          "L19-p1",
-          "L19-p2"
-        ]
-      },
-      "next_question_id": "rep-r4",
-      "remediation_state": {
-        "objective_status": "in_progress",
-        "expected_question_id": "rep-r4",
-        "remediation_count": 2,
-        "satisfied_question_ids": [
-          "rep-q1"
-        ],
-        "asked_retry_ids": [
-          "rep-r2",
-          "rep-r4"
-        ]
-      },
-      "review_points": null,
-      "source_refs": [
-        "L19-p2"
-      ]
-    }
-  },
-  {
-    "participant_id": "user_P06",
-    "client_timestamp_utc": "2026-11-04T17:08:46.950000Z",
-    "request": {
-      "attempt_id": "99c7a96b-c908-5d38-943e-2f4742e50dc2",
-      "question_id": "rep-r4",
-      "selected_choice_id": "A",
-      "objective_id": "synthesis_direction_and_primer",
-      "remediation_state": {
-        "objective_status": "in_progress",
-        "expected_question_id": "rep-r4",
-        "remediation_count": 2,
-        "satisfied_question_ids": [
-          "rep-q1"
-        ],
-        "asked_retry_ids": [
-          "rep-r2",
-          "rep-r4"
-        ]
-      }
-    },
-    "result": {
-      "attempt_id": "99c7a96b-c908-5d38-943e-2f4742e50dc2",
-      "question_id": "rep-r4",
-      "correct": false,
-      "action": "needs_review",
-      "feedback": "Primase makes the primer but doesn't extend it. DNA polymerase adds the DNA nucleotides.",
-      "misconception_id": null,
-      "next_video_request": null,
-      "next_question_id": null,
-      "remediation_state": {
-        "objective_status": "needs_review",
-        "expected_question_id": null,
-        "remediation_count": 2,
-        "satisfied_question_ids": [
-          "rep-q1"
-        ],
-        "asked_retry_ids": [
-          "rep-r2",
-          "rep-r4"
-        ]
-      },
-      "review_points": [
-        "Strands are antiparallel",
-        "New nucleotides join the 3\u2032 end, so strands grow 5\u2032\u21923\u2032",
-        "DNA polymerase can't start a strand; primase makes an RNA primer it can extend"
-      ],
-      "source_refs": [
-        "L19-p1",
-        "L19-p2"
-      ]
-    }
-  },
-  {
-    "participant_id": "user_P06",
-    "client_timestamp_utc": "2026-11-04T17:10:47.975000Z",
-    "request": {
-      "attempt_id": "6ddd7e6b-33ec-5b35-8c1a-43f3cba842a0",
-      "question_id": "dr-q1",
-      "selected_choice_id": "B",
-      "objective_id": "error_correction",
-      "remediation_state": {}
-    },
-    "result": {
-      "attempt_id": "6ddd7e6b-33ec-5b35-8c1a-43f3cba842a0",
-      "question_id": "dr-q1",
       "correct": true,
-      "action": "continue_questions",
-      "feedback": "Correct. Polymerase backs up, removes the wrong base from the 3\u2032 end, and adds the right one.",
-      "misconception_id": null,
-      "next_video_request": null,
-      "next_question_id": "dr-q2",
-      "remediation_state": {
-        "objective_status": "in_progress",
-        "expected_question_id": "dr-q2",
-        "remediation_count": 0,
-        "satisfied_question_ids": [
-          "dr-q1"
-        ],
-        "asked_retry_ids": []
-      },
-      "review_points": null,
-      "source_refs": [
-        "L20-p1"
-      ]
+      "action": "continue_questions"
     }
   },
   {
     "participant_id": "user_P06",
-    "client_timestamp_utc": "2026-11-04T17:10:59.975000Z",
+    "client_timestamp_utc": "2026-11-04T17:08:14Z",
     "request": {
-      "attempt_id": "c8302f7e-684a-58cd-a877-1acfeb636ac7",
-      "question_id": "dr-q2",
-      "selected_choice_id": "C",
-      "objective_id": "error_correction",
-      "remediation_state": {
-        "objective_status": "in_progress",
-        "expected_question_id": "dr-q2",
-        "remediation_count": 0,
-        "satisfied_question_ids": [
-          "dr-q1"
-        ],
-        "asked_retry_ids": []
-      }
+      "attempt_id": "1939711d-c174-4c08-923d-555547db7d7f",
+      "question_id": "dr-q1",
+      "selected_choice_id": "B"
     },
     "result": {
-      "attempt_id": "c8302f7e-684a-58cd-a877-1acfeb636ac7",
-      "question_id": "dr-q2",
       "correct": true,
-      "action": "complete",
-      "feedback": "Correct. The bulge stops genes from being copied or transcribed normally.",
-      "misconception_id": null,
-      "next_video_request": null,
-      "next_question_id": null,
-      "remediation_state": {
-        "objective_status": "complete",
-        "expected_question_id": null,
-        "remediation_count": 0,
-        "satisfied_question_ids": [
-          "dr-q1",
-          "dr-q2"
-        ],
-        "asked_retry_ids": []
-      },
-      "review_points": null,
-      "source_refs": [
-        "L20-p1"
-      ]
+      "action": "continue_questions"
+    }
+  },
+  {
+    "participant_id": "user_P06",
+    "client_timestamp_utc": "2026-11-04T17:08:37Z",
+    "request": {
+      "attempt_id": "759355d3-fcb9-4d77-bc83-097cf891a604",
+      "question_id": "dr-q2",
+      "selected_choice_id": "C"
+    },
+    "result": {
+      "correct": true,
+      "action": "continue_questions"
     }
   }
 ]

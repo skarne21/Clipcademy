@@ -1,157 +1,80 @@
 [
   {
     "participant_id": "user_P05",
-    "client_timestamp_utc": "2026-11-04T16:27:21.833000Z",
+    "client_timestamp_utc": "2026-11-04T16:21:41Z",
     "request": {
-      "attempt_id": "1e8d244c-eeec-5107-a33c-518e251f95c7",
+      "attempt_id": "6a72a368-e944-4bca-ab36-026689e036b0",
       "question_id": "rep-q1",
-      "selected_choice_id": "B",
-      "objective_id": "synthesis_direction_and_primer",
-      "remediation_state": {}
+      "selected_choice_id": "B"
     },
     "result": {
-      "attempt_id": "1e8d244c-eeec-5107-a33c-518e251f95c7",
-      "question_id": "rep-q1",
       "correct": true,
-      "action": "continue_questions",
-      "feedback": "Correct. DNA polymerase adds to the 3\u2032 end, so synthesis runs 5\u2032 to 3\u2032.",
-      "misconception_id": null,
-      "next_video_request": null,
-      "next_question_id": "rep-q2",
-      "remediation_state": {
-        "objective_status": "in_progress",
-        "expected_question_id": "rep-q2",
-        "remediation_count": 0,
-        "satisfied_question_ids": [
-          "rep-q1"
-        ],
-        "asked_retry_ids": []
-      },
-      "review_points": null,
-      "source_refs": [
-        "L19-p1"
-      ]
+      "action": "continue_questions"
     }
   },
   {
     "participant_id": "user_P05",
-    "client_timestamp_utc": "2026-11-04T16:27:33.833000Z",
+    "client_timestamp_utc": "2026-11-04T16:22:00Z",
     "request": {
-      "attempt_id": "ff9ffa18-e8ca-5a86-a992-a5b33d1c6500",
+      "attempt_id": "8ec08af2-1f38-4b88-90d3-5090ecefa194",
       "question_id": "rep-q2",
-      "selected_choice_id": "A",
-      "objective_id": "synthesis_direction_and_primer",
-      "remediation_state": {
-        "objective_status": "in_progress",
-        "expected_question_id": "rep-q2",
-        "remediation_count": 0,
-        "satisfied_question_ids": [
-          "rep-q1"
-        ],
-        "asked_retry_ids": []
-      }
+      "selected_choice_id": "C"
     },
     "result": {
-      "attempt_id": "ff9ffa18-e8ca-5a86-a992-a5b33d1c6500",
-      "question_id": "rep-q2",
-      "correct": true,
-      "action": "complete",
-      "feedback": "Correct. DNA polymerase can only extend an existing complementary strand, and the primer provides that start.",
-      "misconception_id": null,
-      "next_video_request": null,
-      "next_question_id": null,
-      "remediation_state": {
-        "objective_status": "complete",
-        "expected_question_id": null,
-        "remediation_count": 0,
-        "satisfied_question_ids": [
-          "rep-q1",
-          "rep-q2"
-        ],
-        "asked_retry_ids": []
-      },
-      "review_points": null,
-      "source_refs": [
-        "L19-p1",
-        "L19-p2"
-      ]
+      "correct": false,
+      "action": "review_again"
     }
   },
   {
     "participant_id": "user_P05",
-    "client_timestamp_utc": "2026-11-04T16:29:34.858000Z",
+    "client_timestamp_utc": "2026-11-04T16:23:30Z",
     "request": {
-      "attempt_id": "beb9c47f-5d60-5074-b81e-8c3db5e81527",
-      "question_id": "dr-q1",
-      "selected_choice_id": "B",
-      "objective_id": "error_correction",
-      "remediation_state": {}
+      "attempt_id": "99902c2e-c236-4e24-8b5a-526058cedcb7",
+      "question_id": "rep-r2",
+      "selected_choice_id": "B"
     },
     "result": {
-      "attempt_id": "beb9c47f-5d60-5074-b81e-8c3db5e81527",
-      "question_id": "dr-q1",
       "correct": true,
-      "action": "continue_questions",
-      "feedback": "Correct. Polymerase backs up, removes the wrong base from the 3\u2032 end, and adds the right one.",
-      "misconception_id": null,
-      "next_video_request": null,
-      "next_question_id": "dr-q2",
-      "remediation_state": {
-        "objective_status": "in_progress",
-        "expected_question_id": "dr-q2",
-        "remediation_count": 0,
-        "satisfied_question_ids": [
-          "dr-q1"
-        ],
-        "asked_retry_ids": []
-      },
-      "review_points": null,
-      "source_refs": [
-        "L20-p1"
-      ]
+      "action": "continue_questions"
     }
   },
   {
     "participant_id": "user_P05",
-    "client_timestamp_utc": "2026-11-04T16:29:46.858000Z",
+    "client_timestamp_utc": "2026-11-04T16:29:14Z",
     "request": {
-      "attempt_id": "ba4e8f23-d143-53b4-a3da-16327effdc2b",
-      "question_id": "dr-q2",
-      "selected_choice_id": "C",
-      "objective_id": "error_correction",
-      "remediation_state": {
-        "objective_status": "in_progress",
-        "expected_question_id": "dr-q2",
-        "remediation_count": 0,
-        "satisfied_question_ids": [
-          "dr-q1"
-        ],
-        "asked_retry_ids": []
-      }
+      "attempt_id": "dc885353-3dee-4d26-a531-cf7ffdbdbf2e",
+      "question_id": "dr-q1",
+      "selected_choice_id": "A"
     },
     "result": {
-      "attempt_id": "ba4e8f23-d143-53b4-a3da-16327effdc2b",
-      "question_id": "dr-q2",
+      "correct": false,
+      "action": "review_again"
+    }
+  },
+  {
+    "participant_id": "user_P05",
+    "client_timestamp_utc": "2026-11-04T16:30:49Z",
+    "request": {
+      "attempt_id": "0f1ec141-fa1c-4174-aeb3-a391c21eb643",
+      "question_id": "dr-r1",
+      "selected_choice_id": "A"
+    },
+    "result": {
       "correct": true,
-      "action": "complete",
-      "feedback": "Correct. The bulge stops genes from being copied or transcribed normally.",
-      "misconception_id": null,
-      "next_video_request": null,
-      "next_question_id": null,
-      "remediation_state": {
-        "objective_status": "complete",
-        "expected_question_id": null,
-        "remediation_count": 0,
-        "satisfied_question_ids": [
-          "dr-q1",
-          "dr-q2"
-        ],
-        "asked_retry_ids": []
-      },
-      "review_points": null,
-      "source_refs": [
-        "L20-p1"
-      ]
+      "action": "continue_questions"
+    }
+  },
+  {
+    "participant_id": "user_P05",
+    "client_timestamp_utc": "2026-11-04T16:31:04Z",
+    "request": {
+      "attempt_id": "15b1c8bf-59b1-41f0-92dd-87aac8df947c",
+      "question_id": "dr-q2",
+      "selected_choice_id": "C"
+    },
+    "result": {
+      "correct": true,
+      "action": "continue_questions"
     }
   }
 ]
