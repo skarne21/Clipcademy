@@ -1,0 +1,9 @@
+# Synthetic results: SIM_P01
+
+Invented example, not actual user results.
+
+Taught score: 3/10 to 8/10. Comparison score: 3/8 to 4/8.
+
+Individual app effect: 37.5 percentage points. Eligible return: yes. Demand: somewhat. Outside taught-topic study: no. Assigned help: none.
+
+This individual does not establish any real study hypothesis.
