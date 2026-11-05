@@ -2,8 +2,9 @@
 
 ## Cost analysis: the 35 explainer videos
 
-**The headline:** 35 clips (14.4 minutes of video in total) cost about **$2.30 of ElevenLabs credits**. Everything else was
-free. The only money actually spent is one month of the ElevenLabs Starter plan (**$6**).
+**The headline:** 35 clips (14.4 minutes of video in total) cost about **$2.30 of ElevenLabs credits**. The tools we
+pay for are two subscriptions: **Claude ($20 a month)**, which runs Claude Code, and the **ElevenLabs Starter plan
+($6 a month)**. That is **$26 for the month** we built the videos in. Remotion, rendering and hosting cost nothing.
 
 ### What we made
 
@@ -20,11 +21,12 @@ free. The only money actually spent is one month of the ElevenLabs Starter plan 
 | Item | Tool | What it used | Cost |
 |---|---|---|---|
 | Voice and word timings for captions | ElevenLabs API (`eleven_multilingual_v2`, voice Liam) | About 15,500 credits: 15,139 characters of narration across 47 requests, plus 4 short voice samples (~6 s each) used to choose the voice | **≈ $2.30** |
-| Animation and video rendering | Remotion with an SVG character, on a laptop | About 10 s per clip, so about 6 minutes for all 35 | $0 |
+| Writing the renderer, scenes, scripts and tests | Claude Code (included in a Claude subscription) | Used throughout the build: the Remotion scenes, the Python render pipeline, narration scripts, tests and fixes | **$20 / month** (flat; no per-clip cost) |
+| Animation and video rendering | Remotion (React-based video framework) with an SVG character, on a laptop | About 10 s per clip, so about 6 minutes for all 35 | $0 (free licence for individuals and teams of up to 3) |
 | Captions | Built from ElevenLabs' character timings (no separate captioning service) | Included in the voice request | $0 |
 | Sound effects and encoding | Own short sounds, FFmpeg | Local | $0 |
 | Hosting | PythonAnywhere free plan | 43 MB of the 512 MiB account (about 8%) | $0 |
-| **Total spend for this round** | | | **≈ $2.30 of credits, from a $6 month** |
+| **Total spend for this round** | | | **$26 for the month** ($20 Claude + $6 ElevenLabs), of which ≈ $2.30 of ElevenLabs credits was actually used |
 
 *How the rate is worked out:* the Starter plan is $6 a month. Our account shows 40,000 credits for that, so one credit
 is $0.00015 and 1 credit buys 1 character of narration. 15,500 credits × $0.00015 ≈ $2.30. (ElevenLabs' public
@@ -39,6 +41,19 @@ month's allowance.)
 | One minute of finished video | ~835 | ≈ $0.13 |
 | One new topic (about 9 clips) | ~3,100 | ≈ $0.46 |
 | Re-voicing every clip once (e.g. to fix narration pace, #21) | ~12,000 | ≈ $1.80 |
+
+### Remotion and Claude Code
+
+- **Remotion** turns React components into video. Each clip is one `Clip` component: the board, the guide
+  character, captions and cards, driven by the narration's word timings. It renders on a laptop with Node and
+  Chrome, so there is no render bill. It's free for individuals, non-profits and companies of up to 3 people.
+  A bigger company would need a paid company licence (see remotion.dev/license).
+- **Claude Code** wrote most of the code with us: the Remotion scenes, `render.py` and the beat timing, the
+  ElevenLabs client and cache, the narration scripts, and the tests. It costs a flat **$20 a month** (the Claude
+  plan it comes with), however many clips we make. So it's a fixed cost for building the system, not a cost per
+  video. Once the pipeline exists, a new clip needs only ElevenLabs credits.
+- **Monthly cost while building:** $20 (Claude) + $6 (ElevenLabs) = **$26**. After the build, making more
+  clips costs about $0.05 each in credits. Claude is only needed again to change the pipeline or write new scripts.
 
 ### Why it stayed cheap
 
