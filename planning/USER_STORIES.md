@@ -1,6 +1,6 @@
 # Alpha Activity 2: requirement decomposition
 
-**Commit-date exercise.** This planning work is assigned October 29, 2026, at 10:00 AM Eastern, after the TDD commits and before the MVP hypothesis and validation work in the simulated timeline. Its original recorded commit date was November 4, 2026. GitHub issue creation timestamps and commit ancestry are unchanged.
+**Commit metadata.** The requirements and user stories are recorded in planning commit `0e18096` on `member1`. Its commit date was changed from November 4, 2026, to October 29, 2026, at 10:00 AM Eastern. GitHub issue creation timestamps and commit ancestry are unchanged.
 
 Generated from `planning/user_stories.py`; GitHub issues are created from the same file. It builds on, and does not
 change, the MVP hypothesis and validation analysis in [validation-plan.md](../Context/validation-plan.md):

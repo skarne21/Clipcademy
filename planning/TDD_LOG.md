@@ -1,9 +1,9 @@
 # Alpha Activity 3: AI-assisted test-driven development
 
-**Commit-date exercise.** The TDD red, green and deferral commits are assigned October 29, 2026, at 09:00, 09:10 and 09:20 Eastern. In this simulated timeline they precede the GitHub-issue planning at 10:00 and the MVP hypothesis and validation work. The original recorded dates were November 4, 2026; the earlier MVP development and GitHub activity dates are not changed.
+**Commit metadata.** The TDD red, green and deferral commits on `member1` were re-dated from November 4, 2026, to October 29, 2026, at 09:00, 09:10 and 09:20 Eastern. The executable tests and production fixes are recorded in the commits below. Commit ancestry, earlier MVP development dates and GitHub activity timestamps are unchanged.
 
-**Original timeline.** The Alpha features in the Activity 2 issues (#9–#31) were built during the MVP phase, with their tests
-written alongside the code (see each issue's *Evidence / tests*). From commit `296f7af` (2026-11-04) on, work follows
+**Development sequence.** The Alpha features in the Activity 2 issues (#9–#31) were built during the MVP phase, with their tests
+written alongside the code (see each issue's *Evidence / tests*). From commit `43e41bd` (original `296f7af`) on, work follows
 strict test-first TDD: the test suite for an issue's open acceptance criteria is generated, reviewed, committed and
 seen to fail **before** any production change, and the fix lands in a later commit. The git history shows that order.
 
