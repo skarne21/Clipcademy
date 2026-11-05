@@ -1,0 +1,15 @@
+{
+  "participant_id": "SIM_P03",
+  "events": 66,
+  "practice_attempts": 8,
+  "paper_responses": 28,
+  "taught_pre": 4,
+  "taught_post": 5,
+  "comparison_pre": 3,
+  "comparison_post": 5,
+  "app_effect_percentage_points": -15.0,
+  "qualifying_return": false,
+  "disappointed": "not",
+  "outside_taught_study": false,
+  "heartbeat_minutes": 5.5
+}

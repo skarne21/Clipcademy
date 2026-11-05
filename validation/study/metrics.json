@@ -1,0 +1,21 @@
+{
+  "participants": 6,
+  "paper_responses": 168,
+  "events": 349,
+  "practice_attempts": 39,
+  "gate_unaided_counts": {
+    "open_lesson": 6,
+    "clips": 5,
+    "answer": 5,
+    "return_home": 6
+  },
+  "mean_app_effect_pp": 12.083333333333334,
+  "positive_effects": 4,
+  "qualifying_returns": 3,
+  "very_disappointed": 2,
+  "outside_study_exclusion_n": 5,
+  "mean_effect_without_outside_study_pp": 7.0,
+  "h1_threshold_met": false,
+  "h2_threshold_met": true,
+  "h3_threshold_met": false
+}
