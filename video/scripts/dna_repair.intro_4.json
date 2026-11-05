@@ -1,0 +1,100 @@
+{
+  "topic_id": "dna_repair",
+  "objective_id": "error_correction",
+  "variant_id": "intro_4",
+  "format": "vertical",
+  "teaching_goal": "Repair enzymes cut out the damaged piece, fill in new bases, and reseal the backbone.",
+  "source_refs": [
+    "L20-p1"
+  ],
+  "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L20-p1: enzymes and proteins recognize the damage, break the backbone on either side, remove the bases, replace them, and form phosphodiester linkages.",
+    "analogy": "Cutting out a bad patch and sewing in a new one.",
+    "new_term": "backbone"
+  },
+  "scenes": [
+    {
+      "diagram": "repair",
+      "title": "How cells fix UV damage",
+      "narration": "Here's the UV bulge. Step one, repair proteins find the damage. Step two, they cut the backbone on both sides. Then they remove the damaged bases. Step three, new bases fill the gap. Step four, the backbone gets sealed shut. Like cutting out a bad patch and sewing in a new one. Repair enzymes cut out the damaged piece, fill in new bases, and reseal the backbone. Swipe for the recap.",
+      "stage": {
+        "bottom": 9,
+        "damaged": true,
+        "section": [
+          4,
+          7
+        ]
+      },
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "pose:present",
+            "pulse:damage"
+          ]
+        },
+        {
+          "on": "one",
+          "do": [
+            "scan",
+            "point:protein",
+            "step:Find"
+          ]
+        },
+        {
+          "on": "two",
+          "do": [
+            "cut",
+            "step:Cut"
+          ]
+        },
+        {
+          "on": "remove",
+          "do": [
+            "remove"
+          ]
+        },
+        {
+          "on": "three",
+          "do": [
+            "replace",
+            "step:Fill"
+          ]
+        },
+        {
+          "on": "four",
+          "do": [
+            "reseal",
+            "step:Seal",
+            "pulse:backbone"
+          ]
+        },
+        {
+          "on": "patch",
+          "do": [
+            "pose:thumbs"
+          ]
+        },
+        {
+          "on": "enzymes",
+          "do": [
+            "pulse:section"
+          ]
+        },
+        {
+          "on": "reseal",
+          "do": [
+            "pulse:backbone"
+          ]
+        },
+        {
+          "on": "recap",
+          "do": [
+            "pulse:bottom"
+          ]
+        }
+      ]
+    }
+  ]
+}

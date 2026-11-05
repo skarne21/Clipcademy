@@ -1,0 +1,101 @@
+{
+  "topic_id": "dna_repair",
+  "objective_id": "error_correction",
+  "variant_id": "intro_5",
+  "format": "vertical",
+  "teaching_goal": "Proofreading fixes errors during copying, mismatch repair fixes them after, and UV damage is cut out and replaced.",
+  "source_refs": [
+    "L20-p1"
+  ],
+  "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L20-p1 (proofreading during copying, mismatch repair after, UV damage removed and replaced).",
+    "analogy": "Fixing typos as you go, then checking at the end.",
+    "new_term": "none new (recap)"
+  },
+  "scenes": [
+    {
+      "diagram": "timeline",
+      "title": "Recap: three ways DNA gets fixed",
+      "narration": "Quick recap: three repair jobs. During copying, DNA polymerase proofreads. It fixes its own mistake right away. After copying, mismatch repair proteins find wrong bases in the finished DNA. And UV damage gets cut out and replaced. Think of fixing typos as you go, then checking at the end. Proofreading fixes errors during copying, mismatch repair fixes them after, and UV damage is cut out and replaced. Let's see what you remember.",
+      "stage": {},
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "pose:present",
+            "timeline"
+          ]
+        },
+        {
+          "on": "three",
+          "do": [
+            "pose:think"
+          ]
+        },
+        {
+          "on": "during",
+          "do": [
+            "mark:during",
+            "point:during"
+          ]
+        },
+        {
+          "on": "right",
+          "do": [
+            "pulse:during"
+          ]
+        },
+        {
+          "on": "after",
+          "do": [
+            "mark:after",
+            "point:after"
+          ]
+        },
+        {
+          "on": "finished",
+          "do": [
+            "pulse:after"
+          ]
+        },
+        {
+          "on": "uv",
+          "do": [
+            "card:UV damage: cut out + replace"
+          ]
+        },
+        {
+          "on": "typos",
+          "do": [
+            "pose:present"
+          ]
+        },
+        {
+          "on": "proofreading",
+          "do": [
+            "pulse:during"
+          ]
+        },
+        {
+          "on": "mismatch",
+          "do": [
+            "pulse:after"
+          ]
+        },
+        {
+          "on": "cut",
+          "do": [
+            "pulse:line"
+          ]
+        },
+        {
+          "on": "remember",
+          "do": [
+            "pose:thumbs"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "topic_id": "transcription",
+  "objective_id": "template_strand_and_promoter",
+  "variant_id": "intro_3",
+  "format": "vertical",
+  "teaching_goal": "The promoter is where RNA polymerase starts, and it sets which way the gene is read.",
+  "source_refs": [
+    "L21-p1"
+  ],
+  "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L21-p1: the promoter is where RNA polymerase makes initial contact to start transcription; it also determines the direction of reading.",
+    "analogy": "A start line that also shows which way to run.",
+    "new_term": "promoter"
+  },
+  "scenes": [
+    {
+      "diagram": "transcription",
+      "title": "Where does transcription start?",
+      "narration": "Where does RNA polymerase start reading? Not just anywhere. It starts at the promoter. The promoter is a stretch of the gene that marks the start. RNA polymerase makes first contact right here. The promoter also sets the direction. So reading goes this way. Like a start line that also shows which way to run. The promoter is where RNA polymerase starts, and it sets which way the gene is read. Swipe.",
+      "stage": {},
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "pose:think",
+            "pulse:promoter"
+          ]
+        },
+        {
+          "on": "anywhere",
+          "do": [
+            "pose:wag"
+          ]
+        },
+        {
+          "on": "promoter",
+          "do": [
+            "pulse:promoter",
+            "point:promoter"
+          ]
+        },
+        {
+          "on": "marks",
+          "do": [
+            "zoom:promoter"
+          ]
+        },
+        {
+          "on": "contact",
+          "do": [
+            "polymerase"
+          ]
+        },
+        {
+          "on": "direction",
+          "do": [
+            "zoom_out",
+            "arrow"
+          ]
+        },
+        {
+          "on": "way",
+          "do": [
+            "pulse:arrow"
+          ]
+        },
+        {
+          "on": "line",
+          "do": [
+            "pose:present"
+          ]
+        },
+        {
+          "on": "promoter",
+          "do": [
+            "card:Promoter = start + direction"
+          ]
+        },
+        {
+          "on": "sets",
+          "do": [
+            "pulse:promoter"
+          ]
+        },
+        {
+          "on": "swipe",
+          "do": [
+            "pulse:template"
+          ]
+        }
+      ]
+    }
+  ]
+}

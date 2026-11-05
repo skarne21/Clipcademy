@@ -1,0 +1,100 @@
+{
+  "topic_id": "dna_repair",
+  "objective_id": "error_correction",
+  "variant_id": "uv_followup",
+  "format": "vertical",
+  "teaching_goal": "Explain what UV light does to DNA and how it is repaired",
+  "source_refs": [
+    "L20-p1"
+  ],
+  "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L20-p1: UV makes adjacent C's and T's form covalent bonds; repair recognizes, cuts, replaces, and reforms phosphodiester linkages.",
+    "analogy": "A road crew fixing a pothole.",
+    "new_term": "none new (follow-up)"
+  },
+  "scenes": [
+    {
+      "diagram": "repair",
+      "title": "UV damage and how it gets fixed",
+      "narration": "UV light hits DNA. A neighboring C and T get bonded together. That makes a bulge in the backbone. Repair proteins recognize the bulge. They cut the backbone on both sides. They remove the damaged bases. New bases fill the gap. Then the backbone is sealed again. Think of a road crew fixing a pothole. Recognize, cut, replace, reseal. Now try the question again.",
+      "stage": {
+        "bottom": 9
+      },
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "uv",
+            "pose:surprised"
+          ]
+        },
+        {
+          "on": "bonded",
+          "do": [
+            "bond",
+            "pulse:damage"
+          ]
+        },
+        {
+          "on": "bulge",
+          "do": [
+            "bulge",
+            "zoom:damage"
+          ]
+        },
+        {
+          "on": "recognize",
+          "do": [
+            "zoom_out",
+            "scan",
+            "point:protein"
+          ]
+        },
+        {
+          "on": "cut",
+          "do": [
+            "cut"
+          ]
+        },
+        {
+          "on": "remove",
+          "do": [
+            "remove"
+          ]
+        },
+        {
+          "on": "fill",
+          "do": [
+            "replace"
+          ]
+        },
+        {
+          "on": "sealed",
+          "do": [
+            "reseal",
+            "pulse:backbone"
+          ]
+        },
+        {
+          "on": "road",
+          "do": [
+            "pose:present"
+          ]
+        },
+        {
+          "on": "recognize",
+          "do": [
+            "card:Find → cut → fill → seal"
+          ]
+        },
+        {
+          "on": "again",
+          "do": [
+            "pose:thumbs"
+          ]
+        }
+      ]
+    }
+  ]
+}

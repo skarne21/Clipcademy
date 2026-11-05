@@ -1,0 +1,18 @@
+{
+  "video_file": "transcription.intro_4.c74cf0312194d9ee.mp4",
+  "captions_file": "transcription.intro_4.c74cf0312194d9ee.vtt",
+  "transcript": "Quick recap. Step one: RNA polymerase makes contact at the promoter. Step two: proteins open up the DNA there. Step three: polymerase reads the template strand and builds matching RNA. The coding strand is not read. Like a train leaving the station on one track. RNA polymerase starts at the promoter and reads the template strand. Let's see what you remember.",
+  "source_refs": [
+    "L21-p1"
+  ],
+  "duration_seconds": 24.958,
+  "width": 720,
+  "height": 1280,
+  "fps": 24,
+  "fingerprint": "c74cf0312194d9ee",
+  "review_status": "pending",
+  "narration": "synthetic: ElevenLabs eleven_multilingual_v2, voice Liam (ElevenLabs premade)",
+  "visuals": "Remotion 4.0.537, Clipcademy stick-figure template",
+  "longest_still_seconds": 2.47,
+  "sha256": "7c12b8af00c43d4f738b865bd66844a742ed1b9faacf519d3fda51bb606fe65e"
+}

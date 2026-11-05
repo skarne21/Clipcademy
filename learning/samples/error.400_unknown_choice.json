@@ -1,0 +1,20 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/attempts",
+    "body": {
+      "attempt_id": "751ef276-8845-5e67-89ec-e3db4d9e02bb",
+      "question_id": "rep-q1",
+      "selected_choice_id": "Z",
+      "objective_id": "synthesis_direction_and_primer",
+      "remediation_state": {}
+    }
+  },
+  "status": 400,
+  "response": {
+    "error": {
+      "field": "selected_choice_id",
+      "message": "unknown choice for rep-q1"
+    }
+  }
+}

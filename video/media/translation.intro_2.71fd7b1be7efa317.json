@@ -1,0 +1,19 @@
+{
+  "video_file": "translation.intro_2.71fd7b1be7efa317.mp4",
+  "captions_file": "translation.intro_2.71fd7b1be7efa317.vtt",
+  "transcript": "The ribosome has three spots: E, P, and A. New tRNAs always come in at the A site. Each one carries an amino acid. Here's one that doesn't match. Its anticodon doesn't pair, so it leaves. Here's one that does. It pairs with the codon and stays. Like a key that only fits its own lock. A charged tRNA enters at the A site and stays if its anticodon matches the codon. Swipe.",
+  "source_refs": [
+    "L22-p1",
+    "L22-p2"
+  ],
+  "duration_seconds": 27.542,
+  "width": 720,
+  "height": 1280,
+  "fps": 24,
+  "fingerprint": "71fd7b1be7efa317",
+  "review_status": "pending",
+  "narration": "synthetic: ElevenLabs eleven_multilingual_v2, voice Liam (ElevenLabs premade)",
+  "visuals": "Remotion 4.0.537, Clipcademy stick-figure template",
+  "longest_still_seconds": 2.6,
+  "sha256": "d2cdaa34fb8cd2a73d380c4a517020af7e76d6c990a83299d3e2b13949d71664"
+}

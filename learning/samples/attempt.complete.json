@@ -1,0 +1,50 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/attempts",
+    "body": {
+      "attempt_id": "c27e9bdd-a2fd-524c-a86b-6a312703fc84",
+      "question_id": "rep-r2",
+      "selected_choice_id": "B",
+      "objective_id": "synthesis_direction_and_primer",
+      "remediation_state": {
+        "objective_status": "in_progress",
+        "expected_question_id": "rep-r2",
+        "remediation_count": 1,
+        "satisfied_question_ids": [
+          "rep-q1"
+        ],
+        "asked_retry_ids": [
+          "rep-r2"
+        ]
+      }
+    }
+  },
+  "status": 200,
+  "response": {
+    "attempt_id": "c27e9bdd-a2fd-524c-a86b-6a312703fc84",
+    "question_id": "rep-r2",
+    "correct": true,
+    "action": "complete",
+    "feedback": "Correct. Primase makes the RNA primer that DNA polymerase extends.",
+    "misconception_id": null,
+    "next_video_request": null,
+    "next_question_id": null,
+    "remediation_state": {
+      "objective_status": "complete",
+      "expected_question_id": null,
+      "remediation_count": 1,
+      "satisfied_question_ids": [
+        "rep-q1",
+        "rep-q2"
+      ],
+      "asked_retry_ids": [
+        "rep-r2"
+      ]
+    },
+    "review_points": null,
+    "source_refs": [
+      "L19-p2"
+    ]
+  }
+}

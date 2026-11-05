@@ -1,0 +1,2 @@
+# Offline eSpeak drafts only (CLIPCADEMY_VOICE=espeak). Real clips use ElevenLabs (tts.py, standard library).
+espeakng-loader==0.2.4

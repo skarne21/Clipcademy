@@ -1,0 +1,95 @@
+{
+  "topic_id": "translation",
+  "objective_id": "codon_pairing_and_ribosome_sites",
+  "variant_id": "intro_1",
+  "format": "vertical",
+  "teaching_goal": "An anticodon is three tRNA bases that pair with a matching mRNA codon.",
+  "source_refs": [
+    "L22-p1"
+  ],
+  "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L22-p1: the anticodon is three bases complementary to a codon; the tRNA with anticodon UAC pairs with AUG.",
+    "analogy": "Puzzle pieces that only fit their match.",
+    "new_term": "anticodon"
+  },
+  "scenes": [
+    {
+      "diagram": "translation",
+      "title": "How does a tRNA find its spot?",
+      "narration": "How does a tRNA know where to go? It reads three letters at a time. Three mRNA bases make a codon. The tRNA has three matching bases, called the anticodon. Here's the start codon, A-U-G. The tRNA with U-A-C pairs with it. A matches U. U matches A. G matches C. Like puzzle pieces that only fit their match. An anticodon is three tRNA bases that pair with a matching mRNA codon. Swipe.",
+      "stage": {
+        "p_trna": false
+      },
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "pose:think",
+            "pulse:mrna"
+          ]
+        },
+        {
+          "on": "three",
+          "do": [
+            "pulse:start"
+          ]
+        },
+        {
+          "on": "codon",
+          "do": [
+            "zoom:start"
+          ]
+        },
+        {
+          "on": "anticodon",
+          "do": [
+            "enter:p"
+          ]
+        },
+        {
+          "on": "start",
+          "do": [
+            "pulse:start"
+          ]
+        },
+        {
+          "on": "u-a-c",
+          "do": [
+            "pulse:anticodon"
+          ]
+        },
+        {
+          "on": "matches",
+          "do": [
+            "pose:present"
+          ]
+        },
+        {
+          "on": "puzzle",
+          "do": [
+            "zoom_out"
+          ]
+        },
+        {
+          "on": "anticodon",
+          "do": [
+            "card:Anticodon pairs with codon"
+          ]
+        },
+        {
+          "on": "pair",
+          "do": [
+            "pulse:trna"
+          ]
+        },
+        {
+          "on": "swipe",
+          "do": [
+            "pose:thumbs"
+          ]
+        }
+      ]
+    }
+  ]
+}

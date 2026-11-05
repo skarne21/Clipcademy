@@ -1,0 +1,90 @@
+{
+  "topic_id": "translation",
+  "objective_id": "codon_pairing_and_ribosome_sites",
+  "variant_id": "intro_4",
+  "format": "vertical",
+  "teaching_goal": "The empty tRNA leaves the ribosome from the E site.",
+  "source_refs": [
+    "L22-p2"
+  ],
+  "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L22-p2: E is where tRNAs sit once their amino acid has been added to the protein; the uncharged tRNA exits from this site.",
+    "analogy": "A seat opening up on a busy bus.",
+    "new_term": "E site"
+  },
+  "scenes": [
+    {
+      "diagram": "translation",
+      "title": "How does a used tRNA leave?",
+      "narration": "What happens to a tRNA after it gives away its amino acid? It moves over to the E site. Now it's empty. E is for exit. From the E site, the empty tRNA leaves the ribosome. Like a seat opening up on a busy bus. The empty tRNA leaves the ribosome from the E site. Swipe for the recap.",
+      "stage": {},
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "enter",
+            "pose:think"
+          ]
+        },
+        {
+          "on": "gives",
+          "do": [
+            "bond",
+            "pulse:chain"
+          ]
+        },
+        {
+          "on": "moves",
+          "do": [
+            "shift"
+          ]
+        },
+        {
+          "on": "empty",
+          "do": [
+            "pulse:e_site",
+            "point:e_site"
+          ]
+        },
+        {
+          "on": "exit",
+          "do": [
+            "zoom:e_site"
+          ]
+        },
+        {
+          "on": "leaves",
+          "do": [
+            "exit"
+          ]
+        },
+        {
+          "on": "seat",
+          "do": [
+            "zoom_out",
+            "pose:present"
+          ]
+        },
+        {
+          "on": "empty",
+          "do": [
+            "card:Empty tRNA exits at E"
+          ]
+        },
+        {
+          "on": "ribosome",
+          "do": [
+            "pulse:e_site"
+          ]
+        },
+        {
+          "on": "recap",
+          "do": [
+            "pose:thumbs"
+          ]
+        }
+      ]
+    }
+  ]
+}

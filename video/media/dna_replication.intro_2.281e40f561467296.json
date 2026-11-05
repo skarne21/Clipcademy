@@ -1,0 +1,18 @@
+{
+  "video_file": "dna_replication.intro_2.281e40f561467296.mp4",
+  "captions_file": "dna_replication.intro_2.281e40f561467296.vtt",
+  "transcript": "DNA only gets built one way. Here's why. Every strand has two different ends. The 5-prime end. And the 3-prime end. New pieces can only snap onto the 3-prime end. One way. Every time. New DNA only grows from 5-prime to 3-prime. But it can't start from nothing. Swipe.",
+  "source_refs": [
+    "L19-p1"
+  ],
+  "duration_seconds": 22.125,
+  "width": 720,
+  "height": 1280,
+  "fps": 24,
+  "fingerprint": "281e40f561467296",
+  "review_status": "pending",
+  "narration": "synthetic: ElevenLabs eleven_multilingual_v2, voice Liam (ElevenLabs premade)",
+  "visuals": "Remotion 4.0.537, Clipcademy stick-figure template",
+  "longest_still_seconds": 2.38,
+  "sha256": "3cd6c502dd327d884f659feb3b6d7274c32fdc3cc2357f3b097fc9e0a71e231f"
+}

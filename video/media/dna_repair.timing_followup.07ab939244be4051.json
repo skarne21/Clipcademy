@@ -1,0 +1,18 @@
+{
+  "video_file": "dna_repair.timing_followup.07ab939244be4051.mp4",
+  "captions_file": "dna_repair.timing_followup.07ab939244be4051.vtt",
+  "transcript": "Two fixes, two different times. First, during copying. DNA polymerase adds a wrong base. It catches it and swaps it out right away. That's proofreading. Now copying is finished. Repair proteins scan the new DNA. They find a mismatch, cut it out, and replace it. That's mismatch repair. Like checking as you write, then rereading after. Now try the question again.",
+  "source_refs": [
+    "L20-p1"
+  ],
+  "duration_seconds": 27.042,
+  "width": 720,
+  "height": 1280,
+  "fps": 24,
+  "fingerprint": "07ab939244be4051",
+  "review_status": "pending",
+  "narration": "synthetic: ElevenLabs eleven_multilingual_v2, voice Liam (ElevenLabs premade)",
+  "visuals": "Remotion 4.0.537, Clipcademy stick-figure template",
+  "longest_still_seconds": 2.48,
+  "sha256": "e0ae37d978fc97383c388f612f5ee27790d9c23d9245dcca0ff6b7277d0b8e2c"
+}

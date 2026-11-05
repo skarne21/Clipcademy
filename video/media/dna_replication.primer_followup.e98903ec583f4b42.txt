@@ -1,0 +1,1 @@
+Here's the problem. A bare template has no new strand. DNA polymerase can't begin here. It needs a 3-prime end to add to. So primase steps in. It lays down a short RNA primer. Think of it as a starter block. Now polymerase has a 3-prime end. It extends the primer with DNA. Now try the question again.

@@ -1,0 +1,270 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/topics",
+    "body": null
+  },
+  "status": 200,
+  "response": {
+    "topics": [
+      {
+        "topic_id": "dna_replication",
+        "label": "DNA replication",
+        "source_refs": [
+          "L19-p1",
+          "L19-p2",
+          "L19-p3"
+        ],
+        "availability": "available",
+        "objectives": [
+          {
+            "objective_id": "synthesis_direction_and_primer",
+            "label": "Synthesis direction and the primer requirement",
+            "required_question_ids": [
+              "rep-q1",
+              "rep-q2"
+            ],
+            "intro_video_requests": [
+              {
+                "topic_id": "dna_replication",
+                "objective_id": "synthesis_direction_and_primer",
+                "variant_id": "intro_1",
+                "teaching_goal": "DNA polymerase adds new pieces only to the 3′ end.",
+                "source_refs": [
+                  "L19-p1"
+                ]
+              },
+              {
+                "topic_id": "dna_replication",
+                "objective_id": "synthesis_direction_and_primer",
+                "variant_id": "intro_2",
+                "teaching_goal": "New DNA only grows from 5′ to 3′.",
+                "source_refs": [
+                  "L19-p1"
+                ]
+              },
+              {
+                "topic_id": "dna_replication",
+                "objective_id": "synthesis_direction_and_primer",
+                "variant_id": "intro_3",
+                "teaching_goal": "DNA polymerase can't start a new strand from nothing.",
+                "source_refs": [
+                  "L19-p1"
+                ]
+              },
+              {
+                "topic_id": "dna_replication",
+                "objective_id": "synthesis_direction_and_primer",
+                "variant_id": "intro_4",
+                "teaching_goal": "Primase makes a short RNA primer, and DNA polymerase builds onto it.",
+                "source_refs": [
+                  "L19-p1",
+                  "L19-p2"
+                ]
+              },
+              {
+                "topic_id": "dna_replication",
+                "objective_id": "synthesis_direction_and_primer",
+                "variant_id": "intro_5",
+                "teaching_goal": "New DNA grows 5′ to 3′, and it needs a primer to start.",
+                "source_refs": [
+                  "L19-p1",
+                  "L19-p2"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "topic_id": "dna_repair",
+        "label": "DNA repair and telomeres",
+        "source_refs": [
+          "L20-p1"
+        ],
+        "availability": "available",
+        "objectives": [
+          {
+            "objective_id": "error_correction",
+            "label": "Proofreading, mismatch repair, and UV-damage repair",
+            "required_question_ids": [
+              "dr-q1",
+              "dr-q2"
+            ],
+            "intro_video_requests": [
+              {
+                "topic_id": "dna_repair",
+                "objective_id": "error_correction",
+                "variant_id": "intro_1",
+                "teaching_goal": "Proofreading fixes a wrong base right away, while DNA is being copied.",
+                "source_refs": [
+                  "L20-p1"
+                ]
+              },
+              {
+                "topic_id": "dna_repair",
+                "objective_id": "error_correction",
+                "variant_id": "intro_2",
+                "teaching_goal": "Mismatch repair fixes wrong bases after copying is finished.",
+                "source_refs": [
+                  "L20-p1"
+                ]
+              },
+              {
+                "topic_id": "dna_repair",
+                "objective_id": "error_correction",
+                "variant_id": "intro_3",
+                "teaching_goal": "UV light bonds neighboring C's and T's together, which makes a bulge.",
+                "source_refs": [
+                  "L20-p1"
+                ]
+              },
+              {
+                "topic_id": "dna_repair",
+                "objective_id": "error_correction",
+                "variant_id": "intro_4",
+                "teaching_goal": "Repair enzymes cut out the damaged piece, fill in new bases, and reseal the backbone.",
+                "source_refs": [
+                  "L20-p1"
+                ]
+              },
+              {
+                "topic_id": "dna_repair",
+                "objective_id": "error_correction",
+                "variant_id": "intro_5",
+                "teaching_goal": "Proofreading fixes errors during copying, mismatch repair fixes them after, and UV damage is cut out and replaced.",
+                "source_refs": [
+                  "L20-p1"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "topic_id": "transcription",
+        "label": "Transcription",
+        "source_refs": [
+          "L21-p1"
+        ],
+        "availability": "coming_soon",
+        "objectives": [
+          {
+            "objective_id": "template_strand_and_promoter",
+            "label": "Template strand and the promoter",
+            "required_question_ids": [
+              "tx-q1",
+              "tx-q2"
+            ],
+            "intro_video_requests": [
+              {
+                "topic_id": "transcription",
+                "objective_id": "template_strand_and_promoter",
+                "variant_id": "intro_1",
+                "teaching_goal": "RNA polymerase reads one DNA strand, the template strand, to build RNA.",
+                "source_refs": [
+                  "L21-p1"
+                ]
+              },
+              {
+                "topic_id": "transcription",
+                "objective_id": "template_strand_and_promoter",
+                "variant_id": "intro_2",
+                "teaching_goal": "The template strand gets read, and the coding strand does not.",
+                "source_refs": [
+                  "L21-p1"
+                ]
+              },
+              {
+                "topic_id": "transcription",
+                "objective_id": "template_strand_and_promoter",
+                "variant_id": "intro_3",
+                "teaching_goal": "The promoter is where RNA polymerase starts, and it sets which way the gene is read.",
+                "source_refs": [
+                  "L21-p1"
+                ]
+              },
+              {
+                "topic_id": "transcription",
+                "objective_id": "template_strand_and_promoter",
+                "variant_id": "intro_4",
+                "teaching_goal": "RNA polymerase starts at the promoter and reads the template strand.",
+                "source_refs": [
+                  "L21-p1"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "topic_id": "translation",
+        "label": "Translation",
+        "source_refs": [
+          "L22-p1",
+          "L22-p2"
+        ],
+        "availability": "coming_soon",
+        "objectives": [
+          {
+            "objective_id": "codon_pairing_and_ribosome_sites",
+            "label": "Codon–anticodon pairing and the A, P, and E sites",
+            "required_question_ids": [
+              "tl-q1",
+              "tl-q2"
+            ],
+            "intro_video_requests": [
+              {
+                "topic_id": "translation",
+                "objective_id": "codon_pairing_and_ribosome_sites",
+                "variant_id": "intro_1",
+                "teaching_goal": "An anticodon is three tRNA bases that pair with a matching mRNA codon.",
+                "source_refs": [
+                  "L22-p1"
+                ]
+              },
+              {
+                "topic_id": "translation",
+                "objective_id": "codon_pairing_and_ribosome_sites",
+                "variant_id": "intro_2",
+                "teaching_goal": "A charged tRNA enters at the A site and stays if its anticodon matches the codon.",
+                "source_refs": [
+                  "L22-p1",
+                  "L22-p2"
+                ]
+              },
+              {
+                "topic_id": "translation",
+                "objective_id": "codon_pairing_and_ribosome_sites",
+                "variant_id": "intro_3",
+                "teaching_goal": "The peptide bond forms at the P site.",
+                "source_refs": [
+                  "L22-p2"
+                ]
+              },
+              {
+                "topic_id": "translation",
+                "objective_id": "codon_pairing_and_ribosome_sites",
+                "variant_id": "intro_4",
+                "teaching_goal": "The empty tRNA leaves the ribosome from the E site.",
+                "source_refs": [
+                  "L22-p2"
+                ]
+              },
+              {
+                "topic_id": "translation",
+                "objective_id": "codon_pairing_and_ribosome_sites",
+                "variant_id": "intro_5",
+                "teaching_goal": "tRNAs enter at A, the peptide bond forms at P, and empty tRNAs leave from E.",
+                "source_refs": [
+                  "L22-p1",
+                  "L22-p2"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

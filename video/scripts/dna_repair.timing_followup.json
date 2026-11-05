@@ -1,0 +1,118 @@
+{
+  "topic_id": "dna_repair",
+  "objective_id": "error_correction",
+  "variant_id": "timing_followup",
+  "format": "vertical",
+  "teaching_goal": "Explain when proofreading and mismatch repair each happen",
+  "source_refs": [
+    "L20-p1"
+  ],
+  "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L20-p1: proofreading by DNA polymerase during copying; mismatch repair after replication is complete.",
+    "analogy": "Checking as you write, then rereading after.",
+    "new_term": "none new (follow-up)"
+  },
+  "scenes": [
+    {
+      "diagram": "repair",
+      "title": "When does each fix happen?",
+      "narration": "Two fixes, two different times. First, during copying. DNA polymerase adds a wrong base. It catches it and swaps it out right away. That's proofreading. Now copying is finished. Repair proteins scan the new DNA. They find a mismatch, cut it out, and replace it. That's mismatch repair. Like checking as you write, then rereading after. Now try the question again.",
+      "stage": {
+        "bottom": 2,
+        "copying": true,
+        "wrong": 6,
+        "section": [
+          5,
+          7
+        ]
+      },
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "pose:present",
+            "polymerase"
+          ]
+        },
+        {
+          "on": "during",
+          "do": [
+            "extend",
+            "point:polymerase",
+            "card:During: proofreading"
+          ]
+        },
+        {
+          "on": "wrong",
+          "do": [
+            "misadd",
+            "pose:surprised"
+          ]
+        },
+        {
+          "on": "catches",
+          "do": [
+            "excise"
+          ]
+        },
+        {
+          "on": "swaps",
+          "do": [
+            "fix"
+          ]
+        },
+        {
+          "on": "that's",
+          "do": [
+            "extend"
+          ]
+        },
+        {
+          "on": "finished",
+          "do": [
+            "card:After: mismatch repair"
+          ]
+        },
+        {
+          "on": "scan",
+          "do": [
+            "scan",
+            "point:protein"
+          ]
+        },
+        {
+          "on": "find",
+          "do": [
+            "found"
+          ]
+        },
+        {
+          "on": "cut",
+          "do": [
+            "cut",
+            "remove"
+          ]
+        },
+        {
+          "on": "replace",
+          "do": [
+            "replace"
+          ]
+        },
+        {
+          "on": "rereading",
+          "do": [
+            "pose:present"
+          ]
+        },
+        {
+          "on": "again",
+          "do": [
+            "pose:thumbs"
+          ]
+        }
+      ]
+    }
+  ]
+}

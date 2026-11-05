@@ -1,0 +1,110 @@
+{
+  "topic_id": "translation",
+  "objective_id": "codon_pairing_and_ribosome_sites",
+  "variant_id": "intro_5",
+  "format": "vertical",
+  "teaching_goal": "tRNAs enter at A, the peptide bond forms at P, and empty tRNAs leave from E.",
+  "source_refs": [
+    "L22-p1",
+    "L22-p2"
+  ],
+  "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L22-p1 and L22-p2: the A, P and E site roles.",
+    "analogy": "A factory line: in, join, out.",
+    "new_term": "none new (recap)"
+  },
+  "scenes": [
+    {
+      "diagram": "translation",
+      "title": "Recap: the A, P, and E sites",
+      "narration": "Quick recap of the three sites. A is where new tRNAs come in. They stay if the anticodon matches. P is where the peptide bond forms. E is where empty tRNAs leave. Watch one full round. In at A. Bond at P. Out from E. Like a factory line: in, join, out. tRNAs enter at A, the peptide bond forms at P, and empty tRNAs leave from E. Let's see what you remember.",
+      "stage": {},
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "pose:present",
+            "pulse:mrna"
+          ]
+        },
+        {
+          "on": "a",
+          "do": [
+            "pulse:a_site",
+            "card:A = in"
+          ]
+        },
+        {
+          "on": "stay",
+          "do": [
+            "pulse:anticodon"
+          ]
+        },
+        {
+          "on": "p",
+          "do": [
+            "pulse:p_site",
+            "card:P = bond"
+          ]
+        },
+        {
+          "on": "e",
+          "do": [
+            "pulse:e_site",
+            "card:E = out"
+          ]
+        },
+        {
+          "on": "watch",
+          "do": [
+            "enter"
+          ]
+        },
+        {
+          "on": "bond",
+          "do": [
+            "bond"
+          ]
+        },
+        {
+          "on": "out",
+          "do": [
+            "shift"
+          ]
+        },
+        {
+          "on": "factory",
+          "do": [
+            "exit",
+            "pose:present"
+          ]
+        },
+        {
+          "on": "enter",
+          "do": [
+            "pulse:a_site"
+          ]
+        },
+        {
+          "on": "forms",
+          "do": [
+            "pulse:p_site"
+          ]
+        },
+        {
+          "on": "leave",
+          "do": [
+            "pulse:e_site"
+          ]
+        },
+        {
+          "on": "remember",
+          "do": [
+            "pose:thumbs"
+          ]
+        }
+      ]
+    }
+  ]
+}

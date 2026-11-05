@@ -1,0 +1,18 @@
+{
+  "video_file": "transcription.template_followup_2.43f7dabec603208d.mp4",
+  "captions_file": "transcription.template_followup_2.43f7dabec603208d.vtt",
+  "transcript": "Let's build the RNA one base at a time. Here's a T on the template strand. The RNA gets an A. Next, a C. The RNA gets a G. Then a G, so the RNA gets a C. Every new RNA base pairs with the template strand. None pair with the coding strand. Like matching a pattern, piece by piece. So the template strand is the one read. Now try the question again.",
+  "source_refs": [
+    "L21-p1"
+  ],
+  "duration_seconds": 25.542,
+  "width": 720,
+  "height": 1280,
+  "fps": 24,
+  "fingerprint": "43f7dabec603208d",
+  "review_status": "pending",
+  "narration": "synthetic: ElevenLabs eleven_multilingual_v2, voice Liam (ElevenLabs premade)",
+  "visuals": "Remotion 4.0.537, Clipcademy stick-figure template",
+  "longest_still_seconds": 2.23,
+  "sha256": "7921dfa82bacfdc054042c0716838d54820690ccc22891f0bba96dcaa1a3f498"
+}

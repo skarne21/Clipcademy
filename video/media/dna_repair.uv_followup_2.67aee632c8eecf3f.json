@@ -1,0 +1,18 @@
+{
+  "video_file": "dna_repair.uv_followup_2.67aee632c8eecf3f.mp4",
+  "captions_file": "dna_repair.uv_followup_2.67aee632c8eecf3f.vtt",
+  "transcript": "UV light has bonded a C and a T, making a bulge. Fixing it takes four steps. Let's check them off. One: recognize the damage. Two: cut the backbone on both sides and remove those bases. Three: replace them with the correct bases. Four: reseal the backbone. Damage gone. Like a repair crew working down a checklist. Now try the question again.",
+  "source_refs": [
+    "L20-p1"
+  ],
+  "duration_seconds": 22.917,
+  "width": 720,
+  "height": 1280,
+  "fps": 24,
+  "fingerprint": "67aee632c8eecf3f",
+  "review_status": "pending",
+  "narration": "synthetic: ElevenLabs eleven_multilingual_v2, voice Liam (ElevenLabs premade)",
+  "visuals": "Remotion 4.0.537, Clipcademy stick-figure template",
+  "longest_still_seconds": 2.31,
+  "sha256": "7410d9148d36b739f8147f0fc99737cc5634d42ac49853f31646a9dbaf719757"
+}

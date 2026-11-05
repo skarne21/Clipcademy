@@ -1,0 +1,432 @@
+{
+  "questions": [
+    {
+      "question_id": "rep-q1",
+      "objective_id": "synthesis_direction_and_primer",
+      "prompt": "Which end receives new nucleotides during DNA synthesis?",
+      "choices": [
+        {
+          "choice_id": "A",
+          "text": "5′ end"
+        },
+        {
+          "choice_id": "B",
+          "text": "3′ end"
+        }
+      ]
+    },
+    {
+      "question_id": "rep-q2",
+      "objective_id": "synthesis_direction_and_primer",
+      "prompt": "Why is a primer needed?",
+      "choices": [
+        {
+          "choice_id": "A",
+          "text": "DNA polymerase can't start a new strand"
+        },
+        {
+          "choice_id": "B",
+          "text": "Ligase uses it to add the new bases"
+        },
+        {
+          "choice_id": "C",
+          "text": "It lets DNA grow in the 3′ to 5′ direction"
+        }
+      ]
+    },
+    {
+      "question_id": "rep-r1",
+      "objective_id": "synthesis_direction_and_primer",
+      "prompt": "A complementary primer is already present. Where does DNA polymerase add the next DNA nucleotide?",
+      "choices": [
+        {
+          "choice_id": "A",
+          "text": "Its 3′ end"
+        },
+        {
+          "choice_id": "B",
+          "text": "Its 5′ end"
+        }
+      ]
+    },
+    {
+      "question_id": "rep-r2",
+      "objective_id": "synthesis_direction_and_primer",
+      "prompt": "Which enzyme makes the RNA primer?",
+      "choices": [
+        {
+          "choice_id": "A",
+          "text": "Ligase"
+        },
+        {
+          "choice_id": "B",
+          "text": "Primase"
+        },
+        {
+          "choice_id": "C",
+          "text": "DNA polymerase"
+        }
+      ]
+    },
+    {
+      "question_id": "rep-r3",
+      "objective_id": "synthesis_direction_and_primer",
+      "prompt": "DNA polymerase is adding nucleotides to a growing strand. In which direction does the new strand grow?",
+      "choices": [
+        {
+          "choice_id": "A",
+          "text": "5′ to 3′"
+        },
+        {
+          "choice_id": "B",
+          "text": "3′ to 5′"
+        }
+      ]
+    },
+    {
+      "question_id": "rep-r4",
+      "objective_id": "synthesis_direction_and_primer",
+      "prompt": "Once the RNA primer is in place, which enzyme adds DNA nucleotides to it?",
+      "choices": [
+        {
+          "choice_id": "A",
+          "text": "Primase"
+        },
+        {
+          "choice_id": "B",
+          "text": "DNA polymerase"
+        },
+        {
+          "choice_id": "C",
+          "text": "Ligase"
+        }
+      ]
+    },
+    {
+      "question_id": "dr-q1",
+      "objective_id": "error_correction",
+      "prompt": "DNA polymerase has just added the wrong base. What fixes it immediately?",
+      "choices": [
+        {
+          "choice_id": "A",
+          "text": "Mismatch repair proteins scanning the helix"
+        },
+        {
+          "choice_id": "B",
+          "text": "Proofreading by DNA polymerase"
+        },
+        {
+          "choice_id": "C",
+          "text": "DNA ligase sealing the backbone"
+        }
+      ]
+    },
+    {
+      "question_id": "dr-q2",
+      "objective_id": "error_correction",
+      "prompt": "What does UV light do to DNA?",
+      "choices": [
+        {
+          "choice_id": "A",
+          "text": "Breaks the hydrogen bonds between base pairs"
+        },
+        {
+          "choice_id": "B",
+          "text": "Removes bases from one strand"
+        },
+        {
+          "choice_id": "C",
+          "text": "Bonds adjacent C's and T's together"
+        }
+      ]
+    },
+    {
+      "question_id": "dr-r1",
+      "objective_id": "error_correction",
+      "prompt": "When do mismatch-repair proteins scan the double helix for mismatched bases?",
+      "choices": [
+        {
+          "choice_id": "A",
+          "text": "After replication is complete"
+        },
+        {
+          "choice_id": "B",
+          "text": "Before replication starts"
+        },
+        {
+          "choice_id": "C",
+          "text": "Only while DNA polymerase adds each base"
+        }
+      ]
+    },
+    {
+      "question_id": "dr-r2",
+      "objective_id": "error_correction",
+      "prompt": "What is the first step in repairing UV damage?",
+      "choices": [
+        {
+          "choice_id": "A",
+          "text": "Replace the bases"
+        },
+        {
+          "choice_id": "B",
+          "text": "Recognize the site of damage"
+        },
+        {
+          "choice_id": "C",
+          "text": "Form phosphodiester linkages"
+        }
+      ]
+    },
+    {
+      "question_id": "dr-r3",
+      "objective_id": "error_correction",
+      "prompt": "Which correction happens while DNA is still being copied?",
+      "choices": [
+        {
+          "choice_id": "A",
+          "text": "Proofreading"
+        },
+        {
+          "choice_id": "B",
+          "text": "Mismatch repair"
+        }
+      ]
+    },
+    {
+      "question_id": "dr-r4",
+      "objective_id": "error_correction",
+      "prompt": "After the damaged bases are removed and replaced, what is the final step of UV-damage repair?",
+      "choices": [
+        {
+          "choice_id": "A",
+          "text": "Opening the double helix"
+        },
+        {
+          "choice_id": "B",
+          "text": "Adding an RNA primer to the strand"
+        },
+        {
+          "choice_id": "C",
+          "text": "Forming phosphodiester linkages"
+        }
+      ]
+    },
+    {
+      "question_id": "tx-q1",
+      "objective_id": "template_strand_and_promoter",
+      "prompt": "Which DNA strand does RNA polymerase read during transcription?",
+      "choices": [
+        {
+          "choice_id": "A",
+          "text": "The coding (non-template) strand"
+        },
+        {
+          "choice_id": "B",
+          "text": "The template strand"
+        }
+      ]
+    },
+    {
+      "question_id": "tx-q2",
+      "objective_id": "template_strand_and_promoter",
+      "prompt": "What is a promoter?",
+      "choices": [
+        {
+          "choice_id": "A",
+          "text": "Where RNA polymerase first contacts the gene"
+        },
+        {
+          "choice_id": "B",
+          "text": "The start codon at the beginning of translation"
+        },
+        {
+          "choice_id": "C",
+          "text": "The RNA molecule that transcription produces"
+        }
+      ]
+    },
+    {
+      "question_id": "tx-r1",
+      "objective_id": "template_strand_and_promoter",
+      "prompt": "What is the DNA strand that is NOT transcribed called?",
+      "choices": [
+        {
+          "choice_id": "A",
+          "text": "The template strand"
+        },
+        {
+          "choice_id": "B",
+          "text": "The coding strand"
+        }
+      ]
+    },
+    {
+      "question_id": "tx-r2",
+      "objective_id": "template_strand_and_promoter",
+      "prompt": "Besides marking where transcription starts, what does the promoter determine?",
+      "choices": [
+        {
+          "choice_id": "A",
+          "text": "Which amino acid is added next"
+        },
+        {
+          "choice_id": "B",
+          "text": "The direction in which the strand is read"
+        },
+        {
+          "choice_id": "C",
+          "text": "Where the ribosome binds the mRNA"
+        }
+      ]
+    },
+    {
+      "question_id": "tx-r3",
+      "objective_id": "template_strand_and_promoter",
+      "prompt": "The ribonucleotides in a new RNA are complementary to which strand?",
+      "choices": [
+        {
+          "choice_id": "A",
+          "text": "The template strand"
+        },
+        {
+          "choice_id": "B",
+          "text": "The coding strand"
+        }
+      ]
+    },
+    {
+      "question_id": "tx-r4",
+      "objective_id": "template_strand_and_promoter",
+      "prompt": "What must happen at the promoter before RNA polymerase can transcribe?",
+      "choices": [
+        {
+          "choice_id": "A",
+          "text": "A tRNA must bind to the promoter"
+        },
+        {
+          "choice_id": "B",
+          "text": "Ligase must seal the backbone there"
+        },
+        {
+          "choice_id": "C",
+          "text": "The double helix must be unwound"
+        }
+      ]
+    },
+    {
+      "question_id": "tl-q1",
+      "objective_id": "codon_pairing_and_ribosome_sites",
+      "prompt": "According to the notes, in which ribosome site does peptide bond formation take place?",
+      "choices": [
+        {
+          "choice_id": "A",
+          "text": "A site"
+        },
+        {
+          "choice_id": "B",
+          "text": "P site"
+        },
+        {
+          "choice_id": "C",
+          "text": "E site"
+        }
+      ]
+    },
+    {
+      "question_id": "tl-q2",
+      "objective_id": "codon_pairing_and_ribosome_sites",
+      "prompt": "The start codon in mRNA is AUG. What is the anticodon of the tRNA that pairs with it?",
+      "choices": [
+        {
+          "choice_id": "A",
+          "text": "UAC"
+        },
+        {
+          "choice_id": "B",
+          "text": "AUG"
+        },
+        {
+          "choice_id": "C",
+          "text": "CCA"
+        }
+      ]
+    },
+    {
+      "question_id": "tl-r1",
+      "objective_id": "codon_pairing_and_ribosome_sites",
+      "prompt": "Where does an amino-acid-charged tRNA first enter the ribosome?",
+      "choices": [
+        {
+          "choice_id": "A",
+          "text": "E site"
+        },
+        {
+          "choice_id": "B",
+          "text": "A site"
+        },
+        {
+          "choice_id": "C",
+          "text": "P site"
+        }
+      ]
+    },
+    {
+      "question_id": "tl-r2",
+      "objective_id": "codon_pairing_and_ribosome_sites",
+      "prompt": "What is an anticodon?",
+      "choices": [
+        {
+          "choice_id": "A",
+          "text": "The CCA site where the amino acid attaches"
+        },
+        {
+          "choice_id": "B",
+          "text": "The amino acid a tRNA carries"
+        },
+        {
+          "choice_id": "C",
+          "text": "Three tRNA bases complementary to an mRNA codon"
+        }
+      ]
+    },
+    {
+      "question_id": "tl-r3",
+      "objective_id": "codon_pairing_and_ribosome_sites",
+      "prompt": "From which site does the uncharged tRNA leave the ribosome?",
+      "choices": [
+        {
+          "choice_id": "A",
+          "text": "P site"
+        },
+        {
+          "choice_id": "B",
+          "text": "A site"
+        },
+        {
+          "choice_id": "C",
+          "text": "E site"
+        }
+      ]
+    },
+    {
+      "question_id": "tl-r4",
+      "objective_id": "codon_pairing_and_ribosome_sites",
+      "prompt": "A tRNA enters the A site. What decides whether it stays bound?",
+      "choices": [
+        {
+          "choice_id": "A",
+          "text": "Whether its anticodon pairs with the codon"
+        },
+        {
+          "choice_id": "B",
+          "text": "Whether it carries the amino acid methionine"
+        },
+        {
+          "choice_id": "C",
+          "text": "Whether it has already lost its amino acid"
+        }
+      ]
+    }
+  ]
+}

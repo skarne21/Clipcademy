@@ -1,0 +1,480 @@
+{
+  "rep-q1": {
+    "correct_choice_id": "B",
+    "counts_for": "rep-q1",
+    "source_refs": [
+      "L19-p1"
+    ],
+    "choices": {
+      "A": {
+        "feedback": "New nucleotides are added to the 3′ end, so the strand grows 5′ to 3′.",
+        "misconception_id": "growth_direction"
+      },
+      "B": {
+        "feedback": "Correct. DNA polymerase adds to the 3′ end, so synthesis runs 5′ to 3′.",
+        "misconception_id": null
+      }
+    }
+  },
+  "rep-q2": {
+    "correct_choice_id": "A",
+    "counts_for": "rep-q2",
+    "source_refs": [
+      "L19-p1",
+      "L19-p2"
+    ],
+    "choices": {
+      "A": {
+        "feedback": "Correct. DNA polymerase can only extend an existing complementary strand, and the primer provides that start.",
+        "misconception_id": null
+      },
+      "B": {
+        "feedback": "Ligase joins pieces of DNA. It does not add the new bases. DNA polymerase extends a primer that primase made.",
+        "misconception_id": "primer_requirement"
+      },
+      "C": {
+        "feedback": "DNA is synthesized 5′ to 3′. The primer matters because polymerase needs an existing start to extend.",
+        "misconception_id": "growth_direction"
+      }
+    }
+  },
+  "rep-r1": {
+    "correct_choice_id": "A",
+    "counts_for": "rep-q1",
+    "source_refs": [
+      "L19-p1"
+    ],
+    "choices": {
+      "A": {
+        "feedback": "Correct. The primer's 3′ end is where polymerase adds the next nucleotide.",
+        "misconception_id": null
+      },
+      "B": {
+        "feedback": "Polymerase adds to the 3′ end, never the 5′ end.",
+        "misconception_id": "growth_direction"
+      }
+    }
+  },
+  "rep-r2": {
+    "correct_choice_id": "B",
+    "counts_for": "rep-q2",
+    "source_refs": [
+      "L19-p2"
+    ],
+    "choices": {
+      "A": {
+        "feedback": "Primase makes the RNA primer. Unlike DNA polymerase, it can start from scratch on a single template strand.",
+        "misconception_id": "primer_requirement"
+      },
+      "B": {
+        "feedback": "Correct. Primase makes the RNA primer that DNA polymerase extends.",
+        "misconception_id": null
+      },
+      "C": {
+        "feedback": "DNA polymerase can't start a strand on its own. Primase makes the primer first.",
+        "misconception_id": "primer_requirement"
+      }
+    }
+  },
+  "rep-r3": {
+    "correct_choice_id": "A",
+    "counts_for": "rep-q1",
+    "source_refs": [
+      "L19-p1"
+    ],
+    "choices": {
+      "A": {
+        "feedback": "Correct. Nucleotides join at the 3′ end, so the strand grows 5′ to 3′.",
+        "misconception_id": null
+      },
+      "B": {
+        "feedback": "The new strand grows 5′ to 3′ because nucleotides are added only at the 3′ end.",
+        "misconception_id": "growth_direction"
+      }
+    }
+  },
+  "rep-r4": {
+    "correct_choice_id": "B",
+    "counts_for": "rep-q2",
+    "source_refs": [
+      "L19-p1",
+      "L19-p2"
+    ],
+    "choices": {
+      "A": {
+        "feedback": "Primase makes the primer but doesn't extend it. DNA polymerase adds the DNA nucleotides.",
+        "misconception_id": "primer_requirement"
+      },
+      "B": {
+        "feedback": "Correct. Primase starts the strand with RNA, then DNA polymerase extends it.",
+        "misconception_id": null
+      },
+      "C": {
+        "feedback": "Ligase closes gaps in the backbone without adding new bases. DNA polymerase extends the primer.",
+        "misconception_id": "primer_requirement"
+      }
+    }
+  },
+  "dr-q1": {
+    "correct_choice_id": "B",
+    "counts_for": "dr-q1",
+    "source_refs": [
+      "L20-p1"
+    ],
+    "choices": {
+      "A": {
+        "feedback": "Mismatch repair happens after replication is complete, not immediately.",
+        "misconception_id": "repair_timing"
+      },
+      "B": {
+        "feedback": "Correct. Polymerase backs up, removes the wrong base from the 3′ end, and adds the right one.",
+        "misconception_id": null
+      },
+      "C": {
+        "feedback": "The wrong base is fixed right away by DNA polymerase's own exonuclease activity, not by ligase.",
+        "misconception_id": "repair_timing"
+      }
+    }
+  },
+  "dr-q2": {
+    "correct_choice_id": "C",
+    "counts_for": "dr-q2",
+    "source_refs": [
+      "L20-p1"
+    ],
+    "choices": {
+      "A": {
+        "feedback": "UV doesn't separate the strands. It bonds adjacent C's and T's together, creating a bulge.",
+        "misconception_id": "uv_damage"
+      },
+      "B": {
+        "feedback": "Removing bases is part of the repair. UV itself bonds adjacent C's and T's, creating a bulge.",
+        "misconception_id": "uv_damage"
+      },
+      "C": {
+        "feedback": "Correct. The bulge stops genes from being copied or transcribed normally.",
+        "misconception_id": null
+      }
+    }
+  },
+  "dr-r1": {
+    "correct_choice_id": "A",
+    "counts_for": "dr-q1",
+    "source_refs": [
+      "L20-p1"
+    ],
+    "choices": {
+      "A": {
+        "feedback": "Correct. Mismatch repair checks the finished double helix.",
+        "misconception_id": null
+      },
+      "B": {
+        "feedback": "Mismatch repair checks new DNA, so it happens after replication.",
+        "misconception_id": "repair_timing"
+      },
+      "C": {
+        "feedback": "Checking each base as it's added is proofreading. Mismatch repair comes after replication.",
+        "misconception_id": "repair_timing"
+      }
+    }
+  },
+  "dr-r2": {
+    "correct_choice_id": "B",
+    "counts_for": "dr-q2",
+    "source_refs": [
+      "L20-p1"
+    ],
+    "choices": {
+      "A": {
+        "feedback": "Bases are replaced only after the damaged section is found and cut out.",
+        "misconception_id": "uv_damage"
+      },
+      "B": {
+        "feedback": "Correct. Repair starts by recognizing where the damage is.",
+        "misconception_id": null
+      },
+      "C": {
+        "feedback": "Linking the backbone is the last step, after the bases are replaced.",
+        "misconception_id": "uv_damage"
+      }
+    }
+  },
+  "dr-r3": {
+    "correct_choice_id": "A",
+    "counts_for": "dr-q1",
+    "source_refs": [
+      "L20-p1"
+    ],
+    "choices": {
+      "A": {
+        "feedback": "Correct. Proofreading is done by DNA polymerase as it copies.",
+        "misconception_id": null
+      },
+      "B": {
+        "feedback": "Mismatch repair happens after replication is complete. Proofreading happens during copying.",
+        "misconception_id": "repair_timing"
+      }
+    }
+  },
+  "dr-r4": {
+    "correct_choice_id": "C",
+    "counts_for": "dr-q2",
+    "source_refs": [
+      "L20-p1"
+    ],
+    "choices": {
+      "A": {
+        "feedback": "The helix is opened earlier, before the damaged bases are removed.",
+        "misconception_id": "uv_damage"
+      },
+      "B": {
+        "feedback": "No primer is involved. The last step reseals the backbone with phosphodiester linkages.",
+        "misconception_id": "uv_damage"
+      },
+      "C": {
+        "feedback": "Correct. Phosphodiester linkages reconnect the new bases to the adjacent DNA.",
+        "misconception_id": null
+      }
+    }
+  },
+  "tx-q1": {
+    "correct_choice_id": "B",
+    "counts_for": "tx-q1",
+    "source_refs": [
+      "L21-p1"
+    ],
+    "choices": {
+      "A": {
+        "feedback": "The coding strand is the one that is not transcribed. RNA polymerase reads the template strand.",
+        "misconception_id": "template_vs_coding"
+      },
+      "B": {
+        "feedback": "Correct. The template strand is read and transcribed.",
+        "misconception_id": null
+      }
+    }
+  },
+  "tx-q2": {
+    "correct_choice_id": "A",
+    "counts_for": "tx-q2",
+    "source_refs": [
+      "L21-p1"
+    ],
+    "choices": {
+      "A": {
+        "feedback": "Correct. The promoter is where transcription starts, and it sets the reading direction.",
+        "misconception_id": null
+      },
+      "B": {
+        "feedback": "Codons are only in translation. A promoter is a DNA region where transcription starts.",
+        "misconception_id": "promoter_role"
+      },
+      "C": {
+        "feedback": "The promoter is part of the gene's DNA, not the RNA product.",
+        "misconception_id": "promoter_role"
+      }
+    }
+  },
+  "tx-r1": {
+    "correct_choice_id": "B",
+    "counts_for": "tx-q1",
+    "source_refs": [
+      "L21-p1"
+    ],
+    "choices": {
+      "A": {
+        "feedback": "The template strand is the one that is transcribed.",
+        "misconception_id": "template_vs_coding"
+      },
+      "B": {
+        "feedback": "Correct. The coding strand is the complementary strand that isn't transcribed.",
+        "misconception_id": null
+      }
+    }
+  },
+  "tx-r2": {
+    "correct_choice_id": "B",
+    "counts_for": "tx-q2",
+    "source_refs": [
+      "L21-p1"
+    ],
+    "choices": {
+      "A": {
+        "feedback": "Amino acids are added during translation, not set by the promoter.",
+        "misconception_id": "promoter_role"
+      },
+      "B": {
+        "feedback": "Correct. The promoter also sets the reading direction.",
+        "misconception_id": null
+      },
+      "C": {
+        "feedback": "Ribosomes are part of translation. The promoter acts in transcription.",
+        "misconception_id": "promoter_role"
+      }
+    }
+  },
+  "tx-r3": {
+    "correct_choice_id": "A",
+    "counts_for": "tx-q1",
+    "source_refs": [
+      "L21-p1"
+    ],
+    "choices": {
+      "A": {
+        "feedback": "Correct. RNA is built to match the template strand that RNA polymerase reads.",
+        "misconception_id": null
+      },
+      "B": {
+        "feedback": "RNA polymerase reads the template strand, so the RNA is complementary to it.",
+        "misconception_id": "template_vs_coding"
+      }
+    }
+  },
+  "tx-r4": {
+    "correct_choice_id": "C",
+    "counts_for": "tx-q2",
+    "source_refs": [
+      "L21-p1"
+    ],
+    "choices": {
+      "A": {
+        "feedback": "tRNAs act in translation, not at the promoter.",
+        "misconception_id": "promoter_role"
+      },
+      "B": {
+        "feedback": "Ligase seals DNA backbone gaps. It doesn't start transcription.",
+        "misconception_id": "promoter_role"
+      },
+      "C": {
+        "feedback": "Correct. Once the helix is unwound at the promoter, RNA polymerase can start.",
+        "misconception_id": null
+      }
+    }
+  },
+  "tl-q1": {
+    "correct_choice_id": "B",
+    "counts_for": "tl-q1",
+    "source_refs": [
+      "L22-p2"
+    ],
+    "choices": {
+      "A": {
+        "feedback": "The A site is where charged tRNAs enter. The peptide bond forms in the P site.",
+        "misconception_id": "site_roles"
+      },
+      "B": {
+        "feedback": "Correct. The bond forms between the amino acids held in the P and A sites.",
+        "misconception_id": null
+      },
+      "C": {
+        "feedback": "The E site holds uncharged tRNAs on their way out.",
+        "misconception_id": "site_roles"
+      }
+    }
+  },
+  "tl-q2": {
+    "correct_choice_id": "A",
+    "counts_for": "tl-q2",
+    "source_refs": [
+      "L22-p1"
+    ],
+    "choices": {
+      "A": {
+        "feedback": "Correct. UAC is complementary to AUG, and that tRNA carries methionine.",
+        "misconception_id": null
+      },
+      "B": {
+        "feedback": "An anticodon is complementary to the codon, not identical to it.",
+        "misconception_id": "anticodon_pairing"
+      },
+      "C": {
+        "feedback": "CCA is the tRNA's amino-acid attachment site, not its anticodon.",
+        "misconception_id": "anticodon_pairing"
+      }
+    }
+  },
+  "tl-r1": {
+    "correct_choice_id": "B",
+    "counts_for": "tl-q1",
+    "source_refs": [
+      "L22-p1"
+    ],
+    "choices": {
+      "A": {
+        "feedback": "The E site is where uncharged tRNAs exit.",
+        "misconception_id": "site_roles"
+      },
+      "B": {
+        "feedback": "Correct. Charged tRNAs enter at the A site.",
+        "misconception_id": null
+      },
+      "C": {
+        "feedback": "The P site is where the peptide bond forms.",
+        "misconception_id": "site_roles"
+      }
+    }
+  },
+  "tl-r2": {
+    "correct_choice_id": "C",
+    "counts_for": "tl-q2",
+    "source_refs": [
+      "L22-p1"
+    ],
+    "choices": {
+      "A": {
+        "feedback": "CCA is the attachment site. The anticodon is a different part of the tRNA.",
+        "misconception_id": "anticodon_pairing"
+      },
+      "B": {
+        "feedback": "The amino acid is the cargo. The anticodon is the three bases that read the codon.",
+        "misconception_id": "anticodon_pairing"
+      },
+      "C": {
+        "feedback": "Correct. The anticodon pairs with a matching codon in the mRNA.",
+        "misconception_id": null
+      }
+    }
+  },
+  "tl-r3": {
+    "correct_choice_id": "C",
+    "counts_for": "tl-q1",
+    "source_refs": [
+      "L22-p2"
+    ],
+    "choices": {
+      "A": {
+        "feedback": "The P site is where the peptide bond forms. The tRNA leaves from the E site.",
+        "misconception_id": "site_roles"
+      },
+      "B": {
+        "feedback": "The A site is where charged tRNAs enter.",
+        "misconception_id": "site_roles"
+      },
+      "C": {
+        "feedback": "Correct. After its amino acid is added, the tRNA exits from the E site.",
+        "misconception_id": null
+      }
+    }
+  },
+  "tl-r4": {
+    "correct_choice_id": "A",
+    "counts_for": "tl-q2",
+    "source_refs": [
+      "L22-p1"
+    ],
+    "choices": {
+      "A": {
+        "feedback": "Correct. It stays only if its anticodon pairs with the codon.",
+        "misconception_id": null
+      },
+      "B": {
+        "feedback": "Only the start tRNA carries methionine. Any tRNA can stay if its anticodon matches.",
+        "misconception_id": "anticodon_pairing"
+      },
+      "C": {
+        "feedback": "tRNAs entering the A site still carry their amino acid. Pairing with the codon is what matters.",
+        "misconception_id": "anticodon_pairing"
+      }
+    }
+  }
+}

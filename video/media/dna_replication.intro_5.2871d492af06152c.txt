@@ -1,0 +1,1 @@
+Quick recap. Two rules. Rule one: new pieces only join the 3-prime end. So new DNA grows 5-prime to 3-prime. Rule two: DNA polymerase can't start from nothing. A short RNA primer comes first. Like a first domino that starts the chain. New DNA grows 5-prime to 3-prime, and it needs a primer to start. Let's see what you remember.

@@ -1,0 +1,18 @@
+{
+  "video_file": "transcription.promoter_followup.7726b27927e9c396.mp4",
+  "captions_file": "transcription.promoter_followup.7726b27927e9c396.vtt",
+  "transcript": "The promoter is where transcription begins. RNA polymerase makes first contact right here. Then proteins open the promoter and unwind the double helix. Now the strands are apart. The promoter also sets the direction of reading. So the RNA builds this way. Like a starting gate that points the race one way. Now try the question again.",
+  "source_refs": [
+    "L21-p1"
+  ],
+  "duration_seconds": 22.125,
+  "width": 720,
+  "height": 1280,
+  "fps": 24,
+  "fingerprint": "7726b27927e9c396",
+  "review_status": "pending",
+  "narration": "synthetic: ElevenLabs eleven_multilingual_v2, voice Liam (ElevenLabs premade)",
+  "visuals": "Remotion 4.0.537, Clipcademy stick-figure template",
+  "longest_still_seconds": 2.57,
+  "sha256": "1c6921de8a8e9b60a49d2b00cef9038bb8851802d6e8b7de39309eb61635e57a"
+}

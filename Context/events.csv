@@ -1,0 +1,1 @@
+event_id,participant_id,session_id,event_name,topic_id,objective_id,question_id,variant_id,correct,direction,seconds_watched,client_timestamp_utc,timestamp_utc,build_id,build_id_status

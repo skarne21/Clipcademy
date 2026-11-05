@@ -1,0 +1,92 @@
+{
+  "topic_id": "transcription",
+  "objective_id": "template_strand_and_promoter",
+  "variant_id": "template_followup",
+  "format": "vertical",
+  "teaching_goal": "Explain the difference between the template and coding strands",
+  "source_refs": [
+    "L21-p1"
+  ],
+  "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L21-p1: the template strand is read and transcribed; the coding strand is not transcribed.",
+    "analogy": "Tracing paper laid over just one side.",
+    "new_term": "none new (follow-up)"
+  },
+  "scenes": [
+    {
+      "diagram": "transcription",
+      "title": "Which strand does RNA polymerase read?",
+      "narration": "Let's sort out the two strands. On the bottom is the template strand. RNA polymerase reads this one. Watch the RNA build up to match it. On top is the coding strand. It is not read, and it is not transcribed. Think of tracing paper laid over just one side. Template strand: read. Coding strand: not read. Now try the question again.",
+      "stage": {},
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "pose:present",
+            "pulse:template"
+          ]
+        },
+        {
+          "on": "bottom",
+          "do": [
+            "point:template",
+            "pulse:template"
+          ]
+        },
+        {
+          "on": "reads",
+          "do": [
+            "polymerase",
+            "open"
+          ]
+        },
+        {
+          "on": "watch",
+          "do": [
+            "extend",
+            "zoom:rna_end"
+          ]
+        },
+        {
+          "on": "top",
+          "do": [
+            "zoom_out",
+            "point:coding",
+            "pulse:coding"
+          ]
+        },
+        {
+          "on": "not",
+          "do": [
+            "pose:wag"
+          ]
+        },
+        {
+          "on": "tracing",
+          "do": [
+            "pose:present"
+          ]
+        },
+        {
+          "on": "template",
+          "do": [
+            "card:Template: read"
+          ]
+        },
+        {
+          "on": "coding",
+          "do": [
+            "card:Coding: not read"
+          ]
+        },
+        {
+          "on": "again",
+          "do": [
+            "pose:thumbs"
+          ]
+        }
+      ]
+    }
+  ]
+}

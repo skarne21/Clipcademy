@@ -1,0 +1,102 @@
+{
+  "topic_id": "dna_replication",
+  "objective_id": "synthesis_direction_and_primer",
+  "variant_id": "direction_followup",
+  "format": "vertical",
+  "teaching_goal": "Explain growth direction and which end grows",
+  "source_refs": [
+    "L19-p1"
+  ],
+  "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L19-p1: new bases are added to the 3′ end, so synthesis runs 5′ to 3′.",
+    "analogy": "A line where people only join at the back.",
+    "new_term": "none new (follow-up)"
+  },
+  "scenes": [
+    {
+      "diagram": "strand",
+      "title": "Which end does new DNA grow from?",
+      "narration": "Let's fix this one. Find the two ends of the new strand. This end is 5-prime. This end is 3-prime. Now watch where new pieces go. Every single one joins the 3-prime end. Like a line where people only join at the back. The 5-prime end never changes. Adding at the 3-prime end means DNA grows 5-prime to 3-prime. Now try the question again.",
+      "stage": {
+        "strand": 3
+      },
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "pose:present",
+            "pulse:strand"
+          ]
+        },
+        {
+          "on": "find",
+          "do": [
+            "point:strand"
+          ]
+        },
+        {
+          "on": "5-prime",
+          "do": [
+            "label:5",
+            "pulse:new_5",
+            "point:new_5"
+          ]
+        },
+        {
+          "on": "3-prime",
+          "do": [
+            "label:3",
+            "pulse:new_3",
+            "point:new_3"
+          ]
+        },
+        {
+          "on": "watch",
+          "do": [
+            "zoom:new_3",
+            "extend"
+          ]
+        },
+        {
+          "on": "every",
+          "do": [
+            "pulse:new_3"
+          ]
+        },
+        {
+          "on": "line",
+          "do": [
+            "pose:present"
+          ]
+        },
+        {
+          "on": "never",
+          "do": [
+            "zoom_out",
+            "pulse:new_5",
+            "point:new_5"
+          ]
+        },
+        {
+          "on": "adding",
+          "do": [
+            "arrow"
+          ]
+        },
+        {
+          "on": "means",
+          "do": [
+            "card:Grows 5′ → 3′"
+          ]
+        },
+        {
+          "on": "again",
+          "do": [
+            "pose:thumbs"
+          ]
+        }
+      ]
+    }
+  ]
+}

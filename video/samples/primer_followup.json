@@ -1,0 +1,36 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/video-jobs",
+    "body": {
+      "topic_id": "dna_replication",
+      "objective_id": "synthesis_direction_and_primer",
+      "variant_id": "primer_followup",
+      "teaching_goal": "Explain why DNA polymerase needs a primer",
+      "source_refs": [
+        "L19-p1",
+        "L19-p2"
+      ]
+    }
+  },
+  "status": 200,
+  "response": {
+    "job_id": "video-1ae6545ffa0e4475b10f8d93c726cedd",
+    "status": "ready",
+    "topic_id": "dna_replication",
+    "objective_id": "synthesis_direction_and_primer",
+    "variant_id": "primer_followup",
+    "source_refs": [
+      "L19-p1",
+      "L19-p2"
+    ],
+    "source": "prerendered",
+    "video_url": "/media/dna_replication.primer_followup.e98903ec583f4b42.mp4",
+    "captions_url": "/media/dna_replication.primer_followup.e98903ec583f4b42.vtt",
+    "transcript": "Here's the problem. A bare template has no new strand. DNA polymerase can't begin here. It needs a 3-prime end to add to. So primase steps in. It lays down a short RNA primer. Think of it as a starter block. Now polymerase has a 3-prime end. It extends the primer with DNA. Now try the question again.",
+    "duration_seconds": 20.875,
+    "width": 720,
+    "height": 1280,
+    "review_status": "preview"
+  }
+}

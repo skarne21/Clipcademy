@@ -1,0 +1,101 @@
+{
+  "topic_id": "dna_replication",
+  "objective_id": "synthesis_direction_and_primer",
+  "variant_id": "direction_followup_2",
+  "format": "vertical",
+  "teaching_goal": "Explain growth direction and which end grows",
+  "source_refs": [
+    "L19-p1"
+  ],
+  "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L19-p1: DNA polymerase can only add new bases to the 3′ end.",
+    "analogy": "A puzzle piece that only fits on one side.",
+    "new_term": "none new (follow-up)"
+  },
+  "scenes": [
+    {
+      "diagram": "strand",
+      "title": "Can new DNA grow from the 5′ end?",
+      "narration": "Let's test the wrong idea. Can a new piece join the 5-prime end? Try it. Nope. It bounces right off. Now try the 3-prime end. Click. It fits. Like a puzzle piece that only fits on one side. Pieces always join the 3-prime end, so DNA grows 5-prime to 3-prime. Now try the question again.",
+      "stage": {
+        "strand": 3
+      },
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "pose:think",
+            "pulse:new_5"
+          ]
+        },
+        {
+          "on": "5-prime",
+          "do": [
+            "label:5",
+            "point:new_5"
+          ]
+        },
+        {
+          "on": "try",
+          "do": [
+            "bounce"
+          ]
+        },
+        {
+          "on": "nope",
+          "do": [
+            "pose:wag"
+          ]
+        },
+        {
+          "on": "bounces",
+          "do": [
+            "pulse:new_5"
+          ]
+        },
+        {
+          "on": "now",
+          "do": [
+            "label:3",
+            "point:new_3",
+            "pulse:new_3"
+          ]
+        },
+        {
+          "on": "click",
+          "do": [
+            "zoom:new_3",
+            "extend:4"
+          ]
+        },
+        {
+          "on": "fits",
+          "do": [
+            "pose:thumbs"
+          ]
+        },
+        {
+          "on": "puzzle",
+          "do": [
+            "zoom_out",
+            "pose:present"
+          ]
+        },
+        {
+          "on": "always",
+          "do": [
+            "arrow",
+            "card:Joins at 3′ only"
+          ]
+        },
+        {
+          "on": "again",
+          "do": [
+            "pulse:strand"
+          ]
+        }
+      ]
+    }
+  ]
+}

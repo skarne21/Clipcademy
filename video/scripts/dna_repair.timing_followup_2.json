@@ -1,0 +1,89 @@
+{
+  "topic_id": "dna_repair",
+  "objective_id": "error_correction",
+  "variant_id": "timing_followup_2",
+  "format": "vertical",
+  "teaching_goal": "Explain when proofreading and mismatch repair each happen",
+  "source_refs": [
+    "L20-p1"
+  ],
+  "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L20-p1: proofreading happens as bases are added; mismatch repair after replication is complete.",
+    "analogy": "Fixing typos as you type, then rereading the essay after.",
+    "new_term": "none new (follow-up)"
+  },
+  "scenes": [
+    {
+      "diagram": "timeline",
+      "title": "Proofreading vs. mismatch repair",
+      "narration": "Picture one round of copying as a timeline. While copying happens, DNA polymerase proofreads. It fixes a wrong base right away. Now copying is done. After that, mismatch repair proteins scan the finished DNA. They fix wrong bases they find. It's like fixing typos as you type, then rereading the essay after. Proofreading is during. Mismatch repair is after. Now try the question again.",
+      "stage": {},
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "timeline",
+            "pose:present"
+          ]
+        },
+        {
+          "on": "while",
+          "do": [
+            "mark:during",
+            "point:during"
+          ]
+        },
+        {
+          "on": "fixes",
+          "do": [
+            "pulse:during"
+          ]
+        },
+        {
+          "on": "done",
+          "do": [
+            "pulse:line"
+          ]
+        },
+        {
+          "on": "after",
+          "do": [
+            "mark:after",
+            "point:after"
+          ]
+        },
+        {
+          "on": "scan",
+          "do": [
+            "pulse:after"
+          ]
+        },
+        {
+          "on": "typos",
+          "do": [
+            "pose:think"
+          ]
+        },
+        {
+          "on": "proofreading",
+          "do": [
+            "card:Proofreading: during"
+          ]
+        },
+        {
+          "on": "mismatch",
+          "do": [
+            "card:Mismatch repair: after"
+          ]
+        },
+        {
+          "on": "again",
+          "do": [
+            "pose:thumbs"
+          ]
+        }
+      ]
+    }
+  ]
+}

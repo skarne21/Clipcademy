@@ -1,0 +1,104 @@
+{
+  "topic_id": "dna_repair",
+  "objective_id": "error_correction",
+  "variant_id": "intro_2",
+  "format": "vertical",
+  "teaching_goal": "Mismatch repair fixes wrong bases after copying is finished.",
+  "source_refs": [
+    "L20-p1"
+  ],
+  "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L20-p1: After replication is complete, specialized proteins scan the new double helix for mismatched bases.",
+    "analogy": "A spell-checker reading a finished essay.",
+    "new_term": "mismatch"
+  },
+  "scenes": [
+    {
+      "diagram": "repair",
+      "title": "Mistakes found after copying",
+      "narration": "Copying is done. But one base doesn't match. Special repair proteins scan the new DNA. Like a spell-checker reading a finished essay. Found it. A mismatch. Enzymes cut around the mistake. They remove that piece. Then they fill in the correct bases. Mismatch repair fixes wrong bases after copying is finished. Next up: damage from UV light. Swipe.",
+      "stage": {
+        "bottom": 9,
+        "wrong": 4,
+        "section": [
+          3,
+          5
+        ]
+      },
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "pose:present",
+            "pulse:bottom"
+          ]
+        },
+        {
+          "on": "doesn't",
+          "do": [
+            "pose:think"
+          ]
+        },
+        {
+          "on": "scan",
+          "do": [
+            "scan",
+            "point:protein"
+          ]
+        },
+        {
+          "on": "spell-checker",
+          "do": [
+            "pulse:protein"
+          ]
+        },
+        {
+          "on": "found",
+          "do": [
+            "found",
+            "zoom:damage",
+            "pose:surprised"
+          ]
+        },
+        {
+          "on": "cut",
+          "do": [
+            "cut"
+          ]
+        },
+        {
+          "on": "remove",
+          "do": [
+            "remove"
+          ]
+        },
+        {
+          "on": "fill",
+          "do": [
+            "replace",
+            "zoom_out"
+          ]
+        },
+        {
+          "on": "fixes",
+          "do": [
+            "card:Mismatch repair = fix it after"
+          ]
+        },
+        {
+          "on": "next",
+          "do": [
+            "pose:present"
+          ]
+        },
+        {
+          "on": "swipe",
+          "do": [
+            "pulse:bottom"
+          ]
+        }
+      ]
+    }
+  ]
+}

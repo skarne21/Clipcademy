@@ -1,0 +1,732 @@
+:root {
+  --ink: #1b1d1f;
+  --muted: #5b6168;
+  --line: #d5d8dc;
+  --surface: #ffffff;
+  --sunken: #f1f2f4;
+  --accent: #2c5282;
+  --accent-ink: #ffffff;
+  --ok: #1e6b3a;
+  --no: #a3382a;
+  --font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --gutter: max(1rem, env(safe-area-inset-left));
+  --radius: 6px;
+  --bar-h: 5rem;
+}
+
+html,
+body {
+  overflow-x: clip;
+}
+
+body {
+  margin: 0;
+  background: var(--surface);
+  color: var(--ink);
+  font: 1rem/1.5 var(--font);
+  -webkit-text-size-adjust: 100%;
+}
+
+#app {
+  max-width: 36rem;
+  margin: 0 auto;
+  padding: 1rem var(--gutter) calc(var(--bar-h) + env(safe-area-inset-bottom) + 1.5rem);
+  min-height: 100dvh;
+  box-sizing: border-box;
+}
+
+h1 {
+  font-size: 1.728rem;
+  line-height: 1.25;
+  margin: 0.75rem 0 0.5rem;
+}
+
+h1.prompt {
+  font-size: 1.44rem;
+}
+
+h2 {
+  font-size: 1.2rem;
+  margin: 2rem 0 0.5rem;
+}
+
+p {
+  margin: 0 0 1rem;
+}
+
+.lede {
+  color: var(--muted);
+  margin-bottom: 1.5rem;
+}
+
+.note,
+.row-sub {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.row-sub {
+  display: block;
+  margin: 0;
+}
+
+.row-title {
+  display: block;
+  font-weight: 600;
+  margin: 0;
+}
+
+a {
+  color: var(--accent);
+}
+
+/* ---------- controls ---------- */
+
+button {
+  font: inherit;
+  min-height: 3rem;
+  padding: 0 1.25rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: transform 150ms ease-out, opacity 150ms ease-out;
+}
+
+button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.primary {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border: 0;
+  font-weight: 600;
+}
+
+.secondary {
+  background: var(--surface);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  font-weight: 600;
+}
+
+.link {
+  background: none;
+  border: 0;
+  color: var(--muted);
+  padding: 0;
+  text-decoration: underline;
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+label[for] {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.375rem;
+}
+
+input:not([type]) {
+  font: inherit;
+  font-size: max(1rem, 16px); /* 16px keeps iOS from zooming in */
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 3rem;
+  padding: 0 0.75rem;
+  border: 1px solid #8a9099;
+  border-radius: var(--radius);
+}
+
+input[aria-invalid='true'] {
+  border-color: var(--no);
+}
+
+.field-error {
+  color: var(--no);
+  margin: 0.5rem 0 0;
+}
+
+input[type='checkbox'],
+input[type='radio'] {
+  accent-color: var(--accent);
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: 0;
+  flex: none;
+}
+
+/* The one primary action sits where a thumb reaches it. */
+.bar {
+  position: fixed;
+  inset: auto 0 0 0;
+  display: flex;
+  gap: 0.75rem;
+  max-width: 36rem;
+  margin: 0 auto;
+  padding: 0.75rem var(--gutter) calc(0.75rem + env(safe-area-inset-bottom));
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+}
+
+.bar button {
+  flex: 1;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.back::before {
+  content: '‹';
+  font-size: 1.5rem;
+  margin-right: 0.25rem;
+  line-height: 1;
+}
+
+/* ---------- lists ---------- */
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+
+.list > li {
+  border-bottom: 1px solid var(--line);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  min-height: 3.5rem;
+  padding: 0.5rem 0;
+  cursor: pointer;
+}
+
+.row.quiet .row-title {
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.objective {
+  display: flex;
+  flex-wrap: wrap; /* with very large text the button drops below the label */
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  padding: 0.75rem 0;
+}
+
+.objective > div {
+  flex: 1 1 12rem;
+}
+
+.objective button {
+  flex: none;
+}
+
+.objective .link {
+  min-height: 2.75rem;
+}
+
+section h2 {
+  margin-top: 1.5rem;
+}
+
+footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1.5rem;
+  margin-top: 3rem;
+  font-size: 0.875rem;
+}
+
+footer a,
+footer .link {
+  min-height: 2.75rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+.participant {
+  margin-left: auto;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+/* ---------- lesson ---------- */
+
+.clip video,
+.video-box {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--sunken);
+  border-radius: var(--radius);
+}
+
+.video-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  box-sizing: border-box;
+  text-align: center;
+  color: var(--muted);
+}
+
+.video-box p {
+  margin: 0;
+}
+
+.video-box.failed {
+  color: var(--ink);
+}
+
+.clip .note {
+  margin-top: 0.5rem;
+}
+
+/* ---------- question ---------- */
+
+fieldset {
+  border: 0;
+  margin: 1.5rem 0 0;
+  padding: 0;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.choice {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 3rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.625rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.choice .letter {
+  font-weight: 700;
+  color: var(--muted);
+  min-width: 1ch;
+}
+
+/* Selected: a heavier border and a check, not colour alone. */
+.choice:has(:checked) {
+  border: 2px solid var(--accent);
+  padding: calc(0.75rem - 1px) calc(1rem - 1px);
+}
+
+.choice:has(:checked)::after {
+  content: '✓';
+  margin-left: auto;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.choice:has(:disabled) {
+  cursor: default;
+}
+
+/* ---------- feedback ---------- */
+
+.result {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.75rem 0 1rem;
+}
+
+.result h1,
+.result p {
+  margin: 0;
+}
+
+.result p {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.result svg {
+  width: 1.75rem;
+  height: 1.75rem;
+  flex: none;
+}
+
+.result.ok {
+  color: var(--ok);
+}
+
+.result.no {
+  color: var(--no);
+}
+
+.your-answer {
+  padding: 0.75rem 1rem;
+  background: var(--sunken);
+  border-radius: var(--radius);
+}
+
+.points {
+  padding-left: 1.25rem;
+}
+
+.points li {
+  margin-bottom: 0.5rem;
+}
+
+/* ---------- loading and errors ---------- */
+
+.skeleton div {
+  height: 1.25rem;
+  margin: 1rem 0;
+  background: var(--sunken);
+  border-radius: var(--radius);
+}
+
+.skeleton div:first-child {
+  height: 2rem;
+  width: 70%;
+}
+
+.skeleton div:last-child {
+  height: auto;
+  aspect-ratio: 16 / 9;
+}
+
+.error-block {
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px solid var(--no);
+  border-radius: var(--radius);
+}
+
+.error-block button {
+  margin-top: 0.25rem;
+}
+
+/* ---------- correct: one short, settled moment ---------- */
+
+.result.ok svg {
+  animation: correct-in 220ms ease-out both;
+}
+
+.result.ok h1,
+.result.ok p {
+  animation: correct-text 220ms 60ms ease-out both;
+}
+
+@keyframes correct-in {
+  from {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+}
+
+@keyframes correct-text {
+  from {
+    transform: translateX(-0.5rem);
+    opacity: 0;
+  }
+}
+
+/* ---------- clip feed (9:16, full screen) ---------- */
+/* Safe zones from the shared contract, as a share of the 720x1280 frame:
+   top 120px = 9.375%, right 120px = 16.667%, bottom 200px = 15.625%. Clips keep these clear. */
+
+.feed {
+  --frame-w: min(100%, calc(100dvh * 9 / 16));
+  position: fixed;
+  inset: 0;
+  background: #000;
+  color: #fff;
+  z-index: 1;
+}
+
+.feed-scroll {
+  height: 100dvh;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  outline: none;
+}
+
+.feed-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.slide {
+  height: 100dvh;
+  display: grid;
+  place-items: center;
+  scroll-snap-align: start;
+  scroll-snap-stop: always; /* one swipe moves one clip */
+}
+
+.feed .frame {
+  width: var(--frame-w);
+  aspect-ratio: 9 / 16;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.slide video,
+.slide .video-box {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  background: #111;
+  border-radius: 0;
+  aspect-ratio: auto;
+}
+
+.slide .video-box {
+  color: #c9ccd1;
+  padding: 0 18% 0 1.5rem;
+}
+
+.slide .video-box.failed {
+  color: #fff;
+}
+
+.slide .video-box .secondary {
+  background: transparent;
+  color: #fff;
+  border-color: #fff;
+}
+
+.frame.end {
+  display: grid;
+  place-items: center;
+  padding: 0 1.5rem;
+  text-align: center;
+  font-size: 1.44rem;
+  font-weight: 700;
+}
+
+/* the overlay sits exactly on the frame; only its controls take taps */
+.feed .hud {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  pointer-events: none;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 0.6);
+}
+
+.hud button,
+.hud a {
+  pointer-events: auto;
+}
+
+.hud-top {
+  position: absolute;
+  inset: 0 0 auto 0;
+  min-height: 9.375%;
+  padding: max(0.5rem, env(safe-area-inset-top)) 0.75rem 0.5rem;
+  box-sizing: border-box;
+  background: linear-gradient(rgb(0 0 0 / 0.55), transparent);
+}
+
+.segments {
+  display: flex;
+  gap: 4px;
+}
+
+.segment {
+  flex: 1;
+  height: 3px;
+  border-radius: 2px;
+  background: rgb(255 255 255 / 0.35);
+  overflow: hidden;
+}
+
+.fill {
+  display: block;
+  height: 100%;
+  background: #fff;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 250ms linear;
+}
+
+.hud-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.hud .back {
+  color: #fff;
+}
+
+.sound-pill {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  min-height: 2.75rem;
+  padding: 0 1rem;
+  border: 0;
+  border-radius: 999px;
+  background: rgb(0 0 0 / 0.6);
+  color: #fff;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.sound-pill[hidden] {
+  display: none;
+}
+
+.feed svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  flex: none;
+}
+
+.hud-side {
+  position: absolute;
+  right: 0;
+  bottom: 15.625%;
+  width: 16.667%;
+  min-width: 3.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding-bottom: 1rem;
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.125rem;
+  min-height: 3rem;
+  min-width: 3rem;
+  padding: 0.25rem;
+  border: 0;
+  background: none;
+  color: #fff;
+  font-size: 0.6875rem;
+  font-weight: 600;
+}
+
+.side svg {
+  width: 2rem;
+  height: 2rem;
+  filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.6));
+}
+
+.side[aria-pressed='true'] {
+  color: #ffd466;
+}
+
+.hud-bottom {
+  position: absolute;
+  inset: auto 0 0 0;
+  min-height: 15.625%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.375rem;
+  padding: 0 0.75rem max(0.75rem, env(safe-area-inset-bottom));
+  box-sizing: border-box;
+  background: linear-gradient(transparent, rgb(0 0 0 / 0.6));
+}
+
+.hud-bottom .primary {
+  width: 100%;
+}
+
+.disclosure {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #dfe1e5;
+}
+
+.swipe-hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  margin: 0;
+  font-weight: 700;
+}
+
+.swipe-hint[hidden] {
+  display: none;
+}
+
+.sheet {
+  width: min(100%, 36rem);
+  max-height: 70dvh;
+  margin: auto auto 0;
+  padding: 1rem var(--gutter) calc(1rem + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+  border: 0;
+  border-radius: var(--radius) var(--radius) 0 0;
+  color: var(--ink);
+  background: var(--surface);
+}
+
+.sheet::backdrop {
+  background: rgb(0 0 0 / 0.5);
+}
+
+.sheet h2 {
+  margin-top: 0;
+}
+
+.sheet button {
+  width: 100%;
+}
+
+@media (hover: hover) {
+  .row:hover,
+  .choice:hover {
+    background: var(--sunken);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
+}

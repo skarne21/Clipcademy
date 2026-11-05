@@ -1,0 +1,91 @@
+{
+  "topic_id": "transcription",
+  "objective_id": "template_strand_and_promoter",
+  "variant_id": "promoter_followup_2",
+  "format": "vertical",
+  "teaching_goal": "Explain the promoter's role in starting transcription",
+  "source_refs": [
+    "L21-p1"
+  ],
+  "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L21-p1: the promoter is where RNA polymerase makes initial contact with DNA to start transcription.",
+    "analogy": "A start line: the race only begins there.",
+    "new_term": "none new (follow-up)"
+  },
+  "scenes": [
+    {
+      "diagram": "transcription",
+      "title": "Can transcription start anywhere?",
+      "narration": "Can RNA polymerase start anywhere on a gene? Let's try the middle. Nothing happens. Transcription can't begin at a random spot. Now try the promoter. Polymerase makes first contact here. Proteins open the helix. Now it can read the template strand. The promoter is the start line. Now try the question again.",
+      "stage": {},
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "pose:think",
+            "pulse:middle"
+          ]
+        },
+        {
+          "on": "middle",
+          "do": [
+            "try",
+            "point:middle"
+          ]
+        },
+        {
+          "on": "nothing",
+          "do": [
+            "fail",
+            "pose:shrug"
+          ]
+        },
+        {
+          "on": "random",
+          "do": [
+            "pose:wag"
+          ]
+        },
+        {
+          "on": "promoter",
+          "do": [
+            "polymerase",
+            "pulse:promoter",
+            "point:promoter"
+          ]
+        },
+        {
+          "on": "contact",
+          "do": [
+            "card:Start at the promoter"
+          ]
+        },
+        {
+          "on": "open",
+          "do": [
+            "open"
+          ]
+        },
+        {
+          "on": "read",
+          "do": [
+            "extend"
+          ]
+        },
+        {
+          "on": "line",
+          "do": [
+            "pose:present"
+          ]
+        },
+        {
+          "on": "again",
+          "do": [
+            "pose:thumbs"
+          ]
+        }
+      ]
+    }
+  ]
+}

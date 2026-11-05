@@ -1,0 +1,124 @@
+{
+  "topic_id": "transcription",
+  "objective_id": "template_strand_and_promoter",
+  "label": "Template strand and the promoter",
+  "source_excerpts": [
+    {
+      "ref": "L21-p1",
+      "text": "Since DNA is double-stranded, the strand that is read by RNA polymerase and is transcribed is called the template strand, and the complementary strand that is not transcribed is called the non-template (coding) strand."
+    },
+    {
+      "ref": "L21-p1",
+      "text": "Promoter - a region of the gene where RNA polymerase makes initial contact with DNA to start transcription; also determines the direction in which the strand is read."
+    },
+    {
+      "ref": "L21-p1",
+      "text": "RNA polymerase makes an RNA version of the information encoded in a gene after initial proteins open the promoter and unwind the double helix."
+    },
+    {
+      "ref": "L21-p1",
+      "text": "Transcription is an enzyme-catalyzed reaction that makes phosphodiester linkages between ribonucleotides that are complementary to the bases in a DNA template. Codons are only in translation."
+    },
+    {
+      "ref": "L21-p1",
+      "text": "NTPs enter a channel in the enzyme that leads to its active site. If one of the NTPs matches the next base in the template DNA, which is also in the active site, the enzyme catalyzes the formation of a phosphodiester bond."
+    }
+  ],
+  "excluded_passages": [
+    "L21-p1 upstream / downstream definitions (wording pending instructor review)",
+    "L21-p1 progeria example (not needed for this objective)"
+  ],
+  "required_question_ids": [
+    "tx-q1",
+    "tx-q2"
+  ],
+  "misconceptions": {
+    "template_vs_coding": {
+      "variant_ids": [
+        "template_followup",
+        "template_followup_2"
+      ],
+      "retry_question_ids": [
+        "tx-r1",
+        "tx-r3"
+      ]
+    },
+    "promoter_role": {
+      "variant_ids": [
+        "promoter_followup",
+        "promoter_followup_2"
+      ],
+      "retry_question_ids": [
+        "tx-r2",
+        "tx-r4"
+      ]
+    }
+  },
+  "variants": {
+    "intro_1": {
+      "teaching_goal": "RNA polymerase reads one DNA strand, the template strand, to build RNA.",
+      "source_refs": [
+        "L21-p1"
+      ]
+    },
+    "intro_2": {
+      "teaching_goal": "The template strand gets read, and the coding strand does not.",
+      "source_refs": [
+        "L21-p1"
+      ]
+    },
+    "intro_3": {
+      "teaching_goal": "The promoter is where RNA polymerase starts, and it sets which way the gene is read.",
+      "source_refs": [
+        "L21-p1"
+      ]
+    },
+    "intro_4": {
+      "teaching_goal": "RNA polymerase starts at the promoter and reads the template strand.",
+      "source_refs": [
+        "L21-p1"
+      ]
+    },
+    "template_followup": {
+      "teaching_goal": "Explain the difference between the template and coding strands",
+      "key_points": [
+        "Template strand: read and transcribed",
+        "Coding (non-template) strand: not transcribed"
+      ],
+      "source_refs": [
+        "L21-p1"
+      ]
+    },
+    "template_followup_2": {
+      "teaching_goal": "Explain the difference between the template and coding strands",
+      "approach": "Build the RNA one base at a time against the template strand, so it is obvious which strand is being read.",
+      "source_refs": [
+        "L21-p1"
+      ]
+    },
+    "promoter_followup": {
+      "teaching_goal": "Explain the promoter's role in starting transcription",
+      "key_points": [
+        "Initial proteins open the promoter and unwind the helix",
+        "RNA polymerase makes first contact there",
+        "The promoter sets the direction of reading"
+      ],
+      "source_refs": [
+        "L21-p1"
+      ]
+    },
+    "promoter_followup_2": {
+      "teaching_goal": "Explain the promoter's role in starting transcription",
+      "approach": "Show that transcription can't begin at a random spot: proteins open the helix at the promoter, and RNA polymerase makes first contact there.",
+      "source_refs": [
+        "L21-p1"
+      ]
+    }
+  },
+  "review_points": [
+    "RNA polymerase reads the template strand; the other is the coding strand",
+    "RNA is built from ribonucleotides complementary to the template",
+    "The promoter is where RNA polymerase first contacts DNA, and it sets the reading direction"
+  ],
+  "review_status": "draft"
+}

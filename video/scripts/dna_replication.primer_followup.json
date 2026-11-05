@@ -1,0 +1,96 @@
+{
+  "topic_id": "dna_replication",
+  "objective_id": "synthesis_direction_and_primer",
+  "variant_id": "primer_followup",
+  "format": "vertical",
+  "teaching_goal": "Explain why DNA polymerase needs a primer",
+  "source_refs": [
+    "L19-p1",
+    "L19-p2"
+  ],
+  "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L19-p1: DNA polymerase can only work if the new strand has already been started. L19-p2: primase makes the RNA primer.",
+    "analogy": "A starter block that building begins from.",
+    "new_term": "none new (follow-up)"
+  },
+  "scenes": [
+    {
+      "diagram": "strand",
+      "title": "Why does DNA polymerase need a primer?",
+      "narration": "Here's the problem. A bare template has no new strand. DNA polymerase can't begin here. It needs a 3-prime end to add to. So primase steps in. It lays down a short RNA primer. Think of it as a starter block. Now polymerase has a 3-prime end. It extends the primer with DNA. Now try the question again.",
+      "stage": {
+        "strand": 0
+      },
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "pose:present",
+            "pulse:template"
+          ]
+        },
+        {
+          "on": "bare",
+          "do": [
+            "point:template",
+            "ghost"
+          ]
+        },
+        {
+          "on": "can't",
+          "do": [
+            "polymerase"
+          ]
+        },
+        {
+          "on": "needs",
+          "do": [
+            "fail",
+            "pose:shrug"
+          ]
+        },
+        {
+          "on": "primase",
+          "do": [
+            "primase",
+            "point:primase"
+          ]
+        },
+        {
+          "on": "rna",
+          "do": [
+            "pulse:primer"
+          ]
+        },
+        {
+          "on": "starter",
+          "do": [
+            "pose:present",
+            "card:Primer = starter block"
+          ]
+        },
+        {
+          "on": "now",
+          "do": [
+            "point:polymerase"
+          ]
+        },
+        {
+          "on": "extends",
+          "do": [
+            "extend",
+            "zoom:new_3"
+          ]
+        },
+        {
+          "on": "again",
+          "do": [
+            "zoom_out",
+            "pose:thumbs"
+          ]
+        }
+      ]
+    }
+  ]
+}

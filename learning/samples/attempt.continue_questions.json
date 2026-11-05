@@ -1,0 +1,37 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/attempts",
+    "body": {
+      "attempt_id": "7b7d2dca-1965-52a7-8568-b4fb69c9c25c",
+      "question_id": "rep-q1",
+      "selected_choice_id": "B",
+      "objective_id": "synthesis_direction_and_primer",
+      "remediation_state": {}
+    }
+  },
+  "status": 200,
+  "response": {
+    "attempt_id": "7b7d2dca-1965-52a7-8568-b4fb69c9c25c",
+    "question_id": "rep-q1",
+    "correct": true,
+    "action": "continue_questions",
+    "feedback": "Correct. DNA polymerase adds to the 3′ end, so synthesis runs 5′ to 3′.",
+    "misconception_id": null,
+    "next_video_request": null,
+    "next_question_id": "rep-q2",
+    "remediation_state": {
+      "objective_status": "in_progress",
+      "expected_question_id": "rep-q2",
+      "remediation_count": 0,
+      "satisfied_question_ids": [
+        "rep-q1"
+      ],
+      "asked_retry_ids": []
+    },
+    "review_points": null,
+    "source_refs": [
+      "L19-p1"
+    ]
+  }
+}

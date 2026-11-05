@@ -1,0 +1,107 @@
+{
+  "topic_id": "dna_replication",
+  "objective_id": "synthesis_direction_and_primer",
+  "variant_id": "intro_1",
+  "format": "vertical",
+  "teaching_goal": "DNA polymerase adds new pieces only to the 3′ end.",
+  "source_refs": [
+    "L19-p1"
+  ],
+  "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L19-p1: DNA polymerase can only add new bases to the 3′ end of an existing complementary strand.",
+    "analogy": "A train that only boards at the back: new pieces join one end only.",
+    "new_term": "3′ end"
+  },
+  "scenes": [
+    {
+      "diagram": "strand",
+      "title": "Where does new DNA get added?",
+      "narration": "Where do new pieces of DNA get added? Meet DNA polymerase. It builds the new strand. A strand has two ends, 5-prime and 3-prime. Polymerase only works at one of them. Think of a train that only boards at the back. New pieces join the 3-prime end. Click. Click. Click. DNA polymerase adds new pieces only to the 3-prime end. So which way does it grow? Swipe.",
+      "stage": {
+        "strand": 3
+      },
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "pose:think",
+            "pulse:strand"
+          ]
+        },
+        {
+          "on": "meet",
+          "do": [
+            "polymerase",
+            "point:polymerase"
+          ]
+        },
+        {
+          "on": "ends",
+          "do": [
+            "pulse:strand"
+          ]
+        },
+        {
+          "on": "5-prime",
+          "do": [
+            "label:5",
+            "pulse:new_5"
+          ]
+        },
+        {
+          "on": "3-prime",
+          "do": [
+            "label:3",
+            "pulse:new_3"
+          ]
+        },
+        {
+          "on": "only",
+          "do": [
+            "pose:wag"
+          ]
+        },
+        {
+          "on": "train",
+          "do": [
+            "pose:present"
+          ]
+        },
+        {
+          "on": "join",
+          "do": [
+            "zoom:new_3",
+            "extend",
+            "point:new_3"
+          ]
+        },
+        {
+          "on": "click",
+          "do": [
+            "pulse:new_3"
+          ]
+        },
+        {
+          "on": "adds",
+          "do": [
+            "zoom_out",
+            "card:Pieces join the 3′ end"
+          ]
+        },
+        {
+          "on": "which",
+          "do": [
+            "pose:think"
+          ]
+        },
+        {
+          "on": "swipe",
+          "do": [
+            "pulse:strand"
+          ]
+        }
+      ]
+    }
+  ]
+}

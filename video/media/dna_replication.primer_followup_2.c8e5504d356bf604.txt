@@ -1,0 +1,1 @@
+Two enzymes, one bare template. Who can start a new strand? DNA polymerase tries first. Nothing happens. It can only add to a strand that's already started. Now primase tries. It starts from scratch with a short RNA primer. Primase is the starter. Polymerase is the builder. Now polymerase adds DNA onto the primer. Now try the question again.

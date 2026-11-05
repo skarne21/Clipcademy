@@ -1,0 +1,108 @@
+{
+  "topic_id": "transcription",
+  "objective_id": "template_strand_and_promoter",
+  "variant_id": "intro_2",
+  "format": "vertical",
+  "teaching_goal": "The template strand gets read, and the coding strand does not.",
+  "source_refs": [
+    "L21-p1"
+  ],
+  "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L21-p1: the template strand is read and transcribed; the complementary non-template (coding) strand is not.",
+    "analogy": "A page printed on both sides, but you only read the front.",
+    "new_term": "coding strand"
+  },
+  "scenes": [
+    {
+      "diagram": "transcription",
+      "title": "Template strand vs. coding strand",
+      "narration": "DNA has two strands, but only one gets read. Which one? This is the template strand. RNA polymerase reads it and builds RNA to match. This is the coding strand. It just sits there. It does not get read. Like a page printed on both sides, but you only read the front. The template strand gets read, and the coding strand does not. Where does reading start? Swipe.",
+      "stage": {},
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "pose:think",
+            "pulse:template"
+          ]
+        },
+        {
+          "on": "only",
+          "do": [
+            "pulse:coding"
+          ]
+        },
+        {
+          "on": "which",
+          "do": [
+            "pose:think"
+          ]
+        },
+        {
+          "on": "this",
+          "do": [
+            "point:template",
+            "pulse:template"
+          ]
+        },
+        {
+          "on": "reads",
+          "do": [
+            "polymerase",
+            "open"
+          ]
+        },
+        {
+          "on": "builds",
+          "do": [
+            "extend"
+          ]
+        },
+        {
+          "on": "coding",
+          "do": [
+            "point:coding",
+            "pulse:coding"
+          ]
+        },
+        {
+          "on": "sits",
+          "do": [
+            "pose:shrug"
+          ]
+        },
+        {
+          "on": "not",
+          "do": [
+            "card:Coding strand: not read"
+          ]
+        },
+        {
+          "on": "page",
+          "do": [
+            "pose:present"
+          ]
+        },
+        {
+          "on": "gets",
+          "do": [
+            "pulse:rna"
+          ]
+        },
+        {
+          "on": "start",
+          "do": [
+            "pose:think"
+          ]
+        },
+        {
+          "on": "swipe",
+          "do": [
+            "pulse:promoter"
+          ]
+        }
+      ]
+    }
+  ]
+}

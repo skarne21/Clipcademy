@@ -1,0 +1,46 @@
+{
+  "version": 3,
+  "width": 720,
+  "height": 1280,
+  "fps": 24,
+  "colors": {
+    "background": "#FAF8F1",
+    "ink": "#20332D",
+    "accent": "#176B52",
+    "primer": "#96501A",
+    "damage": "#A32939",
+    "highlight": "#E39B1B",
+    "protein": "#5B4A8B",
+    "uv": "#6B4FA0"
+  },
+  "font": "DejaVuSans.ttf",
+  "font_bold": "DejaVuSans-Bold.ttf",
+  "guide": "Same line-drawn guide with a green bow tie, on screen from frame 1 (no walk-in or wave). Points at whatever the narration names, shrugs or thinks when something cannot happen, gives a thumbs-up when the idea lands. Mouth follows narration loudness; eyes follow the pointing target.",
+  "motion_rules": "Vertical 720x1280. Hook text from frame 1; something changes every 2-3 s. Every on-screen action is triggered by a spoken word (scene beats). Enzymes are rounded shapes behind the strands with their name inside: DNA polymerase green, primase brown, repair proteins purple. Close-ups magnify the diagram 1.75x and return. Orange rings highlight what is being named. Summary cards repeat the narration's claim, never add a new one. Captions: 1-3 words, large, spoken word highlighted. Keep the top 120 px, right 120 px and bottom 200 px clear for the app.",
+  "labels": {
+    "template": "Template DNA",
+    "new": "New complementary strand",
+    "primer": "RNA primer"
+  },
+  "narration_style": "Friendly, conversational, short sentences (under 12 words), middle-school reading level, about 150-170 words a minute. Say 5-prime and 3-prime. Synthetic narration is disclosed in the manifest.",
+  "safe_zones": {
+    "top": 120,
+    "right": 120,
+    "bottom": 200,
+    "captions_y": [
+      760,
+      1000
+    ]
+  },
+  "tts": {
+    "engine": "elevenlabs",
+    "model": "eleven_multilingual_v2",
+    "voice_id": "TX3LPaxmHKxFdv7VOQHJ",
+    "stability": 0.45,
+    "similarity_boost": 0.75,
+    "style": 0.25,
+    "speed": 1.12,
+    "output_format": "pcm_24000",
+    "voice_name": "Liam (ElevenLabs premade)"
+  }
+}

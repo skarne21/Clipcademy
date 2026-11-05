@@ -1,0 +1,101 @@
+{
+  "topic_id": "dna_repair",
+  "objective_id": "error_correction",
+  "variant_id": "intro_1",
+  "format": "vertical",
+  "teaching_goal": "Proofreading fixes a wrong base right away, while DNA is being copied.",
+  "source_refs": [
+    "L20-p1"
+  ],
+  "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L20-p1: If it adds the wrong base, exonuclease will back up, remove the incorrect base from the 3′ end and add the correct base.",
+    "analogy": "Hitting backspace while you type.",
+    "new_term": "proofreading"
+  },
+  "scenes": [
+    {
+      "diagram": "repair",
+      "title": "DNA polymerase checks its own work",
+      "narration": "DNA polymerase can catch its own typos. Watch it copy. Oops, a wrong base. Polymerase backs up. It snips the wrong base off the 3-prime end. Then it adds the right one. Like hitting backspace while you type. This is called proofreading. Proofreading fixes a wrong base right away, while DNA is being copied. What about mistakes found later? Swipe.",
+      "stage": {
+        "bottom": 3,
+        "copying": true
+      },
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "polymerase",
+            "pose:present"
+          ]
+        },
+        {
+          "on": "watch",
+          "do": [
+            "extend",
+            "point:polymerase"
+          ]
+        },
+        {
+          "on": "oops",
+          "do": [
+            "misadd",
+            "pose:surprised"
+          ]
+        },
+        {
+          "on": "backs",
+          "do": [
+            "zoom:three_end"
+          ]
+        },
+        {
+          "on": "snips",
+          "do": [
+            "excise",
+            "pulse:three_end"
+          ]
+        },
+        {
+          "on": "adds",
+          "do": [
+            "fix",
+            "pose:thumbs"
+          ]
+        },
+        {
+          "on": "backspace",
+          "do": [
+            "zoom_out",
+            "extend"
+          ]
+        },
+        {
+          "on": "called",
+          "do": [
+            "card:Proofreading = fix it now"
+          ]
+        },
+        {
+          "on": "fixes",
+          "do": [
+            "pulse:bottom"
+          ]
+        },
+        {
+          "on": "later",
+          "do": [
+            "pose:think"
+          ]
+        },
+        {
+          "on": "swipe",
+          "do": [
+            "pulse:bottom"
+          ]
+        }
+      ]
+    }
+  ]
+}

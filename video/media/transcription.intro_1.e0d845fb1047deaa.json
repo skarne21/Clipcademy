@@ -1,0 +1,18 @@
+{
+  "video_file": "transcription.intro_1.e0d845fb1047deaa.mp4",
+  "captions_file": "transcription.intro_1.e0d845fb1047deaa.vtt",
+  "transcript": "How does a gene become RNA? Meet RNA polymerase. DNA has two strands, but it reads just one. That one is called the template strand. First, the DNA opens up. Then polymerase builds RNA that matches the template, one base at a time. Like tracing a drawing by following just one line. RNA polymerase reads one DNA strand, the template strand, to build RNA. So what's the other strand? Swipe.",
+  "source_refs": [
+    "L21-p1"
+  ],
+  "duration_seconds": 28.792,
+  "width": 720,
+  "height": 1280,
+  "fps": 24,
+  "fingerprint": "e0d845fb1047deaa",
+  "review_status": "pending",
+  "narration": "synthetic: ElevenLabs eleven_multilingual_v2, voice Liam (ElevenLabs premade)",
+  "visuals": "Remotion 4.0.537, Clipcademy stick-figure template",
+  "longest_still_seconds": 2.56,
+  "sha256": "0ba25512ac5d611ca68273259474eb6bc780f249780ead1b5666c91cecedc0ba"
+}

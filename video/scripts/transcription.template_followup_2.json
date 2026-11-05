@@ -1,0 +1,105 @@
+{
+  "topic_id": "transcription",
+  "objective_id": "template_strand_and_promoter",
+  "variant_id": "template_followup_2",
+  "format": "vertical",
+  "teaching_goal": "Explain the difference between the template and coding strands",
+  "source_refs": [
+    "L21-p1"
+  ],
+  "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L21-p1: transcription links ribonucleotides that are complementary to the bases in a DNA template.",
+    "analogy": "Matching a pattern, piece by piece.",
+    "new_term": "none new (follow-up)"
+  },
+  "scenes": [
+    {
+      "diagram": "transcription",
+      "title": "Watch which strand the RNA matches",
+      "narration": "Let's build the RNA one base at a time. Here's a T on the template strand. The RNA gets an A. Next, a C. The RNA gets a G. Then a G, so the RNA gets a C. Every new RNA base pairs with the template strand. None pair with the coding strand. Like matching a pattern, piece by piece. So the template strand is the one read. Now try the question again.",
+      "stage": {
+        "open": true
+      },
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "pose:present",
+            "polymerase"
+          ]
+        },
+        {
+          "on": "here's",
+          "do": [
+            "point:template",
+            "pulse:template"
+          ]
+        },
+        {
+          "on": "gets",
+          "do": [
+            "extend:1",
+            "pulse:rna_end"
+          ]
+        },
+        {
+          "on": "next",
+          "do": [
+            "pose:think"
+          ]
+        },
+        {
+          "on": "gets",
+          "do": [
+            "extend:1"
+          ]
+        },
+        {
+          "on": "then",
+          "do": [
+            "pose:present"
+          ]
+        },
+        {
+          "on": "gets",
+          "do": [
+            "extend:1"
+          ]
+        },
+        {
+          "on": "every",
+          "do": [
+            "pulse:template",
+            "card:RNA matches the template"
+          ]
+        },
+        {
+          "on": "none",
+          "do": [
+            "pulse:coding",
+            "pose:wag"
+          ]
+        },
+        {
+          "on": "pattern",
+          "do": [
+            "pose:present"
+          ]
+        },
+        {
+          "on": "read",
+          "do": [
+            "card:Template = read"
+          ]
+        },
+        {
+          "on": "again",
+          "do": [
+            "pose:thumbs"
+          ]
+        }
+      ]
+    }
+  ]
+}

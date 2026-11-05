@@ -1,0 +1,100 @@
+{
+  "topic_id": "dna_replication",
+  "objective_id": "synthesis_direction_and_primer",
+  "variant_id": "primer_followup_2",
+  "format": "vertical",
+  "teaching_goal": "Explain why DNA polymerase needs a primer",
+  "source_refs": [
+    "L19-p1",
+    "L19-p2"
+  ],
+  "review_status": "pending",
+  "review_notes": {
+    "hook_claim": "L19-p2: Unlike DNA polymerase, primase can start synthesis from scratch on a single-stranded template.",
+    "analogy": "A starter and a builder: two jobs, two enzymes.",
+    "new_term": "none new (follow-up)"
+  },
+  "scenes": [
+    {
+      "diagram": "strand",
+      "title": "Primase vs. DNA polymerase",
+      "narration": "Two enzymes, one bare template. Who can start a new strand? DNA polymerase tries first. Nothing happens. It can only add to a strand that's already started. Now primase tries. It starts from scratch with a short RNA primer. Primase is the starter. Polymerase is the builder. Now polymerase adds DNA onto the primer. Now try the question again.",
+      "stage": {
+        "strand": 0
+      },
+      "beats": [
+        {
+          "on": "^",
+          "do": [
+            "pose:think",
+            "pulse:template"
+          ]
+        },
+        {
+          "on": "who",
+          "do": [
+            "ghost"
+          ]
+        },
+        {
+          "on": "tries",
+          "do": [
+            "polymerase",
+            "point:polymerase"
+          ]
+        },
+        {
+          "on": "nothing",
+          "do": [
+            "fail",
+            "pose:shrug"
+          ]
+        },
+        {
+          "on": "already",
+          "do": [
+            "pulse:polymerase"
+          ]
+        },
+        {
+          "on": "primase",
+          "do": [
+            "primase",
+            "point:primase"
+          ]
+        },
+        {
+          "on": "scratch",
+          "do": [
+            "pulse:primase"
+          ]
+        },
+        {
+          "on": "starter",
+          "do": [
+            "card:Primase starts"
+          ]
+        },
+        {
+          "on": "builder",
+          "do": [
+            "card:Polymerase builds"
+          ]
+        },
+        {
+          "on": "adds",
+          "do": [
+            "extend",
+            "point:polymerase"
+          ]
+        },
+        {
+          "on": "again",
+          "do": [
+            "pose:thumbs"
+          ]
+        }
+      ]
+    }
+  ]
+}

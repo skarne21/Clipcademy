@@ -1,0 +1,18 @@
+{
+  "video_file": "transcription.intro_3.996e4017cee2aa65.mp4",
+  "captions_file": "transcription.intro_3.996e4017cee2aa65.vtt",
+  "transcript": "Where does RNA polymerase start reading? Not just anywhere. It starts at the promoter. The promoter is a stretch of the gene that marks the start. RNA polymerase makes first contact right here. The promoter also sets the direction. So reading goes this way. Like a start line that also shows which way to run. The promoter is where RNA polymerase starts, and it sets which way the gene is read. Swipe.",
+  "source_refs": [
+    "L21-p1"
+  ],
+  "duration_seconds": 26.292,
+  "width": 720,
+  "height": 1280,
+  "fps": 24,
+  "fingerprint": "996e4017cee2aa65",
+  "review_status": "pending",
+  "narration": "synthetic: ElevenLabs eleven_multilingual_v2, voice Liam (ElevenLabs premade)",
+  "visuals": "Remotion 4.0.537, Clipcademy stick-figure template",
+  "longest_still_seconds": 2.15,
+  "sha256": "251aa86b10154f998d3f3f95dfa88850353e9a00e3f38226f028ef886cdd62ab"
+}

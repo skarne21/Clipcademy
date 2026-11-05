@@ -1,0 +1,18 @@
+{
+  "video_file": "dna_replication.direction_followup.195dba1dd79e03bd.mp4",
+  "captions_file": "dna_replication.direction_followup.195dba1dd79e03bd.vtt",
+  "transcript": "Let's fix this one. Find the two ends of the new strand. This end is 5-prime. This end is 3-prime. Now watch where new pieces go. Every single one joins the 3-prime end. Like a line where people only join at the back. The 5-prime end never changes. Adding at the 3-prime end means DNA grows 5-prime to 3-prime. Now try the question again.",
+  "source_refs": [
+    "L19-p1"
+  ],
+  "duration_seconds": 20.917,
+  "width": 720,
+  "height": 1280,
+  "fps": 24,
+  "fingerprint": "195dba1dd79e03bd",
+  "review_status": "pending",
+  "narration": "synthetic: ElevenLabs eleven_multilingual_v2, voice Liam (ElevenLabs premade)",
+  "visuals": "Remotion 4.0.537, Clipcademy stick-figure template",
+  "longest_still_seconds": 1.74,
+  "sha256": "db673ade8798a9ca584059147d97613c5cdcf12e3f54f1d6842b79fa7256ed3b"
+}

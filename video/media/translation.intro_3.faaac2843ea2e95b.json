@@ -1,0 +1,18 @@
+{
+  "video_file": "translation.intro_3.faaac2843ea2e95b.mp4",
+  "captions_file": "translation.intro_3.faaac2843ea2e95b.vtt",
+  "transcript": "Where do amino acids get linked together? At the P site. The tRNA in the P site holds the chain. A new tRNA waits in the A site with its amino acid. Snap. A peptide bond links the two amino acids. That bond forms at the P site. Like adding a bead to a necklace. The peptide bond forms at the P site. Swipe.",
+  "source_refs": [
+    "L22-p2"
+  ],
+  "duration_seconds": 23.042,
+  "width": 720,
+  "height": 1280,
+  "fps": 24,
+  "fingerprint": "faaac2843ea2e95b",
+  "review_status": "pending",
+  "narration": "synthetic: ElevenLabs eleven_multilingual_v2, voice Liam (ElevenLabs premade)",
+  "visuals": "Remotion 4.0.537, Clipcademy stick-figure template",
+  "longest_still_seconds": 2.39,
+  "sha256": "4d0b877f951f044fc91e9c9563556aa8a60a426a62fc0eef4fe4eacda5bac12e"
+}
