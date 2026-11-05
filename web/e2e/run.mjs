@@ -1,6 +1,6 @@
 // End-to-end run of Member3_SPEC test cases 1–14 in headless Chrome.
 // Needs, in two terminals:
-//   CLIPCADEMY_BUILD_IDS=dev CLIPCADEMY_ADMIN_TOKEN=t CLIPCADEMY_DB=/tmp/e2e.db python learning/app.py
+//   CLIPCADEMY_BUILD_IDS=study-4 CLIPCADEMY_ADMIN_TOKEN=t CLIPCADEMY_DB=/tmp/e2e.db python learning/app.py
 //   npm run dev   (or: npm run build && npm run preview -- --port 5173)
 // Then: npm run e2e. Use a scratch CLIPCADEMY_DB: this writes attempts and events.
 // /video-jobs is faked per case (VIDEO=real uses the server's own answer for the first case only).
