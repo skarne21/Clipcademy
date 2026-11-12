@@ -672,6 +672,19 @@ Acceptance criteria:
 
 Evidence: learning/test_courses.py; web/src/platform/teach.js
 
+### US-45: Objectives in the same topic keep their own clips
+
+> As a student, I want every objective in my class to have its own clips, even when two objectives share a topic, so that no topic shows another topic's clips twice.
+
+Requirement R8 · Hypotheses H1 · Owner Member 1 · Status **in progress** · GitHub issue [#85](https://github.com/skarne21/Clipcademy/issues/85)
+
+Acceptance criteria:
+
+1. Clip scripts are saved per objective (`<topic>.<objective>.<variant>.json`), so two objectives with the same topic_id and variant_id never overwrite each other.
+2. Each generated clip is listed once, under its own objective.
+
+Evidence: video/course/test_generate.py; live run on localhost (osmosis notes made 7 clips for one objective and none for the other)
+
 ## 3. Coverage of planned Alpha functionality
 
 | Alpha functionality (Team_Spec, notes.md) | Stories |
@@ -698,5 +711,6 @@ Evidence: learning/test_courses.py; web/src/platform/teach.js
 | Course platform: teacher upload, background jobs, quiz questions, review, class code, one-container deploy | US-30, US-31, US-32, US-33, US-34, US-35 |
 | Running the course platform locally: current Gemini model, .env keys in Docker, LF fingerprints | US-36, US-37, US-38, US-39 |
 | Course platform wrong-answer loop: follow-up clips, retry questions, MVP grading, saved progress, no review step | US-40, US-41, US-42, US-43, US-44 |
+| Objectives sharing a topic keep separate clip scripts | US-45 |
 
-Totals: 8 requirements, 44 user stories (33 built, 10 in progress, 1 proposed), 159 acceptance criteria. One GitHub issue per story, labelled `user-story`, its area, its status, and its requirement.
+Totals: 8 requirements, 45 user stories (33 built, 11 in progress, 1 proposed), 161 acceptance criteria. One GitHub issue per story, labelled `user-story`, its area, its status, and its requirement.

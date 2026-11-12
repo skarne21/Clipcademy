@@ -389,6 +389,13 @@ STORIES = [
       'Generating again replaces the course\'s clips and questions.',
       'The course platform\'s docs and user stories no longer describe a review step (the biology study\'s content audit is unchanged).'],
      'learning/test_courses.py; web/src/platform/teach.js'),
+    ('US-45', 'Objectives in the same topic keep their own clips', 'student', 'every objective in my class to have '
+     'its own clips, even when two objectives share a topic', 'no topic shows another topic\'s clips twice',
+     'R8', ['H1'], 'content', 'Member 1', 'in progress',
+     ['Clip scripts are saved per objective (`<topic>.<objective>.<variant>.json`), so two objectives with the same '
+      'topic_id and variant_id never overwrite each other.',
+      'Each generated clip is listed once, under its own objective.'],
+     'video/course/test_generate.py; live run on localhost (osmosis notes made 7 clips for one objective and none for the other)'),
 ]
 
 AREA_LABELS = {'student': 'area: student app', 'ai': 'area: AI', 'content': 'area: content & video',
@@ -474,6 +481,7 @@ def markdown():
         ('Course platform: teacher upload, background jobs, quiz questions, review, class code, one-container deploy', 'US-30, US-31, US-32, US-33, US-34, US-35'),
         ('Running the course platform locally: current Gemini model, .env keys in Docker, LF fingerprints', 'US-36, US-37, US-38, US-39'),
         ('Course platform wrong-answer loop: follow-up clips, retry questions, MVP grading, saved progress, no review step', 'US-40, US-41, US-42, US-43, US-44'),
+        ('Objectives sharing a topic keep separate clip scripts', 'US-45'),
     ]
     out += [f'| {a} | {b} |' for a, b in coverage]
     covered = {x.strip() for _, b in coverage for x in b.split(',')}
