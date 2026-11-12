@@ -601,6 +601,77 @@ Acceptance criteria:
 
 Evidence: live run on localhost (see the issue comment)
 
+### US-40: Follow-up clips for each common mistake
+
+> As a student, I want every topic in my class to come with short clips aimed at the two mistakes students make most, so that a wrong answer shows me what I got wrong, as in the biology app.
+
+Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **in progress** · GitHub issue [#80](https://github.com/skarne21/Clipcademy/issues/80)
+
+Acceptance criteria:
+
+1. Gemini names exactly 2 misconceptions per objective, each backed by the objective's source excerpts.
+2. Each misconception gets a `<misconception>_followup` clip and a `<misconception>_followup_2` clip that explains the same idea a different way (another template or analogy); both end with "Now try the question again."
+3. Follow-up clips are checked, retried once and rendered like the intro clips.
+
+Evidence: video/course/test_generate.py
+
+### US-41: Retry questions tied to each mistake
+
+> As a student, I want every wrong choice to point at the mistake behind it, and a fresh question for each mistake, so that I prove I recalled the idea instead of guessing the same question again.
+
+Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **in progress** · GitHub issue [#81](https://github.com/skarne21/Clipcademy/issues/81)
+
+Acceptance criteria:
+
+1. Every wrong choice of a required question names one of the objective's 2 misconceptions.
+2. Each misconception gets 2 retry questions that are not the required questions, so a retry is never shown twice.
+3. Each retry counts for the required question whose wrong choice leads to its misconception, as in the MVP's answer key.
+
+Evidence: video/course/test_questions.py
+
+### US-42: A wrong answer leads to a follow-up clip and a new question
+
+> As a student, I want a wrong answer to play the follow-up clip for my mistake and then a new question, with a differently explained clip if I miss it again, so that my class works like the biology app.
+
+Requirement R8 · Hypotheses H1, H2 · Owner Member 1 · Status **in progress** · GitHub issue [#82](https://github.com/skarne21/Clipcademy/issues/82)
+
+Acceptance criteria:
+
+1. Answers are graded by the MVP's rules (learning/grading.py): continue, review again, complete or needs review.
+2. Wrong once on a mistake plays its v1 clip, then its first retry; wrong again plays its v2 clip, then the second retry.
+3. At most 2 follow-up cycles per objective; then the summary shows the feedback and the intro clips' teaching goals as "Go over these" points.
+4. A follow-up clip that is missing (deleted or failed to render) is skipped and the retry question still follows.
+
+Evidence: learning/test_courses.py; learning/test_grading.py
+
+### US-43: My class progress survives a refresh
+
+> As a student, I want my place in each topic saved in this browser, so that a refresh or closed tab doesn't make me start over.
+
+Requirement R8 · Hypotheses H1 · Owner Member 1 · Status **in progress** · GitHub issue [#83](https://github.com/skarne21/Clipcademy/issues/83)
+
+Acceptance criteria:
+
+1. Each objective's step, follow-up cycles and answered questions are saved in localStorage per class code.
+2. Reopening the class resumes at the saved step; a finished topic offers Restart.
+
+Evidence: web/src/platform/class.js; browser check
+
+### US-44: Clips reach students without a review step
+
+> As a teacher, I want generated clips and questions to go straight to my class, with a way to delete a bad one, so that students can start as soon as generation finishes.
+
+Requirement R8 · Hypotheses H1 · Owner Member 1 · Status **in progress** · GitHub issue [#84](https://github.com/skarne21/Clipcademy/issues/84)
+
+Acceptance criteria:
+
+1. Generated clips and questions are live for the class as soon as the job finishes; there is no approve/reject step or preview link on the course platform.
+2. The teacher page lists every clip and question, and Delete removes one from the class.
+3. Generating again replaces the course's clips and questions.
+4. The course platform's docs and user stories no longer describe a review step (the biology study's content audit is unchanged).
+
+Evidence: learning/test_courses.py; web/src/platform/teach.js
+
 ## 3. Coverage of planned Alpha functionality
 
 | Alpha functionality (Team_Spec, notes.md) | Stories |
@@ -626,5 +697,6 @@ Evidence: live run on localhost (see the issue comment)
 | Course import: any class material to stick-figure clips via Gemini | US-24, US-25, US-26, US-27, US-28, US-29 |
 | Course platform: teacher upload, background jobs, quiz questions, review, class code, one-container deploy | US-30, US-31, US-32, US-33, US-34, US-35 |
 | Running the course platform locally: current Gemini model, .env keys in Docker, LF fingerprints | US-36, US-37, US-38, US-39 |
+| Course platform wrong-answer loop: follow-up clips, retry questions, MVP grading, saved progress, no review step | US-40, US-41, US-42, US-43, US-44 |
 
-Totals: 8 requirements, 39 user stories (33 built, 5 in progress, 1 proposed), 143 acceptance criteria. One GitHub issue per story, labelled `user-story`, its area, its status, and its requirement.
+Totals: 8 requirements, 44 user stories (33 built, 10 in progress, 1 proposed), 159 acceptance criteria. One GitHub issue per story, labelled `user-story`, its area, its status, and its requirement.

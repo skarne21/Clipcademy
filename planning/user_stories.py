@@ -351,6 +351,44 @@ STORIES = [
       'Uploading a short notes file makes pending clips and questions with the real Gemini and ElevenLabs keys.',
       'After a clip and question are approved, /class.html with the class code plays the clip and checks an answer.'],
      'live run on localhost (see the issue comment)'),
+    ('US-40', 'Follow-up clips for each common mistake', 'student', 'every topic in my class to come with short clips '
+     'aimed at the two mistakes students make most', 'a wrong answer shows me what I got wrong, as in the biology app',
+     'R8', ['H2'], 'ai', 'Member 1', 'in progress',
+     ['Gemini names exactly 2 misconceptions per objective, each backed by the objective\'s source excerpts.',
+      'Each misconception gets a `<misconception>_followup` clip and a `<misconception>_followup_2` clip that explains '
+      'the same idea a different way (another template or analogy); both end with "Now try the question again."',
+      'Follow-up clips are checked, retried once and rendered like the intro clips.'],
+     'video/course/test_generate.py'),
+    ('US-41', 'Retry questions tied to each mistake', 'student', 'every wrong choice to point at the mistake behind it, '
+     'and a fresh question for each mistake', 'I prove I recalled the idea instead of guessing the same question again',
+     'R8', ['H2'], 'ai', 'Member 1', 'in progress',
+     ['Every wrong choice of a required question names one of the objective\'s 2 misconceptions.',
+      'Each misconception gets 2 retry questions that are not the required questions, so a retry is never shown twice.',
+      'Each retry counts for the required question whose wrong choice leads to its misconception, as in the MVP\'s answer key.'],
+     'video/course/test_questions.py'),
+    ('US-42', 'A wrong answer leads to a follow-up clip and a new question', 'student', 'a wrong answer to play the '
+     'follow-up clip for my mistake and then a new question, with a differently explained clip if I miss it again',
+     'my class works like the biology app', 'R8', ['H1', 'H2'], 'student', 'Member 1', 'in progress',
+     ['Answers are graded by the MVP\'s rules (learning/grading.py): continue, review again, complete or needs review.',
+      'Wrong once on a mistake plays its v1 clip, then its first retry; wrong again plays its v2 clip, then the second retry.',
+      'At most 2 follow-up cycles per objective; then the summary shows the feedback and the intro clips\' teaching goals '
+      'as "Go over these" points.',
+      'A follow-up clip that is missing (deleted or failed to render) is skipped and the retry question still follows.'],
+     'learning/test_courses.py; learning/test_grading.py'),
+    ('US-43', 'My class progress survives a refresh', 'student', 'my place in each topic saved in this browser',
+     'a refresh or closed tab doesn\'t make me start over', 'R8', ['H1'], 'student', 'Member 1', 'in progress',
+     ['Each objective\'s step, follow-up cycles and answered questions are saved in localStorage per class code.',
+      'Reopening the class resumes at the saved step; a finished topic offers Restart.'],
+     'web/src/platform/class.js; browser check'),
+    ('US-44', 'Clips reach students without a review step', 'teacher', 'generated clips and questions to go straight '
+     'to my class, with a way to delete a bad one', 'students can start as soon as generation finishes', 'R8', ['H1'],
+     'review', 'Member 1', 'in progress',
+     ['Generated clips and questions are live for the class as soon as the job finishes; there is no approve/reject step '
+      'or preview link on the course platform.',
+      'The teacher page lists every clip and question, and Delete removes one from the class.',
+      'Generating again replaces the course\'s clips and questions.',
+      'The course platform\'s docs and user stories no longer describe a review step (the biology study\'s content audit is unchanged).'],
+     'learning/test_courses.py; web/src/platform/teach.js'),
 ]
 
 AREA_LABELS = {'student': 'area: student app', 'ai': 'area: AI', 'content': 'area: content & video',
@@ -435,6 +473,7 @@ def markdown():
         ('Course import: any class material to stick-figure clips via Gemini', 'US-24, US-25, US-26, US-27, US-28, US-29'),
         ('Course platform: teacher upload, background jobs, quiz questions, review, class code, one-container deploy', 'US-30, US-31, US-32, US-33, US-34, US-35'),
         ('Running the course platform locally: current Gemini model, .env keys in Docker, LF fingerprints', 'US-36, US-37, US-38, US-39'),
+        ('Course platform wrong-answer loop: follow-up clips, retry questions, MVP grading, saved progress, no review step', 'US-40, US-41, US-42, US-43, US-44'),
     ]
     out += [f'| {a} | {b} |' for a, b in coverage]
     covered = {x.strip() for _, b in coverage for x in b.split(',')}
