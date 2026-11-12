@@ -24,6 +24,7 @@ class OneServer(unittest.TestCase):
         dist = self.tmp / 'dist'
         (dist / 'assets').mkdir(parents=True)
         (dist / 'index.html').write_text('<main id="app"></main>', encoding='utf-8')
+        (dist / 'home.html').write_text('<h1>Home</h1>', encoding='utf-8')
         (dist / 'teach.html').write_text('<h1>Teacher</h1>', encoding='utf-8')
         (dist / 'class.html').write_text('<h1>Class</h1>', encoding='utf-8')
         (dist / 'assets' / 'app.js').write_text('console.log(1)', encoding='utf-8')
@@ -33,7 +34,8 @@ class OneServer(unittest.TestCase):
     def test_pages_and_assets(self):
         status, headers, body = call(self.app, 'GET', '/')
         self.assertEqual((status, headers['Content-Type'].split(';')[0]), (200, 'text/html'))
-        self.assertIn(b'id="app"', body)
+        self.assertEqual(body, b'<h1>Home</h1>')  # US-48: class code or teacher sign-in
+        self.assertIn(b'id="app"', call(self.app, 'GET', '/index.html')[2])  # the biology study app
         self.assertEqual(call(self.app, 'GET', '/teach.html')[2], b'<h1>Teacher</h1>')
         self.assertEqual(call(self.app, 'GET', '/class.html')[2], b'<h1>Class</h1>')
         status, headers, _ = call(self.app, 'GET', '/assets/app.js')
