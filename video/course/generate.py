@@ -244,7 +244,7 @@ def generate(course, materials, client=None, root=COURSES, title=None, max_objec
                 skipped.append({'objective_id': obj['objective_id'], 'variant_id': plan['variant_id'],
                                 'reason': 'failed the clip checks twice', 'errors': errors})
                 continue
-            path = base / 'scripts' / f'{clip["topic_id"]}.{clip["variant_id"]}.json'
+            path = base / 'scripts' / f'{clip["topic_id"]}.{clip["objective_id"]}.{clip["variant_id"]}.json'
             path.write_text(json.dumps(clip, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
             written.append(str(path))
             narrations[clip['variant_id']] = clip['scenes'][0]['narration']

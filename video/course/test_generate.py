@@ -149,7 +149,7 @@ class Storyboard(Workspace):
         _, result = self.run_generate([fixtures.BREAKDOWN, fixtures.CLIP, fixtures.last_intro_clip()])
         scripts = self.root / 'econ101' / 'scripts'
         self.assertEqual(sorted(p.name for p in scripts.glob('*.json')),
-                         ['supply_and_demand.intro_1.json', 'supply_and_demand.intro_2.json'])
+                         ['supply_and_demand.price_changes.intro_1.json', 'supply_and_demand.price_changes.intro_2.json'])
         for path in scripts.glob('*.json'):
             clip = json.loads(path.read_text(encoding='utf-8'))
             self.assertEqual(clip['review_status'], 'pending')
@@ -175,14 +175,14 @@ class Storyboard(Workspace):
     def test_clip_that_fails_twice_is_skipped_and_reported(self):
         broken = fixtures.scene_clip(template='strand')
         _, result = self.run_generate([fixtures.BREAKDOWN, broken, broken, fixtures.last_intro_clip()])
-        self.assertEqual([Path(p).name for p in result['written']], ['supply_and_demand.intro_2.json'])
+        self.assertEqual([Path(p).name for p in result['written']], ['supply_and_demand.price_changes.intro_2.json'])
         self.assertEqual(result['skipped'][0]['variant_id'], 'intro_1')
         self.assertTrue(result['skipped'][0]['errors'])
 
     def test_gemini_cannot_mark_its_own_clip_approved_or_change_ids(self):
         sneaky = fixtures.clip(review_status='approved', course_id='other', variant_id='intro_9')
         self.run_generate([fixtures.BREAKDOWN, sneaky, fixtures.last_intro_clip()])
-        clip = json.loads((self.root / 'econ101' / 'scripts' / 'supply_and_demand.intro_1.json').read_text(encoding='utf-8'))
+        clip = json.loads((self.root / 'econ101' / 'scripts' / 'supply_and_demand.price_changes.intro_1.json').read_text(encoding='utf-8'))
         self.assertEqual((clip['review_status'], clip['course_id'], clip['variant_id']), ('pending', 'econ101', 'intro_1'))
 
     def test_fixture_followup_clip_passes_the_checks(self):
@@ -225,12 +225,12 @@ class FollowUps(Workspace):
     def test_each_misconception_gets_a_v1_and_v2_followup_clip(self):
         _, result = self.run_generate(self.replies())
         names = sorted(Path(p).name for p in result['written'])
-        self.assertEqual(names, sorted(['supply_and_demand.intro_1.json', 'supply_and_demand.intro_2.json',
-                                        'supply_and_demand.demand_down_followup.json',
-                                        'supply_and_demand.demand_down_followup_2.json',
-                                        'supply_and_demand.supply_none_followup.json',
-                                        'supply_and_demand.supply_none_followup_2.json']))
-        clip = json.loads((self.root / 'econ101' / 'scripts' / 'supply_and_demand.supply_none_followup_2.json')
+        self.assertEqual(names, sorted(['supply_and_demand.price_changes.intro_1.json', 'supply_and_demand.price_changes.intro_2.json',
+                                        'supply_and_demand.price_changes.demand_down_followup.json',
+                                        'supply_and_demand.price_changes.demand_down_followup_2.json',
+                                        'supply_and_demand.price_changes.supply_none_followup.json',
+                                        'supply_and_demand.price_changes.supply_none_followup_2.json']))
+        clip = json.loads((self.root / 'econ101' / 'scripts' / 'supply_and_demand.price_changes.supply_none_followup_2.json')
                           .read_text(encoding='utf-8'))
         self.assertEqual((clip['kind'], clip['teaching_goal']),
                          ('followup', 'Plenty of goods and the same buyers means a lower price.'))
