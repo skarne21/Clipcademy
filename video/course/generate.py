@@ -13,6 +13,7 @@
 import argparse
 import copy
 import json
+import re
 import shutil
 import sys
 from pathlib import Path
@@ -43,10 +44,17 @@ For each objective return:
 - clips: 3–5 clips that build the idea in order. Each has variant_id ("intro_1", "intro_2", ...), kind
   ("intro" for all but the last, "last_intro" for the last), a teaching_goal (ONE plain sentence under
   12 words that the clip's last teaching line will say), and source_refs (refs of the excerpts it uses).
+- misconceptions: exactly 2 mistakes a student is likely to make about this objective, each backed by the
+  excerpts. Each has misconception_id (lowercase snake_case, max 13 characters), label (the wrong idea, short),
+  followup_goal (ONE plain sentence under 12 words that corrects it), followup_2_goal (the same correction said a
+  different way, for a student who missed it twice), and source_refs.
 
 Return JSON: {{"course_id": "{course}", "title": "...", "objectives": [{{"topic_id": "...", "objective_id": "...",
 "label": "...", "source_excerpts": [{{"ref": "...", "text": "..."}}], "clips": [{{"variant_id": "intro_1",
-"kind": "intro", "teaching_goal": "...", "source_refs": ["..."]}}]}}]}}"""
+"kind": "intro", "teaching_goal": "...", "source_refs": ["..."]}}], "misconceptions": [{{"misconception_id": "...",
+"label": "...", "followup_goal": "...", "followup_2_goal": "...", "source_refs": ["..."]}}]}}]}}"""
+
+MISCONCEPTION_ID = re.compile(r'^[a-z][a-z0-9_]{1,12}$')  # + "_followup_2" stays within the 24-character variant_id
 
 STORYBOARD_SYSTEM = """You storyboard ONE ClipCademy clip: a 15–30 second vertical (9:16) video with a friendly stick-figure
 guide, one animated board, and big word-by-word captions. A renderer draws it from your JSON. You only use the
@@ -130,13 +138,37 @@ def _breakdown_ok(obj):
     return None
 
 
+def followup_plans(obj):
+    """US-40: (plans, problem). Each of exactly 2 misconceptions gets a v1 and a v2 follow-up clip plan."""
+    ms = obj.get('misconceptions')
+    if not isinstance(ms, list) or len(ms) != 2:
+        return [], 'needs exactly 2 misconceptions for follow-up clips'
+    ids = [m.get('misconception_id') if isinstance(m, dict) else None for m in ms]
+    if len(set(ids)) != 2 or not all(isinstance(i, str) and MISCONCEPTION_ID.match(i) for i in ids):
+        return [], 'misconception_id must be 2 different snake_case ids of at most 13 characters'
+    plans = []
+    for m in ms:
+        for suffix, goal in (('_followup', 'followup_goal'), ('_followup_2', 'followup_2_goal')):
+            if not str(m.get(goal, '')).strip():
+                return [], f'misconception {m["misconception_id"]} is missing {goal}'
+            plans.append({'variant_id': m['misconception_id'] + suffix, 'kind': 'followup', 'teaching_goal': m[goal],
+                          'source_refs': m.get('source_refs') or [], 'misconception': m.get('label', '')})
+    return plans, None
+
+
 def _storyboard_parts(course, title, obj, plan, position, previous=None, errors=None):
     text = [f'Course: {title} ({course}). Objective: {obj["label"]} ({obj["topic_id"]} / {obj["objective_id"]}).',
             'EXCERPTS (your only facts):']
     text += [f'[{e["ref"]}] {e["text"]}' for e in obj['source_excerpts']]
     text += ['', 'THIS CLIP', f'- variant_id: {plan["variant_id"]}', f'- kind: {plan["kind"]}', f'- position: {position}',
-             f'- teaching_goal: {plan["teaching_goal"]}', f'- source_refs: {", ".join(plan.get("source_refs") or [])}',
-             '', RULES, '', 'SCENE CATALOG', templates.catalog_text(), '',
+             f'- teaching_goal: {plan["teaching_goal"]}', f'- source_refs: {", ".join(plan.get("source_refs") or [])}']
+    if plan['kind'] == 'followup':
+        text += [f'- the student just answered wrong because they think: {plan["misconception"]}. Correct that one idea.']
+    if plan.get('first_narration'):
+        text += ['- this is the SECOND follow-up: the student missed it again after this first explanation. Explain it '
+                 'differently: use another template or analogy and different wording. First explanation:',
+                 plan['first_narration']]
+    text += ['', RULES, '', 'SCENE CATALOG', templates.catalog_text(), '',
              'EXAMPLE OF A FINISHED CLIP (match its style and shape):', json.dumps(EXAMPLE, ensure_ascii=False), '',
              OUTPUT_SHAPE]
     if errors:
@@ -194,8 +226,12 @@ def generate(course, materials, client=None, root=COURSES, title=None, max_objec
                 continue
         else:
             obj['excerpts_verified'] = False  # PDFs: the reviewer checks each quote against the file
-        for n, plan in enumerate(obj['clips'], 1):
-            position = f'clip {n} of {len(obj["clips"])}'
+        followups, problem = followup_plans(obj)
+        intros, narrations = len(obj['clips']), {}
+        for n, plan in enumerate(obj['clips'] + followups, 1):
+            position = f'clip {n} of {intros}' if n <= intros else 'follow-up after a wrong answer'
+            if plan['variant_id'].endswith('_followup_2'):
+                plan = {**plan, 'first_narration': narrations.get(plan['variant_id'][:-2], '')}
             reply = client.generate_json(_storyboard_parts(course, title, obj, plan, position), system=STORYBOARD_SYSTEM, temperature=0.6)
             clip = _normalize(reply, course, obj, plan)
             errors = templates.validate(clip)
@@ -211,6 +247,9 @@ def generate(course, materials, client=None, root=COURSES, title=None, max_objec
             path = base / 'scripts' / f'{clip["topic_id"]}.{clip["variant_id"]}.json'
             path.write_text(json.dumps(clip, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
             written.append(str(path))
+            narrations[clip['variant_id']] = clip['scenes'][0]['narration']
+        if problem:
+            skipped.append({'objective_id': obj['objective_id'], 'reason': f'no follow-up clips: {problem}'})
 
     (base / 'breakdown.json').write_text(json.dumps(breakdown, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     report = {'course_id': course, 'written': written, 'skipped': skipped}
