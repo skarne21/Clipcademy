@@ -1,9 +1,9 @@
-"""The course platform API (US-30, US-31, US-33, US-34): teachers create courses, upload notes, start
-generation and review every clip and question; students join with a class code and practise.
+"""The course platform API (US-30, US-31, US-34, US-44): teachers create courses, upload notes and start
+generation; students join with a class code and practise.
 
-Teacher routes need `Authorization: Bearer <CLIPCADEMY_TEACHER_TOKEN>`. Students see only approved
-items. Pending clips play only through an unguessable preview link. Everything lives in one SQLite
-file and one folder per course under the data directory (a mounted disk in production).
+Teacher routes need `Authorization: Bearer <CLIPCADEMY_TEACHER_TOKEN>`. Generated clips and questions are
+live for the class as soon as the job finishes; a teacher can delete a bad one. Everything lives in one
+SQLite file and one folder per course under the data directory (a mounted disk in production).
 """
 import hmac
 import importlib.util
@@ -24,8 +24,9 @@ SUPPORTED = {'.pdf': 'application/pdf', '.txt': 'text/plain', '.md': 'text/markd
 CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
 COURSE_ID = re.compile(r'^[a-z][a-z0-9_]{1,39}$')
 MEDIA_NAME = re.compile(r'^[a-z0-9_.-]+\.(mp4|vtt)$')
-PREVIEW = re.compile(r'^/course-media/preview/([0-9a-f]{32})\.(mp4|vtt)$')
-DECISIONS = {'approve': 'approved', 'reject': 'rejected'}
+# ponytail: clips/questions keep their old status, note and preview_key columns so existing course databases still
+# open; every new row is 'live'. Drop the columns with a migration if the schema ever needs another change.
+LIVE = 'live'
 
 
 def _media_module():
@@ -156,17 +157,16 @@ class CourseStore:
                ('The server restarted during this job. Press Generate again.', now()))
 
     # clips and questions
-    def replace_unapproved(self, course_id):
-        self.x("DELETE FROM clips WHERE course_id = ? AND status IN ('pending', 'rejected')", (course_id,))
-        self.x("DELETE FROM questions WHERE course_id = ? AND status IN ('pending', 'rejected')", (course_id,))
+    def replace_all(self, course_id):
+        self.x('DELETE FROM clips WHERE course_id = ?', (course_id,))
+        self.x('DELETE FROM questions WHERE course_id = ?', (course_id,))
 
     def add_clip(self, course_id, script, record, label):
         clip_id = secrets.token_hex(8)
         self.x('INSERT INTO clips (clip_id, course_id, topic_id, objective_id, objective_label, variant_id, script, '
-               'record, status, preview_key, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+               'record, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
                (clip_id, course_id, script['topic_id'], script['objective_id'], label, script['variant_id'],
-                json.dumps(script, ensure_ascii=False), json.dumps(record, ensure_ascii=False), 'pending',
-                secrets.token_hex(16), now()))
+                json.dumps(script, ensure_ascii=False), json.dumps(record, ensure_ascii=False), LIVE, now()))
         return clip_id
 
     def add_question(self, course_id, q):
@@ -175,39 +175,21 @@ class CourseStore:
             qid = f'{qid}-{secrets.token_hex(3)}'
         self.x('INSERT INTO questions (question_id, course_id, objective_id, objective_label, data, status, created_at) '
                'VALUES (?, ?, ?, ?, ?, ?, ?)', (qid, course_id, q['objective_id'], q.get('objective_label', ''),
-                                                json.dumps({**q, 'question_id': qid}, ensure_ascii=False), 'pending', now()))
+                                                json.dumps({**q, 'question_id': qid}, ensure_ascii=False), LIVE, now()))
 
-    def clips(self, course_id, status=None):
-        sql, args = 'SELECT * FROM clips WHERE course_id = ?', [course_id]
-        if status:
-            sql, args = sql + ' AND status = ?', args + [status]
-        return self.q(sql + ' ORDER BY created_at, rowid', args)
+    def clips(self, course_id):
+        return self.q('SELECT * FROM clips WHERE course_id = ? ORDER BY created_at, rowid', (course_id,))
 
-    def questions(self, course_id, status=None):
-        sql, args = 'SELECT * FROM questions WHERE course_id = ?', [course_id]
-        if status:
-            sql, args = sql + ' AND status = ?', args + [status]
-        return self.q(sql + ' ORDER BY created_at, rowid', args)
+    def questions(self, course_id):
+        return self.q('SELECT * FROM questions WHERE course_id = ? ORDER BY created_at, rowid', (course_id,))
 
-    def review(self, kind, item_id, decision, note):
+    def delete(self, kind, item_id):
         table, key = ('clips', 'clip_id') if kind == 'clips' else ('questions', 'question_id')
-        with self.lock:
-            rows = self.q(f'SELECT * FROM {table} WHERE {key} = ?', (item_id,))
-            if not rows:
-                raise HttpError(404, key, 'no such item')
-            status = DECISIONS[decision]
-            if kind == 'clips' and status == 'approved':
-                row = rows[0]
-                self.x("UPDATE clips SET status = 'replaced' WHERE course_id = ? AND topic_id = ? AND variant_id = ? "
-                       "AND status = 'approved' AND clip_id != ?", (row['course_id'], row['topic_id'], row['variant_id'], item_id))
-            self.x(f'UPDATE {table} SET status = ?, note = ?, reviewed_at = ? WHERE {key} = ?', (status, note, now(), item_id))
+        if not self.x(f'DELETE FROM {table} WHERE {key} = ?', (item_id,)).rowcount:
+            raise HttpError(404, key, 'no such item')
 
-    def clip_by_preview(self, key):
-        rows = self.q('SELECT * FROM clips WHERE preview_key = ?', (key,))
-        return rows[0] if rows else None
-
-    def approved_file(self, course_id, name):
-        for c in self.clips(course_id, 'approved'):
+    def clip_file(self, course_id, name):
+        for c in self.clips(course_id):
             record = json.loads(c['record'])
             if name in (record.get('video_file'), record.get('captions_file')):
                 return True
@@ -217,19 +199,14 @@ class CourseStore:
 def clip_view(row, teacher=True):
     script, record = json.loads(row['script']), json.loads(row['record'])
     scene = script['scenes'][0]
+    base = f"/course-media/{row['course_id']}/"
     out = {'clip_id': row['clip_id'], 'topic_id': row['topic_id'], 'objective_id': row['objective_id'],
-           'variant_id': row['variant_id'], 'title': scene['title'], 'duration_seconds': record.get('duration_seconds')}
+           'variant_id': row['variant_id'], 'title': scene['title'], 'duration_seconds': record.get('duration_seconds'),
+           'video_url': base + record['video_file'], 'captions_url': base + record['captions_file'],
+           'transcript': record.get('transcript', scene['narration'])}
     if teacher:
-        out.update(status=row['status'], note=row['note'] or '', template=scene['template'], kind=script.get('kind'),
-                   teaching_goal=script.get('teaching_goal'), transcript=record.get('transcript', scene['narration']),
-                   review_notes=script.get('review_notes', {}), source_refs=script.get('source_refs', []),
-                   video_file=record['video_file'],
-                   preview_url=f"/course-media/preview/{row['preview_key']}.mp4",
-                   preview_captions_url=f"/course-media/preview/{row['preview_key']}.vtt")
-    else:
-        base = f"/course-media/{row['course_id']}/"
-        out.update(video_url=base + record['video_file'], captions_url=base + record['captions_file'],
-                   transcript=record.get('transcript', scene['narration']))
+        out.update(template=scene['template'], kind=script.get('kind'), teaching_goal=script.get('teaching_goal'),
+                   source_refs=script.get('source_refs', []))
     return out
 
 
@@ -238,9 +215,8 @@ def question_view(row, teacher=True):
     out = {'question_id': row['question_id'], 'objective_id': row['objective_id'], 'prompt': data['prompt'],
            'choices': data['choices']}
     if teacher:
-        out.update(status=row['status'], note=row['note'] or '', correct_choice_id=data['correct_choice_id'],
-                   feedback=data['feedback'], source_refs=data.get('source_refs', []),
-                   objective_label=row['objective_label'] or '')
+        out.update(correct_choice_id=data['correct_choice_id'], feedback=data['feedback'],
+                   source_refs=data.get('source_refs', []), objective_label=row['objective_label'] or '')
     return out
 
 
@@ -322,26 +298,18 @@ def make_courses_app(store, data_dir, teacher_token, worker=None):
                      'clips': [clip_view(r) for r in store.clips(cid)],
                      'questions': [question_view(r) for r in store.questions(cid)]}
 
-    def review(environ, kind, item_id):
-        body = read_json(environ)
-        if body.get('decision') not in DECISIONS:
-            raise HttpError(400, 'decision', 'must be "approve" or "reject"')
-        note = str(body.get('note') or '')[:500]
-        store.review(kind, item_id, body['decision'], note)
-        return 200, {'status': DECISIONS[body['decision']]}
-
     def student_course(code):
         course = store.course_by_code(code or '')
         if not course:
             raise HttpError(404, 'code', 'no class with that code')
         cid = course['course_id']
         objectives = {}
-        for row in store.clips(cid, 'approved'):
+        for row in store.clips(cid):
             obj = objectives.setdefault(row['objective_id'], {'objective_id': row['objective_id'], 'topic_id': row['topic_id'],
                                                               'label': row['objective_label'] or row['objective_id'],
                                                               'clips': [], 'questions': []})
             obj['clips'].append(clip_view(row, teacher=False))
-        for row in store.questions(cid, 'approved'):
+        for row in store.questions(cid):
             if row['objective_id'] in objectives:
                 objectives[row['objective_id']]['questions'].append(question_view(row, teacher=False))
         for obj in objectives.values():
@@ -353,7 +321,7 @@ def make_courses_app(store, data_dir, teacher_token, worker=None):
         if not course:
             raise HttpError(404, 'code', 'no class with that code')
         body = read_json(environ)
-        rows = [r for r in store.questions(course['course_id'], 'approved') if r['question_id'] == body.get('question_id')]
+        rows = [r for r in store.questions(course['course_id']) if r['question_id'] == body.get('question_id')]
         if not rows:
             raise HttpError(404, 'question_id', 'no such question in this class')
         data = json.loads(rows[0]['data'])
@@ -364,20 +332,11 @@ def make_courses_app(store, data_dir, teacher_token, worker=None):
                      'feedback': data['feedback'][choice]}
 
     def serve_media(environ, start_response, path):
-        m = PREVIEW.match(path)
-        if m:
-            clip = store.clip_by_preview(m.group(1))
-            if clip:
-                record = json.loads(clip['record'])
-                name = record['video_file'] if m.group(2) == 'mp4' else record['captions_file']
-                return media.serve({**environ, 'PATH_INFO': '/media/' + name}, start_response,
-                                   courses_root / clip['course_id'] / 'media')
-        else:
-            parts = path.split('/')
-            if len(parts) == 4 and COURSE_ID.match(parts[2]) and MEDIA_NAME.match(parts[3]) \
-                    and store.approved_file(parts[2], parts[3]):
-                return media.serve({**environ, 'PATH_INFO': '/media/' + parts[3]}, start_response,
-                                   courses_root / parts[2] / 'media')
+        parts = path.split('/')
+        if len(parts) == 4 and COURSE_ID.match(parts[2]) and MEDIA_NAME.match(parts[3]) \
+                and store.clip_file(parts[2], parts[3]):
+            return media.serve({**environ, 'PATH_INFO': '/media/' + parts[3]}, start_response,
+                               courses_root / parts[2] / 'media')
         start_response('404 Not Found', [('Content-Type', 'text/plain')])
         return [b'not found']
 
@@ -399,8 +358,9 @@ def make_courses_app(store, data_dir, teacher_token, worker=None):
                 return upload(environ, rest[1], rest[3])
             if len(rest) == 3 and rest[0] == 'courses' and rest[2] == 'generate' and method == 'POST':
                 return generate(rest[1])
-            if len(rest) == 3 and rest[0] in ('clips', 'questions') and rest[2] == 'review' and method == 'POST':
-                return review(environ, rest[0], rest[1])
+            if len(rest) == 2 and rest[0] in ('clips', 'questions') and method == 'DELETE':
+                store.delete(rest[0], rest[1])
+                return 200, {'deleted': rest[1]}
         elif parts[:1] == ['courses']:
             if len(parts) == 2 and method == 'GET':
                 return student_course(parts[1])

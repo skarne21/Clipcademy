@@ -2,7 +2,7 @@
 
 Each objective gets up to two multiple-choice questions written only from its verbatim source
 excerpts. A question that fails the checks goes back to Gemini once with the exact errors; if it
-still fails it is skipped. Every question is saved pending review, like the clips.
+still fails it is skipped. Questions go to the class with its clips.
 """
 import json
 import sys

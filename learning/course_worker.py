@@ -110,7 +110,7 @@ class Worker:
             if not scripts:
                 raise RuntimeError('Gemini made no usable clips. ' + '; '.join(
                     s.get('reason', '') for s in report.get('skipped', []))[:400])
-            self.store.replace_unapproved(cid)
+            self.store.replace_all(cid)
             for q in qs.get('questions', []):
                 self.store.add_question(cid, {**q, 'objective_label': q.get('objective_label') or labels.get(q['objective_id'], '')})
             made, errors = 0, []
@@ -129,7 +129,7 @@ class Worker:
                 self.store.update_job(jid, status='failed', stage='Rendering failed', report=summary, finished_at=now(),
                                       message='No clip could be rendered: ' + errors[0]['reason'])
             else:
-                self.store.update_job(jid, status='done', stage='Ready for review', report=summary, finished_at=now(),
-                                      message=f'{made} clips and {summary["questions"]} questions are ready for review.')
+                self.store.update_job(jid, status='done', stage='Live for your class', report=summary, finished_at=now(),
+                                      message=f'{made} clips and {summary["questions"]} questions are live for your class.')
         except Exception as err:
             self.store.update_job(jid, status='failed', stage='Stopped', message=_message(err), finished_at=now())

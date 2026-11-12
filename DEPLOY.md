@@ -82,8 +82,8 @@ Any host that runs a Docker image **and** gives it a persistent disk works:
 1. **Teacher:** opens `/teach.html`, enters the teacher password and creates a course.
 2. **Teacher:** uploads notes (PDF, .txt or .md, up to 18 MB each) and presses **Make clips**.
 3. **The worker:** Gemini plans and writes clips and questions, ElevenLabs voices them and Remotion renders them. The page shows progress, typically a few minutes.
-4. **Teacher:** watches every clip and reads every question, then approves or rejects each. Nothing reaches students until it's approved.
-5. **Students:** open the class link (or `/class.html` and type the 6-character class code), watch the approved clips and answer the questions.
+4. **Teacher:** shares the class link. Clips and questions are live as soon as the job finishes; the teacher can watch them all and delete any they don't want students to see.
+5. **Students:** open the class link (or `/class.html` and type the 6-character class code), watch the clips and answer the questions.
 
 ## Costs
 
@@ -98,5 +98,5 @@ Rough figures; check current prices.
 - **One shared teacher password:** there are no individual teacher accounts.
 - **Students are anonymous:** there are no student accounts, and their answers aren't saved.
 - **Five scene types:** steps, compare, flow, term, myth/fact. Subjects that need real diagrams (circuits, maps, anatomy) would need new scene types.
-- **"Review copy" stays on the video:** rendered clips carry a "Review copy" line in their sources text, as the biology clips do, even after approval.
+- **No review step:** Gemini's clips and questions reach students without a person checking them first. Each clip lists its sources on screen, and the teacher can delete a bad one.
 - **One machine:** the worker runs inside the web container. For many teachers at once, run more workers or move rendering to a job service (Cloud Run Jobs, Remotion Lambda).

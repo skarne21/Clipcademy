@@ -259,17 +259,11 @@ def validate(clip):
         errs.append(f'kind must be one of {", ".join(ENDINGS)}')
     if clip.get('format') != 'vertical':
         errs.append('format must be "vertical"')
-    if clip.get('review_status') != 'pending':
-        errs.append('review_status must be "pending": a reviewer approves clips, not the generator')
     if not isinstance(clip.get('teaching_goal'), str) or not clip.get('teaching_goal', '').strip():
         errs.append('teaching_goal: missing')
     refs = clip.get('source_refs')
     if not isinstance(refs, list) or not refs or not all(isinstance(r, str) and r for r in refs):
         errs.append('source_refs: list the refs of the excerpts this clip uses')
-    notes = clip.get('review_notes')
-    if not isinstance(notes, dict) or not all(isinstance(notes.get(k), str) and notes[k].strip()
-                                              for k in ('hook_claim', 'analogy', 'new_term')):
-        errs.append('review_notes: needs hook_claim, analogy and new_term')
     scenes = clip.get('scenes')
     if not isinstance(scenes, list) or len(scenes) != 1 or not isinstance(scenes[0], dict):
         errs.append('scenes: exactly one scene')

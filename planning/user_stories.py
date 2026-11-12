@@ -54,7 +54,7 @@ REQUIREMENTS = [
     ('R8', 'Any course becomes stick-figure clips',
      'An instructor imports a class\'s material (lecture PDFs or notes) and Gemini breaks it into short, source-linked '
      'stick-figure clips drawn with general-purpose scenes, so ClipCademy is not limited to the four biology topics. '
-     'Every generated clip waits for reviewer approval, and the existing 35 clips are never changed.', ['H2'], True),
+     'Generated clips and questions go straight to the class (the teacher can delete any), and the existing 35 clips are never changed.', ['H2'], True),
 ]
 
 # (id, title, role, goal, benefit, requirement, hypotheses, area, owner, status, acceptance criteria, evidence)
@@ -241,14 +241,14 @@ STORIES = [
      ['The material is sent to Gemini as file data (PDF) or text, with JSON output requested.',
       'The breakdown returns objectives, each with verbatim source excerpts, 3–6 clips and a one-sentence teaching goal per clip.',
       'For text material, every excerpt must appear verbatim in the material; a clip whose excerpts don\'t is dropped and reported.',
-      'The breakdown is saved as `video/courses/<course>/breakdown.json` for the reviewer.'],
+      'The breakdown is saved as `video/courses/<course>/breakdown.json`.'],
      'video/course/test_generate.py'),
     ('US-26', 'Gemini storyboards each clip for the stick figure', 'teacher', 'Gemini to write each clip\'s narration and '
      'animation cues using only the general-purpose stick-figure scenes', 'the renderer can draw a clip for any subject',
      'R8', ['H2'], 'ai', 'Member 1', 'built',
      ['Each clip is one scene that uses one template from the course scene catalog, with its props and beats.',
       'The prompt includes the writing rules (hook, one idea, one analogy, 45–70 words, ending line) and the full catalog.',
-      'The saved script records `course_id`, `teaching_goal`, `source_refs` and `review_notes` (hook claim, analogy, new term).'],
+      'The saved script records `course_id`, `teaching_goal` and `source_refs`.'],
      'video/course/test_generate.py'),
     ('US-27', 'General-purpose stick-figure scenes for any subject', 'student', 'clips in any course to look and move like '
      'the biology clips', 'every class gets the same friendly, readable format', 'R8', ['H1', 'H2'], 'content', 'Member 1',
@@ -266,10 +266,9 @@ STORIES = [
       'A clip is rejected if the narration is outside 45–70 words or doesn\'t end with the required last line.',
       'A rejected clip is sent back to Gemini once with the exact errors; if it still fails, it is skipped and reported.'],
      'video/course/test_templates.py; video/course/test_generate.py'),
-    ('US-29', 'New course clips stay separate and wait for review', 'content reviewer', 'generated course clips kept apart '
-     'from the existing clips and marked pending', 'nothing reaches students unreviewed and the 35 approved-track clips '
-     'never change', 'R8', ['H2'], 'review', 'Member 1', 'built',
-     ['Every generated script is saved with `review_status: "pending"` under `video/courses/<course>/scripts/`.',
+    ('US-29', 'New course clips stay separate from the biology clips', 'team member', 'generated course clips kept '
+     'apart from the existing clips', 'the 35 biology clips never change', 'R8', ['H2'], 'content', 'Member 1', 'built',
+     ['Every generated script is saved under `video/courses/<course>/scripts/`.',
       'Rendered course clips go to `video/courses/<course>/media/` with a manifest and their own fingerprint.',
       'The existing 35 clips keep their fingerprints: no file counted in `render._code_files()` is changed.',
       'No Gemini call happens during a student session; generation is an offline command.'],
@@ -288,28 +287,26 @@ STORIES = [
       'A worker thread runs the job: Gemini clip scripts, quiz questions, then one render per clip.',
       'The job shows its stage and progress (e.g. "rendering 2 of 5"), then done or failed with a plain message.',
       'A missing Gemini or ElevenLabs key fails the job with a message naming the key, without crashing the server.',
-      'Regenerating keeps approved clips and questions and replaces everything not yet approved.'],
+      'Regenerating replaces the course\'s clips and questions.'],
      'learning/test_courses.py'),
     ('US-32', 'Quiz questions for any course', 'student', 'practice questions for each part of my course',
      'I recall the idea instead of only watching', 'R8', ['H2'], 'ai', 'Member 1', 'built',
      ['Gemini writes 2 multiple-choice questions per objective from that objective\'s source excerpts.',
       'Each question has 2–4 choices, exactly one correct answer, feedback for every choice and source refs.',
       'A question that fails the checks is sent back once with the errors, then skipped.',
-      'Questions are saved pending review, like clips.'],
+      'Questions are saved with the course and go to the class with its clips.'],
      'video/course/test_questions.py'),
-    ('US-33', 'Review clips and questions before students see them', 'teacher', 'to watch every generated clip and read '
-     'every question, then approve or reject each one', 'only content I trust reaches my students', 'R8', ['H2'],
-     'review', 'Member 1', 'built',
-     ['The course page lists every clip with a preview, its narration, source refs and review notes, and every question with its answer and feedback.',
-      'Approve or reject (with an optional note) changes the item\'s status; approving a newer version of a clip replaces the older one.',
-      'Pending clips play only through an unguessable preview link; nothing pending appears to students.'],
+    ('US-33', 'See every clip and question my class gets', 'teacher', 'to watch every generated clip and read '
+     'every question', 'I know what my students will see', 'R8', ['H2'], 'review', 'Member 1', 'built',
+     ['The course page lists every clip with its video, narration and source refs, and every question with its answer and feedback.',
+      'Clips are grouped by objective.'],
      'learning/test_courses.py'),
     ('US-34', 'Join a class and practise', 'student', 'to join my class with a code, watch its clips and answer its '
      'questions', 'I can review my course on my phone', 'R8', ['H1', 'H2'], 'student', 'Member 3', 'built',
      ['`class.html` takes a class code (or reads it from the share link) and lists the course\'s topics.',
-      'Each topic plays its approved clips in a vertical feed, then asks its approved questions one at a time.',
+      'Each topic plays its clips in a vertical feed, then asks its questions one at a time.',
       'An answer is graded on the server and shows that choice\'s feedback; an unknown code shows a clear message.',
-      'Approved clip files are served with byte ranges so videos can seek on phones.'],
+      'Clip files are served with byte ranges so videos can seek on phones.'],
      'learning/test_courses.py; browser check'),
     ('US-35', 'Run the whole app from one container', 'team member', 'one Docker image that serves the pages, the API, '
      'the worker and the videos', 'deploying means setting the keys and nothing else', 'R8', ['H1'], 'hosting',
@@ -478,7 +475,7 @@ def markdown():
         ('Reset demo', 'US-22'),
         ('LLM-assisted authoring (proposed)', 'US-23'),
         ('Course import: any class material to stick-figure clips via Gemini', 'US-24, US-25, US-26, US-27, US-28, US-29'),
-        ('Course platform: teacher upload, background jobs, quiz questions, review, class code, one-container deploy', 'US-30, US-31, US-32, US-33, US-34, US-35'),
+        ('Course platform: teacher upload, background jobs, quiz questions, clip list, class code, one-container deploy', 'US-30, US-31, US-32, US-33, US-34, US-35'),
         ('Running the course platform locally: current Gemini model, .env keys in Docker, LF fingerprints', 'US-36, US-37, US-38, US-39'),
         ('Course platform wrong-answer loop: follow-up clips, retry questions, MVP grading, saved progress, no review step', 'US-40, US-41, US-42, US-43, US-44'),
         ('Objectives sharing a topic keep separate clip scripts', 'US-45'),

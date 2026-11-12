@@ -185,13 +185,11 @@ body.teach #app {
   white-space: nowrap;
 }
 
-.badge-approved,
 .badge-done {
   background: #e3f1e8;
   color: var(--ok);
 }
 
-.badge-rejected,
 .badge-failed {
   background: #f6e3e0;
   color: var(--no);
@@ -203,7 +201,7 @@ body.teach #app {
   color: var(--accent);
 }
 
-.review-card {
+.item-card {
   display: grid;
   grid-template-columns: minmax(0, 11rem) minmax(0, 1fr);
   gap: 1rem;
@@ -213,50 +211,28 @@ body.teach #app {
   margin: 0 0 1rem;
 }
 
-.review-card:not(:has(.review-media)) {
+.item-card:not(:has(.item-media)) {
   grid-template-columns: minmax(0, 1fr);
 }
 
-.review-card.status-replaced {
-  opacity: 0.55;
-}
-
-.preview-video {
+.clip-preview {
   width: 100%;
   aspect-ratio: 9 / 16;
   background: #000;
   border-radius: var(--radius);
 }
 
-.review-body p {
+.item-body p {
   margin: 0.5rem 0;
 }
 
-.checks {
-  display: grid;
-  grid-template-columns: max-content 1fr;
-  gap: 0.25rem 0.75rem;
-  font-size: 0.9375rem;
-}
-
-.checks dt {
-  font-weight: 600;
-}
-
-.checks dd {
-  margin: 0;
-}
-
-.review-actions {
+.item-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
   margin-top: 0.75rem;
 }
 
-.review-actions .field {
-  flex: 1 1 12rem;
-}
 
 .answer-list {
   padding-left: 1.25rem;
@@ -353,11 +329,11 @@ body.teach #app {
 }
 
 @media (max-width: 40rem) {
-  .review-card {
+  .item-card {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .preview-video {
+  .clip-preview {
     max-width: 14rem;
   }
 

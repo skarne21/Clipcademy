@@ -20,7 +20,7 @@ change, the MVP hypothesis and validation analysis in [validation-plan.md](../Co
 | R5 | **Reviewed, sourced content only** | Every clip and question cites the lecture excerpt it comes from and must be approved by a course-knowledgeable reviewer; the server refuses any clip whose approved fingerprint does not match. Nothing is generated live. | H2 |  |
 | R6 | **Built-in measurement of the hypotheses** | Every action is logged with participant code and build ID so H1–H3 and the engagement metrics (completion, drop-off, auto vs. manual swipes, time on app) can be computed from events.csv. | H1, H2, H3 |  |
 | R7 | **Proposed AI: LLM-assisted script and question drafting, human-approved** | An LLM drafts clip scripts and questions offline from the lecture excerpts; a reviewer edits and approves them before anything is rendered or shown. No LLM output ever reaches a student unreviewed. Team_Spec lists this as a later step ("automatic script writing … after the reviewed flow works"); it needs a team decision. | H2 | **Yes** |
-| R8 | **Any course becomes stick-figure clips** | An instructor imports a class's material (lecture PDFs or notes) and Gemini breaks it into short, source-linked stick-figure clips drawn with general-purpose scenes, so ClipCademy is not limited to the four biology topics. Every generated clip waits for reviewer approval, and the existing 35 clips are never changed. | H2 | **Yes** |
+| R8 | **Any course becomes stick-figure clips** | An instructor imports a class's material (lecture PDFs or notes) and Gemini breaks it into short, source-linked stick-figure clips drawn with general-purpose scenes, so ClipCademy is not limited to the four biology topics. Generated clips and questions go straight to the class (the teacher can delete any), and the existing 35 clips are never changed. | H2 | **Yes** |
 
 ### Core AI integration
 
@@ -392,7 +392,7 @@ Acceptance criteria:
 1. The material is sent to Gemini as file data (PDF) or text, with JSON output requested.
 2. The breakdown returns objectives, each with verbatim source excerpts, 3–6 clips and a one-sentence teaching goal per clip.
 3. For text material, every excerpt must appear verbatim in the material; a clip whose excerpts don't is dropped and reported.
-4. The breakdown is saved as `video/courses/<course>/breakdown.json` for the reviewer.
+4. The breakdown is saved as `video/courses/<course>/breakdown.json`.
 
 Evidence: video/course/test_generate.py
 
@@ -406,7 +406,7 @@ Acceptance criteria:
 
 1. Each clip is one scene that uses one template from the course scene catalog, with its props and beats.
 2. The prompt includes the writing rules (hook, one idea, one analogy, 45–70 words, ending line) and the full catalog.
-3. The saved script records `course_id`, `teaching_goal`, `source_refs` and `review_notes` (hook claim, analogy, new term).
+3. The saved script records `course_id`, `teaching_goal` and `source_refs`.
 
 Evidence: video/course/test_generate.py
 
@@ -440,15 +440,15 @@ Acceptance criteria:
 
 Evidence: video/course/test_templates.py; video/course/test_generate.py
 
-### US-29: New course clips stay separate and wait for review
+### US-29: New course clips stay separate from the biology clips
 
-> As a content reviewer, I want generated course clips kept apart from the existing clips and marked pending, so that nothing reaches students unreviewed and the 35 approved-track clips never change.
+> As a team member, I want generated course clips kept apart from the existing clips, so that the 35 biology clips never change.
 
 Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **built** · GitHub issue [#69](https://github.com/skarne21/Clipcademy/issues/69)
 
 Acceptance criteria:
 
-1. Every generated script is saved with `review_status: "pending"` under `video/courses/<course>/scripts/`.
+1. Every generated script is saved under `video/courses/<course>/scripts/`.
 2. Rendered course clips go to `video/courses/<course>/media/` with a manifest and their own fingerprint.
 3. The existing 35 clips keep their fingerprints: no file counted in `render._code_files()` is changed.
 4. No Gemini call happens during a student session; generation is an offline command.
@@ -482,7 +482,7 @@ Acceptance criteria:
 2. A worker thread runs the job: Gemini clip scripts, quiz questions, then one render per clip.
 3. The job shows its stage and progress (e.g. "rendering 2 of 5"), then done or failed with a plain message.
 4. A missing Gemini or ElevenLabs key fails the job with a message naming the key, without crashing the server.
-5. Regenerating keeps approved clips and questions and replaces everything not yet approved.
+5. Regenerating replaces the course's clips and questions.
 
 Evidence: learning/test_courses.py
 
@@ -497,21 +497,20 @@ Acceptance criteria:
 1. Gemini writes 2 multiple-choice questions per objective from that objective's source excerpts.
 2. Each question has 2–4 choices, exactly one correct answer, feedback for every choice and source refs.
 3. A question that fails the checks is sent back once with the errors, then skipped.
-4. Questions are saved pending review, like clips.
+4. Questions are saved with the course and go to the class with its clips.
 
 Evidence: video/course/test_questions.py
 
-### US-33: Review clips and questions before students see them
+### US-33: See every clip and question my class gets
 
-> As a teacher, I want to watch every generated clip and read every question, then approve or reject each one, so that only content I trust reaches my students.
+> As a teacher, I want to watch every generated clip and read every question, so that I know what my students will see.
 
 Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **built** · GitHub issue [#73](https://github.com/skarne21/Clipcademy/issues/73)
 
 Acceptance criteria:
 
-1. The course page lists every clip with a preview, its narration, source refs and review notes, and every question with its answer and feedback.
-2. Approve or reject (with an optional note) changes the item's status; approving a newer version of a clip replaces the older one.
-3. Pending clips play only through an unguessable preview link; nothing pending appears to students.
+1. The course page lists every clip with its video, narration and source refs, and every question with its answer and feedback.
+2. Clips are grouped by objective.
 
 Evidence: learning/test_courses.py
 
@@ -524,9 +523,9 @@ Requirement R8 · Hypotheses H1, H2 · Owner Member 3 · Status **built** · Git
 Acceptance criteria:
 
 1. `class.html` takes a class code (or reads it from the share link) and lists the course's topics.
-2. Each topic plays its approved clips in a vertical feed, then asks its approved questions one at a time.
+2. Each topic plays its clips in a vertical feed, then asks its questions one at a time.
 3. An answer is graded on the server and shows that choice's feedback; an unknown code shows a clear message.
-4. Approved clip files are served with byte ranges so videos can seek on phones.
+4. Clip files are served with byte ranges so videos can seek on phones.
 
 Evidence: learning/test_courses.py; browser check
 
@@ -708,9 +707,9 @@ Evidence: video/course/test_generate.py; live run on localhost (osmosis notes ma
 | Reset demo | US-22 |
 | LLM-assisted authoring (proposed) | US-23 |
 | Course import: any class material to stick-figure clips via Gemini | US-24, US-25, US-26, US-27, US-28, US-29 |
-| Course platform: teacher upload, background jobs, quiz questions, review, class code, one-container deploy | US-30, US-31, US-32, US-33, US-34, US-35 |
+| Course platform: teacher upload, background jobs, quiz questions, clip list, class code, one-container deploy | US-30, US-31, US-32, US-33, US-34, US-35 |
 | Running the course platform locally: current Gemini model, .env keys in Docker, LF fingerprints | US-36, US-37, US-38, US-39 |
 | Course platform wrong-answer loop: follow-up clips, retry questions, MVP grading, saved progress, no review step | US-40, US-41, US-42, US-43, US-44 |
 | Objectives sharing a topic keep separate clip scripts | US-45 |
 
-Totals: 8 requirements, 45 user stories (33 built, 11 in progress, 1 proposed), 161 acceptance criteria. One GitHub issue per story, labelled `user-story`, its area, its status, and its requirement.
+Totals: 8 requirements, 45 user stories (33 built, 11 in progress, 1 proposed), 160 acceptance criteria. One GitHub issue per story, labelled `user-story`, its area, its status, and its requirement.

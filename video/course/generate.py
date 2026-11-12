@@ -7,7 +7,7 @@
    (saved as breakdown.json). For text material, excerpts that aren't in the text drop their objective.
 3. Gemini storyboards each planned clip with one general-purpose template (course/templates.py).
    Every clip is checked; a failing clip goes back to Gemini once with the exact errors, then is skipped.
-4. Clips are saved to video/courses/<course>/scripts/ as review_status "pending". Render them with
+4. Clips are saved to video/courses/<course>/scripts/<topic>.<objective>.<variant>.json. Render them with
    video/course/render_course.py. Nothing here touches the existing 35 clips or runs in a student session.
 """
 import argparse
@@ -81,9 +81,7 @@ ANIMATION RULES
 EXAMPLE = {
     'course_id': 'econ101', 'topic_id': 'supply_and_demand', 'objective_id': 'price_changes', 'variant_id': 'intro_1',
     'kind': 'intro', 'format': 'vertical', 'teaching_goal': 'When demand beats supply, prices go up.',
-    'source_refs': ['econ101-lecture3-p1'], 'review_status': 'pending',
-    'review_notes': {'hook_claim': 'Prices rise when demand rises and supply stays the same: econ101-lecture3-p1.',
-                     'analogy': 'An auction; check it does not imply every market is an auction.', 'new_term': 'none new'},
+    'source_refs': ['econ101-lecture3-p1'],
     'scenes': [{
         'template': 'steps', 'title': 'Why do prices go up?',
         'props': {'steps': [{'id': 'buyers', 'text': 'Lots of buyers'}, {'id': 'seats', 'text': 'Only a few seats'},
@@ -103,7 +101,7 @@ EXAMPLE = {
 }
 
 OUTPUT_SHAPE = """Return ONLY one JSON object with: course_id, topic_id, objective_id, variant_id, kind, format ("vertical"),
-teaching_goal, source_refs, review_status ("pending"), review_notes {hook_claim, analogy, new_term} and
+teaching_goal, source_refs and
 scenes: [ {template, title, props, narration, beats} ] (exactly one scene)."""
 
 
@@ -179,11 +177,12 @@ def _storyboard_parts(course, title, obj, plan, position, previous=None, errors=
 
 
 def _normalize(reply, course, obj, plan):
-    """Gemini fills the content; the pipeline owns identity and review state."""
+    """Gemini fills the content; the pipeline owns each clip's identity."""
     clip = copy.deepcopy(reply) if isinstance(reply, dict) else {}
     clip.update(course_id=course, topic_id=obj['topic_id'], objective_id=obj['objective_id'],
-                variant_id=plan['variant_id'], kind=plan['kind'], format='vertical', review_status='pending',
-                teaching_goal=plan['teaching_goal'])
+                variant_id=plan['variant_id'], kind=plan['kind'], format='vertical', teaching_goal=plan['teaching_goal'])
+    clip.pop('review_status', None)  # US-44: no review step; drop it if Gemini adds one anyway
+    clip.pop('review_notes', None)
     if not clip.get('source_refs'):
         clip['source_refs'] = list(plan.get('source_refs') or [])
     return clip
@@ -225,7 +224,7 @@ def generate(course, materials, client=None, root=COURSES, title=None, max_objec
                                 'reason': 'excerpts not found verbatim in the material: ' + '; '.join(missing)[:300]})
                 continue
         else:
-            obj['excerpts_verified'] = False  # PDFs: the reviewer checks each quote against the file
+            obj['excerpts_verified'] = False  # PDF text can't be searched here, so these quotes aren't checked
         followups, problem = followup_plans(obj)
         intros, narrations = len(obj['clips']), {}
         for n, plan in enumerate(obj['clips'] + followups, 1):

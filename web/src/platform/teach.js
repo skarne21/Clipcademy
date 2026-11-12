@@ -1,4 +1,4 @@
-// Teachers (US-30, US-31, US-33): create a course, upload notes, make clips, review every clip and question.
+// Teachers (US-30, US-31, US-44): create a course, upload notes, make clips; delete any clip or question students shouldn’t see.
 import '../style.css'
 import './platform.css'
 import { api, h, mount, remember } from './dom.js'
@@ -27,7 +27,7 @@ function signIn(message) {
   let input
   mount(app,
     h('h1', {}, 'ClipCademy for teachers'),
-    h('p', { class: 'lede' }, 'Upload your class notes and get short stick-figure review clips and practice questions. You approve everything before students see it.'),
+    h('p', { class: 'lede' }, 'Upload your class notes and get short stick-figure clips and practice questions. They go straight to your class, and you can delete any you don’t want.'),
     h('form', { class: 'stack', onsubmit: async (e) => {
       e.preventDefault()
       token = input.value.trim()
@@ -101,52 +101,51 @@ function jobPanel(courseId, job, materials) {
       h('ul', {}, skipped.map((s) => h('li', { class: 'note' }, `${s.variant_id ?? s.objective_id ?? ''}: ${s.reason ?? ''}`)))),
     h('button', { type: 'button', class: 'primary', disabled: busy || !materials.length, onclick: start },
       busy ? 'Working…' : job ? 'Make clips again' : 'Make clips'),
-    job && job.status === 'done' && h('p', { class: 'note' }, 'Making clips again keeps everything you approved and replaces the rest.'))
+    job && job.status === 'done' && h('p', { class: 'note' }, 'Making clips again replaces this course’s clips and questions.'))
 }
 
-function review(kind, id, decision, noteInput) {
-  return async () => {
+function remove(kind, id) {
+  // Two taps, like the MVP's Reset demo, so a stray click can't delete (and no blocking confirm dialog).
+  return async (e) => {
+    const button = e.currentTarget
+    if (!button.dataset.armed) {
+      button.dataset.armed = '1'
+      button.textContent = 'Tap again to delete'
+      return
+    }
     try {
-      await call('POST', `/teacher/${kind}/${id}/review`, { body: { decision, note: noteInput?.value ?? '' } })
+      await call('DELETE', `/teacher/${kind}/${id}`)
       route()
     } catch (err) { fail(err) }
   }
 }
 
 function clipCard(c) {
-  const note = h('input', { class: 'field small', placeholder: 'Note (optional)', 'aria-label': `Note for ${c.title}`, value: c.note })
-  return h('article', { class: `review-card status-${c.status}` },
-    h('div', { class: 'review-media' },
-      h('video', { src: c.preview_url, controls: true, playsinline: true, preload: 'metadata', class: 'preview-video' },
-        h('track', { kind: 'captions', src: c.preview_captions_url, srclang: 'en', label: 'English' }))),
-    h('div', { class: 'review-body' },
-      h('div', { class: 'topline' }, h('h3', {}, c.title), badge(c.status)),
+  return h('article', { class: 'item-card' },
+    h('div', { class: 'item-media' },
+      h('video', { src: c.video_url, controls: true, playsinline: true, preload: 'metadata', class: 'clip-preview' },
+        h('track', { kind: 'captions', src: c.captions_url, srclang: 'en', label: 'English' }))),
+    h('div', { class: 'item-body' },
+      h('div', { class: 'topline' }, h('h3', {}, c.title)),
       h('p', { class: 'note' }, `${c.variant_id} · ${c.template} scene · ${c.duration_seconds ? Math.round(c.duration_seconds) + ' s' : ''}`),
       h('p', {}, h('strong', {}, 'Teaches: '), c.teaching_goal),
-      h('details', {}, h('summary', {}, 'Narration and checks'),
+      h('details', {}, h('summary', {}, 'Narration and sources'),
         h('p', {}, c.transcript),
-        h('dl', { class: 'checks' },
-          h('dt', {}, 'Hook claim'), h('dd', {}, c.review_notes.hook_claim ?? ''),
-          h('dt', {}, 'Analogy to check'), h('dd', {}, c.review_notes.analogy ?? ''),
-          h('dt', {}, 'New term'), h('dd', {}, c.review_notes.new_term ?? ''),
-          h('dt', {}, 'Sources'), h('dd', {}, c.source_refs.join(', ')))),
-      c.status !== 'replaced' && h('div', { class: 'review-actions' }, note,
-        h('button', { type: 'button', class: 'secondary', onclick: review('clips', c.clip_id, 'reject', note) }, 'Reject'),
-        h('button', { type: 'button', class: 'primary', onclick: review('clips', c.clip_id, 'approve', note) }, 'Approve'))))
+        h('p', { class: 'note' }, `Sources: ${c.source_refs.join(', ')}`)),
+      h('div', { class: 'item-actions' },
+        h('button', { type: 'button', class: 'secondary', onclick: remove('clips', c.clip_id) }, 'Delete'))))
 }
 
 function questionCard(q) {
-  const note = h('input', { class: 'field small', placeholder: 'Note (optional)', 'aria-label': 'Note for this question', value: q.note })
-  return h('article', { class: `review-card status-${q.status}` },
-    h('div', { class: 'review-body' },
-      h('div', { class: 'topline' }, h('h3', {}, q.prompt), badge(q.status)),
+  return h('article', { class: 'item-card' },
+    h('div', { class: 'item-body' },
+      h('div', { class: 'topline' }, h('h3', {}, q.prompt)),
       h('ol', { class: 'answer-list' }, q.choices.map((c) => h('li', { class: c.choice_id === q.correct_choice_id ? 'is-right' : '' },
         h('strong', {}, `${c.choice_id}. ${c.text}`), c.choice_id === q.correct_choice_id ? ' (correct)' : '',
         h('span', { class: 'block note' }, q.feedback[c.choice_id] ?? '')))),
       h('p', { class: 'note' }, `Sources: ${q.source_refs.join(', ')}`),
-      h('div', { class: 'review-actions' }, note,
-        h('button', { type: 'button', class: 'secondary', onclick: review('questions', q.question_id, 'reject', note) }, 'Reject'),
-        h('button', { type: 'button', class: 'primary', onclick: review('questions', q.question_id, 'approve', note) }, 'Approve'))))
+      h('div', { class: 'item-actions' },
+        h('button', { type: 'button', class: 'secondary', onclick: remove('questions', q.question_id) }, 'Delete'))))
 }
 
 async function courseScreen(courseId) {
@@ -156,7 +155,6 @@ async function courseScreen(courseId) {
   const status = h('p', { class: 'note', 'aria-live': 'polite' })
   const files = h('input', { type: 'file', id: 'files', multiple: true, accept: '.pdf,.txt,.md', class: 'visually-hidden',
     onchange: (e) => upload(course.course_id, [...e.target.files], status) })
-  const counts = (items) => ['pending', 'approved', 'rejected'].map((s) => `${items.filter((i) => i.status === s).length} ${s}`).join(' · ')
   const groups = {}
   for (const c of clips) (groups[c.objective_id] ??= []).push(c)
   mount(app,
@@ -174,13 +172,13 @@ async function courseScreen(courseId) {
       h('label', { for: 'files', class: 'secondary as-button' }, 'Choose files'), files, status),
     jobPanel(course.course_id, job, materials),
     h('section', {},
-      h('h2', {}, '3. Review clips'),
-      clips.length ? h('p', { class: 'note' }, counts(clips.filter((c) => c.status !== 'replaced'))) : h('p', { class: 'note' }, 'Clips appear here when they’re ready.'),
+      h('h2', {}, '3. Clips'),
+      h('p', { class: 'note' }, clips.length ? `${clips.length} clips, live for your class. Delete any you don’t want students to see.` : 'Clips appear here when they’re ready.'),
       Object.values(groups).map((list) => h('div', { class: 'clip-group' },
         list.map(clipCard)))),
     h('section', {},
-      h('h2', {}, '4. Review questions'),
-      questions.length ? [h('p', { class: 'note' }, counts(questions)), questions.map(questionCard)] : h('p', { class: 'note' }, 'Questions appear here when they’re ready.')))
+      h('h2', {}, '4. Questions'),
+      questions.length ? [h('p', { class: 'note' }, `${questions.length} questions, live for your class.`), questions.map(questionCard)] : h('p', { class: 'note' }, 'Questions appear here when they’re ready.')))
   if (job && (job.status === 'queued' || job.status === 'running')) poll = setTimeout(route, 3000)
 }
 

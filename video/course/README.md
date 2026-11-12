@@ -18,7 +18,7 @@ User stories US-24 to US-29 (requirement R8). This folder turns a class's lectur
 # once: add your Gemini key next to the ElevenLabs one (video/.env is git-ignored)
 echo 'GEMINI_API_KEY=...' >> video/.env          # https://aistudio.google.com/apikey
 
-# 1. material → clip scripts (pending review)
+# 1. material → clip scripts
 python3 video/course/generate.py --course econ101 --title "Intro Economics" --material lecture3.pdf notes.md
 
 # 2. scripts → videos (free offline draft voice first, then the real voice)
@@ -37,8 +37,8 @@ python3 video/course/render_course.py --course econ101 --all
 ```
 video/courses/<course>/
   material/        copies of the imported files
-  breakdown.json   objectives, verbatim source excerpts, clip plans (for the reviewer)
-  scripts/         one JSON per clip, review_status "pending"
+  breakdown.json   objectives, verbatim source excerpts, clip plans and misconceptions
+  scripts/         one JSON per clip (<topic>.<objective>.<variant>.json)
   media/           MP4 + .vtt captions + .txt transcript + .json manifest (own fingerprint)
   report.json      clips written, and clips skipped with the reasons
 ```
@@ -67,13 +67,13 @@ The full catalog that Gemini reads, with every action and target, comes from `te
 
 A failing clip goes back to Gemini once with the exact errors. If it fails again, it's skipped and listed in `report.json`.
 
-For text material, every source quote must appear word for word in the file, or that objective is dropped. PDF quotes are marked `excerpts_verified: false` for the reviewer to check.
+For text material, every source quote must appear word for word in the file, or that objective is dropped. PDF quotes can't be searched here, so they're marked `excerpts_verified: false`.
 
-## Review gate
+## No review step
 
-**Everything generated is `pending`.** Gemini can't approve its own clip: the pipeline overwrites the IDs and the review status, whatever Gemini returns. No Gemini call ever happens during a student session.
+Generated clips and questions go straight to the class. The pipeline owns each clip's IDs, whatever Gemini returns, and drops any review fields Gemini adds. No Gemini call ever happens during a student session.
 
-**Teachers and students:** the course platform (`learning/courses.py`, `learning/course_worker.py`, `/teach.html` and `/class.html`) runs this pipeline from a web page. It also generates quiz questions (`questions.py`), handles review and serves approved clips. See [DEPLOY.md](../../DEPLOY.md).
+**Teachers and students:** the course platform (`learning/courses.py`, `learning/course_worker.py`, `/teach.html` and `/class.html`) runs this pipeline from a web page. It also generates quiz questions (`questions.py`) and serves the clips; a teacher can delete any clip or question. See [DEPLOY.md](../../DEPLOY.md).
 
 ## Tests
 

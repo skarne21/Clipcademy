@@ -56,6 +56,10 @@ def code_files():
     return files + [REMOTION / 'package.json']
 
 
+def sources_line(script):
+    return 'Sources: ' + ', '.join(script['source_refs'])
+
+
 def fingerprint(script, voice=None):
     voice = voice or base.TEMPLATE['tts']['engine']
     payload = json.dumps([script, base.TEMPLATE, voice], sort_keys=True, ensure_ascii=False).encode()
@@ -110,7 +114,7 @@ def render(script, root=COURSES):
             out.writeframes(mixed.tobytes())
         props = {'fps': fps, 'durationInFrames': frames, 'audio': f'job/course-{stem}/audio.wav',
                  'title': scene['title'], 'template': scene['template'], 'props': scene['props'],
-                 'sources': 'Sources: ' + ', '.join(script['source_refs']) + ' · Review copy',
+                 'sources': sources_line(script),
                  'events': p['events'],
                  'words': [{'text': w, 'start': round(s, 3), 'end': round(e, 3)} for w, s, e in words],
                  'energy': [round(v, 3) for v in energy]}
@@ -135,7 +139,7 @@ def render(script, root=COURSES):
               'video_file': destination.name, 'captions_file': f'{stem}.vtt', 'transcript': scene['narration'],
               'source_refs': script['source_refs'], 'duration_seconds': round(duration, 3),
               'width': base.TEMPLATE['width'], 'height': base.TEMPLATE['height'], 'fps': fps, 'fingerprint': fp,
-              'review_status': script['review_status'], 'narration': base.narration_label(voice),
+              'narration': base.narration_label(voice),
               'visuals': f'Remotion 4.0.537, Clipcademy stick-figure course template "{scene["template"]}"',
               'longest_still_seconds': round(still, 2), 'sha256': hashlib.sha256(destination.read_bytes()).hexdigest()}
     (output_dir / f'{stem}.json').write_text(json.dumps(record, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
