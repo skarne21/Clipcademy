@@ -713,6 +713,21 @@ Acceptance criteria:
 
 Evidence: video/course/test_generate.py; learning/test_courses.py; browser check on localhost
 
+### US-48: One home page to join a class or sign in as a teacher
+
+> As a student or teacher, I want the home page to let me type a class code or the teacher password, so that I get to my class or the teacher page without knowing its address.
+
+Requirement R8 · Hypotheses H1 · Owner Member 1 · Status **in progress** · GitHub issue [#88](https://github.com/skarne21/Clipcademy/issues/88)
+
+Acceptance criteria:
+
+1. `/` shows two short forms: Join a class (6-character class code) and Teacher sign in (teacher password).
+2. A class code that exists opens that class (`/class.html#CODE`); an unknown one shows a clear message and stays put.
+3. A correct teacher password opens the teacher page already signed in; a wrong one shows a clear message.
+4. The biology study app moves to `/index.html`, linked from the home page; the PythonAnywhere study build is unchanged.
+
+Evidence: learning/test_server.py; web/e2e/home.mjs
+
 ## 3. Coverage of planned Alpha functionality
 
 | Alpha functionality (Team_Spec, notes.md) | Stories |
@@ -742,5 +757,6 @@ Evidence: video/course/test_generate.py; learning/test_courses.py; browser check
 | Objectives sharing a topic keep separate clip scripts | US-45 |
 | Faster generation with progress | US-46 |
 | Topic breakdown on the teacher page | US-47 |
+| Home page: class code or teacher sign-in | US-48 |
 
-Totals: 8 requirements, 47 user stories (45 built, 1 in progress, 1 proposed), 167 acceptance criteria. One GitHub issue per story, labelled `user-story`, its area, its status, and its requirement.
+Totals: 8 requirements, 48 user stories (45 built, 2 in progress, 1 proposed), 171 acceptance criteria. One GitHub issue per story, labelled `user-story`, its area, its status, and its requirement.

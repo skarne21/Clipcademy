@@ -408,6 +408,14 @@ STORIES = [
       'The teacher course API returns each topic with its label, source quotes, planned intro clips (teaching goals) and 2 mistakes.',
       'The teacher page shows these topics while clips are being made and after.'],
      'video/course/test_generate.py; learning/test_courses.py; browser check on localhost'),
+    ('US-48', 'One home page to join a class or sign in as a teacher', 'student or teacher', 'the home page to let '
+     'me type a class code or the teacher password', 'I get to my class or the teacher page without knowing its address',
+     'R8', ['H1'], 'student', 'Member 1', 'in progress',
+     ['`/` shows two short forms: Join a class (6-character class code) and Teacher sign in (teacher password).',
+      'A class code that exists opens that class (`/class.html#CODE`); an unknown one shows a clear message and stays put.',
+      'A correct teacher password opens the teacher page already signed in; a wrong one shows a clear message.',
+      'The biology study app moves to `/index.html`, linked from the home page; the PythonAnywhere study build is unchanged.'],
+     'learning/test_server.py; web/e2e/home.mjs'),
 ]
 
 AREA_LABELS = {'student': 'area: student app', 'ai': 'area: AI', 'content': 'area: content & video',
@@ -496,6 +504,7 @@ def markdown():
         ('Objectives sharing a topic keep separate clip scripts', 'US-45'),
         ('Faster generation with progress', 'US-46'),
         ('Topic breakdown on the teacher page', 'US-47'),
+        ('Home page: class code or teacher sign-in', 'US-48'),
     ]
     out += [f'| {a} | {b} |' for a, b in coverage]
     covered = {x.strip() for _, b in coverage for x in b.split(',')}
