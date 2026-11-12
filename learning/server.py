@@ -45,7 +45,7 @@ def static_app(web_dist):
     web_dist = Path(web_dist).resolve()
 
     def find(path):
-        rel = 'index.html' if path in ('', '/') else path.lstrip('/')
+        rel = 'home.html' if path in ('', '/') else path.lstrip('/')  # US-48: biology app is /index.html
         target = (web_dist / rel).resolve()
         if web_dist not in target.parents or not target.is_file():
             return None

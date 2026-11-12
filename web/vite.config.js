@@ -18,6 +18,7 @@ export default defineConfig({
         main: resolve(import.meta.dirname, 'index.html'),
         teach: resolve(import.meta.dirname, 'teach.html'),
         class: resolve(import.meta.dirname, 'class.html'),
+        home: resolve(import.meta.dirname, 'home.html'),
       },
     },
   },
