@@ -20,6 +20,7 @@ change, the MVP hypothesis and validation analysis in [validation-plan.md](../Co
 | R5 | **Reviewed, sourced content only** | Every clip and question cites the lecture excerpt it comes from and must be approved by a course-knowledgeable reviewer; the server refuses any clip whose approved fingerprint does not match. Nothing is generated live. | H2 |  |
 | R6 | **Built-in measurement of the hypotheses** | Every action is logged with participant code and build ID so H1–H3 and the engagement metrics (completion, drop-off, auto vs. manual swipes, time on app) can be computed from events.csv. | H1, H2, H3 |  |
 | R7 | **Proposed AI: LLM-assisted script and question drafting, human-approved** | An LLM drafts clip scripts and questions offline from the lecture excerpts; a reviewer edits and approves them before anything is rendered or shown. No LLM output ever reaches a student unreviewed. Team_Spec lists this as a later step ("automatic script writing … after the reviewed flow works"); it needs a team decision. | H2 | **Yes** |
+| R8 | **Any course becomes stick-figure clips** | An instructor imports a class's material (lecture PDFs or notes) and Gemini breaks it into short, source-linked stick-figure clips drawn with general-purpose scenes, so ClipCademy is not limited to the four biology topics. Every generated clip waits for reviewer approval, and the existing 35 clips are never changed. | H2 | **Yes** |
 
 ### Core AI integration
 
@@ -365,6 +366,95 @@ Acceptance criteria:
 
 Evidence: Team_Spec.md (Member 1 section) and Scope
 
+### US-24: Import a class's material
+
+> As a teacher, I want to import my class's lecture PDFs, slides exported as PDF, or notes for a new course, so that ClipCademy can turn any of my classes into review clips.
+
+Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **proposed**
+
+Acceptance criteria:
+
+1. `python video/course/generate.py --course <id> --material <file> ...` accepts PDF, .txt and .md files.
+2. A course ID is lowercase letters, digits and underscores; anything else is rejected before any API call.
+3. Imported files are copied to `video/courses/<course>/material/`, and nothing is written outside `video/courses/<course>/`.
+4. A missing `GEMINI_API_KEY` (environment or `video/.env`) stops the run with a clear message before any upload.
+
+Evidence: video/course/test_generate.py
+
+### US-25: Gemini breaks the material into clip plans
+
+> As a teacher, I want Gemini to break my material into learning objectives and a plan of short clips with source quotes, so that each clip teaches one idea that is traceable to my material.
+
+Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **proposed**
+
+Acceptance criteria:
+
+1. The material is sent to Gemini as file data (PDF) or text, with JSON output requested.
+2. The breakdown returns objectives, each with verbatim source excerpts, 3–6 clips and a one-sentence teaching goal per clip.
+3. For text material, every excerpt must appear verbatim in the material; a clip whose excerpts don't is dropped and reported.
+4. The breakdown is saved as `video/courses/<course>/breakdown.json` for the reviewer.
+
+Evidence: video/course/test_generate.py
+
+### US-26: Gemini storyboards each clip for the stick figure
+
+> As a teacher, I want Gemini to write each clip's narration and animation cues using only the general-purpose stick-figure scenes, so that the renderer can draw a clip for any subject.
+
+Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **proposed**
+
+Acceptance criteria:
+
+1. Each clip is one scene that uses one template from the course scene catalog, with its props and beats.
+2. The prompt includes the writing rules (hook, one idea, one analogy, 45–70 words, ending line) and the full catalog.
+3. The saved script records `course_id`, `teaching_goal`, `source_refs` and `review_notes` (hook claim, analogy, new term).
+
+Evidence: video/course/test_generate.py
+
+### US-27: General-purpose stick-figure scenes for any subject
+
+> As a student, I want clips in any course to look and move like the biology clips, so that every class gets the same friendly, readable format.
+
+Requirement R8 · Hypotheses H1, H2 · Owner Member 1 · Status **proposed**
+
+Acceptance criteria:
+
+1. Five templates exist: `steps`, `compare`, `flow`, `term` and `myth_fact`, each with typed props and its own actions.
+2. They reuse the existing guide, board, captions, cards and theme, at 720×1280 with the same safe zones.
+3. Prop text has length limits so nothing overflows the board; over-limit text is rejected, not shrunk.
+4. A rendered frame of every template shows the board content inside the board.
+
+Evidence: video/course/test_templates.py; video/course/test_course_layout.py
+
+### US-28: Check every generated clip before it is voiced
+
+> As a teacher, I want every generated clip checked before any voice credits are spent, so that broken clips are fixed or dropped automatically instead of failing at render time.
+
+Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **proposed**
+
+Acceptance criteria:
+
+1. A clip is rejected if its template, a prop, an action or a target is unknown, or prop text is over its limit.
+2. A clip is rejected if a beat cue is missing from the narration or out of order, or the first beat is not "^".
+3. A clip is rejected if the narration is outside 45–70 words or doesn't end with the required last line.
+4. A rejected clip is sent back to Gemini once with the exact errors; if it still fails, it is skipped and reported.
+
+Evidence: video/course/test_templates.py; video/course/test_generate.py
+
+### US-29: New course clips stay separate and wait for review
+
+> As a content reviewer, I want generated course clips kept apart from the existing clips and marked pending, so that nothing reaches students unreviewed and the 35 approved-track clips never change.
+
+Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **proposed**
+
+Acceptance criteria:
+
+1. Every generated script is saved with `review_status: "pending"` under `video/courses/<course>/scripts/`.
+2. Rendered course clips go to `video/courses/<course>/media/` with a manifest and their own fingerprint.
+3. The existing 35 clips keep their fingerprints: no file counted in `render._code_files()` is changed.
+4. No Gemini call happens during a student session; generation is an offline command.
+
+Evidence: video/course/test_isolation.py
+
 ## 3. Coverage of planned Alpha functionality
 
 | Alpha functionality (Team_Spec, notes.md) | Stories |
@@ -387,5 +477,6 @@ Evidence: Team_Spec.md (Member 1 section) and Scope
 | Hosting and phone check | US-21 |
 | Reset demo | US-22 |
 | LLM-assisted authoring (proposed) | US-23 |
+| Course import: any class material to stick-figure clips via Gemini | US-24, US-25, US-26, US-27, US-28, US-29 |
 
-Totals: 7 requirements, 23 user stories (21 built, 1 in progress, 1 proposed), 84 acceptance criteria. One GitHub issue per story, labelled `user-story`, its area, its status, and its requirement.
+Totals: 8 requirements, 29 user stories (21 built, 1 in progress, 7 proposed), 107 acceptance criteria. One GitHub issue per story, labelled `user-story`, its area, its status, and its requirement.
