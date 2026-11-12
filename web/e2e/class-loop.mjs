@@ -62,7 +62,7 @@ page.on('request', (req) => {
 })
 
 const text = () => page.evaluate(() => document.body.innerText)
-const waitText = (s) => page.waitForFunction((t) => document.body.innerText.includes(t), { timeout: 8000 }, s)
+const waitText = (s) => page.waitForFunction((t) => document.body.innerText.includes(t), { timeout: 8000 }, s).catch(async (e) => { throw new Error(`waiting for "${s}" but the page says: ${await text()}`) })
 const click = (label) => page.evaluate((l) => {
   const b = [...document.querySelectorAll('button')].find((x) => x.innerText.trim().startsWith(l))
   if (!b) throw new Error(`no button "${l}" in: ${document.body.innerText}`)
@@ -88,7 +88,7 @@ await answer('B')
 await waitText('The membrane blocks solutes; water moves.')
 assert.equal(attempts[0].question_id, 'q1')
 assert.ok(attempts[0].attempt_id, 'attempt_id is sent')
-await click('Watch a short explanation')
+await click('Watch explanation')
 await waitText('Only water crosses')
 assert.match(await videoSrc(), /solutes_move_followup$/)
 
@@ -109,7 +109,7 @@ await waitText('Go over these')
 assert.ok((await text()).includes('Only water crosses the membrane.'))
 
 // Home shows the result and offers Restart (US-43).
-await click('Topics')
+await click('Return home')
 await waitText('Needs review')
 await click('Osmosis')
 await waitText('Restart')

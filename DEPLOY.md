@@ -83,7 +83,7 @@ Any host that runs a Docker image **and** gives it a persistent disk works:
 2. **Teacher:** uploads notes (PDF, .txt or .md, up to 18 MB each) and presses **Make clips**.
 3. **The worker:** Gemini plans and writes clips and questions, ElevenLabs voices them and Remotion renders them. The page shows progress, typically a few minutes.
 4. **Teacher:** shares the class link. Clips and questions are live as soon as the job finishes; the teacher can watch them all and delete any they don't want students to see.
-5. **Students:** open the class link (or `/class.html` and type the 6-character class code), watch the clips and answer the questions.
+5. **Students:** open the class link (or `/class.html` and type the 6-character class code), watch a topic's clips and answer its questions from memory. As in the biology app, a wrong answer plays a short follow-up clip for that mistake and then a new question; missing the same idea again plays a second, differently explained clip. After two follow-ups the topic ends in **Needs review** with the key points to go over.
 
 ## Costs
 
@@ -96,7 +96,7 @@ Rough figures; check current prices.
 ## Limits to know
 
 - **One shared teacher password:** there are no individual teacher accounts.
-- **Students are anonymous:** there are no student accounts, and their answers aren't saved.
+- **Students are anonymous:** there are no student accounts. Each topic's progress is saved in that browser only, so it doesn't follow a student to another device.
 - **Five scene types:** steps, compare, flow, term, myth/fact. Subjects that need real diagrams (circuits, maps, anatomy) would need new scene types.
 - **No review step:** Gemini's clips and questions reach students without a person checking them first. Each clip lists its sources on screen, and the teacher can delete a bad one.
 - **One machine:** the worker runs inside the web container. For many teachers at once, run more workers or move rendering to a job service (Cloud Run Jobs, Remotion Lambda).
