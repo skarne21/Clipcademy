@@ -12,6 +12,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 
 import gemini  # noqa: E402
+import generate  # noqa: E402
 
 LETTERS = 'ABCD'
 PROMPT_MAX, CHOICE_MAX, FEEDBACK_MAX = 160, 80, 200
@@ -35,6 +36,20 @@ Write {count} multiple-choice questions that check this objective.
 
 Return JSON: {{"questions": [{{"prompt": "...", "choices": [{{"choice_id": "A", "text": "..."}}],
 "correct_choice_id": "A", "feedback": {{"A": "..."}}, "source_refs": ["..."]}}]}}"""
+
+MISCONCEPTION_TASK = """
+MISCONCEPTIONS (the two mistakes students make about this objective):
+{misconceptions}
+
+- In each question above, also give "misconceptions": for EVERY wrong choice, the misconception_id it reveals
+  (keyed by choice_id).
+- Also write "retries": exactly 2 NEW questions per misconception (4 in all), different from the questions above,
+  each checking only that one idea. A student sees a retry after a short clip that corrects the mistake. Each retry
+  has misconception_id plus prompt, choices, correct_choice_id, feedback and source_refs, with the same rules.
+
+Return JSON: {{"questions": [{{"prompt": "...", "choices": [...], "correct_choice_id": "A", "feedback": {{...}},
+"source_refs": [...], "misconceptions": {{"B": "..."}}}}], "retries": [{{"misconception_id": "...", "prompt": "...",
+"choices": [...], "correct_choice_id": "A", "feedback": {{...}}, "source_refs": [...]}}]}}"""
 
 
 def validate_question(q, refs):
@@ -80,10 +95,20 @@ def _clean(q):
     return {k: q[k] for k in keep}
 
 
+def _misconceptions(obj):
+    """{id: label} for an objective with 2 valid misconceptions (US-41), else {} (plain questions, no follow-ups)."""
+    if generate.followup_plans(obj)[1]:
+        return {}
+    return {m['misconception_id']: m.get('label', '') for m in obj['misconceptions']}
+
+
 def _parts(obj, count, previous=None, problems=None):
     text = TASK.format(label=obj.get('label', obj['objective_id']), objective_id=obj['objective_id'],
                        excerpts='\n'.join(f'[{e["ref"]}] {e["text"]}' for e in obj['source_excerpts']),
                        count=count, prompt_max=PROMPT_MAX, choice_max=CHOICE_MAX, feedback_max=FEEDBACK_MAX)
+    ms = _misconceptions(obj)
+    if ms:
+        text += MISCONCEPTION_TASK.format(misconceptions='\n'.join(f'- {i}: {label}' for i, label in ms.items()))
     if problems:
         text += '\n\nYour previous answer had these problems. Fix exactly these and return all questions again:\n'
         text += '\n'.join(f'- {p}' for p in problems)
@@ -91,18 +116,48 @@ def _parts(obj, count, previous=None, problems=None):
     return [gemini.text_part(text)]
 
 
-def _check_all(reply, refs, count):
+def _wrong_choice_problems(q, ms):
+    mapping = q.get('misconceptions')
+    wrong = [c['choice_id'] for c in q['choices'] if c['choice_id'] != q['correct_choice_id']]
+    if not isinstance(mapping, dict) or any(mapping.get(c) not in ms for c in wrong):
+        return [f'misconceptions: map every wrong choice ({", ".join(wrong)}) to one of {", ".join(ms)}']
+    return []
+
+
+def _check_all(reply, refs, count, ms=None):
+    """(questions, retries, problems). retries is {misconception_id: [up to 2 questions]} when ms is given."""
     items = reply.get('questions') if isinstance(reply, dict) else None
     if not isinstance(items, list):
-        return [], ['return {"questions": [...]}']
+        return [], {}, ['return {"questions": [...]}']
     good, problems = [], []
     for i, q in enumerate(items[:count]):
         errs = validate_question(q, refs)
+        if not errs and ms:
+            errs = _wrong_choice_problems(q, ms)
         if errs:
             problems += [f'question {i + 1}: {e}' for e in errs]
         else:
-            good.append(_clean(q))
-    return good, problems
+            good.append({**_clean(q), 'misconceptions': q.get('misconceptions') or {}})
+    retries = {m: [] for m in ms or {}}
+    for i, q in enumerate((reply.get('retries') or []) if ms else []):
+        errs = validate_question(q, refs)
+        if isinstance(q, dict) and q.get('misconception_id') not in retries:
+            errs.append(f'misconception_id must be one of {", ".join(retries)}')
+        if errs:
+            problems += [f'retry {i + 1}: {e}' for e in errs]
+        elif len(retries[q['misconception_id']]) < 2:
+            retries[q['misconception_id']].append(_clean(q))
+    problems += [f'{m}: needs 2 retries, got {len(rs)}' for m, rs in retries.items() if len(rs) < 2]
+    return good, retries, problems
+
+
+def _size(result):
+    return len(result[0]) + sum(map(len, result[1].values()))
+
+
+def _choice_map(q, wrong):
+    """{choice_id: misconception_id}, None for the correct choice."""
+    return {c['choice_id']: None if c['choice_id'] == q['correct_choice_id'] else wrong(c['choice_id']) for c in q['choices']}
 
 
 def generate_questions(client, breakdown, course_id, per_objective=2):
@@ -112,17 +167,29 @@ def generate_questions(client, breakdown, course_id, per_objective=2):
         if not obj.get('source_excerpts') or not obj.get('objective_id'):
             continue
         refs = {e['ref'] for e in obj['source_excerpts']}
+        ms = _misconceptions(obj)
         reply = client.generate_json(_parts(obj, per_objective), system=SYSTEM, temperature=0.3)
-        good, problems = _check_all(reply, refs, per_objective)
+        good, retries, problems = _check_all(reply, refs, per_objective, ms)
         if problems:
-            retry = client.generate_json(_parts(obj, per_objective, reply, problems), system=SYSTEM, temperature=0.2)
-            fixed, problems = _check_all(retry, refs, per_objective)
-            if len(fixed) >= len(good):
-                good = fixed
+            again = client.generate_json(_parts(obj, per_objective, reply, problems), system=SYSTEM, temperature=0.2)
+            fixed = _check_all(again, refs, per_objective, ms)
+            if _size(fixed) >= _size((good, retries)):
+                good, retries, problems = fixed
         if problems:
             skipped.append({'objective_id': obj['objective_id'], 'reason': 'questions failed the checks twice',
                             'errors': problems})
+        base = {'topic_id': obj.get('topic_id'), 'objective_id': obj['objective_id'], 'objective_label': obj.get('label', '')}
+        required = []
         for n, q in enumerate(good, 1):
-            questions.append({'question_id': f'{course_id}-{obj["objective_id"]}-q{n}', 'topic_id': obj.get('topic_id'),
-                              'objective_id': obj['objective_id'], 'objective_label': obj.get('label', ''), **q})
+            qid = f'{course_id}-{obj["objective_id"]}-q{n}'
+            required.append({'question_id': qid, **base, **q, 'role': 'required', 'counts_for': qid,
+                             'misconceptions': _choice_map(q, lambda c: q['misconceptions'].get(c))})
+        questions += required
+        for m, items in retries.items():
+            # as in the MVP's answer key: a retry counts for the required question whose wrong choice leads to its idea
+            leads = next((q['question_id'] for q in required if m in q['misconceptions'].values()), None)
+            for n, q in enumerate(items, 1):
+                qid = f'{course_id}-{obj["objective_id"]}-{m}-r{n}'
+                questions.append({'question_id': qid, **base, **q, 'role': 'retry', 'misconception_id': m,
+                                  'counts_for': leads or qid, 'misconceptions': _choice_map(q, lambda c: m)})
     return {'questions': questions, 'skipped': skipped}
