@@ -459,7 +459,7 @@ Evidence: video/course/test_isolation.py
 
 > As a teacher, I want to create a course and upload my notes from a web page, so that I don't need the command line to get clips.
 
-Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **built**
+Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **built** · GitHub issue [#70](https://github.com/skarne21/Clipcademy/issues/70)
 
 Acceptance criteria:
 
@@ -474,7 +474,7 @@ Evidence: learning/test_courses.py
 
 > As a teacher, I want clip generation to run in the background after I press Generate, so that I can leave the page while Gemini, ElevenLabs and Remotion work.
 
-Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **built**
+Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **built** · GitHub issue [#71](https://github.com/skarne21/Clipcademy/issues/71)
 
 Acceptance criteria:
 
@@ -490,7 +490,7 @@ Evidence: learning/test_courses.py
 
 > As a student, I want practice questions for each part of my course, so that I recall the idea instead of only watching.
 
-Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **built**
+Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **built** · GitHub issue [#72](https://github.com/skarne21/Clipcademy/issues/72)
 
 Acceptance criteria:
 
@@ -505,7 +505,7 @@ Evidence: video/course/test_questions.py
 
 > As a teacher, I want to watch every generated clip and read every question, then approve or reject each one, so that only content I trust reaches my students.
 
-Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **built**
+Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **built** · GitHub issue [#73](https://github.com/skarne21/Clipcademy/issues/73)
 
 Acceptance criteria:
 
@@ -519,7 +519,7 @@ Evidence: learning/test_courses.py
 
 > As a student, I want to join my class with a code, watch its clips and answer its questions, so that I can review my course on my phone.
 
-Requirement R8 · Hypotheses H1, H2 · Owner Member 3 · Status **built**
+Requirement R8 · Hypotheses H1, H2 · Owner Member 3 · Status **built** · GitHub issue [#74](https://github.com/skarne21/Clipcademy/issues/74)
 
 Acceptance criteria:
 
@@ -534,7 +534,7 @@ Evidence: learning/test_courses.py; browser check
 
 > As a team member, I want one Docker image that serves the pages, the API, the worker and the videos, so that deploying means setting the keys and nothing else.
 
-Requirement R8 · Hypotheses H1 · Owner Member 1 · Status **built**
+Requirement R8 · Hypotheses H1 · Owner Member 1 · Status **built** · GitHub issue [#75](https://github.com/skarne21/Clipcademy/issues/75)
 
 Acceptance criteria:
 
