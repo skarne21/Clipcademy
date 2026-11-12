@@ -185,10 +185,56 @@ class Storyboard(Workspace):
         clip = json.loads((self.root / 'econ101' / 'scripts' / 'supply_and_demand.intro_1.json').read_text(encoding='utf-8'))
         self.assertEqual((clip['review_status'], clip['course_id'], clip['variant_id']), ('pending', 'econ101', 'intro_1'))
 
+    def test_fixture_followup_clip_passes_the_checks(self):
+        import templates
+        for clip in fixtures.followup_clips():
+            self.assertEqual(templates.validate(clip), [], clip['variant_id'])
+
     def test_nothing_is_written_outside_the_course_folder(self):
         self.run_generate([fixtures.BREAKDOWN, fixtures.CLIP, fixtures.last_intro_clip()])
         written = {p.relative_to(self.tmp).parts[:2] for p in self.tmp.rglob('*') if p.is_file()}
         self.assertEqual(written, {('lecture3.txt',), ('courses', 'econ101')})
+
+
+class FollowUps(Workspace):
+    """US-40: two misconceptions per objective, each with a v1 and a differently explained v2 follow-up clip."""
+
+    def replies(self):
+        return [fixtures.breakdown_with_misconceptions(), fixtures.CLIP, fixtures.last_intro_clip(), *fixtures.followup_clips()]
+
+    def test_breakdown_asks_for_two_misconceptions(self):
+        fake, _ = self.run_generate(self.replies())
+        text = prompt_text(fake.calls[0])
+        self.assertIn('misconceptions', text)
+        self.assertIn('exactly 2', text)
+
+    def test_each_misconception_gets_a_v1_and_v2_followup_clip(self):
+        _, result = self.run_generate(self.replies())
+        names = sorted(Path(p).name for p in result['written'])
+        self.assertEqual(names, sorted(['supply_and_demand.intro_1.json', 'supply_and_demand.intro_2.json',
+                                        'supply_and_demand.demand_down_followup.json',
+                                        'supply_and_demand.demand_down_followup_2.json',
+                                        'supply_and_demand.supply_none_followup.json',
+                                        'supply_and_demand.supply_none_followup_2.json']))
+        clip = json.loads((self.root / 'econ101' / 'scripts' / 'supply_and_demand.supply_none_followup_2.json')
+                          .read_text(encoding='utf-8'))
+        self.assertEqual((clip['kind'], clip['teaching_goal']),
+                         ('followup', 'Plenty of goods and the same buyers means a lower price.'))
+
+    def test_v2_prompt_asks_for_a_different_explanation_than_v1(self):
+        fake, _ = self.run_generate(self.replies())
+        v1 = fixtures.followup_clips()[0]['scenes'][0]['narration']
+        v2_prompt = prompt_text(fake.calls[4])
+        self.assertIn('demand_down_followup_2', v2_prompt)
+        self.assertIn('differently', v2_prompt)
+        self.assertIn(v1, v2_prompt)
+
+    def test_objective_without_two_misconceptions_keeps_intros_and_reports_it(self):
+        bad = fixtures.breakdown_with_misconceptions()
+        bad['objectives'][0]['misconceptions'] = bad['objectives'][0]['misconceptions'][:1]
+        _, result = self.run_generate([bad, fixtures.CLIP, fixtures.last_intro_clip()])
+        self.assertEqual(len(result['written']), 2)
+        self.assertTrue(any('misconception' in s['reason'] for s in result['skipped']))
 
 
 if __name__ == '__main__':

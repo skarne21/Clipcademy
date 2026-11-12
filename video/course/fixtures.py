@@ -82,6 +82,39 @@ def scene_clip(**changes):
     return out
 
 
+MISCONCEPTIONS = [
+    {'misconception_id': 'demand_down', 'label': 'Thinks more demand lowers the price',
+     'followup_goal': 'More demand with the same supply raises the price.',
+     'followup_2_goal': 'Too many buyers for too few goods pushes the price up.', 'source_refs': ['econ101-lecture3-p1']},
+    {'misconception_id': 'supply_none', 'label': 'Thinks supply never changes the price',
+     'followup_goal': 'More supply with the same demand lowers the price.',
+     'followup_2_goal': 'Plenty of goods and the same buyers means a lower price.', 'source_refs': ['econ101-lecture3-p1']},
+]
+
+
+def breakdown_with_misconceptions():
+    out = copy.deepcopy(BREAKDOWN)
+    out['objectives'][0]['misconceptions'] = copy.deepcopy(MISCONCEPTIONS)
+    return out
+
+
+def followup_clip(variant_id, teaching_goal):
+    out = copy.deepcopy(CLIP)
+    out.update(variant_id=variant_id, kind='followup', teaching_goal=teaching_goal)
+    sc = out['scenes'][0]
+    sc['narration'] = sc['narration'].replace('But what happens when supply grows? Swipe.',
+                                              'Keep that picture in mind. Now try the question again.')
+    sc['beats'][-2] = {'on': 'keep that picture', 'do': ['pose:think']}
+    sc['beats'][-1] = {'on': 'try the question', 'do': ['pulse:price']}
+    return out
+
+
+def followup_clips():
+    """The four follow-up replies, in the order the pipeline asks for them."""
+    return [followup_clip(f'{m["misconception_id"]}{suffix}', m[goal]) for m in MISCONCEPTIONS
+            for suffix, goal in (('_followup', 'followup_goal'), ('_followup_2', 'followup_2_goal'))]
+
+
 def last_intro_clip():
     out = copy.deepcopy(CLIP)
     out.update(variant_id='intro_2', kind='last_intro', teaching_goal='When supply beats demand, prices go down.')
