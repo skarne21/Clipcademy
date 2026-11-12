@@ -393,6 +393,14 @@ STORIES = [
       'topic_id and variant_id never overwrite each other.',
       'Each generated clip is listed once, under its own objective.'],
      'video/course/test_generate.py; live run on localhost (osmosis notes made 7 clips for one objective and none for the other)'),
+    ('US-46', 'Clips are made faster and show their progress', 'teacher', 'clip generation to finish in minutes and '
+     'show what it is doing', 'I can tell it is working and do not wait half an hour', 'R8', ['H1'], 'ai', 'Member 1',
+     'in progress',
+     ['Clip scripts are written up to 4 at a time; a v2 follow-up still waits for its v1 so it can explain it differently.',
+      'Quiz questions are written for up to 4 topics at a time.',
+      'The job stage shows "Writing clip N of M" while scripts are written and "Writing questions for topic N of M" after.',
+      'The saved scripts and report list clips in the same order as before, whatever order they finish in.'],
+     'video/course/test_generate.py; video/course/test_questions.py; learning/test_courses.py; live run (2 PDFs took 22 min to script before)'),
 ]
 
 AREA_LABELS = {'student': 'area: student app', 'ai': 'area: AI', 'content': 'area: content & video',
@@ -479,6 +487,7 @@ def markdown():
         ('Running the course platform locally: current Gemini model, .env keys in Docker, LF fingerprints', 'US-36, US-37, US-38, US-39'),
         ('Course platform wrong-answer loop: follow-up clips, retry questions, MVP grading, saved progress, no review step', 'US-40, US-41, US-42, US-43, US-44'),
         ('Objectives sharing a topic keep separate clip scripts', 'US-45'),
+        ('Faster generation with progress', 'US-46'),
     ]
     out += [f'| {a} | {b} |' for a, b in coverage]
     covered = {x.strip() for _, b in coverage for x in b.split(',')}

@@ -684,6 +684,21 @@ Acceptance criteria:
 
 Evidence: video/course/test_generate.py; live run on localhost (osmosis notes made 7 clips for one objective and none for the other)
 
+### US-46: Clips are made faster and show their progress
+
+> As a teacher, I want clip generation to finish in minutes and show what it is doing, so that I can tell it is working and do not wait half an hour.
+
+Requirement R8 · Hypotheses H1 · Owner Member 1 · Status **in progress** · GitHub issue [#86](https://github.com/skarne21/Clipcademy/issues/86)
+
+Acceptance criteria:
+
+1. Clip scripts are written up to 4 at a time; a v2 follow-up still waits for its v1 so it can explain it differently.
+2. Quiz questions are written for up to 4 topics at a time.
+3. The job stage shows "Writing clip N of M" while scripts are written and "Writing questions for topic N of M" after.
+4. The saved scripts and report list clips in the same order as before, whatever order they finish in.
+
+Evidence: video/course/test_generate.py; video/course/test_questions.py; learning/test_courses.py; live run (2 PDFs took 22 min to script before)
+
 ## 3. Coverage of planned Alpha functionality
 
 | Alpha functionality (Team_Spec, notes.md) | Stories |
@@ -711,5 +726,6 @@ Evidence: video/course/test_generate.py; live run on localhost (osmosis notes ma
 | Running the course platform locally: current Gemini model, .env keys in Docker, LF fingerprints | US-36, US-37, US-38, US-39 |
 | Course platform wrong-answer loop: follow-up clips, retry questions, MVP grading, saved progress, no review step | US-40, US-41, US-42, US-43, US-44 |
 | Objectives sharing a topic keep separate clip scripts | US-45 |
+| Faster generation with progress | US-46 |
 
-Totals: 8 requirements, 45 user stories (43 built, 1 in progress, 1 proposed), 160 acceptance criteria. One GitHub issue per story, labelled `user-story`, its area, its status, and its requirement.
+Totals: 8 requirements, 46 user stories (43 built, 2 in progress, 1 proposed), 164 acceptance criteria. One GitHub issue per story, labelled `user-story`, its area, its status, and its requirement.
