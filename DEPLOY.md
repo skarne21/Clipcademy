@@ -18,7 +18,7 @@ You only need to provide **three settings** and **a disk**.
 | `CLIPCADEMY_TEACHER_TOKEN` | The password teachers type on `/teach.html` | Make one up: a long random string, e.g. from `openssl rand -hex 16` |
 
 **Optional settings:**
-- `GEMINI_MODEL`: default `gemini-2.5-pro`.
+- `GEMINI_MODEL`: default `gemini-pro-latest`, the alias Google keeps pointed at its newest Pro model.
 - `PORT`: default `8000`.
 - The biology study app's existing settings (`CLIPCADEMY_BUILD_IDS`, `CLIPCADEMY_ADMIN_TOKEN`, `CLIPCADEMY_VIDEO_PREVIEW`) work as before.
 

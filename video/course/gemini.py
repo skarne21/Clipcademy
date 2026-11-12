@@ -14,7 +14,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 ENV_FILE = HERE.parent / '.env'
 API = 'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent'
-DEFAULT_MODEL = 'gemini-2.5-pro'
+DEFAULT_MODEL = 'gemini-pro-latest'  # Google's alias for its newest Pro model, so a retirement can't break generation
 MAX_INLINE_BYTES = 18 * 1024 * 1024  # inline request data must stay under Gemini's ~20 MB request limit
 
 

@@ -28,7 +28,7 @@ python3 video/course/render_course.py --course econ101 --all
 
 **Supported material:** PDF (including slides exported as PDF), `.txt` and `.md`. Each PDF must be under 18 MB.
 
-**Optional:** set `GEMINI_MODEL` to choose the model (default `gemini-2.5-pro`). The draft voice needs `pip install espeakng-loader`.
+**Optional:** set `GEMINI_MODEL` to choose the model (default `gemini-pro-latest`, the alias Google keeps pointed at its newest Pro model). The draft voice needs `pip install espeakng-loader`.
 
 **Timing and cost:** one 20–25 s clip renders in about 12 s on a laptop. A real-voice clip costs about 350 ElevenLabs credits (about $0.05). Gemini makes one call for the breakdown, then one call per clip, plus one retry for any clip that fails the checks.
 
