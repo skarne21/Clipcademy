@@ -25,7 +25,7 @@ class MissingKey(RuntimeError):
 def load_key(env=None, env_file=ENV_FILE):
     env = os.environ if env is None else env
     if env.get('GEMINI_API_KEY'):
-        return env['GEMINI_API_KEY'].strip().strip('"\'')  # docker --env-file keeps .env quotes
+        return env['GEMINI_API_KEY'].strip()
     if Path(env_file).is_file():
         for line in Path(env_file).read_text(encoding='utf-8').splitlines():
             line = line.strip()

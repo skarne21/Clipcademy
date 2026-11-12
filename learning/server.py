@@ -29,9 +29,12 @@ TYPES = {'.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css'
          '.ico': 'image/x-icon', '.webmanifest': 'application/manifest+json'}
 
 
-def teacher_token(env=os.environ):
-    """The teacher password, without the quotes docker --env-file keeps from .env; None when unset."""
-    return (env.get('CLIPCADEMY_TEACHER_TOKEN') or '').strip().strip('"\'') or None
+def unquote_env(env=os.environ):
+    """`docker run --env-file video/.env` keeps the quotes from KEY="..."; strip them once, before anything reads a
+    key. Done here, not in video/tts.py, because tts.py is part of every clip's fingerprint."""
+    for name in ('GEMINI_API_KEY', 'ELEVENLABS_API_KEY', 'CLIPCADEMY_TEACHER_TOKEN'):
+        if name in env:
+            env[name] = env[name].strip().strip('"\'')
 
 
 def _env_list(name, default=''):
@@ -94,9 +97,10 @@ def application(environ, start_response):
     """WSGI entry for hosts that import a module-level app; built on the first request."""
     global _app
     if _app is None:
+        unquote_env()
         _app = make_server_app(os.environ.get('CLIPCADEMY_DATA', str(ROOT / 'data')),
                                os.environ.get('CLIPCADEMY_WEB_DIST', str(ROOT / 'web' / 'dist')),
-                               teacher_token())
+                               os.environ.get('CLIPCADEMY_TEACHER_TOKEN'))
     return _app(environ, start_response)
 
 
@@ -105,12 +109,13 @@ class ThreadingServer(ThreadingMixIn, WSGIServer):
 
 
 if __name__ == '__main__':
+    unquote_env()
     port = int(os.environ.get('PORT', '8000'))
     host = os.environ.get('HOST', '0.0.0.0')
     app = make_server_app(os.environ.get('CLIPCADEMY_DATA', str(ROOT / 'data')),
                           os.environ.get('CLIPCADEMY_WEB_DIST', str(ROOT / 'web' / 'dist')),
-                          teacher_token())
-    if not teacher_token():
+                          os.environ.get('CLIPCADEMY_TEACHER_TOKEN'))
+    if not os.environ.get('CLIPCADEMY_TEACHER_TOKEN'):
         print('Note: CLIPCADEMY_TEACHER_TOKEN is not set, so teach.html is locked.', flush=True)
     print(f'ClipCademy on http://localhost:{port}  (teachers: /teach.html, students: /class.html)', flush=True)
     make_server(host, port, app, server_class=ThreadingServer).serve_forever()
