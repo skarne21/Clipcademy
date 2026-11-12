@@ -455,6 +455,96 @@ Acceptance criteria:
 
 Evidence: video/course/test_isolation.py
 
+### US-30: Create a course and upload my notes
+
+> As a teacher, I want to create a course and upload my notes from a web page, so that I don't need the command line to get clips.
+
+Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **proposed**
+
+Acceptance criteria:
+
+1. `teach.html` asks for the teacher password once (`CLIPCADEMY_TEACHER_TOKEN`); every teacher request without it gets 401.
+2. Creating a course needs only a title; the server makes the course ID and a 6-character class code.
+3. Uploads accept PDF, .txt and .md files up to 18 MB each; other types and larger files are refused with a clear message.
+4. File names are reduced to a safe name, so an upload can never be written outside its course folder.
+
+Evidence: learning/test_courses.py
+
+### US-31: Clips are made in the background
+
+> As a teacher, I want clip generation to run in the background after I press Generate, so that I can leave the page while Gemini, ElevenLabs and Remotion work.
+
+Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **proposed**
+
+Acceptance criteria:
+
+1. Generate queues one job per course (409 if one is already queued or running) and returns at once.
+2. A worker thread runs the job: Gemini clip scripts, quiz questions, then one render per clip.
+3. The job shows its stage and progress (e.g. "rendering 2 of 5"), then done or failed with a plain message.
+4. A missing Gemini or ElevenLabs key fails the job with a message naming the key, without crashing the server.
+5. Regenerating keeps approved clips and questions and replaces everything not yet approved.
+
+Evidence: learning/test_courses.py
+
+### US-32: Quiz questions for any course
+
+> As a student, I want practice questions for each part of my course, so that I recall the idea instead of only watching.
+
+Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **proposed**
+
+Acceptance criteria:
+
+1. Gemini writes 2 multiple-choice questions per objective from that objective's source excerpts.
+2. Each question has 2–4 choices, exactly one correct answer, feedback for every choice and source refs.
+3. A question that fails the checks is sent back once with the errors, then skipped.
+4. Questions are saved pending review, like clips.
+
+Evidence: video/course/test_questions.py
+
+### US-33: Review clips and questions before students see them
+
+> As a teacher, I want to watch every generated clip and read every question, then approve or reject each one, so that only content I trust reaches my students.
+
+Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **proposed**
+
+Acceptance criteria:
+
+1. The course page lists every clip with a preview, its narration, source refs and review notes, and every question with its answer and feedback.
+2. Approve or reject (with an optional note) changes the item's status; approving a newer version of a clip replaces the older one.
+3. Pending clips play only through an unguessable preview link; nothing pending appears to students.
+
+Evidence: learning/test_courses.py
+
+### US-34: Join a class and practise
+
+> As a student, I want to join my class with a code, watch its clips and answer its questions, so that I can review my course on my phone.
+
+Requirement R8 · Hypotheses H1, H2 · Owner Member 3 · Status **proposed**
+
+Acceptance criteria:
+
+1. `class.html` takes a class code (or reads it from the share link) and lists the course's topics.
+2. Each topic plays its approved clips in a vertical feed, then asks its approved questions one at a time.
+3. An answer is graded on the server and shows that choice's feedback; an unknown code shows a clear message.
+4. Approved clip files are served with byte ranges so videos can seek on phones.
+
+Evidence: learning/test_courses.py; browser check
+
+### US-35: Run the whole app from one container
+
+> As a team member, I want one Docker image that serves the pages, the API, the worker and the videos, so that deploying means setting the keys and nothing else.
+
+Requirement R8 · Hypotheses H1 · Owner Member 1 · Status **proposed**
+
+Acceptance criteria:
+
+1. `learning/server.py` serves the built web pages, the existing biology API and video, and the course API from one port.
+2. The Dockerfile installs Python, Node, Remotion's browser and the built web app; data lives under `CLIPCADEMY_DATA` (a mounted disk).
+3. Configuration is environment variables only: GEMINI_API_KEY, ELEVENLABS_API_KEY, CLIPCADEMY_TEACHER_TOKEN (and optional GEMINI_MODEL, PORT).
+4. DEPLOY.md gives the exact commands to run it locally and on a container host.
+
+Evidence: learning/test_server.py; docker build
+
 ## 3. Coverage of planned Alpha functionality
 
 | Alpha functionality (Team_Spec, notes.md) | Stories |
@@ -478,5 +568,6 @@ Evidence: video/course/test_isolation.py
 | Reset demo | US-22 |
 | LLM-assisted authoring (proposed) | US-23 |
 | Course import: any class material to stick-figure clips via Gemini | US-24, US-25, US-26, US-27, US-28, US-29 |
+| Course platform: teacher upload, background jobs, quiz questions, review, class code, one-container deploy | US-30, US-31, US-32, US-33, US-34, US-35 |
 
-Totals: 8 requirements, 29 user stories (27 built, 1 in progress, 1 proposed), 107 acceptance criteria. One GitHub issue per story, labelled `user-story`, its area, its status, and its requirement.
+Totals: 8 requirements, 35 user stories (27 built, 1 in progress, 7 proposed), 131 acceptance criteria. One GitHub issue per story, labelled `user-story`, its area, its status, and its requirement.
