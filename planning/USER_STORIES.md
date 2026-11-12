@@ -582,9 +582,9 @@ Requirement R5 · Hypotheses H2 · Owner Member 1 · Status **in progress** · G
 Acceptance criteria:
 
 1. Every file the clip fingerprints hash (video/*.py, video/course/*.py, video/remotion/src, video/remotion/course, video/remotion/package.json) is checked out with LF line endings on every OS.
-2. With `core.autocrlf=true`, all 35 existing clips still match their rendered files.
+2. In the Docker image built from a `core.autocrlf=true` Windows checkout, all 35 existing clips still match their rendered files. (Native Windows still differs: `sorted()` orders paths case-insensitively there, and fixing that means editing render.py, which is itself fingerprinted, so every approval would be lost.)
 
-Evidence: .gitattributes; video/course/test_isolation.py
+Evidence: .gitattributes; video/course/test_isolation.py run inside the container
 
 ### US-39: Run the course platform on localhost
 

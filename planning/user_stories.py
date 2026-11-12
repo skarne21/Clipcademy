@@ -340,8 +340,10 @@ STORIES = [
      'one doesn\'t treat every clip as unreviewed', 'R5', ['H2'], 'content', 'Member 1', 'in progress',
      ['Every file the clip fingerprints hash (video/*.py, video/course/*.py, video/remotion/src, video/remotion/course, '
       'video/remotion/package.json) is checked out with LF line endings on every OS.',
-      'With `core.autocrlf=true`, all 35 existing clips still match their rendered files.'],
-     '.gitattributes; video/course/test_isolation.py'),
+      'In the Docker image built from a `core.autocrlf=true` Windows checkout, all 35 existing clips still match their '
+      'rendered files. (Native Windows still differs: `sorted()` orders paths case-insensitively there, and fixing that '
+      'means editing render.py, which is itself fingerprinted, so every approval would be lost.)'],
+     '.gitattributes; video/course/test_isolation.py run inside the container'),
     ('US-39', 'Run the course platform on localhost', 'teacher', 'to run the whole course platform on my own '
      'computer', 'we can use it before paying for a host', 'R8', ['H1'], 'hosting', 'Member 1', 'in progress',
      ['`docker build` succeeds and `docker run` with `--env-file video/.env` serves http://localhost:8000.',

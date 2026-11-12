@@ -2,3 +2,8 @@
 video/*.py text eol=lf
 video/*.json text eol=lf
 video/scripts/*.json text eol=lf
+# The fingerprints (video/render.py, video/course/render_course.py) also hash these (US-38).
+video/course/*.py text eol=lf
+video/remotion/package.json text eol=lf
+video/remotion/src/** text eol=lf
+video/remotion/course/** text eol=lf
