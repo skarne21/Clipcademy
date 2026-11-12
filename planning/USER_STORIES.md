@@ -545,6 +545,62 @@ Acceptance criteria:
 
 Evidence: learning/test_server.py; docker build
 
+### US-36: Clip generation uses a Gemini model that still exists
+
+> As a teacher, I want generation to keep working when Google retires a Gemini model, so that my uploaded notes still become clips and questions.
+
+Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **in progress** · GitHub issue [#76](https://github.com/skarne21/Clipcademy/issues/76)
+
+Acceptance criteria:
+
+1. With no `GEMINI_MODEL` set, the pipeline calls `gemini-pro-latest`, Google's alias for its newest Pro model (the old default `gemini-2.5-pro` is refused for new keys).
+2. Setting `GEMINI_MODEL` still picks a specific model.
+3. DEPLOY.md and video/course/README.md name the new default.
+4. A live call through `video/course/gemini.py` with the default model returns JSON.
+
+Evidence: video/course/test_generate.py GeminiClient; live call
+
+### US-37: Keys from a .env file work in Docker
+
+> As a team member, I want to pass `video/.env` to the container with `--env-file`, even when its values are in quotes, so that the keys I already use locally work in the container without editing them.
+
+Requirement R8 · Hypotheses H1 · Owner Member 1 · Status **in progress** · GitHub issue [#77](https://github.com/skarne21/Clipcademy/issues/77)
+
+Acceptance criteria:
+
+1. A quoted value in the environment (`KEY="..."`, as `docker run --env-file` passes it) is used without its quotes for GEMINI_API_KEY, ELEVENLABS_API_KEY and CLIPCADEMY_TEACHER_TOKEN.
+2. DEPLOY.md's local run uses `--env-file video/.env`, with CLIPCADEMY_TEACHER_TOKEN in that file.
+
+Evidence: video/course/test_generate.py; video/test_tts.py; learning/test_server.py
+
+### US-38: Approved clips stay approved on a Windows checkout
+
+> As a content reviewer, I want the 35 approved clips to keep matching their fingerprints on any operating system, so that a Windows checkout or a Docker image built from one doesn't treat every clip as unreviewed.
+
+Requirement R5 · Hypotheses H2 · Owner Member 1 · Status **in progress** · GitHub issue [#78](https://github.com/skarne21/Clipcademy/issues/78)
+
+Acceptance criteria:
+
+1. Every file the clip fingerprints hash (video/*.py, video/course/*.py, video/remotion/src, video/remotion/course, video/remotion/package.json) is checked out with LF line endings on every OS.
+2. With `core.autocrlf=true`, all 35 existing clips still match their rendered files.
+
+Evidence: .gitattributes; video/course/test_isolation.py
+
+### US-39: Run the course platform on localhost
+
+> As a teacher, I want to run the whole course platform on my own computer, so that we can use it before paying for a host.
+
+Requirement R8 · Hypotheses H1 · Owner Member 1 · Status **in progress** · GitHub issue [#79](https://github.com/skarne21/Clipcademy/issues/79)
+
+Acceptance criteria:
+
+1. `docker build` succeeds and `docker run` with `--env-file video/.env` serves http://localhost:8000.
+2. /teach.html accepts the teacher password from `video/.env`.
+3. Uploading a short notes file makes pending clips and questions with the real Gemini and ElevenLabs keys.
+4. After a clip and question are approved, /class.html with the class code plays the clip and checks an answer.
+
+Evidence: live run on localhost (see the issue comment)
+
 ## 3. Coverage of planned Alpha functionality
 
 | Alpha functionality (Team_Spec, notes.md) | Stories |
@@ -569,5 +625,6 @@ Evidence: learning/test_server.py; docker build
 | LLM-assisted authoring (proposed) | US-23 |
 | Course import: any class material to stick-figure clips via Gemini | US-24, US-25, US-26, US-27, US-28, US-29 |
 | Course platform: teacher upload, background jobs, quiz questions, review, class code, one-container deploy | US-30, US-31, US-32, US-33, US-34, US-35 |
+| Running the course platform locally: current Gemini model, .env keys in Docker, LF fingerprints | US-36, US-37, US-38, US-39 |
 
-Totals: 8 requirements, 35 user stories (33 built, 1 in progress, 1 proposed), 131 acceptance criteria. One GitHub issue per story, labelled `user-story`, its area, its status, and its requirement.
+Totals: 8 requirements, 39 user stories (33 built, 5 in progress, 1 proposed), 143 acceptance criteria. One GitHub issue per story, labelled `user-story`, its area, its status, and its requirement.

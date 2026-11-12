@@ -319,6 +319,36 @@ STORIES = [
       'Configuration is environment variables only: GEMINI_API_KEY, ELEVENLABS_API_KEY, CLIPCADEMY_TEACHER_TOKEN (and optional GEMINI_MODEL, PORT).',
       'DEPLOY.md gives the exact commands to run it locally and on a container host.'],
      'learning/test_server.py; docker build'),
+    ('US-36', 'Clip generation uses a Gemini model that still exists', 'teacher', 'generation to keep working when '
+     'Google retires a Gemini model', 'my uploaded notes still become clips and questions', 'R8', ['H2'], 'ai',
+     'Member 1', 'in progress',
+     ['With no `GEMINI_MODEL` set, the pipeline calls `gemini-pro-latest`, Google\'s alias for its newest Pro model '
+      '(the old default `gemini-2.5-pro` is refused for new keys).',
+      'Setting `GEMINI_MODEL` still picks a specific model.',
+      'DEPLOY.md and video/course/README.md name the new default.',
+      'A live call through `video/course/gemini.py` with the default model returns JSON.'],
+     'video/course/test_generate.py GeminiClient; live call'),
+    ('US-37', 'Keys from a .env file work in Docker', 'team member', 'to pass `video/.env` to the container with '
+     '`--env-file`, even when its values are in quotes', 'the keys I already use locally work in the container '
+     'without editing them', 'R8', ['H1'], 'hosting', 'Member 1', 'in progress',
+     ['A quoted value in the environment (`KEY="..."`, as `docker run --env-file` passes it) is used without its quotes '
+      'for GEMINI_API_KEY, ELEVENLABS_API_KEY and CLIPCADEMY_TEACHER_TOKEN.',
+      'DEPLOY.md\'s local run uses `--env-file video/.env`, with CLIPCADEMY_TEACHER_TOKEN in that file.'],
+     'video/course/test_generate.py; video/test_tts.py; learning/test_server.py'),
+    ('US-38', 'Approved clips stay approved on a Windows checkout', 'content reviewer', 'the 35 approved clips to '
+     'keep matching their fingerprints on any operating system', 'a Windows checkout or a Docker image built from '
+     'one doesn\'t treat every clip as unreviewed', 'R5', ['H2'], 'content', 'Member 1', 'in progress',
+     ['Every file the clip fingerprints hash (video/*.py, video/course/*.py, video/remotion/src, video/remotion/course, '
+      'video/remotion/package.json) is checked out with LF line endings on every OS.',
+      'With `core.autocrlf=true`, all 35 existing clips still match their rendered files.'],
+     '.gitattributes; video/course/test_isolation.py'),
+    ('US-39', 'Run the course platform on localhost', 'teacher', 'to run the whole course platform on my own '
+     'computer', 'we can use it before paying for a host', 'R8', ['H1'], 'hosting', 'Member 1', 'in progress',
+     ['`docker build` succeeds and `docker run` with `--env-file video/.env` serves http://localhost:8000.',
+      '/teach.html accepts the teacher password from `video/.env`.',
+      'Uploading a short notes file makes pending clips and questions with the real Gemini and ElevenLabs keys.',
+      'After a clip and question are approved, /class.html with the class code plays the clip and checks an answer.'],
+     'live run on localhost (see the issue comment)'),
 ]
 
 AREA_LABELS = {'student': 'area: student app', 'ai': 'area: AI', 'content': 'area: content & video',
@@ -402,6 +432,7 @@ def markdown():
         ('LLM-assisted authoring (proposed)', 'US-23'),
         ('Course import: any class material to stick-figure clips via Gemini', 'US-24, US-25, US-26, US-27, US-28, US-29'),
         ('Course platform: teacher upload, background jobs, quiz questions, review, class code, one-container deploy', 'US-30, US-31, US-32, US-33, US-34, US-35'),
+        ('Running the course platform locally: current Gemini model, .env keys in Docker, LF fingerprints', 'US-36, US-37, US-38, US-39'),
     ]
     out += [f'| {a} | {b} |' for a, b in coverage]
     covered = {x.strip() for _, b in coverage for x in b.split(',')}
