@@ -418,7 +418,7 @@ STORIES = [
      'learning/test_server.py; web/e2e/home.mjs'),
     ('US-49', 'The biology lessons as a class', 'student', 'to join the biology lessons with the class code BIO101',
      'I get the same hand-made clips and questions as the study app, from the same home page', 'R8', ['H1'], 'student',
-     'Member 1', 'in progress',
+     'Member 1', 'built',
      ['`/courses/BIO101` (any case) returns DNA replication and DNA repair, the topics the study app marks available, '
       'with their intro clips, follow-up clips, required questions and retries from the MVP lesson packets.',
       'Answers are graded by learning/grading.py with the biology answer key, so wrong answers loop exactly as in the study app.',

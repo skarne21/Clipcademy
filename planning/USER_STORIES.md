@@ -732,7 +732,7 @@ Evidence: learning/test_server.py; web/e2e/home.mjs
 
 > As a student, I want to join the biology lessons with the class code BIO101, so that I get the same hand-made clips and questions as the study app, from the same home page.
 
-Requirement R8 · Hypotheses H1 · Owner Member 1 · Status **in progress** · GitHub issue [#89](https://github.com/skarne21/Clipcademy/issues/89)
+Requirement R8 · Hypotheses H1 · Owner Member 1 · Status **built** · GitHub issue [#89](https://github.com/skarne21/Clipcademy/issues/89)
 
 Acceptance criteria:
 
@@ -775,4 +775,4 @@ Evidence: learning/test_biology_class.py; live check on localhost
 | Home page: class code or teacher sign-in | US-48 |
 | Biology lessons under class code BIO101 | US-49 |
 
-Totals: 8 requirements, 49 user stories (46 built, 2 in progress, 1 proposed), 175 acceptance criteria. One GitHub issue per story, labelled `user-story`, its area, its status, and its requirement.
+Totals: 8 requirements, 49 user stories (47 built, 1 in progress, 1 proposed), 175 acceptance criteria. One GitHub issue per story, labelled `user-story`, its area, its status, and its requirement.
