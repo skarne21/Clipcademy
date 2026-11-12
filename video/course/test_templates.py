@@ -111,12 +111,15 @@ class Validation(unittest.TestCase):
         sc['narration'] = sc['narration'].replace('prices go up', 'prices go ↑')
         self.assertTrue(any('symbol' in e for e in errors(clip)))
 
-    def test_must_be_pending_review(self):
-        self.assertTrue(any('pending' in e for e in errors(fixtures.clip(review_status='approved'))))
+    def test_no_review_fields_are_needed(self):
+        # US-44: clips go straight to the class, so there is no review status or reviewer notes.
+        clip = fixtures.clip()
+        clip.pop('review_status', None)
+        clip.pop('review_notes', None)
+        self.assertEqual(errors(clip), [])
 
-    def test_needs_source_refs_and_review_notes(self):
+    def test_needs_source_refs(self):
         self.assertTrue(any('source_refs' in e for e in errors(fixtures.clip(source_refs=[]))))
-        self.assertTrue(any('review_notes' in e for e in errors(fixtures.clip(review_notes={}))))
 
     def test_ids_are_safe_names(self):
         self.assertTrue(any('variant_id' in e for e in errors(fixtures.clip(variant_id='../x'))))

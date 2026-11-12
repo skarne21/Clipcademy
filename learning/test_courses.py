@@ -113,9 +113,6 @@ class Platform(unittest.TestCase):
         self.assertEqual(status, 200, body)
         return body
 
-    def review(self, kind, item_id, decision, note=''):
-        return call(self.app, 'POST', f'/teacher/{kind}/{item_id}/review', {'decision': decision, 'note': note}, AUTH)
-
 
 class TeacherAuth(Platform):
     def test_teacher_requests_need_the_password(self):
@@ -191,15 +188,17 @@ class Jobs(Platform):
         self.assertEqual(call(self.app, 'POST', path, {}, AUTH)[0], 202)
         self.assertEqual(call(self.app, 'POST', path, {}, AUTH)[0], 409)
 
-    def test_job_makes_pending_clips_and_questions(self):
+    def test_job_makes_clips_and_questions_live_for_the_class(self):
+        # US-44: no review step. Everything generated is live as soon as the job finishes.
         course = self.generated()
         view = self.view(course['course_id'])
         self.assertEqual(view['job']['status'], 'done')
         self.assertEqual(len(view['clips']), 2)
-        self.assertEqual({c['status'] for c in view['clips']}, {'pending'})
-        self.assertTrue(all(c['preview_url'].startswith('/course-media/preview/') for c in view['clips']))
+        self.assertTrue(all(c['video_url'].startswith(f"/course-media/{course['course_id']}/") for c in view['clips']))
+        for item in view['clips'] + view['questions']:
+            self.assertFalse({'status', 'note', 'preview_url'} & set(item), item)
+        self.assertNotIn('review', view['job']['message'])
         self.assertEqual(len(view['questions']), 1)
-        self.assertEqual(view['questions'][0]['status'], 'pending')
         self.assertEqual(view['questions'][0]['correct_choice_id'], 'A')  # teachers see the answer
 
     def test_failure_is_reported_not_raised(self):
@@ -213,17 +212,15 @@ class Jobs(Platform):
         self.assertEqual(job['status'], 'failed')
         self.assertIn('GEMINI_API_KEY', job['message'])
 
-    def test_regenerating_keeps_approved_items_and_replaces_the_rest(self):
+    def test_regenerating_replaces_the_courses_clips_and_questions(self):
         course = self.generated()
-        view = self.view(course['course_id'])
-        keep = view['clips'][0]['clip_id']
-        self.review('clips', keep, 'approve')
+        before = {c['clip_id'] for c in self.view(course['course_id'])['clips']}
         call(self.app, 'POST', f"/teacher/courses/{course['course_id']}/generate", {}, AUTH)
         self.worker.run_next()
-        clips = self.view(course['course_id'])['clips']
-        self.assertIn(keep, [c['clip_id'] for c in clips if c['status'] == 'approved'])
-        self.assertEqual(len([c for c in clips if c['status'] == 'pending']), 2)
-        self.assertEqual(len(clips), 3)
+        view = self.view(course['course_id'])
+        self.assertEqual(len(view['clips']), 2)
+        self.assertFalse(before & {c['clip_id'] for c in view['clips']})
+        self.assertEqual(len(view['questions']), 1)
 
     def test_real_pipeline_without_a_key_fails_with_the_key_name(self):
         import course_worker
@@ -253,66 +250,52 @@ class Jobs(Platform):
         self.assertEqual(self.view(course['course_id'])['job']['status'], 'done')
 
 
-class Review(Platform):
-    def test_approve_and_reject(self):
-        course = self.generated()
-        a, b = (c['clip_id'] for c in self.view(course['course_id'])['clips'])
-        self.assertEqual(self.review('clips', a, 'approve')[0], 200)
-        self.assertEqual(self.review('clips', b, 'reject', 'Analogy is misleading')[0], 200)
-        clips = {c['clip_id']: c for c in self.view(course['course_id'])['clips']}
-        self.assertEqual((clips[a]['status'], clips[b]['status'], clips[b]['note']), ('approved', 'rejected', 'Analogy is misleading'))
+class Delete(Platform):
+    """US-44: the teacher removes a bad clip or question instead of approving each one."""
 
-    def test_bad_decision_and_unknown_item(self):
+    def test_deleted_clip_and_question_leave_the_class(self):
+        course = self.generated()
+        view = self.view(course['course_id'])
+        clip, question = view['clips'][0], view['questions'][0]
+        self.assertEqual(call(self.app, 'DELETE', f"/teacher/clips/{clip['clip_id']}", headers=AUTH)[0], 200)
+        self.assertEqual(call(self.app, 'DELETE', f"/teacher/questions/{question['question_id']}", headers=AUTH)[0], 200)
+        view = self.view(course['course_id'])
+        self.assertNotIn(clip['clip_id'], [c['clip_id'] for c in view['clips']])
+        self.assertEqual(view['questions'], [])
+        _, _, student = call(self.app, 'GET', f"/courses/{course['join_code']}")
+        self.assertEqual([c['clip_id'] for c in student['objectives'][0]['clips']], [view['clips'][0]['clip_id']])
+        self.assertEqual(call(self.app, 'GET', clip['video_url'])[0], 404)
+
+    def test_unknown_item_and_missing_password(self):
         course = self.generated()
         clip = self.view(course['course_id'])['clips'][0]['clip_id']
-        self.assertEqual(self.review('clips', clip, 'maybe')[0], 400)
-        self.assertEqual(self.review('clips', 'nope', 'approve')[0], 404)
-        self.assertEqual(call(self.app, 'POST', f'/teacher/clips/{clip}/review', {'decision': 'approve'})[0], 401)
+        self.assertEqual(call(self.app, 'DELETE', '/teacher/clips/nope', headers=AUTH)[0], 404)
+        self.assertEqual(call(self.app, 'DELETE', f'/teacher/clips/{clip}')[0], 401)
 
-    def test_approving_a_new_version_replaces_the_old_one(self):
+    def test_review_endpoint_is_gone(self):
         course = self.generated()
-        first = {c['variant_id']: c['clip_id'] for c in self.view(course['course_id'])['clips']}
-        self.review('clips', first['intro_1'], 'approve')
-        call(self.app, 'POST', f"/teacher/courses/{course['course_id']}/generate", {}, AUTH)
-        self.worker.run_next()
-        newer = [c for c in self.view(course['course_id'])['clips'] if c['variant_id'] == 'intro_1' and c['status'] == 'pending'][0]
-        self.review('clips', newer['clip_id'], 'approve')
-        status = {c['clip_id']: c['status'] for c in self.view(course['course_id'])['clips']}
-        self.assertEqual((status[first['intro_1']], status[newer['clip_id']]), ('replaced', 'approved'))
+        clip = self.view(course['course_id'])['clips'][0]['clip_id']
+        self.assertEqual(call(self.app, 'POST', f'/teacher/clips/{clip}/review', {'decision': 'approve'}, AUTH)[0], 404)
 
 
 class Students(Platform):
-    def approved_course(self):
-        course = self.generated()
-        view = self.view(course['course_id'])
-        for c in view['clips']:
-            if c['variant_id'] == 'intro_1':
-                self.review('clips', c['clip_id'], 'approve')
-        self.review('questions', view['questions'][0]['question_id'], 'approve')
-        return course
-
     def test_unknown_code(self):
         self.assertEqual(call(self.app, 'GET', '/courses/ZZZZZZ')[0], 404)
 
-    def test_students_see_only_approved_items_without_answers(self):
-        course = self.approved_course()
+    def test_students_see_generated_items_without_answers(self):
+        course = self.generated()
         status, _, body = call(self.app, 'GET', f"/courses/{course['join_code'].lower()}")
         self.assertEqual(status, 200, body)
         self.assertEqual(body['title'], 'Intro Economics')
         [obj] = body['objectives']
-        self.assertEqual([c['variant_id'] for c in obj['clips']], ['intro_1'])
+        self.assertEqual([c['variant_id'] for c in obj['clips']], ['intro_1', 'intro_2'])
         self.assertTrue(obj['clips'][0]['video_url'].startswith(f"/course-media/{course['course_id']}/"))
         [q] = obj['questions']
         self.assertNotIn('correct_choice_id', q)
         self.assertNotIn('feedback', q)
 
-    def test_course_with_nothing_approved_has_no_objectives(self):
-        course = self.generated()
-        _, _, body = call(self.app, 'GET', f"/courses/{course['join_code']}")
-        self.assertEqual(body['objectives'], [])
-
     def test_answers_are_graded_with_feedback(self):
-        course = self.approved_course()
+        course = self.generated()
         qid = f"{course['course_id']}-price_changes-q1"
         path = f"/courses/{course['join_code']}/answers"
         _, _, right = call(self.app, 'POST', path, {'question_id': qid, 'choice_id': 'A'})
@@ -322,16 +305,10 @@ class Students(Platform):
         self.assertEqual(wrong['correct_choice_id'], 'A')
         self.assertEqual(call(self.app, 'POST', path, {'question_id': qid, 'choice_id': 'Q'})[0], 400)
 
-    def test_unapproved_question_cannot_be_answered(self):
-        course = self.generated()
-        qid = f"{course['course_id']}-price_changes-q1"
-        status = call(self.app, 'POST', f"/courses/{course['join_code']}/answers", {'question_id': qid, 'choice_id': 'A'})[0]
-        self.assertEqual(status, 404)
-
 
 class Media(Platform):
-    def test_approved_clips_stream_with_ranges(self):
-        course = Students.approved_course(self)
+    def test_clips_stream_with_ranges(self):
+        course = self.generated()
         _, _, body = call(self.app, 'GET', f"/courses/{course['join_code']}")
         url = body['objectives'][0]['clips'][0]['video_url']
         status, headers, data = call(self.app, 'GET', url)
@@ -340,16 +317,10 @@ class Media(Platform):
         status, headers, data = call(self.app, 'GET', url, headers={'Range': 'bytes=0-9'})
         self.assertEqual((status, len(data)), (206, 10))
 
-    def test_pending_clips_only_through_their_preview_link(self):
-        course = self.generated()
-        clip = self.view(course['course_id'])['clips'][0]
-        direct = f"/course-media/{course['course_id']}/{clip['video_file']}"
-        self.assertEqual(call(self.app, 'GET', direct)[0], 404)
-        self.assertEqual(call(self.app, 'GET', clip['preview_url'])[0], 200)
-        self.assertEqual(call(self.app, 'GET', '/course-media/preview/' + '0' * 32 + '.mp4')[0], 404)
-
     def test_bad_media_paths(self):
-        for path in ('/course-media/../courses.db', '/course-media/x/../../courses.db', '/course-media/preview/abc.mp4'):
+        course = self.generated()
+        for path in ('/course-media/../courses.db', '/course-media/x/../../courses.db', '/course-media/preview/abc.mp4',
+                     f"/course-media/{course['course_id']}/not-a-clip.mp4"):
             self.assertEqual(call(self.app, 'GET', path)[0], 404, path)
 
 

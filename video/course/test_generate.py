@@ -145,14 +145,14 @@ class Breakdown(Workspace):
 
 
 class Storyboard(Workspace):
-    def test_valid_clips_are_written_pending_review(self):
+    def test_valid_clips_are_written_without_a_review_status(self):
         _, result = self.run_generate([fixtures.BREAKDOWN, fixtures.CLIP, fixtures.last_intro_clip()])
         scripts = self.root / 'econ101' / 'scripts'
         self.assertEqual(sorted(p.name for p in scripts.glob('*.json')),
                          ['supply_and_demand.price_changes.intro_1.json', 'supply_and_demand.price_changes.intro_2.json'])
         for path in scripts.glob('*.json'):
             clip = json.loads(path.read_text(encoding='utf-8'))
-            self.assertEqual(clip['review_status'], 'pending')
+            self.assertFalse({'review_status', 'review_notes'} & set(clip), path.name)
             self.assertEqual(clip['course_id'], 'econ101')
         self.assertEqual(len(result['written']), 2)
 
@@ -179,11 +179,22 @@ class Storyboard(Workspace):
         self.assertEqual(result['skipped'][0]['variant_id'], 'intro_1')
         self.assertTrue(result['skipped'][0]['errors'])
 
-    def test_gemini_cannot_mark_its_own_clip_approved_or_change_ids(self):
-        sneaky = fixtures.clip(review_status='approved', course_id='other', variant_id='intro_9')
+    def test_gemini_cannot_change_ids(self):
+        sneaky = fixtures.clip(course_id='other', variant_id='intro_9')
         self.run_generate([fixtures.BREAKDOWN, sneaky, fixtures.last_intro_clip()])
         clip = json.loads((self.root / 'econ101' / 'scripts' / 'supply_and_demand.price_changes.intro_1.json').read_text(encoding='utf-8'))
-        self.assertEqual((clip['review_status'], clip['course_id'], clip['variant_id']), ('pending', 'econ101', 'intro_1'))
+        self.assertEqual((clip['course_id'], clip['variant_id']), ('econ101', 'intro_1'))
+
+    def test_prompts_ask_for_no_review_fields(self):
+        fake, _ = self.run_generate([fixtures.BREAKDOWN, fixtures.CLIP, fixtures.last_intro_clip()])
+        for call in fake.calls:
+            text = prompt_text(call)
+            for word in ('review_status', 'review_notes', 'reviewer'):
+                self.assertNotIn(word, text)
+
+    def test_rendered_clip_has_no_review_copy_label(self):
+        import render_course
+        self.assertEqual(render_course.sources_line(fixtures.CLIP), 'Sources: econ101-lecture3-p1')
 
     def test_fixture_followup_clip_passes_the_checks(self):
         import templates
