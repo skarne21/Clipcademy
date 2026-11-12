@@ -294,17 +294,6 @@ class Students(Platform):
         self.assertNotIn('correct_choice_id', q)
         self.assertNotIn('feedback', q)
 
-    def test_answers_are_graded_with_feedback(self):
-        course = self.generated()
-        qid = f"{course['course_id']}-price_changes-q1"
-        path = f"/courses/{course['join_code']}/answers"
-        _, _, right = call(self.app, 'POST', path, {'question_id': qid, 'choice_id': 'A'})
-        _, _, wrong = call(self.app, 'POST', path, {'question_id': qid, 'choice_id': 'B'})
-        self.assertEqual((right['correct'], wrong['correct']), (True, False))
-        self.assertEqual(wrong['feedback'], 'It falls when supply rises.')
-        self.assertEqual(wrong['correct_choice_id'], 'A')
-        self.assertEqual(call(self.app, 'POST', path, {'question_id': qid, 'choice_id': 'Q'})[0], 400)
-
 
 class Media(Platform):
     def test_clips_stream_with_ranges(self):

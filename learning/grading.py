@@ -76,8 +76,11 @@ def _read_state(raw, packet):
     return state
 
 
-def grade(req, attempts):
-    """Grade one attempt. attempts maps attempt_id -> (request, result) and is updated in place."""
+def grade(req, attempts, packets=None, key=None, questions=None):
+    """Grade one attempt. attempts maps attempt_id -> (request, result) and is updated in place.
+
+    packets, key and questions default to the biology lesson; the course platform passes its own (US-42)."""
+    packets, key_table, questions = packets or PACKETS, key or KEY, questions or QUESTIONS
     if not isinstance(req, dict):
         _bad("body", "must be a JSON object")
     attempt_id = req.get("attempt_id")
@@ -89,15 +92,15 @@ def grade(req, attempts):
             _bad("attempt_id", "already used for a different submission", 409)
         return copy.deepcopy(seen_result)
 
-    packet = PACKETS.get(req.get("objective_id"))
+    packet = packets.get(req.get("objective_id"))
     if packet is None:
         _bad("objective_id", "unknown objective")
     qid = req.get("question_id")
-    if qid not in KEY:
+    if qid not in key_table:
         _bad("question_id", "unknown question")
-    if QUESTIONS[qid]["objective_id"] != packet["objective_id"]:
+    if questions[qid]["objective_id"] != packet["objective_id"]:
         _bad("question_id", f"does not belong to objective {packet['objective_id']}")
-    key = KEY[qid]
+    key = key_table[qid]
     choice = key["choices"].get(req.get("selected_choice_id"))
     if choice is None:
         _bad("selected_choice_id", f"unknown choice for {qid}")

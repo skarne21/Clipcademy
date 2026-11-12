@@ -17,6 +17,8 @@ from http import HTTPStatus
 from pathlib import Path
 from urllib.parse import unquote
 
+import grading
+
 HERE = Path(__file__).resolve().parent
 MAX_UPLOAD = 18 * 1024 * 1024
 MAX_JSON = 64 * 1024
@@ -220,9 +222,56 @@ def question_view(row, teacher=True):
     return out
 
 
+def _question_data(row):
+    """A stored question with the US-41 fields; courses made before then have plain required questions."""
+    data = json.loads(row['data'])
+    data.setdefault('role', 'required')
+    data.setdefault('counts_for', row['question_id'])
+    data.setdefault('misconceptions', {})
+    return data
+
+
+def lesson(store, course_id, objective_id):
+    """(packet, answer key, questions) in learning/grading.py's shapes, so a course is graded by the MVP's rules.
+
+    Follow-up variants are named <misconception>_followup and _followup_2 (US-40). A wrong choice with no misconception
+    (an older course) maps to an empty one, which grading turns into needs_review instead of a loop."""
+    clips = [r for r in store.clips(course_id) if r['objective_id'] == objective_id]
+    rows = [r for r in store.questions(course_id) if r['objective_id'] == objective_id]
+    data = {r['question_id']: _question_data(r) for r in rows}
+    required = [q for q, d in data.items() if d['role'] == 'required']
+    if not clips or not required:
+        return None
+    misconceptions = {None: {'variant_ids': [], 'retry_question_ids': []}}
+    for d in data.values():
+        for m in filter(None, d['misconceptions'].values()):
+            misconceptions[m] = {'variant_ids': [f'{m}_followup', f'{m}_followup_2'],
+                                 'retry_question_ids': [q for q, r in data.items()
+                                                        if r['role'] == 'retry' and r.get('misconception_id') == m]}
+    scripts = {r['variant_id']: json.loads(r['script']) for r in clips}
+    variants = {v: {'teaching_goal': '', 'source_refs': []} for m in misconceptions.values() for v in m['variant_ids']}
+    variants.update({v: {'teaching_goal': s.get('teaching_goal', ''), 'source_refs': s.get('source_refs', [])}
+                     for v, s in scripts.items()})
+    intros = sorted((v for v in scripts if v.startswith('intro')), key=variant_order)
+    packet = {'topic_id': clips[0]['topic_id'], 'objective_id': objective_id, 'required_question_ids': required,
+              'misconceptions': misconceptions, 'variants': variants,
+              'review_points': [scripts[v]['teaching_goal'] for v in intros if scripts[v].get('teaching_goal')]}
+    key = {q: {'correct_choice_id': d['correct_choice_id'], 'counts_for': d['counts_for'] if d['counts_for'] in data else q,
+               'source_refs': d.get('source_refs', []),
+               'choices': {c['choice_id']: {'feedback': d['feedback'].get(c['choice_id'], ''),
+                                            'misconception_id': None if c['choice_id'] == d['correct_choice_id']
+                                            else d['misconceptions'].get(c['choice_id'])}
+                           for c in d['choices']}}
+           for q, d in data.items()}
+    return packet, key, {q: {'objective_id': objective_id} for q in data}
+
+
 def make_courses_app(store, data_dir, teacher_token, worker=None):
     data_dir = Path(data_dir)
     courses_root = data_dir / 'courses'
+    # ponytail: attempt results kept in memory only to answer a re-sent attempt the same way; lost on restart, which
+    # just means a re-send after a restart is graded again. Persist them if that ever matters.
+    attempts = {}
 
     def read_json(environ):
         try:
@@ -307,29 +356,38 @@ def make_courses_app(store, data_dir, teacher_token, worker=None):
         for row in store.clips(cid):
             obj = objectives.setdefault(row['objective_id'], {'objective_id': row['objective_id'], 'topic_id': row['topic_id'],
                                                               'label': row['objective_label'] or row['objective_id'],
-                                                              'clips': [], 'questions': []})
-            obj['clips'].append(clip_view(row, teacher=False))
+                                                              'clips': [], 'followups': {}, 'questions': [], 'retries': {}})
+            view = clip_view(row, teacher=False)
+            if row['variant_id'].startswith('intro'):
+                obj['clips'].append(view)
+            else:
+                obj['followups'][row['variant_id']] = view
         for row in store.questions(cid):
             if row['objective_id'] in objectives:
-                objectives[row['objective_id']]['questions'].append(question_view(row, teacher=False))
+                obj = objectives[row['objective_id']]
+                if _question_data(row)['role'] == 'retry':
+                    obj['retries'][row['question_id']] = question_view(row, teacher=False)
+                else:
+                    obj['questions'].append(question_view(row, teacher=False))
         for obj in objectives.values():
             obj['clips'].sort(key=lambda c: variant_order(c['variant_id']))
         return 200, {'title': course['title'], 'join_code': course['join_code'], 'objectives': list(objectives.values())}
 
-    def answer(environ, code):
+    def attempt(environ, code):
+        """US-42: POST /attempts as in the MVP (Member2_SPEC), for a course's objective."""
         course = store.course_by_code(code or '')
         if not course:
             raise HttpError(404, 'code', 'no class with that code')
         body = read_json(environ)
-        rows = [r for r in store.questions(course['course_id']) if r['question_id'] == body.get('question_id')]
-        if not rows:
-            raise HttpError(404, 'question_id', 'no such question in this class')
-        data = json.loads(rows[0]['data'])
-        choice = body.get('choice_id')
-        if choice not in {c['choice_id'] for c in data['choices']}:
-            raise HttpError(400, 'choice_id', 'not one of this question\'s choices')
-        return 200, {'correct': choice == data['correct_choice_id'], 'correct_choice_id': data['correct_choice_id'],
-                     'feedback': data['feedback'][choice]}
+        found = lesson(store, course['course_id'], str(body.get('objective_id') or ''))
+        if not found:
+            raise HttpError(400, 'objective_id', 'unknown objective in this class')
+        packet, key, questions = found
+        try:
+            result = grading.grade(body, attempts, {packet['objective_id']: packet}, key, questions)
+        except grading.GradingError as e:
+            raise HttpError(e.status, e.field, e.message)
+        return 200, result
 
     def serve_media(environ, start_response, path):
         parts = path.split('/')
@@ -364,8 +422,8 @@ def make_courses_app(store, data_dir, teacher_token, worker=None):
         elif parts[:1] == ['courses']:
             if len(parts) == 2 and method == 'GET':
                 return student_course(parts[1])
-            if len(parts) == 3 and parts[2] == 'answers' and method == 'POST':
-                return answer(environ, parts[1])
+            if len(parts) == 3 and parts[2] == 'attempts' and method == 'POST':
+                return attempt(environ, parts[1])
         raise HttpError(404, 'path', f'no endpoint at {method} {path}')
 
     def application(environ, start_response):
