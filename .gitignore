@@ -4,3 +4,7 @@ secrets.txt
 
 # ElevenLabs API key and cached narration audio: never commit
 video/.env
+
+# Course platform data (local runs)
+data/
+video/courses/

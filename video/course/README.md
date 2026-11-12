@@ -73,7 +73,7 @@ For text material, every source quote must appear word for word in the file, or 
 
 **Everything generated is `pending`.** Gemini can't approve its own clip: the pipeline overwrites the IDs and the review status, whatever Gemini returns. No Gemini call ever happens during a student session.
 
-**Not built yet:** serving approved course clips in the student app, which needs an audit row per clip like the biology clips have, and generating quiz questions for new courses.
+**Teachers and students:** the course platform (`learning/courses.py`, `learning/course_worker.py`, `/teach.html` and `/class.html`) runs this pipeline from a web page. It also generates quiz questions (`questions.py`), handles review and serves approved clips. See [DEPLOY.md](../../DEPLOY.md).
 
 ## Tests
 
@@ -85,27 +85,4 @@ python3 -m pytest video/course    # 45 tests; the layout test renders real frame
 
 ## Where to host it
 
-The student app on PythonAnywhere's free plan **can't run this pipeline**:
-- **No rendering:** rendering needs Node and headless Chrome, which the free plan doesn't have.
-- **Restricted internet access:** free accounts can only reach an allowlist of sites, so Gemini calls aren't guaranteed to work.
-
-**Recommended setup: keep the app where it is, and add a rendering worker on Google Cloud.**
-
-| Piece | Where | Why |
-| --- | --- | --- |
-| Student app + learning API (SQLite) | **PythonAnywhere** (as now; the $5/month plan if the upload page lives there, for unrestricted internet access) | It already works, and its SQLite file persists |
-| Generate + render worker | **Google Cloud Run Job**: one Docker image with Python, Node, Remotion's Chrome and this repo | Runs only when material is imported and costs nothing when idle. Gemini keys live in the same Google account. A clip takes about 12 s of CPU |
-| Clip files | **Google Cloud Storage** bucket | Rendered MP4s, captions and manifests, served to the app after approval |
-| Keys | **Secret Manager** (`GEMINI_API_KEY`, `ELEVENLABS_API_KEY`) | Keys stay out of the image and the repo |
-
-**How an import would flow:**
-1. A teacher uploads a file in the app.
-2. The app stores it and starts the Cloud Run Job.
-3. The job runs `generate.py` and then `render_course.py`.
-4. The job uploads the media to the bucket.
-5. A reviewer approves each clip.
-6. The app plays approved clips from the bucket.
-
-**Simpler alternative:** move everything to a single Docker host with a background worker, such as Railway, Render or Fly.io. The SQLite database then needs a persistent volume.
-
-**Remotion's licence** is free for individuals and companies of up to 3 people. A bigger company needs a paid licence (remotion.dev/license).
+See [DEPLOY.md](../../DEPLOY.md). It covers one Docker container with a disk at `/data` and three settings: `GEMINI_API_KEY`, `ELEVENLABS_API_KEY` and `CLIPCADEMY_TEACHER_TOKEN`.

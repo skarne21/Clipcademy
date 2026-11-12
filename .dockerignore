@@ -1,0 +1,21 @@
+# Secrets and local state never go into the image.
+video/.env
+**/.env
+**/node_modules
+**/__pycache__
+**/*.db
+video/.cache
+video/courses
+video/voice-samples
+data
+web/dist
+.git
+.claude
+.cc-deck-build
+.coverage
+.DS_Store
+output
+*.zip
+*.pdf
+clipcademy-study-and-grading*
+Notes

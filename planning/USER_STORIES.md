@@ -459,7 +459,7 @@ Evidence: video/course/test_isolation.py
 
 > As a teacher, I want to create a course and upload my notes from a web page, so that I don't need the command line to get clips.
 
-Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **proposed**
+Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **built**
 
 Acceptance criteria:
 
@@ -474,7 +474,7 @@ Evidence: learning/test_courses.py
 
 > As a teacher, I want clip generation to run in the background after I press Generate, so that I can leave the page while Gemini, ElevenLabs and Remotion work.
 
-Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **proposed**
+Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **built**
 
 Acceptance criteria:
 
@@ -490,7 +490,7 @@ Evidence: learning/test_courses.py
 
 > As a student, I want practice questions for each part of my course, so that I recall the idea instead of only watching.
 
-Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **proposed**
+Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **built**
 
 Acceptance criteria:
 
@@ -505,7 +505,7 @@ Evidence: video/course/test_questions.py
 
 > As a teacher, I want to watch every generated clip and read every question, then approve or reject each one, so that only content I trust reaches my students.
 
-Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **proposed**
+Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **built**
 
 Acceptance criteria:
 
@@ -519,7 +519,7 @@ Evidence: learning/test_courses.py
 
 > As a student, I want to join my class with a code, watch its clips and answer its questions, so that I can review my course on my phone.
 
-Requirement R8 · Hypotheses H1, H2 · Owner Member 3 · Status **proposed**
+Requirement R8 · Hypotheses H1, H2 · Owner Member 3 · Status **built**
 
 Acceptance criteria:
 
@@ -534,7 +534,7 @@ Evidence: learning/test_courses.py; browser check
 
 > As a team member, I want one Docker image that serves the pages, the API, the worker and the videos, so that deploying means setting the keys and nothing else.
 
-Requirement R8 · Hypotheses H1 · Owner Member 1 · Status **proposed**
+Requirement R8 · Hypotheses H1 · Owner Member 1 · Status **built**
 
 Acceptance criteria:
 
@@ -570,4 +570,4 @@ Evidence: learning/test_server.py; docker build
 | Course import: any class material to stick-figure clips via Gemini | US-24, US-25, US-26, US-27, US-28, US-29 |
 | Course platform: teacher upload, background jobs, quiz questions, review, class code, one-container deploy | US-30, US-31, US-32, US-33, US-34, US-35 |
 
-Totals: 8 requirements, 35 user stories (27 built, 1 in progress, 7 proposed), 131 acceptance criteria. One GitHub issue per story, labelled `user-story`, its area, its status, and its requirement.
+Totals: 8 requirements, 35 user stories (33 built, 1 in progress, 1 proposed), 131 acceptance criteria. One GitHub issue per story, labelled `user-story`, its area, its status, and its requirement.

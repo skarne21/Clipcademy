@@ -1,0 +1,367 @@
+/* Teacher and class pages. Builds on style.css (tokens, buttons, bottom bar). */
+body.teach #app {
+  max-width: 64rem;
+  padding-bottom: 3rem;
+}
+
+.eyebrow {
+  color: var(--muted);
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin: 0.5rem 0 0;
+}
+
+.stack {
+  display: grid;
+  gap: 0.75rem;
+  max-width: 24rem;
+}
+
+.field {
+  font: inherit;
+  font-size: max(1rem, 16px);
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 3rem;
+  padding: 0 0.75rem;
+  border: 1px solid #8a9099;
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.field.small {
+  min-height: 2.75rem;
+  font-size: max(0.9375rem, 16px);
+}
+
+.code-input {
+  font-size: 1.5rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
+.field-label {
+  font-weight: 600;
+}
+
+.error-text {
+  color: var(--no);
+  margin: 0;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.block {
+  display: block;
+}
+
+.topline {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.topline h3 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.inline-form {
+  display: flex;
+  gap: 0.75rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.inline-form .field {
+  flex: 1;
+}
+
+.inline-form button {
+  flex: none;
+}
+
+.cards {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.card-button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  text-decoration: none;
+  font: inherit;
+}
+
+.card-button:hover {
+  border-color: var(--accent);
+}
+
+.back-link {
+  display: inline-block;
+  margin: 0.25rem 0 0.5rem;
+  min-height: 2.75rem;
+  line-height: 2.75rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--accent);
+  background: none;
+  border: 0;
+  padding: 0;
+  font-size: 1rem;
+}
+
+.as-button {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  padding: 0 1.25rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  margin: 0.5rem 0;
+}
+
+.panel {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.panel h2 {
+  margin-top: 0;
+}
+
+.share {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  background: var(--sunken);
+  border-color: transparent;
+}
+
+.share p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.code {
+  letter-spacing: 0.15em;
+}
+
+.file-list {
+  margin: 0 0 0.5rem;
+  padding-left: 1.25rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  background: var(--sunken);
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.badge-approved,
+.badge-done {
+  background: #e3f1e8;
+  color: var(--ok);
+}
+
+.badge-rejected,
+.badge-failed {
+  background: #f6e3e0;
+  color: var(--no);
+}
+
+.badge-running,
+.badge-queued {
+  background: #e4ebf5;
+  color: var(--accent);
+}
+
+.review-card {
+  display: grid;
+  grid-template-columns: minmax(0, 11rem) minmax(0, 1fr);
+  gap: 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1rem;
+  margin: 0 0 1rem;
+}
+
+.review-card:not(:has(.review-media)) {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.review-card.status-replaced {
+  opacity: 0.55;
+}
+
+.preview-video {
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  background: #000;
+  border-radius: var(--radius);
+}
+
+.review-body p {
+  margin: 0.5rem 0;
+}
+
+.checks {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.25rem 0.75rem;
+  font-size: 0.9375rem;
+}
+
+.checks dt {
+  font-weight: 600;
+}
+
+.checks dd {
+  margin: 0;
+}
+
+.review-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.review-actions .field {
+  flex: 1 1 12rem;
+}
+
+.answer-list {
+  padding-left: 1.25rem;
+}
+
+.answer-list li {
+  margin: 0.375rem 0;
+}
+
+.answer-list li.is-right strong {
+  color: var(--ok);
+}
+
+/* class page */
+.clip-frame {
+  margin: 0.5rem auto 1rem;
+  max-width: 22rem;
+}
+
+.clip-video {
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  background: #000;
+  border-radius: var(--radius);
+  display: block;
+}
+
+.transcript summary {
+  cursor: pointer;
+  color: var(--muted);
+}
+
+.choices {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.choice-button {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  text-align: left;
+  padding: 0.75rem 1rem;
+  min-height: 3.25rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+}
+
+.choice-button .letter {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: var(--sunken);
+  font-weight: 700;
+}
+
+.choice-button[aria-pressed='true'] {
+  border: 2px solid var(--accent);
+}
+
+.choice-button.is-right {
+  border: 2px solid var(--ok);
+  background: #eef7f1;
+}
+
+.choice-button.is-wrong {
+  border: 2px solid var(--no);
+  background: #fbefed;
+}
+
+.choice-button:disabled {
+  opacity: 1;
+}
+
+.verdict {
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.verdict.ok {
+  color: var(--ok);
+}
+
+.verdict.no {
+  color: var(--no);
+}
+
+@media (max-width: 40rem) {
+  .review-card {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .preview-video {
+    max-width: 14rem;
+  }
+
+  .inline-form {
+    flex-direction: column;
+  }
+}
