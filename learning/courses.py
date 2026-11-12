@@ -280,6 +280,48 @@ def topics_view(path):
             for o in breakdown.get('objectives') or [] if isinstance(o, dict)]
 
 
+BIOLOGY_CODE = 'BIO101'
+VIDEO = HERE.parent / 'video'
+
+
+def biology_class():
+    """US-49: the MVP biology lessons as a class, from the same packets, questions and rendered clips as the study app.
+
+    Only the topics the study app marks available. No review gate here (the study app keeps its own)."""
+    topics = json.loads((HERE / 'data' / 'topics.json').read_text(encoding='utf-8'))['topics']
+
+    def clip(topic_id, variant_id):
+        # ponytail: one rendered record per clip in video/media, found by name; matching by fingerprint would break on
+        # Windows checkouts (path sort order). Switch to jobs.VideoService.asset if several renders ever coexist.
+        records = sorted((VIDEO / 'media').glob(f'{topic_id}.{variant_id}.*.json'))
+        if not records:
+            return None
+        record = json.loads(records[-1].read_text(encoding='utf-8'))
+        script = json.loads((VIDEO / 'scripts' / f'{topic_id}.{variant_id}.json').read_text(encoding='utf-8'))
+        return {'clip_id': f'{topic_id}.{variant_id}', 'topic_id': topic_id, 'variant_id': variant_id,
+                'title': script['scenes'][0].get('title', ''), 'duration_seconds': record.get('duration_seconds'),
+                'video_url': '/media/' + record['video_file'], 'captions_url': '/media/' + record['captions_file'],
+                'transcript': record.get('transcript', '')}
+
+    def question(qid):
+        q = grading.QUESTIONS[qid]
+        return {k: q[k] for k in ('question_id', 'objective_id', 'prompt', 'choices')}
+
+    objectives = []
+    for topic in (t for t in topics if t.get('availability') == 'available'):
+        for o in topic['objectives']:
+            packet = grading.PACKETS[o['objective_id']]
+            intros = grading.intro_variant_ids(packet)
+            followups = {v: clip(topic['topic_id'], v) for v in packet['variants'] if v not in intros}
+            objectives.append({'objective_id': o['objective_id'], 'topic_id': topic['topic_id'], 'label': topic['label'],
+                               'clips': [c for c in (clip(topic['topic_id'], v) for v in intros) if c],
+                               'followups': {v: c for v, c in followups.items() if c},
+                               'questions': [question(q) for q in packet['required_question_ids']],
+                               'retries': {r: question(r) for m in packet['misconceptions'].values()
+                                           for r in m['retry_question_ids']}})
+    return {'title': 'Biology: DNA replication and repair', 'join_code': BIOLOGY_CODE, 'objectives': objectives}
+
+
 def make_courses_app(store, data_dir, teacher_token, worker=None):
     data_dir = Path(data_dir)
     courses_root = data_dir / 'courses'
@@ -363,6 +405,8 @@ def make_courses_app(store, data_dir, teacher_token, worker=None):
                      'questions': [question_view(r) for r in store.questions(cid)]}
 
     def student_course(code):
+        if (code or '').upper() == BIOLOGY_CODE:
+            return 200, biology_class()
         course = store.course_by_code(code or '')
         if not course:
             raise HttpError(404, 'code', 'no class with that code')
@@ -390,6 +434,11 @@ def make_courses_app(store, data_dir, teacher_token, worker=None):
 
     def attempt(environ, code):
         """US-42: POST /attempts as in the MVP (Member2_SPEC), for a course's objective."""
+        if (code or '').upper() == BIOLOGY_CODE:  # US-49: the biology answer key and packets, grading's defaults
+            try:
+                return 200, grading.grade(read_json(environ), attempts)
+            except grading.GradingError as e:
+                raise HttpError(e.status, e.field, e.message)
         course = store.course_by_code(code or '')
         if not course:
             raise HttpError(404, 'code', 'no class with that code')
