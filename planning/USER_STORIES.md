@@ -717,7 +717,7 @@ Evidence: video/course/test_generate.py; learning/test_courses.py; browser check
 
 > As a student or teacher, I want the home page to let me type a class code or the teacher password, so that I get to my class or the teacher page without knowing its address.
 
-Requirement R8 · Hypotheses H1 · Owner Member 1 · Status **in progress** · GitHub issue [#88](https://github.com/skarne21/Clipcademy/issues/88)
+Requirement R8 · Hypotheses H1 · Owner Member 1 · Status **built** · GitHub issue [#88](https://github.com/skarne21/Clipcademy/issues/88)
 
 Acceptance criteria:
 
@@ -759,4 +759,4 @@ Evidence: learning/test_server.py; web/e2e/home.mjs
 | Topic breakdown on the teacher page | US-47 |
 | Home page: class code or teacher sign-in | US-48 |
 
-Totals: 8 requirements, 48 user stories (45 built, 2 in progress, 1 proposed), 171 acceptance criteria. One GitHub issue per story, labelled `user-story`, its area, its status, and its requirement.
+Totals: 8 requirements, 48 user stories (46 built, 1 in progress, 1 proposed), 171 acceptance criteria. One GitHub issue per story, labelled `user-story`, its area, its status, and its requirement.

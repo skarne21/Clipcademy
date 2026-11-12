@@ -410,7 +410,7 @@ STORIES = [
      'video/course/test_generate.py; learning/test_courses.py; browser check on localhost'),
     ('US-48', 'One home page to join a class or sign in as a teacher', 'student or teacher', 'the home page to let '
      'me type a class code or the teacher password', 'I get to my class or the teacher page without knowing its address',
-     'R8', ['H1'], 'student', 'Member 1', 'in progress',
+     'R8', ['H1'], 'student', 'Member 1', 'built',
      ['`/` shows two short forms: Join a class (6-character class code) and Teacher sign in (teacher password).',
       'A class code that exists opens that class (`/class.html#CODE`); an unknown one shows a clear message and stays put.',
       'A correct teacher password opens the teacher page already signed in; a wrong one shows a clear message.',
