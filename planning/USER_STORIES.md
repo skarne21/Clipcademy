@@ -699,6 +699,20 @@ Acceptance criteria:
 
 Evidence: video/course/test_generate.py; video/course/test_questions.py; learning/test_courses.py; live run (2 PDFs took 22 min to script before)
 
+### US-47: See how my notes were broken into topics
+
+> As a teacher, I want to see the topics Gemini found in my notes, with the quotes, planned clips and common mistakes for each, so that I can check the breakdown while the clips are made.
+
+Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **in progress** · GitHub issue [#87](https://github.com/skarne21/Clipcademy/issues/87)
+
+Acceptance criteria:
+
+1. The breakdown is saved as soon as Gemini returns it, before any clip script is written.
+2. The teacher course API returns each topic with its label, source quotes, planned intro clips (teaching goals) and 2 mistakes.
+3. The teacher page shows these topics while clips are being made and after.
+
+Evidence: video/course/test_generate.py; learning/test_courses.py; browser check on localhost
+
 ## 3. Coverage of planned Alpha functionality
 
 | Alpha functionality (Team_Spec, notes.md) | Stories |
@@ -727,5 +741,6 @@ Evidence: video/course/test_generate.py; video/course/test_questions.py; learnin
 | Course platform wrong-answer loop: follow-up clips, retry questions, MVP grading, saved progress, no review step | US-40, US-41, US-42, US-43, US-44 |
 | Objectives sharing a topic keep separate clip scripts | US-45 |
 | Faster generation with progress | US-46 |
+| Topic breakdown on the teacher page | US-47 |
 
-Totals: 8 requirements, 46 user stories (43 built, 2 in progress, 1 proposed), 164 acceptance criteria. One GitHub issue per story, labelled `user-story`, its area, its status, and its requirement.
+Totals: 8 requirements, 47 user stories (43 built, 3 in progress, 1 proposed), 167 acceptance criteria. One GitHub issue per story, labelled `user-story`, its area, its status, and its requirement.

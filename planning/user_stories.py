@@ -401,6 +401,13 @@ STORIES = [
       'The job stage shows "Writing clip N of M" while scripts are written and "Writing questions for topic N of M" after.',
       'The saved scripts and report list clips in the same order as before, whatever order they finish in.'],
      'video/course/test_generate.py; video/course/test_questions.py; learning/test_courses.py; live run (2 PDFs took 22 min to script before)'),
+    ('US-47', 'See how my notes were broken into topics', 'teacher', 'to see the topics Gemini found in my notes, '
+     'with the quotes, planned clips and common mistakes for each', 'I can check the breakdown while the clips are made',
+     'R8', ['H2'], 'ai', 'Member 1', 'in progress',
+     ['The breakdown is saved as soon as Gemini returns it, before any clip script is written.',
+      'The teacher course API returns each topic with its label, source quotes, planned intro clips (teaching goals) and 2 mistakes.',
+      'The teacher page shows these topics while clips are being made and after.'],
+     'video/course/test_generate.py; learning/test_courses.py; browser check on localhost'),
 ]
 
 AREA_LABELS = {'student': 'area: student app', 'ai': 'area: AI', 'content': 'area: content & video',
@@ -488,6 +495,7 @@ def markdown():
         ('Course platform wrong-answer loop: follow-up clips, retry questions, MVP grading, saved progress, no review step', 'US-40, US-41, US-42, US-43, US-44'),
         ('Objectives sharing a topic keep separate clip scripts', 'US-45'),
         ('Faster generation with progress', 'US-46'),
+        ('Topic breakdown on the teacher page', 'US-47'),
     ]
     out += [f'| {a} | {b} |' for a, b in coverage]
     covered = {x.strip() for _, b in coverage for x in b.split(',')}
