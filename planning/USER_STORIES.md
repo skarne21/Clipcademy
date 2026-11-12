@@ -370,7 +370,7 @@ Evidence: Team_Spec.md (Member 1 section) and Scope
 
 > As a teacher, I want to import my class's lecture PDFs, slides exported as PDF, or notes for a new course, so that ClipCademy can turn any of my classes into review clips.
 
-Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **built**
+Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **built** · GitHub issue [#64](https://github.com/skarne21/Clipcademy/issues/64)
 
 Acceptance criteria:
 
@@ -385,7 +385,7 @@ Evidence: video/course/test_generate.py
 
 > As a teacher, I want Gemini to break my material into learning objectives and a plan of short clips with source quotes, so that each clip teaches one idea that is traceable to my material.
 
-Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **built**
+Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **built** · GitHub issue [#65](https://github.com/skarne21/Clipcademy/issues/65)
 
 Acceptance criteria:
 
@@ -400,7 +400,7 @@ Evidence: video/course/test_generate.py
 
 > As a teacher, I want Gemini to write each clip's narration and animation cues using only the general-purpose stick-figure scenes, so that the renderer can draw a clip for any subject.
 
-Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **built**
+Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **built** · GitHub issue [#66](https://github.com/skarne21/Clipcademy/issues/66)
 
 Acceptance criteria:
 
@@ -414,7 +414,7 @@ Evidence: video/course/test_generate.py
 
 > As a student, I want clips in any course to look and move like the biology clips, so that every class gets the same friendly, readable format.
 
-Requirement R8 · Hypotheses H1, H2 · Owner Member 1 · Status **built**
+Requirement R8 · Hypotheses H1, H2 · Owner Member 1 · Status **built** · GitHub issue [#67](https://github.com/skarne21/Clipcademy/issues/67)
 
 Acceptance criteria:
 
@@ -429,7 +429,7 @@ Evidence: video/course/test_templates.py; video/course/test_course_layout.py
 
 > As a teacher, I want every generated clip checked before any voice credits are spent, so that broken clips are fixed or dropped automatically instead of failing at render time.
 
-Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **built**
+Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **built** · GitHub issue [#68](https://github.com/skarne21/Clipcademy/issues/68)
 
 Acceptance criteria:
 
@@ -444,7 +444,7 @@ Evidence: video/course/test_templates.py; video/course/test_generate.py
 
 > As a content reviewer, I want generated course clips kept apart from the existing clips and marked pending, so that nothing reaches students unreviewed and the 35 approved-track clips never change.
 
-Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **built**
+Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **built** · GitHub issue [#69](https://github.com/skarne21/Clipcademy/issues/69)
 
 Acceptance criteria:
 
