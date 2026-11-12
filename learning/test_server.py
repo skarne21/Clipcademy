@@ -59,19 +59,23 @@ class OneServer(unittest.TestCase):
         self.assertTrue((self.tmp / 'data' / 'courses.db').is_file())
 
 
-class TeacherToken(unittest.TestCase):
-    """US-37: `docker run --env-file video/.env` keeps the quotes from CLIPCADEMY_TEACHER_TOKEN="..."."""
+class EnvFileQuotes(unittest.TestCase):
+    """US-37: `docker run --env-file video/.env` keeps the quotes from KEY="...". The server strips them once at
+    startup, so video/tts.py (part of every clip's fingerprint) never has to change."""
 
-    def test_quoted_token_loses_its_quotes(self):
+    def test_quotes_are_stripped_from_the_three_settings(self):
         import server
-        for value in ('"pw-123"', "'pw-123'", 'pw-123', ' pw-123 '):
-            with self.subTest(value=value):
-                self.assertEqual(server.teacher_token({'CLIPCADEMY_TEACHER_TOKEN': value}), 'pw-123')
+        env = {'GEMINI_API_KEY': '"g-key"', 'ELEVENLABS_API_KEY': "'e-key'", 'CLIPCADEMY_TEACHER_TOKEN': ' "pw" ',
+               'OTHER': '"left alone"'}
+        server.unquote_env(env)
+        self.assertEqual(env, {'GEMINI_API_KEY': 'g-key', 'ELEVENLABS_API_KEY': 'e-key', 'CLIPCADEMY_TEACHER_TOKEN': 'pw',
+                               'OTHER': '"left alone"'})
 
-    def test_missing_token_stays_off(self):
+    def test_missing_settings_stay_missing(self):
         import server
-        self.assertIsNone(server.teacher_token({}))
-        self.assertIsNone(server.teacher_token({'CLIPCADEMY_TEACHER_TOKEN': '""'}))
+        env = {}
+        server.unquote_env(env)
+        self.assertEqual(env, {})
 
 
 if __name__ == '__main__':
