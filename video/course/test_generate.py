@@ -5,8 +5,11 @@ Written before the implementation (TDD red).
 """
 import copy
 import json
+import re
 import sys
 import tempfile
+import threading
+import time
 import unittest
 from pathlib import Path
 
@@ -45,7 +48,9 @@ class Workspace(unittest.TestCase):
     def run_generate(self, replies, materials=None, course='econ101'):
         import generate
         fake = FakeGemini(replies)
-        result = generate.generate(course, materials or [self.material], client=fake, root=self.root, title='Intro Economics')
+        # workers=1: FakeGemini answers in queue order, so these tests keep one call at a time.
+        result = generate.generate(course, materials or [self.material], client=fake, root=self.root, title='Intro Economics',
+                                   workers=1)
         return fake, result
 
 
@@ -260,6 +265,60 @@ class FollowUps(Workspace):
         _, result = self.run_generate([bad, fixtures.CLIP, fixtures.last_intro_clip()])
         self.assertEqual(len(result['written']), 2)
         self.assertTrue(any('misconception' in s['reason'] for s in result['skipped']))
+
+
+class ByVariantGemini:
+    """Answers each storyboard by the variant_id in its prompt, so calls can run in any order; tracks how many overlap."""
+
+    def __init__(self):
+        self.lock, self.active, self.most, self.prompts = threading.Lock(), 0, 0, {}
+        self.replies = {'intro_1': fixtures.CLIP, 'intro_2': fixtures.last_intro_clip(),
+                        **{c['variant_id']: c for c in fixtures.followup_clips()}}
+
+    def generate_json(self, parts, system=None, temperature=None):
+        text = prompt_text({'parts': parts, 'system': system})
+        if 'Break the attached material' in text:
+            return fixtures.breakdown_with_misconceptions()
+        variant = re.search(r'- variant_id: (\S+)', text).group(1)
+        with self.lock:
+            self.active += 1
+            self.most = max(self.most, self.active)
+            self.prompts[variant] = text
+        time.sleep(0.05)
+        with self.lock:
+            self.active -= 1
+        return copy.deepcopy(self.replies[variant])
+
+
+class Parallel(Workspace):
+    """US-46: up to 4 storyboards at a time, same output, with progress."""
+
+    def run_parallel(self, progress=None):
+        import generate
+        fake = ByVariantGemini()
+        result = generate.generate('econ101', [self.material], client=fake, root=self.root, title='Intro Economics',
+                                   progress=progress)
+        return fake, result
+
+    def test_up_to_four_clips_are_written_at_once(self):
+        fake, _ = self.run_parallel()
+        self.assertEqual(fake.most, 4)
+
+    def test_v2_followup_still_sees_its_v1_narration(self):
+        fake, _ = self.run_parallel()
+        v1 = fixtures.followup_clips()[0]['scenes'][0]['narration']
+        self.assertIn(v1, fake.prompts['demand_down_followup_2'])
+
+    def test_written_order_is_the_plan_order(self):
+        _, result = self.run_parallel()
+        self.assertEqual([Path(p).name.split('.')[2] for p in result['written']],
+                         ['intro_1', 'intro_2', 'demand_down_followup', 'demand_down_followup_2',
+                          'supply_none_followup', 'supply_none_followup_2'])
+
+    def test_progress_counts_every_clip(self):
+        seen = []
+        self.run_parallel(progress=lambda n, total: seen.append((n, total)))
+        self.assertEqual(sorted(seen), [(n, 6) for n in range(1, 7)])
 
 
 if __name__ == '__main__':

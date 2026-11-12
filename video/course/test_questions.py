@@ -172,5 +172,21 @@ class Misconceptions(unittest.TestCase):
         self.assertTrue(result['skipped'])
 
 
+class Progress(unittest.TestCase):
+    """US-46: questions for several topics at once, in topic order, with progress."""
+
+    def test_two_topics_keep_their_order_and_report_progress(self):
+        import questions
+        breakdown = fixtures.breakdown_with_misconceptions()
+        second = copy.deepcopy(breakdown['objectives'][0])
+        second['objective_id'] = 'price_floors'
+        breakdown['objectives'].append(second)
+        seen = []
+        result = questions.generate_questions(FakeGemini([with_misconceptions(), with_misconceptions()]), breakdown,
+                                              'econ101', progress=lambda n, total: seen.append((n, total)))
+        self.assertEqual([q['objective_id'] for q in result['questions']], ['price_changes'] * 6 + ['price_floors'] * 6)
+        self.assertEqual(sorted(seen), [(1, 2), (2, 2)])
+
+
 if __name__ == '__main__':
     unittest.main()

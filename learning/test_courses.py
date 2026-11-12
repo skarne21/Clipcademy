@@ -43,10 +43,18 @@ class FakePipeline:
     def __init__(self, fail=None):
         self.fail = fail
         self.runs = 0
+        self.store, self.stages = None, []  # US-46: set store to record the job stage each progress call shows
 
-    def generate(self, course_id, title, materials, courses_root):
+    def seen(self, course_id):
+        if self.store:
+            self.stages.append(self.store.latest_job(course_id)['stage'])
+
+    def generate(self, course_id, title, materials, courses_root, progress=None):
         if self.fail:
             raise self.fail
+        if progress:
+            progress(1, 2)
+            self.seen(course_id)
         self.runs += 1
         base = Path(courses_root) / course_id / 'scripts'
         base.mkdir(parents=True, exist_ok=True)
@@ -60,7 +68,10 @@ class FakePipeline:
         (Path(courses_root) / course_id / 'breakdown.json').write_text(json.dumps(breakdown), encoding='utf-8')
         return {'course_id': course_id, 'written': written, 'skipped': []}
 
-    def questions(self, course_id, breakdown):
+    def questions(self, course_id, breakdown, progress=None):
+        if progress:
+            progress(1, 1)
+            self.seen(course_id)
         return {'questions': [{
             'question_id': f'{course_id}-price_changes-q1', 'topic_id': 'supply_and_demand',
             'objective_id': 'price_changes', 'prompt': 'What happens to the price when demand rises?',
@@ -200,6 +211,12 @@ class Jobs(Platform):
         self.assertNotIn('review', view['job']['message'])
         self.assertEqual(len(view['questions']), 1)
         self.assertEqual(view['questions'][0]['correct_choice_id'], 'A')  # teachers see the answer
+
+    def test_job_stage_shows_clip_and_question_progress(self):
+        # US-46: a long stage reports how far it has got, so it doesn't look frozen.
+        self.pipeline.store = self.store
+        self.generated()
+        self.assertEqual(self.pipeline.stages, ['Writing clip 1 of 2', 'Writing questions for topic 1 of 1'])
 
     def test_failure_is_reported_not_raised(self):
         import gemini
