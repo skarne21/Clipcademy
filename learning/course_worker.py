@@ -34,13 +34,14 @@ class RealPipeline:
             self._client = gemini.Gemini(gemini.load_key(**kwargs))
         return self._client
 
-    def generate(self, course_id, title, materials, courses_root):
+    def generate(self, course_id, title, materials, courses_root, progress=None):
         import generate
-        return generate.generate(course_id, materials, client=self.client(), root=courses_root, title=title)
+        return generate.generate(course_id, materials, client=self.client(), root=courses_root, title=title,
+                                 progress=progress)
 
-    def questions(self, course_id, breakdown):
+    def questions(self, course_id, breakdown, progress=None):
         import questions
-        return questions.generate_questions(self.client(), breakdown, course_id)
+        return questions.generate_questions(self.client(), breakdown, course_id, progress=progress)
 
     def render(self, script, courses_root):
         import render_course
@@ -101,11 +102,13 @@ class Worker:
             if not uploads:
                 raise RuntimeError('No uploaded files found for this course.')
             stage('Gemini is breaking your notes into clips')
-            report = self.pipeline.generate(cid, course['title'], uploads, self.root)
+            report = self.pipeline.generate(cid, course['title'], uploads, self.root,
+                                            progress=lambda n, total: stage(f'Writing clip {n} of {total}'))
             breakdown = json.loads((self.root / cid / 'breakdown.json').read_text(encoding='utf-8'))
             labels = {o.get('objective_id'): o.get('label', '') for o in breakdown.get('objectives') or []}
             stage('Gemini is writing quiz questions')
-            qs = self.pipeline.questions(cid, breakdown)
+            qs = self.pipeline.questions(cid, breakdown,
+                                         progress=lambda n, total: stage(f'Writing questions for topic {n} of {total}'))
             scripts = [json.loads(Path(p).read_text(encoding='utf-8')) for p in report.get('written', [])]
             if not scripts:
                 raise RuntimeError('Gemini made no usable clips. ' + '; '.join(

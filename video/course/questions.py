@@ -6,6 +6,8 @@ still fails it is skipped. Questions go to the class with its clips.
 """
 import json
 import sys
+import threading
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -160,36 +162,57 @@ def _choice_map(q, wrong):
     return {c['choice_id']: None if c['choice_id'] == q['correct_choice_id'] else wrong(c['choice_id']) for c in q['choices']}
 
 
-def generate_questions(client, breakdown, course_id, per_objective=2):
-    """{'questions': [...], 'skipped': [...]} for every objective in a breakdown."""
+def generate_questions(client, breakdown, course_id, per_objective=2, progress=None, workers=4):
+    """{'questions': [...], 'skipped': [...]} for every objective in a breakdown.
+
+    Up to `workers` objectives are written at once; progress(n, total) is called as each finishes (US-46)."""
+    objectives = [o for o in breakdown.get('objectives') or [] if o.get('source_excerpts') and o.get('objective_id')]
+    lock, count = threading.Lock(), [0]
+
+    def one(obj):
+        result = _objective_questions(client, obj, course_id, per_objective)
+        with lock:
+            count[0] += 1
+            done = count[0]
+        if progress:
+            progress(done, len(objectives))
+        return result
+
     questions, skipped = [], []
-    for obj in breakdown.get('objectives') or []:
-        if not obj.get('source_excerpts') or not obj.get('objective_id'):
-            continue
-        refs = {e['ref'] for e in obj['source_excerpts']}
-        ms = _misconceptions(obj)
-        reply = client.generate_json(_parts(obj, per_objective), system=SYSTEM, temperature=0.3)
-        good, retries, problems = _check_all(reply, refs, per_objective, ms)
-        if problems:
-            again = client.generate_json(_parts(obj, per_objective, reply, problems), system=SYSTEM, temperature=0.2)
-            fixed = _check_all(again, refs, per_objective, ms)
-            if _size(fixed) >= _size((good, retries)):
-                good, retries, problems = fixed
-        if problems:
-            skipped.append({'objective_id': obj['objective_id'], 'reason': 'questions failed the checks twice',
-                            'errors': problems})
-        base = {'topic_id': obj.get('topic_id'), 'objective_id': obj['objective_id'], 'objective_label': obj.get('label', '')}
-        required = []
-        for n, q in enumerate(good, 1):
-            qid = f'{course_id}-{obj["objective_id"]}-q{n}'
-            required.append({'question_id': qid, **base, **q, 'role': 'required', 'counts_for': qid,
-                             'misconceptions': _choice_map(q, lambda c: q['misconceptions'].get(c))})
-        questions += required
-        for m, items in retries.items():
-            # as in the MVP's answer key: a retry counts for the required question whose wrong choice leads to its idea
-            leads = next((q['question_id'] for q in required if m in q['misconceptions'].values()), None)
-            for n, q in enumerate(items, 1):
-                qid = f'{course_id}-{obj["objective_id"]}-{m}-r{n}'
-                questions.append({'question_id': qid, **base, **q, 'role': 'retry', 'misconception_id': m,
-                                  'counts_for': leads or qid, 'misconceptions': _choice_map(q, lambda c: m)})
+    with ThreadPoolExecutor(max_workers=max(1, workers)) as pool:
+        for qs, sk in pool.map(one, objectives):  # map keeps topic order
+            questions += qs
+            skipped += sk
     return {'questions': questions, 'skipped': skipped}
+
+
+def _objective_questions(client, obj, course_id, per_objective):
+    """(questions, skipped) for one objective."""
+    questions, skipped = [], []
+    refs = {e['ref'] for e in obj['source_excerpts']}
+    ms = _misconceptions(obj)
+    reply = client.generate_json(_parts(obj, per_objective), system=SYSTEM, temperature=0.3)
+    good, retries, problems = _check_all(reply, refs, per_objective, ms)
+    if problems:
+        again = client.generate_json(_parts(obj, per_objective, reply, problems), system=SYSTEM, temperature=0.2)
+        fixed = _check_all(again, refs, per_objective, ms)
+        if _size(fixed) >= _size((good, retries)):
+            good, retries, problems = fixed
+    if problems:
+        skipped.append({'objective_id': obj['objective_id'], 'reason': 'questions failed the checks twice',
+                        'errors': problems})
+    base = {'topic_id': obj.get('topic_id'), 'objective_id': obj['objective_id'], 'objective_label': obj.get('label', '')}
+    required = []
+    for n, q in enumerate(good, 1):
+        qid = f'{course_id}-{obj["objective_id"]}-q{n}'
+        required.append({'question_id': qid, **base, **q, 'role': 'required', 'counts_for': qid,
+                         'misconceptions': _choice_map(q, lambda c: q['misconceptions'].get(c))})
+    questions += required
+    for m, items in retries.items():
+        # as in the MVP's answer key: a retry counts for the required question whose wrong choice leads to its idea
+        leads = next((q['question_id'] for q in required if m in q['misconceptions'].values()), None)
+        for n, q in enumerate(items, 1):
+            qid = f'{course_id}-{obj["objective_id"]}-{m}-r{n}'
+            questions.append({'question_id': qid, **base, **q, 'role': 'retry', 'misconception_id': m,
+                              'counts_for': leads or qid, 'misconceptions': _choice_map(q, lambda c: m)})
+    return questions, skipped

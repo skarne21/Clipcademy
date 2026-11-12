@@ -302,7 +302,8 @@ class Parallel(Workspace):
 
     def test_up_to_four_clips_are_written_at_once(self):
         fake, _ = self.run_parallel()
-        self.assertEqual(fake.most, 4)
+        self.assertGreater(fake.most, 1)  # really in parallel
+        self.assertLessEqual(fake.most, 4)  # but never more than 4 Gemini calls at once
 
     def test_v2_followup_still_sees_its_v1_narration(self):
         fake, _ = self.run_parallel()

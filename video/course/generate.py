@@ -16,6 +16,8 @@ import json
 import re
 import shutil
 import sys
+import threading
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -188,7 +190,8 @@ def _normalize(reply, course, obj, plan):
     return clip
 
 
-def generate(course, materials, client=None, root=COURSES, title=None, max_objectives=4):
+def generate(course, materials, client=None, root=COURSES, title=None, max_objectives=4, progress=None, workers=4):
+    """progress(n, total) is called as each clip script is finished; up to `workers` Gemini calls run at once (US-46)."""
     paths = _check_inputs(course, materials)
     client = client or gemini.Gemini(gemini.load_key())
     title = title or course
@@ -208,7 +211,7 @@ def generate(course, materials, client=None, root=COURSES, title=None, max_objec
 
     text_sources = [_space(p.read_text(encoding='utf-8')) for p in paths if p.suffix.lower() != '.pdf']
     all_text = not any(p.suffix.lower() == '.pdf' for p in paths)
-    written, skipped = [], []
+    written, skipped, ready = [], [], []
     objectives = [o for o in (breakdown.get('objectives') or [])][:max_objectives]
     for obj in objectives:
         problem = _breakdown_ok(obj)
@@ -226,19 +229,47 @@ def generate(course, materials, client=None, root=COURSES, title=None, max_objec
         else:
             obj['excerpts_verified'] = False  # PDF text can't be searched here, so these quotes aren't checked
         followups, problem = followup_plans(obj)
-        intros, narrations = len(obj['clips']), {}
-        for n, plan in enumerate(obj['clips'] + followups, 1):
-            position = f'clip {n} of {intros}' if n <= intros else 'follow-up after a wrong answer'
-            if plan['variant_id'].endswith('_followup_2'):
-                plan = {**plan, 'first_narration': narrations.get(plan['variant_id'][:-2], '')}
-            reply = client.generate_json(_storyboard_parts(course, title, obj, plan, position), system=STORYBOARD_SYSTEM, temperature=0.6)
+        ready.append((obj, obj['clips'] + followups, problem))
+
+    # US-46: storyboard up to `workers` clips at once. Tasks start in plan order; a v2 follow-up waits for its v1
+    # (already started, since it was queued first) so it can explain the idea differently.
+    tasks = [(obj, plan, n) for obj, plans, _ in ready for n, plan in enumerate(plans, 1)]
+    finished = {(obj['objective_id'], plan['variant_id']): threading.Event() for obj, plan, _ in tasks}
+    results, lock, count = {}, threading.Lock(), [0]
+
+    def storyboard(task):
+        obj, plan, n = task
+        intros = len(obj['clips'])
+        position = f'clip {n} of {intros}' if n <= intros else 'follow-up after a wrong answer'
+        if plan['variant_id'].endswith('_followup_2'):
+            first = (obj['objective_id'], plan['variant_id'][:-2])
+            if first in finished:
+                finished[first].wait()
+            clip, errors = results.get(first, (None, ['missing']))
+            plan = {**plan, 'first_narration': '' if errors else clip['scenes'][0]['narration']}
+        reply = client.generate_json(_storyboard_parts(course, title, obj, plan, position), system=STORYBOARD_SYSTEM, temperature=0.6)
+        clip = _normalize(reply, course, obj, plan)
+        errors = templates.validate(clip)
+        if errors:
+            reply = client.generate_json(_storyboard_parts(course, title, obj, plan, position, clip, errors),
+                                         system=STORYBOARD_SYSTEM, temperature=0.4)
             clip = _normalize(reply, course, obj, plan)
             errors = templates.validate(clip)
-            if errors:
-                reply = client.generate_json(_storyboard_parts(course, title, obj, plan, position, clip, errors),
-                                             system=STORYBOARD_SYSTEM, temperature=0.4)
-                clip = _normalize(reply, course, obj, plan)
-                errors = templates.validate(clip)
+        key = (obj['objective_id'], plan['variant_id'])
+        with lock:
+            results[key] = (clip, errors)
+            count[0] += 1
+            done = count[0]
+        finished[key].set()
+        if progress:
+            progress(done, len(tasks))
+
+    with ThreadPoolExecutor(max_workers=max(1, workers)) as pool:
+        list(pool.map(storyboard, tasks))
+
+    for obj, plans, problem in ready:  # report in plan order, whatever order the clips finished in
+        for plan in plans:
+            clip, errors = results[(obj['objective_id'], plan['variant_id'])]
             if errors:
                 skipped.append({'objective_id': obj['objective_id'], 'variant_id': plan['variant_id'],
                                 'reason': 'failed the clip checks twice', 'errors': errors})
@@ -246,7 +277,6 @@ def generate(course, materials, client=None, root=COURSES, title=None, max_objec
             path = base / 'scripts' / f'{clip["topic_id"]}.{clip["objective_id"]}.{clip["variant_id"]}.json'
             path.write_text(json.dumps(clip, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
             written.append(str(path))
-            narrations[clip['variant_id']] = clip['scenes'][0]['narration']
         if problem:
             skipped.append({'objective_id': obj['objective_id'], 'reason': f'no follow-up clips: {problem}'})
 

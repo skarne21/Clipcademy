@@ -22,8 +22,8 @@ from test_questions import with_misconceptions  # noqa: E402
 class LoopPipeline(FakePipeline):
     """Intro clips, four follow-up clips, 2 required questions and 4 retries for one objective."""
 
-    def generate(self, course_id, title, materials, courses_root):
-        report = super().generate(course_id, title, materials, courses_root)
+    def generate(self, course_id, title, materials, courses_root, progress=None):
+        report = super().generate(course_id, title, materials, courses_root, progress)
         base = Path(courses_root) / course_id
         for clip in fixtures.followup_clips():
             clip = {**clip, 'course_id': course_id}
@@ -34,9 +34,9 @@ class LoopPipeline(FakePipeline):
                                              encoding='utf-8')
         return report
 
-    def questions(self, course_id, breakdown):
+    def questions(self, course_id, breakdown, progress=None):
         import questions
-        return questions.generate_questions(FakeGemini([with_misconceptions()]), breakdown, course_id)
+        return questions.generate_questions(FakeGemini([with_misconceptions()]), breakdown, course_id, progress=progress)
 
 
 class Loop(Platform):
