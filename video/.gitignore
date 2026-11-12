@@ -1,2 +1,3 @@
 .cache/
 voice-samples/
+.env
