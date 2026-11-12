@@ -290,6 +290,24 @@ class ByVariantGemini:
         return copy.deepcopy(self.replies[variant])
 
 
+class BreakdownFirst(Workspace):
+    def test_breakdown_is_saved_before_any_clip_is_written(self):
+        # US-47: the teacher page shows the topics while clips are still being written.
+        import generate
+        seen = []
+        fake = ByVariantGemini()
+        storyboard = fake.generate_json
+
+        def check(parts, system=None, temperature=None):
+            if 'Break the attached material' not in prompt_text({'parts': parts, 'system': system}):
+                seen.append((self.root / 'econ101' / 'breakdown.json').is_file())
+            return storyboard(parts, system, temperature)
+
+        fake.generate_json = check
+        generate.generate('econ101', [self.material], client=fake, root=self.root, title='Intro Economics', workers=1)
+        self.assertTrue(seen and all(seen))
+
+
 class Parallel(Workspace):
     """US-46: up to 4 storyboards at a time, same output, with progress."""
 

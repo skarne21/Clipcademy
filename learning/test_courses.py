@@ -218,6 +218,20 @@ class Jobs(Platform):
         self.generated()
         self.assertEqual(self.pipeline.stages, ['Writing clip 1 of 2', 'Writing questions for topic 1 of 1'])
 
+    def test_teacher_sees_the_topic_breakdown(self):
+        # US-47: how the notes were split into topics, with quotes, planned clips and mistakes.
+        course = self.generated()
+        [topic] = self.view(course['course_id'])['topics']
+        self.assertEqual((topic['objective_id'], topic['label']), ('price_changes', 'How supply and demand move prices'))
+        self.assertEqual(topic['excerpts'][0]['ref'], 'econ101-lecture3-p1')
+        self.assertEqual([c['teaching_goal'] for c in topic['clips']],
+                         ['When demand beats supply, prices go up.', 'When supply beats demand, prices go down.'])
+        self.assertEqual(topic['misconceptions'], [])
+
+    def test_no_breakdown_yet_means_no_topics(self):
+        course = self.new_course()
+        self.assertEqual(self.view(course['course_id'])['topics'], [])
+
     def test_failure_is_reported_not_raised(self):
         import gemini
         self.pipeline.fail = gemini.MissingKey('GEMINI_API_KEY is not set.')
