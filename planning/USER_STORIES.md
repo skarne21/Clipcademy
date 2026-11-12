@@ -548,7 +548,7 @@ Evidence: learning/test_server.py; docker build
 
 > As a teacher, I want generation to keep working when Google retires a Gemini model, so that my uploaded notes still become clips and questions.
 
-Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **in progress** · GitHub issue [#76](https://github.com/skarne21/Clipcademy/issues/76)
+Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **built** · GitHub issue [#76](https://github.com/skarne21/Clipcademy/issues/76)
 
 Acceptance criteria:
 
@@ -563,7 +563,7 @@ Evidence: video/course/test_generate.py GeminiClient; live call
 
 > As a team member, I want to pass `video/.env` to the container with `--env-file`, even when its values are in quotes, so that the keys I already use locally work in the container without editing them.
 
-Requirement R8 · Hypotheses H1 · Owner Member 1 · Status **in progress** · GitHub issue [#77](https://github.com/skarne21/Clipcademy/issues/77)
+Requirement R8 · Hypotheses H1 · Owner Member 1 · Status **built** · GitHub issue [#77](https://github.com/skarne21/Clipcademy/issues/77)
 
 Acceptance criteria:
 
@@ -576,7 +576,7 @@ Evidence: video/course/test_generate.py; video/test_tts.py; learning/test_server
 
 > As a content reviewer, I want the 35 approved clips to keep matching their fingerprints on any operating system, so that a Windows checkout or a Docker image built from one doesn't treat every clip as unreviewed.
 
-Requirement R5 · Hypotheses H2 · Owner Member 1 · Status **in progress** · GitHub issue [#78](https://github.com/skarne21/Clipcademy/issues/78)
+Requirement R5 · Hypotheses H2 · Owner Member 1 · Status **built** · GitHub issue [#78](https://github.com/skarne21/Clipcademy/issues/78)
 
 Acceptance criteria:
 
@@ -589,14 +589,14 @@ Evidence: .gitattributes; video/course/test_isolation.py run inside the containe
 
 > As a teacher, I want to run the whole course platform on my own computer, so that we can use it before paying for a host.
 
-Requirement R8 · Hypotheses H1 · Owner Member 1 · Status **in progress** · GitHub issue [#79](https://github.com/skarne21/Clipcademy/issues/79)
+Requirement R8 · Hypotheses H1 · Owner Member 1 · Status **built** · GitHub issue [#79](https://github.com/skarne21/Clipcademy/issues/79)
 
 Acceptance criteria:
 
 1. `docker build` succeeds and `docker run` with `--env-file video/.env` serves http://localhost:8000.
 2. /teach.html accepts the teacher password from `video/.env`.
 3. Uploading a short notes file makes pending clips and questions with the real Gemini and ElevenLabs keys.
-4. After a clip and question are approved, /class.html with the class code plays the clip and checks an answer.
+4. /class.html with the class code plays a clip and grades an answer.
 
 Evidence: live run on localhost (see the issue comment)
 
@@ -604,7 +604,7 @@ Evidence: live run on localhost (see the issue comment)
 
 > As a student, I want every topic in my class to come with short clips aimed at the two mistakes students make most, so that a wrong answer shows me what I got wrong, as in the biology app.
 
-Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **in progress** · GitHub issue [#80](https://github.com/skarne21/Clipcademy/issues/80)
+Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **built** · GitHub issue [#80](https://github.com/skarne21/Clipcademy/issues/80)
 
 Acceptance criteria:
 
@@ -618,7 +618,7 @@ Evidence: video/course/test_generate.py
 
 > As a student, I want every wrong choice to point at the mistake behind it, and a fresh question for each mistake, so that I prove I recalled the idea instead of guessing the same question again.
 
-Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **in progress** · GitHub issue [#81](https://github.com/skarne21/Clipcademy/issues/81)
+Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **built** · GitHub issue [#81](https://github.com/skarne21/Clipcademy/issues/81)
 
 Acceptance criteria:
 
@@ -632,7 +632,7 @@ Evidence: video/course/test_questions.py
 
 > As a student, I want a wrong answer to play the follow-up clip for my mistake and then a new question, with a differently explained clip if I miss it again, so that my class works like the biology app.
 
-Requirement R8 · Hypotheses H1, H2 · Owner Member 1 · Status **in progress** · GitHub issue [#82](https://github.com/skarne21/Clipcademy/issues/82)
+Requirement R8 · Hypotheses H1, H2 · Owner Member 1 · Status **built** · GitHub issue [#82](https://github.com/skarne21/Clipcademy/issues/82)
 
 Acceptance criteria:
 
@@ -647,7 +647,7 @@ Evidence: learning/test_courses.py; learning/test_grading.py
 
 > As a student, I want my place in each topic saved in this browser, so that a refresh or closed tab doesn't make me start over.
 
-Requirement R8 · Hypotheses H1 · Owner Member 1 · Status **in progress** · GitHub issue [#83](https://github.com/skarne21/Clipcademy/issues/83)
+Requirement R8 · Hypotheses H1 · Owner Member 1 · Status **built** · GitHub issue [#83](https://github.com/skarne21/Clipcademy/issues/83)
 
 Acceptance criteria:
 
@@ -660,7 +660,7 @@ Evidence: web/src/platform/class.js; browser check
 
 > As a teacher, I want generated clips and questions to go straight to my class, with a way to delete a bad one, so that students can start as soon as generation finishes.
 
-Requirement R8 · Hypotheses H1 · Owner Member 1 · Status **in progress** · GitHub issue [#84](https://github.com/skarne21/Clipcademy/issues/84)
+Requirement R8 · Hypotheses H1 · Owner Member 1 · Status **built** · GitHub issue [#84](https://github.com/skarne21/Clipcademy/issues/84)
 
 Acceptance criteria:
 
@@ -675,7 +675,7 @@ Evidence: learning/test_courses.py; web/src/platform/teach.js
 
 > As a student, I want every objective in my class to have its own clips, even when two objectives share a topic, so that no topic shows another topic's clips twice.
 
-Requirement R8 · Hypotheses H1 · Owner Member 1 · Status **in progress** · GitHub issue [#85](https://github.com/skarne21/Clipcademy/issues/85)
+Requirement R8 · Hypotheses H1 · Owner Member 1 · Status **built** · GitHub issue [#85](https://github.com/skarne21/Clipcademy/issues/85)
 
 Acceptance criteria:
 
@@ -712,4 +712,4 @@ Evidence: video/course/test_generate.py; live run on localhost (osmosis notes ma
 | Course platform wrong-answer loop: follow-up clips, retry questions, MVP grading, saved progress, no review step | US-40, US-41, US-42, US-43, US-44 |
 | Objectives sharing a topic keep separate clip scripts | US-45 |
 
-Totals: 8 requirements, 45 user stories (33 built, 11 in progress, 1 proposed), 160 acceptance criteria. One GitHub issue per story, labelled `user-story`, its area, its status, and its requirement.
+Totals: 8 requirements, 45 user stories (43 built, 1 in progress, 1 proposed), 160 acceptance criteria. One GitHub issue per story, labelled `user-story`, its area, its status, and its requirement.
