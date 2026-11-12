@@ -416,6 +416,15 @@ STORIES = [
       'A correct teacher password opens the teacher page already signed in; a wrong one shows a clear message.',
       'The biology study app moves to `/index.html`, linked from the home page; the PythonAnywhere study build is unchanged.'],
      'learning/test_server.py; web/e2e/home.mjs'),
+    ('US-49', 'The biology lessons as a class', 'student', 'to join the biology lessons with the class code BIO101',
+     'I get the same hand-made clips and questions as the study app, from the same home page', 'R8', ['H1'], 'student',
+     'Member 1', 'in progress',
+     ['`/courses/BIO101` (any case) returns DNA replication and DNA repair, the topics the study app marks available, '
+      'with their intro clips, follow-up clips, required questions and retries from the MVP lesson packets.',
+      'Answers are graded by learning/grading.py with the biology answer key, so wrong answers loop exactly as in the study app.',
+      'Clips play from the rendered biology files at `/media/`, with no review gate (the study app keeps its gate).',
+      'The participant-code study app and its data are unchanged.'],
+     'learning/test_biology_class.py; live check on localhost'),
 ]
 
 AREA_LABELS = {'student': 'area: student app', 'ai': 'area: AI', 'content': 'area: content & video',
@@ -505,6 +514,7 @@ def markdown():
         ('Faster generation with progress', 'US-46'),
         ('Topic breakdown on the teacher page', 'US-47'),
         ('Home page: class code or teacher sign-in', 'US-48'),
+        ('Biology lessons under class code BIO101', 'US-49'),
     ]
     out += [f'| {a} | {b} |' for a, b in coverage]
     covered = {x.strip() for _, b in coverage for x in b.split(',')}

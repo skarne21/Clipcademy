@@ -728,6 +728,21 @@ Acceptance criteria:
 
 Evidence: learning/test_server.py; web/e2e/home.mjs
 
+### US-49: The biology lessons as a class
+
+> As a student, I want to join the biology lessons with the class code BIO101, so that I get the same hand-made clips and questions as the study app, from the same home page.
+
+Requirement R8 · Hypotheses H1 · Owner Member 1 · Status **in progress** · GitHub issue [#89](https://github.com/skarne21/Clipcademy/issues/89)
+
+Acceptance criteria:
+
+1. `/courses/BIO101` (any case) returns DNA replication and DNA repair, the topics the study app marks available, with their intro clips, follow-up clips, required questions and retries from the MVP lesson packets.
+2. Answers are graded by learning/grading.py with the biology answer key, so wrong answers loop exactly as in the study app.
+3. Clips play from the rendered biology files at `/media/`, with no review gate (the study app keeps its gate).
+4. The participant-code study app and its data are unchanged.
+
+Evidence: learning/test_biology_class.py; live check on localhost
+
 ## 3. Coverage of planned Alpha functionality
 
 | Alpha functionality (Team_Spec, notes.md) | Stories |
@@ -758,5 +773,6 @@ Evidence: learning/test_server.py; web/e2e/home.mjs
 | Faster generation with progress | US-46 |
 | Topic breakdown on the teacher page | US-47 |
 | Home page: class code or teacher sign-in | US-48 |
+| Biology lessons under class code BIO101 | US-49 |
 
-Totals: 8 requirements, 48 user stories (46 built, 1 in progress, 1 proposed), 171 acceptance criteria. One GitHub issue per story, labelled `user-story`, its area, its status, and its requirement.
+Totals: 8 requirements, 49 user stories (46 built, 2 in progress, 1 proposed), 175 acceptance criteria. One GitHub issue per story, labelled `user-story`, its area, its status, and its requirement.
