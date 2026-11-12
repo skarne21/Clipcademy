@@ -114,6 +114,19 @@ class GeminiClient(unittest.TestCase):
         client = gemini.Gemini('k', transport=lambda u, h, b: reply)
         self.assertEqual(client.generate_json([gemini.text_part('x')]), {'a': 1})
 
+    def test_default_model_is_the_pro_alias_that_survives_retirements(self):
+        # US-36: gemini-2.5-pro is refused for new keys; Google's alias always points at a current Pro model.
+        import gemini
+        from unittest import mock
+        with mock.patch.dict('os.environ', {}, clear=True):
+            self.assertEqual(gemini.Gemini('k').model, 'gemini-pro-latest')
+
+    def test_gemini_model_setting_still_overrides_the_default(self):
+        import gemini
+        from unittest import mock
+        with mock.patch.dict('os.environ', {'GEMINI_MODEL': 'gemini-3.5-flash'}, clear=True):
+            self.assertEqual(gemini.Gemini('k').model, 'gemini-3.5-flash')
+
 
 class Breakdown(Workspace):
     def test_material_sent_and_breakdown_saved(self):
