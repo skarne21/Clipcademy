@@ -59,5 +59,20 @@ class OneServer(unittest.TestCase):
         self.assertTrue((self.tmp / 'data' / 'courses.db').is_file())
 
 
+class TeacherToken(unittest.TestCase):
+    """US-37: `docker run --env-file video/.env` keeps the quotes from CLIPCADEMY_TEACHER_TOKEN="..."."""
+
+    def test_quoted_token_loses_its_quotes(self):
+        import server
+        for value in ('"pw-123"', "'pw-123'", 'pw-123', ' pw-123 '):
+            with self.subTest(value=value):
+                self.assertEqual(server.teacher_token({'CLIPCADEMY_TEACHER_TOKEN': value}), 'pw-123')
+
+    def test_missing_token_stays_off(self):
+        import server
+        self.assertIsNone(server.teacher_token({}))
+        self.assertIsNone(server.teacher_token({'CLIPCADEMY_TEACHER_TOKEN': '""'}))
+
+
 if __name__ == '__main__':
     unittest.main()

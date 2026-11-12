@@ -64,6 +64,14 @@ class KeyTest(unittest.TestCase):
             with mock.patch.object(tts, 'HERE', Path(d)):
                 self.assertEqual(tts.api_key(), 'from-env')
 
+    def test_quoted_environment_value_loses_its_quotes(self):
+        # US-37: `docker run --env-file video/.env` keeps the quotes from ELEVENLABS_API_KEY="...".
+        for value in (f'"{SECRET}"', f"'{SECRET}'"):
+            with self.subTest(value=value), tempfile.TemporaryDirectory() as d, \
+                    mock.patch.dict(os.environ, {'ELEVENLABS_API_KEY': value}, clear=True), \
+                    mock.patch.object(tts, 'HERE', Path(d)):
+                self.assertEqual(tts.api_key(), SECRET)
+
 
 class WordTimesTest(unittest.TestCase):
     def test_exact_alignment_maps_each_word(self):

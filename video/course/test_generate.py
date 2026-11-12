@@ -81,6 +81,13 @@ class Import(Workspace):
         env.write_text('ELEVENLABS_API_KEY=x\nGEMINI_API_KEY="abc123"\n', encoding='utf-8')
         self.assertEqual(gemini.load_key(env={}, env_file=env), 'abc123')
 
+    def test_quoted_key_in_the_environment_loses_its_quotes(self):
+        # US-37: `docker run --env-file video/.env` passes GEMINI_API_KEY="abc123" with the quotes still on.
+        import gemini
+        for value in ('"abc123"', "'abc123'", ' "abc123" '):
+            with self.subTest(value=value):
+                self.assertEqual(gemini.load_key(env={'GEMINI_API_KEY': value}, env_file=self.tmp / 'no.env'), 'abc123')
+
 
 class GeminiClient(unittest.TestCase):
     def test_request_asks_for_json_and_sends_key_in_header(self):
