@@ -266,6 +266,20 @@ def lesson(store, course_id, objective_id):
     return packet, key, {q: {'objective_id': objective_id} for q in data}
 
 
+def topics_view(path):
+    """US-47: how the notes were split into topics, from breakdown.json ([] until Gemini has returned it)."""
+    try:
+        breakdown = json.loads(Path(path).read_text(encoding='utf-8'))
+    except (OSError, ValueError):
+        return []
+    return [{'objective_id': o.get('objective_id'), 'label': o.get('label', ''),
+             'excerpts': [{'ref': e.get('ref'), 'text': e.get('text')} for e in o.get('source_excerpts') or []],
+             'clips': [{'variant_id': c.get('variant_id'), 'teaching_goal': c.get('teaching_goal')} for c in o.get('clips') or []],
+             'misconceptions': [{'misconception_id': m.get('misconception_id'), 'label': m.get('label')}
+                                for m in o.get('misconceptions') or []]}
+            for o in breakdown.get('objectives') or [] if isinstance(o, dict)]
+
+
 def make_courses_app(store, data_dir, teacher_token, worker=None):
     data_dir = Path(data_dir)
     courses_root = data_dir / 'courses'
@@ -344,6 +358,7 @@ def make_courses_app(store, data_dir, teacher_token, worker=None):
         cid = course['course_id']
         return 200, {'course': course, 'share_path': f"/class.html#{course['join_code']}",
                      'materials': store.materials(cid), 'job': job_view(store.latest_job(cid)),
+                     'topics': topics_view(courses_root / cid / 'breakdown.json'),
                      'clips': [clip_view(r) for r in store.clips(cid)],
                      'questions': [question_view(r) for r in store.questions(cid)]}
 

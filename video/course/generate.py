@@ -208,6 +208,8 @@ def generate(course, materials, client=None, root=COURSES, title=None, max_objec
     breakdown = breakdown if isinstance(breakdown, dict) else {}
     breakdown.setdefault('title', title)
     breakdown['course_id'] = course
+    # US-47: saved now so the teacher page can show the topics while clips are written; saved again at the end.
+    (base / 'breakdown.json').write_text(json.dumps(breakdown, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
 
     text_sources = [_space(p.read_text(encoding='utf-8')) for p in paths if p.suffix.lower() != '.pdf']
     all_text = not any(p.suffix.lower() == '.pdf' for p in paths)

@@ -148,6 +148,22 @@ function questionCard(q) {
         h('button', { type: 'button', class: 'secondary', onclick: remove('questions', q.question_id) }, 'Delete'))))
 }
 
+// US-47: how Gemini split the notes into topics, shown as soon as it has (while clips are still being made).
+function topicsPanel(topics) {
+  if (!topics?.length) return null
+  return h('section', { class: 'panel' },
+    h('h2', {}, 'Topics from your notes'),
+    h('p', { class: 'note' }, `Gemini found ${topics.length} topic${topics.length === 1 ? '' : 's'}. Each gets intro clips, and a follow-up clip for each common mistake.`),
+    topics.map((t, i) => h('details', { class: 'topic', open: i === 0 },
+      h('summary', {}, h('strong', {}, t.label), h('span', { class: 'note' }, ` · ${t.clips.length} intro clips · ${t.misconceptions.length} mistakes`)),
+      h('h3', { class: 'field-label' }, 'From your notes'),
+      h('ul', {}, t.excerpts.map((e) => h('li', {}, `“${e.text}” `, h('span', { class: 'note' }, e.ref)))),
+      h('h3', { class: 'field-label' }, 'Intro clips teach'),
+      h('ol', {}, t.clips.map((c) => h('li', {}, c.teaching_goal))),
+      t.misconceptions.length > 0 && [h('h3', { class: 'field-label' }, 'Mistakes a wrong answer is checked for'),
+        h('ul', {}, t.misconceptions.map((m) => h('li', {}, m.label)))])))
+}
+
 async function courseScreen(courseId) {
   const view = await call('GET', `/teacher/courses/${courseId}`)
   const { course, materials, job, clips, questions } = view
@@ -171,6 +187,7 @@ async function courseScreen(courseId) {
       materials.length ? h('ul', { class: 'file-list' }, materials.map((m) => h('li', {}, m.name, h('span', { class: 'note' }, ` ${Math.ceil(m.size / 1024)} KB`)))) : null,
       h('label', { for: 'files', class: 'secondary as-button' }, 'Choose files'), files, status),
     jobPanel(course.course_id, job, materials),
+    topicsPanel(view.topics),
     h('section', {},
       h('h2', {}, '3. Clips'),
       h('p', { class: 'note' }, clips.length ? `${clips.length} clips, live for your class. Delete any you don’t want students to see.` : 'Clips appear here when they’re ready.'),
