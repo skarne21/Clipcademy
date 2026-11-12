@@ -395,7 +395,7 @@ STORIES = [
      'video/course/test_generate.py; live run on localhost (osmosis notes made 7 clips for one objective and none for the other)'),
     ('US-46', 'Clips are made faster and show their progress', 'teacher', 'clip generation to finish in minutes and '
      'show what it is doing', 'I can tell it is working and do not wait half an hour', 'R8', ['H1'], 'ai', 'Member 1',
-     'in progress',
+     'built',
      ['Clip scripts are written up to 4 at a time; a v2 follow-up still waits for its v1 so it can explain it differently.',
       'Quiz questions are written for up to 4 topics at a time.',
       'The job stage shows "Writing clip N of M" while scripts are written and "Writing questions for topic N of M" after.',
@@ -403,7 +403,7 @@ STORIES = [
      'video/course/test_generate.py; video/course/test_questions.py; learning/test_courses.py; live run (2 PDFs took 22 min to script before)'),
     ('US-47', 'See how my notes were broken into topics', 'teacher', 'to see the topics Gemini found in my notes, '
      'with the quotes, planned clips and common mistakes for each', 'I can check the breakdown while the clips are made',
-     'R8', ['H2'], 'ai', 'Member 1', 'in progress',
+     'R8', ['H2'], 'ai', 'Member 1', 'built',
      ['The breakdown is saved as soon as Gemini returns it, before any clip script is written.',
       'The teacher course API returns each topic with its label, source quotes, planned intro clips (teaching goals) and 2 mistakes.',
       'The teacher page shows these topics while clips are being made and after.'],

@@ -688,7 +688,7 @@ Evidence: video/course/test_generate.py; live run on localhost (osmosis notes ma
 
 > As a teacher, I want clip generation to finish in minutes and show what it is doing, so that I can tell it is working and do not wait half an hour.
 
-Requirement R8 · Hypotheses H1 · Owner Member 1 · Status **in progress** · GitHub issue [#86](https://github.com/skarne21/Clipcademy/issues/86)
+Requirement R8 · Hypotheses H1 · Owner Member 1 · Status **built** · GitHub issue [#86](https://github.com/skarne21/Clipcademy/issues/86)
 
 Acceptance criteria:
 
@@ -703,7 +703,7 @@ Evidence: video/course/test_generate.py; video/course/test_questions.py; learnin
 
 > As a teacher, I want to see the topics Gemini found in my notes, with the quotes, planned clips and common mistakes for each, so that I can check the breakdown while the clips are made.
 
-Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **in progress** · GitHub issue [#87](https://github.com/skarne21/Clipcademy/issues/87)
+Requirement R8 · Hypotheses H2 · Owner Member 1 · Status **built** · GitHub issue [#87](https://github.com/skarne21/Clipcademy/issues/87)
 
 Acceptance criteria:
 
@@ -743,4 +743,4 @@ Evidence: video/course/test_generate.py; learning/test_courses.py; browser check
 | Faster generation with progress | US-46 |
 | Topic breakdown on the teacher page | US-47 |
 
-Totals: 8 requirements, 47 user stories (43 built, 3 in progress, 1 proposed), 167 acceptance criteria. One GitHub issue per story, labelled `user-story`, its area, its status, and its requirement.
+Totals: 8 requirements, 47 user stories (45 built, 1 in progress, 1 proposed), 167 acceptance criteria. One GitHub issue per story, labelled `user-story`, its area, its status, and its requirement.
