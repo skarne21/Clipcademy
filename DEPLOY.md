@@ -34,11 +34,17 @@ Without a disk, all of that is lost when the container restarts.
 
 ## Run it on your laptop
 
+Put the three settings in `video/.env` (git-ignored, never copied into the image), one per line. Quotes are fine:
+
+```sh
+GEMINI_API_KEY="..."
+ELEVENLABS_API_KEY="..."
+CLIPCADEMY_TEACHER_TOKEN="..."
+```
+
 ```sh
 docker build -t clipcademy .
-docker run -p 8000:8000 -v clipcademy-data:/data \
-  -e GEMINI_API_KEY=... -e ELEVENLABS_API_KEY=... -e CLIPCADEMY_TEACHER_TOKEN=... \
-  clipcademy
+docker run -p 8000:8000 -v clipcademy-data:/data --env-file video/.env clipcademy
 ```
 
 Then open:

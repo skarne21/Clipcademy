@@ -29,6 +29,11 @@ TYPES = {'.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css'
          '.ico': 'image/x-icon', '.webmanifest': 'application/manifest+json'}
 
 
+def teacher_token(env=os.environ):
+    """The teacher password, without the quotes docker --env-file keeps from .env; None when unset."""
+    return (env.get('CLIPCADEMY_TEACHER_TOKEN') or '').strip().strip('"\'') or None
+
+
 def _env_list(name, default=''):
     return [v.strip() for v in os.environ.get(name, default).split(',') if v.strip()]
 
@@ -91,7 +96,7 @@ def application(environ, start_response):
     if _app is None:
         _app = make_server_app(os.environ.get('CLIPCADEMY_DATA', str(ROOT / 'data')),
                                os.environ.get('CLIPCADEMY_WEB_DIST', str(ROOT / 'web' / 'dist')),
-                               os.environ.get('CLIPCADEMY_TEACHER_TOKEN'))
+                               teacher_token())
     return _app(environ, start_response)
 
 
@@ -104,8 +109,8 @@ if __name__ == '__main__':
     host = os.environ.get('HOST', '0.0.0.0')
     app = make_server_app(os.environ.get('CLIPCADEMY_DATA', str(ROOT / 'data')),
                           os.environ.get('CLIPCADEMY_WEB_DIST', str(ROOT / 'web' / 'dist')),
-                          os.environ.get('CLIPCADEMY_TEACHER_TOKEN'))
-    if not os.environ.get('CLIPCADEMY_TEACHER_TOKEN'):
+                          teacher_token())
+    if not teacher_token():
         print('Note: CLIPCADEMY_TEACHER_TOKEN is not set, so teach.html is locked.', flush=True)
     print(f'ClipCademy on http://localhost:{port}  (teachers: /teach.html, students: /class.html)', flush=True)
     make_server(host, port, app, server_class=ThreadingServer).serve_forever()

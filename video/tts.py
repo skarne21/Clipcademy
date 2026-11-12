@@ -22,7 +22,7 @@ API = 'https://api.elevenlabs.io/v1'
 
 
 def api_key():
-    key = os.environ.get('ELEVENLABS_API_KEY', '').strip()
+    key = os.environ.get('ELEVENLABS_API_KEY', '').strip().strip('"\'')  # docker --env-file keeps .env quotes
     env = HERE / '.env'
     if not key and env.exists():
         for line in env.read_text(encoding='utf-8').splitlines():
