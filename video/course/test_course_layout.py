@@ -29,10 +29,12 @@ def everything_revealed(name, props):
 
 
 def still(props, tmp):
+    import render_course
     (tmp / 'props.json').write_text(json.dumps(props), encoding='utf-8')
     out = tmp / 'frame.png'
     subprocess.run([shutil.which('npx'), 'remotion', 'still', 'course/index.ts', 'CourseClip', str(out), '--frame=40',
-                    f'--props={tmp / "props.json"}', '--log=error'], cwd=REMOTION, check=True, capture_output=True)
+                    f'--props={tmp / "props.json"}', f'--port={render_course.free_port()}', '--log=error'],
+                   cwd=REMOTION, check=True, capture_output=True)
     from PIL import Image
     return Image.open(out).convert('RGB')
 

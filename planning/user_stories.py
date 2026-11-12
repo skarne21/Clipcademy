@@ -229,7 +229,7 @@ STORIES = [
      'Team_Spec.md (Member 1 section) and Scope'),
     ('US-24', 'Import a class\'s material', 'teacher', 'to import my class\'s lecture PDFs, slides exported as PDF, '
      'or notes for a new course', 'ClipCademy can turn any of my classes into review clips', 'R8', ['H2'], 'ai', 'Member 1',
-     'proposed',
+     'built',
      ['`python video/course/generate.py --course <id> --material <file> ...` accepts PDF, .txt and .md files.',
       'A course ID is lowercase letters, digits and underscores; anything else is rejected before any API call.',
       'Imported files are copied to `video/courses/<course>/material/`, and nothing is written outside `video/courses/<course>/`.',
@@ -237,7 +237,7 @@ STORIES = [
      'video/course/test_generate.py'),
     ('US-25', 'Gemini breaks the material into clip plans', 'teacher', 'Gemini to break my material into learning '
      'objectives and a plan of short clips with source quotes', 'each clip teaches one idea that is traceable to my material',
-     'R8', ['H2'], 'ai', 'Member 1', 'proposed',
+     'R8', ['H2'], 'ai', 'Member 1', 'built',
      ['The material is sent to Gemini as file data (PDF) or text, with JSON output requested.',
       'The breakdown returns objectives, each with verbatim source excerpts, 3–6 clips and a one-sentence teaching goal per clip.',
       'For text material, every excerpt must appear verbatim in the material; a clip whose excerpts don\'t is dropped and reported.',
@@ -245,14 +245,14 @@ STORIES = [
      'video/course/test_generate.py'),
     ('US-26', 'Gemini storyboards each clip for the stick figure', 'teacher', 'Gemini to write each clip\'s narration and '
      'animation cues using only the general-purpose stick-figure scenes', 'the renderer can draw a clip for any subject',
-     'R8', ['H2'], 'ai', 'Member 1', 'proposed',
+     'R8', ['H2'], 'ai', 'Member 1', 'built',
      ['Each clip is one scene that uses one template from the course scene catalog, with its props and beats.',
       'The prompt includes the writing rules (hook, one idea, one analogy, 45–70 words, ending line) and the full catalog.',
       'The saved script records `course_id`, `teaching_goal`, `source_refs` and `review_notes` (hook claim, analogy, new term).'],
      'video/course/test_generate.py'),
     ('US-27', 'General-purpose stick-figure scenes for any subject', 'student', 'clips in any course to look and move like '
      'the biology clips', 'every class gets the same friendly, readable format', 'R8', ['H1', 'H2'], 'content', 'Member 1',
-     'proposed',
+     'built',
      ['Five templates exist: `steps`, `compare`, `flow`, `term` and `myth_fact`, each with typed props and its own actions.',
       'They reuse the existing guide, board, captions, cards and theme, at 720×1280 with the same safe zones.',
       'Prop text has length limits so nothing overflows the board; over-limit text is rejected, not shrunk.',
@@ -260,7 +260,7 @@ STORIES = [
      'video/course/test_templates.py; video/course/test_course_layout.py'),
     ('US-28', 'Check every generated clip before it is voiced', 'teacher', 'every generated clip checked before any '
      'voice credits are spent', 'broken clips are fixed or dropped automatically instead of failing at render time', 'R8',
-     ['H2'], 'ai', 'Member 1', 'proposed',
+     ['H2'], 'ai', 'Member 1', 'built',
      ['A clip is rejected if its template, a prop, an action or a target is unknown, or prop text is over its limit.',
       'A clip is rejected if a beat cue is missing from the narration or out of order, or the first beat is not "^".',
       'A clip is rejected if the narration is outside 45–70 words or doesn\'t end with the required last line.',
@@ -268,7 +268,7 @@ STORIES = [
      'video/course/test_templates.py; video/course/test_generate.py'),
     ('US-29', 'New course clips stay separate and wait for review', 'content reviewer', 'generated course clips kept apart '
      'from the existing clips and marked pending', 'nothing reaches students unreviewed and the 35 approved-track clips '
-     'never change', 'R8', ['H2'], 'review', 'Member 1', 'proposed',
+     'never change', 'R8', ['H2'], 'review', 'Member 1', 'built',
      ['Every generated script is saved with `review_status: "pending"` under `video/courses/<course>/scripts/`.',
       'Rendered course clips go to `video/courses/<course>/media/` with a manifest and their own fingerprint.',
       'The existing 35 clips keep their fingerprints: no file counted in `render._code_files()` is changed.',

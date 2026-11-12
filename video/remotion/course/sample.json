@@ -1,0 +1,6 @@
+{"fps": 30, "durationInFrames": 150, "audio": "silence.wav", "title": "Why do prices go up?", "sources": "Sources: sample · Review copy",
+ "template": "steps", "props": {"steps": [{"id": "buyers", "text": "Lots of buyers"}, {"id": "seats", "text": "Only a few seats"}, {"id": "price", "text": "Price goes up"}]},
+ "words": [{"text": "Why", "start": 0.2, "end": 0.5}, {"text": "prices", "start": 0.5, "end": 1.0}],
+ "events": [{"t": 0, "action": "pose", "arg": "think"}, {"t": 1, "action": "reveal", "arg": "buyers"}, {"t": 2, "action": "reveal", "arg": "seats"},
+            {"t": 3, "action": "reveal", "arg": "price"}, {"t": 3.5, "action": "highlight", "arg": "price"}, {"t": 4, "action": "check", "arg": "price"}],
+ "energy": []}
