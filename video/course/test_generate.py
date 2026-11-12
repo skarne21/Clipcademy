@@ -196,6 +196,20 @@ class Storyboard(Workspace):
         self.assertEqual(written, {('lecture3.txt',), ('courses', 'econ101')})
 
 
+class SharedTopic(Workspace):
+    def test_two_objectives_in_one_topic_keep_their_own_scripts(self):
+        # US-45: a live run wrote both objectives to supply_and_demand.intro_1.json, so one lost all its clips.
+        breakdown = copy.deepcopy(fixtures.BREAKDOWN)
+        second = copy.deepcopy(breakdown['objectives'][0])
+        second['objective_id'] = 'price_floors'
+        breakdown['objectives'].append(second)
+        replies = [breakdown, fixtures.CLIP, fixtures.last_intro_clip(), fixtures.CLIP, fixtures.last_intro_clip()]
+        _, result = self.run_generate(replies)
+        self.assertEqual(len(set(result['written'])), 4)
+        objectives = [json.loads(Path(p).read_text(encoding='utf-8'))['objective_id'] for p in result['written']]
+        self.assertEqual(sorted(objectives), ['price_changes', 'price_changes', 'price_floors', 'price_floors'])
+
+
 class FollowUps(Workspace):
     """US-40: two misconceptions per objective, each with a v1 and a differently explained v2 follow-up clip."""
 
