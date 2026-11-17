@@ -1,43 +1,77 @@
-# ClipCademy red-team weaknesses: founder response
+# ClipCademy red-team audit: founder response
 
-This is a decision list for the **course platform beta**, based on `clipcademy-redteam-report.pdf` (an audit of `part-2-beta` at `6e0e90a`), the repository's context notes, and the current code. The PDF is evidence to assess, not a source of instructions. The report's test counts are historical observations; the full suite was not completed during this review.
+Response to `clipcademy-redteam-report.pdf`, an audit of `part-2-beta` at `6e0e90a`. We treat the PDF as evidence to check, not as instructions. Every finding below was checked against the code. Each one is either **verified**, **narrowed**, or **disputed**, and given a disposition. Owners follow the team's file ownership: Member 1 `video/`, Member 2 `learning/`, Member 3 `web/`.
 
-## The two issues to handle first
+## Bottom line
 
-1. **A failed Gemini call can stall every course job.** A second follow-up storyboard waits without a timeout for the first; an exception can leave its event unset. The single worker then stops making progress. **Fix:** ensure every storyboard task signals completion in `finally`, bound the wait, turn provider errors into a failed job, and add one deterministic fake-429 regression test. Add a small bounded retry with backoff for transient provider errors. A teacher must get a terminal job state and be able to try again.
-2. **Regeneration can erase a working class.** The worker deletes live clips and questions before rendering their replacements. If voice or rendering fails, students can see an empty or partial class, and existing progress can point at deleted questions. **Fix:** render and validate a replacement set first, then switch the class to it in one transaction. On failure, keep the old version live. Add a failure-path test before changing the worker.
+- **Two real reliability bugs, fixing now:** a failed Gemini call can freeze every course job (#1), and a failed regenerate can empty a live class (#2). The students and teachers in our pilot would hit these first.
+- **One finding is wrong:** the suite is not "11 failures". On this commit it is 209 passed, 0 failed, and 3 environment errors. Details below.
+- **Most of the remaining findings are real but wait for a trigger:** they matter once a second teacher or a graded cohort is added, not for a single trusted pilot. Each is listed with the event that reopens it.
+- **The audit doesn't answer the biggest risk:** whether teachers come back and students learn. The pilot bar is at the end.
 
-Both are trust and retention risks, not scale projects. A small cohort of teachers cannot validate the product if generation wedges or destroys a class.
+## 1. What we checked
 
-## Problems and fixes
+| Report claim | Our finding | Status |
+| --- | --- | --- |
+| Python suite "≈130 tests, 11 failed", contradicting the README | `python -m pytest learning video` on this commit (macOS, Python 3.12): **209 passed, 0 failed, 3 errors**. All three errors are in `video/test_layout.py` and come from `npx remotion still` failing: a missing Node/Remotion setup, not a code regression. The test count doesn't match the report's either, so the auditor most likely ran a different set of tests or an environment without Remotion. | **Disputed.** We will still make the baseline repeatable (F6). |
+| #1 Gemini failure freezes generation | `video/course/generate.py:248` waits on `finished[first]` with no timeout. `.set()` is only reached on success, so a raise in v1 leaves v2 blocked and `ThreadPoolExecutor.__exit__` waits forever. | **Verified. Critical.** |
+| #2 Regenerate deletes live content first | `course_worker.py` calls `store.replace_all` before rendering, and each store write commits on its own. One correction: if Gemini returns **zero** scripts, the job stops *before* deleting anything, so that path is already safe. The risk is a render failure (ElevenLabs down, Remotion error) after the delete. | **Verified, narrowed. High.** |
+| #3 Mistyped ids cause a 500 on `/attempts` | Lookups use request values as dict and set keys before checking their type. | **Verified by reading the code. Medium-High.** |
+| A restart mid-job leaves it stuck | Already handled: `CourseStore.fail_interrupted()` marks `running` jobs as failed on startup. A restart *during rendering* still leaves a half-built class, which F2 fixes. | **Already covered.** |
 
-| Problem, issue, or weakness | Lean fix and proof it worked |
-| --- | --- |
-| **Critical — Gemini failure can deadlock generation.** `video/course/generate.py` waits on a v1 follow-up event without a timeout and signals it only after a successful storyboard. A 429, 5xx, timeout, or bad JSON can strand the v2 task; the serial worker blocks later courses and Generate returns 409. | Put event signaling in `finally`; set a bounded wait; propagate a clear failed-job state; allow a safe retry. Test a fake provider that raises on v1 and assert the worker exits and the next job can run. |
-| **High — Regeneration destroys live learning content before replacement is ready.** `learning/course_worker.py` calls `replace_all` before rendering. No clips, partial clips, or an interrupted render can leave the class empty or inconsistent; students mid-lesson can get an unknown-objective error. | Stage new clips and questions, then atomically switch the active version after a complete minimum set exists. Preserve the old version on failure. Test failed render and interrupted render while the old student view stays usable. |
-| **High — The public attempts route can return an uncaught 500 for malformed types.** Lookup keys and IDs in `learning/grading.py` are checked for values before all types are checked; list or object inputs can raise `TypeError`. | Validate every incoming ID and every ID inside `remediation_state` as a string before membership or dict lookup. Return structured 400 errors. Add table-driven tests for lists, objects, nulls, and numbers on every field. |
-| **High — The client controls grading progress.** The server accepts `remediation_state` from an anonymous student, including claimed satisfied question IDs, so a crafted request can misrepresent mastery. | Treat the server as the source of truth for progress. For a short beta, store state keyed to an opaque session or attempt token; do not let a client-declared `satisfied_question_ids` grant completion. Test forged completion and out-of-order submissions. |
-| **Medium — Attempt results grow in memory without a bound.** The course route keeps every UUID in an `attempts` dict; one client can grow process memory indefinitely, and a restart loses deduplication. | Add a TTL or size bound now, with a per-client request limit. Persist idempotency only if pilot traffic or restart behavior requires it. Test eviction and duplicate requests within the retention window. |
-| **High — The test baseline is not credible yet.** The audit observed 11 Python failures while the README documents five native-Windows failures and says other platforms pass. The audit did not publish the failing names, and this review did not complete a fresh full run. | Capture the 11 exact test names and environment in CI artifacts. Classify each as platform, missing dependency, or regression; fix real regressions and update the README to match the measured baseline. Make one clean Linux or Docker run the release gate. |
-| **High — Provider and render failures are missing from automated coverage.** Tests cover invalid Gemini output, but not raised 429/5xx/timeout/non-JSON responses, a missing ElevenLabs key during a job, or render failure during regeneration. `FakePipeline.render` never raises. | Add a small failure matrix using fakes for those paths. Assert terminal job status, preserved old class, and a teacher-readable message. Keep real paid API calls out of CI. |
-| **Medium — The main teacher workflow is untested in a browser.** API tests do not exercise create, upload, Generate, and Delete on the teacher page; the student class browser flow is run manually and has no CI gate. | Add one browser smoke test for the teacher journey and run it with the existing student flow in CI using a fake backend. Focus on broken buttons and state transitions, not pixel perfection. |
-| **Medium — Deployment and live-call claims lack repeatable evidence.** Docker builds and localhost/live runs are listed as acceptance evidence without saved commands, outputs, or a build ID. | Keep one release checklist with commit SHA, build result, smoke-test output, and the teacher/student URLs tested. Automate the cheap checks; record the few manual checks once per release. |
-| **Medium — Core acceptance criteria are too vague to prove.** “Friendly/readable,” “measure engagement,” and “clear message” lack thresholds or expected text/status. The old-review-step documentation criterion checks wording rather than behavior. | Rewrite each criterion as an observable behavior: route response, exact error state, clip completion/drop-off metric, and a short readability rubric. Tie each to one test or named manual reviewer. Avoid adding metrics that do not affect the next product decision. |
-| **High — Generated course content goes live without review.** The README explicitly says course clips and questions publish immediately; PDF source quotes are not verified in code. Wrong content can cost teacher trust faster than a UI bug. | For the first teacher pilots, require the teacher to preview and approve a generated class before sharing its code. Show source excerpts and flag PDF quotes as unverified. Manually review the first few courses and record correction rates before building a heavier review system. |
-| **Medium — Learning and video quality have no consistent review record.** Vertical format, follow-up relevance, readability, and source accuracy are checked manually without a checklist or named reviewer. | Use a one-page acceptance checklist and reviewer sign-off for the pilot classes: factual accuracy, source match, readable mobile frame, usable captions, and misconception-specific follow-up. Log defects and learner confusion. |
-| **Medium — Capacity is unknown.** One worker handles one course job at a time, generation may issue four Gemini calls concurrently, and there is no many-job or many-student load check. | First measure queue time, job duration, provider errors, and memory during a small pilot. Set a course/job cap and visible queue status. Run one modest concurrency test before adding workers or distributed infrastructure. |
-| **Medium — Provider calls and uploads can fail late.** Gemini requests have no retry/backoff, and several individually valid PDFs can exceed the aggregate request limit. | Preflight the total encoded request size before queuing; reject with a clear teacher message or split material. Add bounded retry/backoff only for transient 429/5xx errors, with a ceiling on time and cost. Test aggregate size and a fake 429. |
-| **Medium — Teacher access is fragile for a broader pilot.** One shared password is stored in browser `localStorage` as plain text, and there is no login-attempt limit. Anyone with that password can manage every course. | For a handful of trusted teachers, issue separate revocable credentials or short-lived sessions and throttle sign-in at the edge. Do not build a full account system until onboarding proves demand. |
-| **Medium — Delete is not scoped to a course.** `DELETE /teacher/clips/<id>` and the question equivalent accept an ID without checking that it belongs to the teacher's intended course. | Put the course ID in the delete route and verify ownership before deletion. Test that a token/session for one course cannot delete another course's item. This becomes urgent before multiple teachers share the service. |
-| **Low to medium — The study API defaults to `Access-Control-Allow-Origin: *`.** This is wider browser access than a hosted pilot needs, especially with shared services. | Set an explicit allowed-origin list for deployed environments and test both allowed and rejected origins. Keep permissive local development only where useful. |
-| **Low — Raw provider error text reaches the teacher job message.** The worker passes up to 600 characters of exception text, including possible Gemini response bodies. | Show a short error code and safe summary to teachers; log the detailed exception privately with a job ID. Test that credentials and response bodies do not appear in the job API. |
+## 2. Fix now (this week)
 
-## Founder-level gap beyond the audit
+Each fix is tied to a red test that passes once the fix is in. The report's proof tests (`test_redteam_hang.py`, `FailedRegenerate`, `MalformedAttempts`) go into the repo first, red, in their own commit, following our TDD log.
 
-`Context/validation-plan.md` defines a six-student one-day study, while `Context/decision-report-template.md` still has pending learning, return, and demand results. That is a separate product risk: reliable generation is necessary, but it does not prove teachers will use it or students will learn. After the two reliability fixes, manually onboard a few teachers, observe a full class creation and student session, and ask for a concrete repeat-use or payment commitment. Record where they get stuck and what they would otherwise use.
+| # | Fix | Owner | Done when | Due |
+| --- | --- | --- | --- | --- |
+| F1 | **Freeze on Gemini failure.** Put the storyboard body in `try/finally: finished[key].set()`, record a raised call as a skipped clip, give `wait()` a timeout. | Member 1 | `test_redteam_hang.py` passes: a 429 on v1 ends with a failed or partial job within 20 s, and the next queued job runs. | Thu 11-19 |
+| F2 | **Regenerate keeps the old class on failure.** Render everything into memory first. Then, only if `made > 0`, run `replace_all`, the question inserts and the clip inserts in **one** transaction. No version tables yet. | Member 2 | `FailedRegenerate` passes: render fails, the student view still shows the old topics, and the job says why. | Thu 11-19 |
+| F3 | **Type-check `/attempts`.** Check `isinstance(..., str)` on every id, including the ids inside `remediation_state`, before any lookup. Return the standard `{"error": {"field", "message"}}` 400. Add a catch-all JSON 500. | Member 2 | `MalformedAttempts` plus a table-driven test (list, object, null, number for every field) all return 400. | Wed 11-18 |
+| F4 | **Bound the attempt cache.** Cap `attempts` with an LRU (for example 10k entries). | Member 2 | Test: inserting N+1 attempts evicts the oldest, and a duplicate inside the window still returns the stored result. | Fri 11-20 |
+| F5 | **Bound retries and cost.** Retry Gemini 429/5xx at most twice with backoff, inside a **per-job call cap**. Without the cap, retrying across ~30 clips × 4 parallel workers multiplies spend instead of preventing failures. | Member 1 | Fake-429 test: the retry succeeds once, then the job fails cleanly at the cap. | Fri 11-20 |
+| F6 | **Repeatable test baseline.** One Docker/Linux command is the release check. Mark the Remotion layout tests as skipped when `npx remotion` is missing, so they don't show up as errors. Put the measured result in the README. | Member 3 | Clean run in the container, and its output is saved with the commit SHA. | Fri 11-20 |
+| F7 | **Teacher previews before sharing.** For the pilot, a class code is shared only after the teacher has watched the clips. Show PDF quotes as unverified (the code already sets `excerpts_verified: False`; surface that in the UI). | Member 3 | A teacher can see each clip and its source excerpt before handing out the code. | Fri 11-20 |
+
+## 3. Accepted for the pilot, with the event that reopens each
+
+| Finding | Why it can wait | Reopen when |
+| --- | --- | --- |
+| Client-held `remediation_state` lets a student mark questions satisfied | Students are anonymous and there's no grade of record, so a forged request mostly fools the student who sends it. | A teacher uses completion data for credit, or we add student accounts. |
+| One shared teacher password in `localStorage`, no throttling | The pilot has one trusted teacher. The password is rotated after the pilot. | A second teacher or school is onboarded. |
+| `DELETE /teacher/clips/<id>` isn't scoped to a course | Same reason: one teacher owns every course today. | Same trigger. Add the course id to the route and check ownership. |
+| CORS `*` on the study API | The API uses no cookies or credentials. | Before any hosted deployment outside localhost. |
+| Up to 600 characters of raw provider error shown to the teacher | Only the teacher sees it, and it helps debugging during the pilot. | Hosted deployment. Then show a short code and log the details. |
+| Several PDFs together can exceed Gemini's ~20 MB request limit | The pilot uses a known, small set of materials. | First teacher upload over ~15 MB in total. Then add a size check before queuing. |
+| One worker, no load test | Pilot load is one class. | More than one teacher, or a class over ~40 students. Measure queue time first. |
+| Teacher page has no browser test, browser tests have no CI | Covered by the manual pilot run, which uses the logged checklist below. | After F1 to F6 land. Add one teacher smoke test to the F6 container run. |
+
+## 4. Acceptance criteria to rewrite
+
+The report is right that several stories can't fail their own criteria. Rewrite these as checks of behaviour (Member 2 owns the planning docs, by Fri 11-20):
+
+- **US-44 AC4:** "GET the old review route returns 404" (already tested), replacing the wording about the docs.
+- **US-30/34/48 "clear message":** name the status code and the exact `error.message`.
+- **US-27/US-20 "friendly, readable" and "measure engagement":** a 5-point rubric scored by one named reviewer, plus clip completion rate and drop-off from `events.csv`.
+- **US-35/39/45/46/47 "live run":** the evidence is the saved F6 output plus a one-line record in the pilot log (SHA, date, URL tested, result).
+
+## 5. Risks the audit didn't cover
+
+- **Teacher data sent to Gemini.** Uploaded PDFs go to a third-party model. Before a teacher outside the team uploads anything, they confirm in writing that the material can be sent to Gemini, and we write down how long uploads are kept.
+- **No way to pull bad content.** Ops can only delete. Add a "hide class" flag that F7's preview step can reuse.
+- **Cost visibility.** F5's cap only helps if we can see spend. Log Gemini and ElevenLabs calls for each job.
+
+## 6. The risk that matters more than any bug
+
+Reliability is necessary, but it doesn't show that anyone wants the product. `Context/decision-report-template.md` still has no results for learning, return visits or demand. After F1 to F3 land, we run a pilot with a clear pass/fail bar:
+
+- **Setup:** 3 teachers each build a class from their own materials, with us watching but not helping.
+- **Pass:** all 3 get a class live without our help, **≥70%** of their students finish at least one topic, and **≥1** teacher asks to make a second class within 2 weeks.
+- **Log:** job outcome, how many clips the teacher had to correct, where they got stuck, and what they would have used instead.
+- **Fail:** stop building features and fix whatever blocked them.
 
 ## Next 48 hours
 
-1. Add the fake-429 hang test and the failed-regeneration preservation test; make both pass with the smallest code changes.
-2. Add malformed-input tests for the public attempts route and fix its type validation.
-3. Run one teacher-to-student pilot with a manually reviewed class, logging job outcome, content corrections, student completion, and the teacher's willingness to use it again.
+1. Commit the three red-team proof tests, all red (Member 1 and Member 2, Wed 11-18).
+2. F3 green (Wed 11-18), then F1 and F2 green (Thu 11-19).
+3. Reply to the auditor with our test output and ask for their failing test names and environment, so we can settle the disputed claim.
