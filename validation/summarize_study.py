@@ -7,12 +7,23 @@ import csv
 from datetime import datetime, timedelta
 import json
 from pathlib import Path
+import re
 import statistics
 from zoneinfo import ZoneInfo
 
 STUDY = Path(__file__).resolve().parent / 'study'
 STEPS = ('open_lesson', 'clips', 'answer', 'return_home')
 TOPICS = {'dna_replication': 'rep', 'dna_repair': 'dr', 'transcription': 'tx', 'translation': 'tl'}
+
+
+def assessment_key():
+    text = (Path(__file__).resolve().parents[1] / 'Context/assessment.md').read_text(encoding='utf-8')
+    entries = re.findall(r'^\| ([AB]\d+) \| ([A-D]) \|', text, re.M)
+    expected = {f'{form}{i}' for form in 'AB' for i in range(1, 11)}
+    key = dict(entries)
+    if len(entries) != 20 or set(key) != expected:
+        raise ValueError('Assessment must contain exactly one key for each item A1–A10 and B1–B10')
+    return key
 
 
 def csv_rows(path):
@@ -30,10 +41,18 @@ def calculate(participant, responses, events, attempts, score_adjustment=None):
     keys = [(r['test'], r['item']) for r in responses]
     if len(keys) != 28 or len(set(keys)) != 28:
         raise ValueError(f'{pid}: expected 28 unique test responses')
+    official_key = assessment_key()
     for row in responses:
         score, maximum = int(row['score']), int(row['max'])
         if not 0 <= score <= maximum:
             raise ValueError(f'{pid}: score outside item range')
+        if row['type'] == 'mc':
+            correct = official_key.get(row['item'])
+            choice = row['response'].strip().upper()
+            if correct is None or row['form'] != row['item'][0] or choice not in {'', 'A', 'B', 'C', 'D'}:
+                raise ValueError(f"{pid}: invalid multiple-choice item, form or response for {row['item']}")
+            if maximum != 1 or row['correct_answer'] != correct or score != int(choice == correct):
+                raise ValueError(f"{pid}: {row['item']} disagrees with Context/assessment.md; run validation/rescore_study.py")
     for topic, prefix in TOPICS.items():
         for period in ('pre', 'post'):
             for kind, suffix in [('mc', 'mc'), ('written', 'wr')]:
@@ -186,12 +205,16 @@ def summarize(root=STUDY):
               'Adjusted gain = (taught post − taught pre) / 10 × 100 − (comparison post − comparison pre) / 8 × 100. A qualifying return requires an answer from one hour after the morning session ends through one hour before the evening session starts. Last-hour practice and opening without answering do not qualify.', '',
               'App accuracy uses all recorded app attempts. Heartbeat minutes count visible-time heartbeat events at 30 seconds each. Equal adjusted gains can arise from different starting scores and usage patterns; individual reports retain those differences.', '',
               'Thresholds follow [hypothesis-tests.md](../../Context/hypothesis-tests.md). This is a descriptive, six-person, same-day comparison; these statistics do not establish lasting recall or a causal effect.', '']
+    if (root / 'RESCORING.md').exists():
+        lines += ['Scoring review: multiple-choice answers use the [repository assessment key](assessment-key.json). Written scores remain supplied values because the response text is a placeholder. Statistics including those written scores remain provisional. See [RESCORING.md](RESCORING.md).', '']
     # Calculate and validate everything before replacing any report.
     outputs = {root / 'metrics.json': json.dumps(summary, indent=2) + '\n',
                root / 'RESULTS.md': '\n'.join(lines)}
     for m in metrics:
         outputs[root / m['participant_id'] / 'metrics.json'] = json.dumps(m, indent=2) + '\n'
         outputs[root / m['participant_id'] / 'RESULTS.md'] = individual_report(m)
+        if (root / 'RESCORING.md').exists():
+            outputs[root / m['participant_id'] / 'RESULTS.md'] += '\nMultiple-choice scores use the repository assessment key. Written scores are supplied values that could not be independently regraded from the placeholder text. See [scoring review](../RESCORING.md).\n'
     for path, text in outputs.items():
         path.write_text(text, encoding='utf-8')
     return summary
